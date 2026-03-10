@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="zh-HK" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDB 通告智能分析系統 — Mockup v2.0</title>
+<style>
+/* ============================================================
+   CSS VARIABLES / THEMING
+   ============================================================ */
+[data-theme="dark"] {
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --surface2: #2d3f55;
+  --border: #334155;
+  --text: #f1f5f9;
+  --text-muted: #94a3b8;
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --green: #22c55e;
+  --red: #ef4444;
+  --yellow: #f59e0b;
+  --purple: #a855f7;
+  --shadow: rgba(0,0,0,0.4);
+}
+[data-theme="light"] {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface2: #f1f5f9;
+  --border: #e2e8f0;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --green: #16a34a;
+  --red: #dc2626;
+  --yellow: #d97706;
+  --purple: #9333ea;
+  --shadow: rgba(0,0,0,0.1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang HK", "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  transition: background 0.25s, color 0.25s;
+  line-height: 1.5;
+}
+button, select, input { font-family: inherit; }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 1px 8px var(--shadow);
+}
+.brand {
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--accent);
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.brand-sub { font-size: 11px; color: var(--text-muted); font-weight: 400; }
+
+.role-select {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px 28px 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  min-width: 130px;
+}
+
+.search-wrapper {
+  flex: 1;
+  position: relative;
+  max-width: 420px;
+}
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 12px 7px 34px;
+  border-radius: 6px;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-input:focus { border-color: var(--accent); }
+
+.search-suggestions {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0; right: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 32px var(--shadow);
+  z-index: 200;
+  display: none;
+  overflow: hidden;
+}
+.search-suggestions.open { display: block; }
+.suggestion-item {
+  padding: 9px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+}
+.suggestion-item:last-child { border-bottom: none; }
+.suggestion-item:hover { background: var(--surface2); }
+.suggestion-num { font-size: 11px; color: var(--accent); font-weight: 600; min-width: 110px; }
+.suggestion-title { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.suggestion-icon { flex-shrink: 0; }
+
+.header-actions { display: flex; gap: 6px; margin-left: auto; }
+.btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.15s;
+  display: flex; align-items: center; gap: 5px;
+  white-space: nowrap;
+}
+.btn:hover { background: var(--accent); border-color: var(--accent); color: white; }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: white; }
+.btn-primary:hover { background: var(--accent-hover); }
+
+/* ============================================================
+   MAIN TABS
+   ============================================================ */
+.tabs {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  display: flex;
+  gap: 0;
+  position: sticky;
+  top: 56px;
+  z-index: 40;
+}
+.tab-btn {
+  padding: 13px 18px;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-btn:hover:not(.active) { color: var(--text); }
+
+/* ============================================================
+   MAIN LAYOUT
+   ============================================================ */
+.main { padding: 20px; max-width: 1160px; margin: 0 auto; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ============================================================
+   STATS GRID
+   ============================================================ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: default;
+  transition: box-shadow 0.2s;
+}
+.stat-card:hover { box-shadow: 0 4px 16px var(--shadow); }
+.stat-icon { font-size: 18px; margin-bottom: 6px; }
+.stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
+.stat-value { font-size: 30px; font-weight: 800; line-height: 1; }
+.stat-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+.stat-card.c-red .stat-value { color: var(--red); }
+.stat-card.c-yellow .stat-value { color: var(--yellow); }
+.stat-card.c-blue .stat-value { color: var(--accent); }
+.stat-card.c-green .stat-value { color: var(--green); }
+
+/* ============================================================
+   DEADLINE COUNTDOWN BAR
+   ============================================================ */
+.deadlines-bar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.deadlines-bar::-webkit-scrollbar { display: none; }
+.dl-label { font-size: 11px; color: var(--text-muted); white-space: nowrap; font-weight: 600; flex-shrink: 0; }
+.dl-chip {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 12px;
+  white-space: nowrap;
+  font-size: 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 0.15s;
+}
+.dl-chip:hover { border-color: var(--accent); }
+.dl-days {
+  background: var(--red); color: white;
+  border-radius: 10px; padding: 1px 7px;
+  font-size: 11px; font-weight: 700;
+}
+.dl-days.soon { background: var(--yellow); color: #1e293b; }
+.dl-days.ok { background: var(--green); }
+
+/* ============================================================
+   FILTERS
+   ============================================================ */
+.filters { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+.filter-group { display: flex; gap: 3px; }
+.filter-btn {
+  padding: 5px 11px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.15s;
+}
+.filter-btn.active, .filter-btn:hover { background: var(--accent); border-color: var(--accent); color: white; }
+.filter-btn.f-red.active { background: var(--red); border-color: var(--red); }
+.filter-btn.f-yellow.active { background: var(--yellow); border-color: var(--yellow); color: #1e293b; }
+.filter-btn.f-green.active { background: var(--green); border-color: var(--green); }
+.filter-sep { width: 1px; background: var(--border); margin: 0 4px; align-self: stretch; }
+
+/* ============================================================
+   STATUS BAR
+   ============================================================ */
+.status-bar {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px; color: var(--text-muted);
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.sdot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+.sdot.offline { background: var(--yellow); }
+
+/* ============================================================
+   CIRCULAR CARDS
+   ============================================================ */
+.circular-list { display: flex; flex-direction: column; gap: 10px; }
+.circular-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.15s, transform 0.1s;
+  display: flex; gap: 14px; align-items: flex-start;
+}
+.circular-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 4px 16px var(--shadow);
+  transform: translateY(-1px);
+}
+.card-left { flex-shrink: 0; min-width: 90px; }
+.card-number { font-size: 11px; font-weight: 700; color: var(--accent); margin-bottom: 3px; }
+.card-date { font-size: 11px; color: var(--text-muted); }
+.card-body { flex: 1; min-width: 0; }
+.card-title { font-size: 14px; font-weight: 600; margin-bottom: 5px; line-height: 1.4; }
+.card-summary { font-size: 12px; color: var(--text-muted); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card-meta { display: flex; gap: 5px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
+.card-right { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; min-width: 90px; }
+
+/* ============================================================
+   BADGES
+   ============================================================ */
+.badge { font-size: 11px; padding: 2px 8px; border-radius: 12px; font-weight: 500; }
+.b-red { background: rgba(239,68,68,0.15); color: var(--red); }
+.b-yellow { background: rgba(245,158,11,0.15); color: var(--yellow); }
+.b-green { background: rgba(34,197,94,0.15); color: var(--green); }
+.b-blue { background: rgba(59,130,246,0.15); color: var(--accent); }
+.b-purple { background: rgba(168,85,247,0.15); color: var(--purple); }
+.b-gray { background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); }
+.b-new { background: rgba(34,197,94,0.15); color: var(--green); }
+
+.role-chips { display: flex; flex-wrap: wrap; gap: 3px; justify-content: flex-end; }
+.role-chip {
+  font-size: 10px; padding: 1px 6px; border-radius: 8px;
+  background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border);
+}
+
+/* ============================================================
+   DETAIL PANEL
+   ============================================================ */
+.overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.55); z-index: 90;
+  backdrop-filter: blur(2px);
+}
+.overlay.open { display: block; }
+
+.detail-panel {
+  position: fixed;
+  top: 0; right: -660px;
+  width: 660px; height: 100vh;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  z-index: 100;
+  display: flex; flex-direction: column;
+  transition: right 0.3s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: -8px 0 48px var(--shadow);
+}
+.detail-panel.open { right: 0; }
+
+.detail-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; gap: 12px;
+  flex-shrink: 0;
+}
+.detail-header-info { flex: 1; min-width: 0; }
+.detail-num { font-size: 12px; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
+.detail-title-text { font-size: 15px; font-weight: 700; line-height: 1.4; }
+.detail-badges-row { display: flex; gap: 5px; margin-top: 8px; flex-wrap: wrap; }
+.close-btn {
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text); width: 32px; height: 32px;
+  border-radius: 8px; cursor: pointer; font-size: 16px;
+  flex-shrink: 0; transition: background 0.15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.close-btn:hover { background: var(--red); border-color: var(--red); color: white; }
+
+.detail-tabs {
+  padding: 0 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; gap: 0; overflow-x: auto;
+  scrollbar-width: none; flex-shrink: 0;
+}
+.detail-tabs::-webkit-scrollbar { display: none; }
+.d-tab {
+  padding: 10px 14px; border: none; background: none;
+  color: var(--text-muted); cursor: pointer; font-size: 13px;
+  border-bottom: 2px solid transparent; white-space: nowrap;
+  transition: all 0.15s;
+}
+.d-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.d-tab:hover:not(.active) { color: var(--text); }
+
+.detail-body { flex: 1; overflow-y: auto; padding: 20px; }
+.d-tab-content { display: none; }
+.d-tab-content.active { display: block; }
+
+/* Detail inner elements */
+.sec-label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+  color: var(--text-muted); margin-bottom: 8px; margin-top: 18px;
+  font-weight: 700;
+}
+.sec-label:first-child { margin-top: 0; }
+.summary-text { font-size: 13px; line-height: 1.75; color: var(--text); }
+.summary-text p { margin-bottom: 10px; }
+.summary-text p:last-child { margin-bottom: 0; }
+.info-block {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 12px; font-size: 13px;
+  color: var(--text-muted); line-height: 1.6;
+}
+.pdf-links { display: flex; gap: 8px; flex-wrap: wrap; }
+.pdf-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 6px 12px; border-radius: 6px;
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text); font-size: 12px; cursor: pointer;
+  text-decoration: none; transition: border-color 0.15s;
+}
+.pdf-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Actions */
+.action-list { display: flex; flex-direction: column; gap: 10px; }
+.action-item {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px;
+}
+.action-row1 { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 7px; }
+.action-idx {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--accent); color: white;
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.action-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+.action-meta { display: flex; gap: 8px; font-size: 11px; color: var(--text-muted); flex-wrap: wrap; }
+.a-role { padding: 2px 6px; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; }
+.a-dl { color: var(--red); }
+.a-note { color: var(--text-muted); font-style: italic; }
+
+/* Deadlines table */
+.dl-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.dl-table th {
+  text-align: left; padding: 8px 10px; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.4px;
+  color: var(--text-muted); border-bottom: 1px solid var(--border);
+  font-weight: 700;
+}
+.dl-table td { padding: 10px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
+.dl-table tr:last-child td { border-bottom: none; }
+.type-chip { font-size: 11px; padding: 2px 7px; border-radius: 10px; background: var(--surface2); border: 1px solid var(--border); }
+
+/* Role accordion */
+.role-accordion { display: flex; flex-direction: column; gap: 8px; }
+.role-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.role-card-header {
+  padding: 12px 14px; display: flex; align-items: center;
+  justify-content: space-between; cursor: pointer;
+  transition: background 0.15s;
+}
+.role-card-header:hover { background: var(--surface); }
+.role-card-name { font-size: 13px; font-weight: 600; }
+.role-tag { font-size: 11px; padding: 2px 8px; border-radius: 10px; }
+.role-tag.yes { background: rgba(34,197,94,0.15); color: var(--green); }
+.role-tag.no { background: var(--surface); color: var(--text-muted); border: 1px solid var(--border); }
+.role-card-body { padding: 0 14px 12px; display: none; }
+.role-card-body.open { display: block; }
+.kp-list { list-style: none; }
+.kp-list li {
+  font-size: 12px; color: var(--text); padding: 4px 0 4px 14px;
+  position: relative; line-height: 1.5;
+}
+.kp-list li::before { content: "▸"; position: absolute; left: 0; color: var(--accent); }
+
+/* Diff tab */
+.change-list { display: flex; flex-direction: column; gap: 8px; }
+.change-item {
+  display: flex; gap: 10px; padding: 10px 12px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; font-size: 12px;
+}
+.change-type-badge {
+  flex-shrink: 0; width: 34px; height: 34px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 12px;
+}
+.ct-add { background: rgba(34,197,94,0.15); color: var(--green); }
+.ct-mod { background: rgba(245,158,11,0.15); color: var(--yellow); }
+.ct-del { background: rgba(239,68,68,0.15); color: var(--red); }
+.change-body { flex: 1; }
+.change-text { color: var(--text); line-height: 1.5; margin-bottom: 4px; }
+.change-meta-text { color: var(--text-muted); font-size: 11px; }
+
+/* ============================================================
+   CALENDAR TAB
+   ============================================================ */
+.cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.cal-nav-btn {
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text); width: 34px; height: 34px; border-radius: 8px;
+  cursor: pointer; font-size: 18px; transition: background 0.15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.cal-nav-btn:hover { background: var(--accent); border-color: var(--accent); color: white; }
+.cal-month-label { font-size: 18px; font-weight: 700; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.cal-wday { text-align: center; font-size: 11px; font-weight: 700; color: var(--text-muted); padding: 8px 0; }
+.cal-day {
+  aspect-ratio: 1; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; display: flex; flex-direction: column; align-items: center;
+  padding: 6px 4px; cursor: pointer; transition: border-color 0.15s;
+  min-height: 56px;
+}
+.cal-day:hover { border-color: var(--accent); }
+.cal-day.today { border-color: var(--accent); background: rgba(59,130,246,0.07); }
+.cal-day.empty { background: transparent; border-color: transparent; cursor: default; }
+.cal-day-num { font-size: 13px; font-weight: 500; }
+.cal-day.today .cal-day-num { color: var(--accent); font-weight: 800; }
+.cal-dots { display: flex; gap: 3px; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
+.cdot { width: 6px; height: 6px; border-radius: 50%; }
+.cdot-blue { background: var(--accent); }
+.cdot-red { background: var(--red); }
+.cal-legend { display: flex; gap: 16px; margin-top: 14px; font-size: 12px; color: var(--text-muted); }
+.cal-legend-item { display: flex; align-items: center; gap: 6px; }
+.day-events-panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px; margin-top: 16px; display: none;
+}
+.day-events-panel.open { display: block; }
+.dep-title { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+.dep-item {
+  padding: 8px 10px; background: var(--surface2); border-radius: 6px;
+  margin-bottom: 6px; font-size: 12px; display: flex; align-items: center; gap: 8px;
+}
+
+/* ============================================================
+   SUPPLIER TAB
+   ============================================================ */
+.supplier-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+.supplier-stat-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px; text-align: center;
+}
+.supplier-stat-card .sv { font-size: 28px; font-weight: 800; color: var(--accent); }
+.supplier-stat-card .sl { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+.empty-state {
+  text-align: center; padding: 60px 20px; color: var(--text-muted);
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+}
+.empty-state .es-icon { font-size: 40px; margin-bottom: 12px; }
+.empty-state .es-text { font-size: 14px; }
+
+/* ============================================================
+   SETTINGS TAB
+   ============================================================ */
+.settings-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px; margin-bottom: 16px;
+}
+.settings-card-title {
+  font-size: 13px; font-weight: 700; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.setting-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.setting-row:last-child { border-bottom: none; }
+.setting-info { flex: 1; }
+.setting-label { font-size: 13px; }
+.setting-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.theme-group { display: flex; gap: 5px; }
+.theme-opt {
+  padding: 5px 10px; border-radius: 6px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--text); font-size: 12px; cursor: pointer; transition: all 0.15s;
+}
+.theme-opt.active { background: var(--accent); border-color: var(--accent); color: white; }
+input[type="range"] { width: 110px; accent-color: var(--accent); cursor: pointer; }
+.model-table { width: 100%; font-size: 13px; }
+.model-table tr td { padding: 6px 0; }
+.model-table td:first-child { color: var(--text-muted); width: 40%; }
+.model-table td:last-child { color: var(--text); font-weight: 500; }
+.code-block {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px; font-family: monospace;
+  font-size: 12px; line-height: 1.9; color: var(--text);
+}
+.code-comment { color: var(--text-muted); }
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     OVERLAY
+     ============================================================ -->
+<div class="overlay" id="overlay" onclick="closeDetail()"></div>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="header">
+  <div class="brand">
+    <span>📋</span>
+    <div>
+      <div>EDB 通告智能分析</div>
+      <div class="brand-sub">Education Bureau Circular AI</div>
+    </div>
+  </div>
+
+  <select class="role-select" id="roleSelect" onchange="filterByRole(this.value)">
+    <option value="">👤 所有角色</option>
+    <option value="principal">👔 校長</option>
+    <option value="vice_principal">🏫 副校長</option>
+    <option value="department_head">📚 科主任</option>
+    <option value="teacher">🧑‍🏫 教師</option>
+    <option value="eo_admin">📋 行政主任</option>
+    <option value="supplier">🏢 供應商</option>
+  </select>
+
+  <div class="search-wrapper">
+    <span class="search-icon">🔍</span>
+    <input type="text" class="search-input" id="searchInput"
+      placeholder="搜尋通告編號、標題、標籤…"
+      oninput="handleSearch(this.value)" onblur="closeSuggestions()">
+    <div class="search-suggestions" id="searchSugg"></div>
+  </div>
+
+  <div class="header-actions">
+    <button class="btn" id="syncBtn" onclick="doSync(this)">🔄 同步</button>
+    <button class="btn">📊 Excel</button>
+    <button class="btn">🖨 PDF</button>
+  </div>
+</header>
+
+<!-- ============================================================
+     MAIN TABS
+     ============================================================ -->
+<nav class="tabs">
+  <button class="tab-btn active" onclick="switchTab('overview',this)">📊 通告總覽</button>
+  <button class="tab-btn" onclick="switchTab('calendar',this)">📅 月曆</button>
+  <button class="tab-btn" onclick="switchTab('supplier',this)">🏢 供應商</button>
+  <button class="tab-btn" onclick="switchTab('settings',this)">⚙️ 設定</button>
+</nav>
+
+<!-- ============================================================
+     MAIN CONTENT
+     ============================================================ -->
+<div class="main">
+
+  <!-- =========================================================
+       📊 通告總覽 TAB
+       ========================================================= -->
+  <div class="tab-panel active" id="tab-overview">
+
+    <!-- Status bar -->
+    <div class="status-bar">
+      <div class="sdot" id="sdot"></div>
+      <span id="statusMsg">🟢 即時數據 — 最後同步：2026-03-09 14:32 | 共 <strong>42</strong> 條通告 | gpt-5-nano 分析完成</span>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card c-blue">
+        <div class="stat-icon">📋</div>
+        <div class="stat-label">總通告數</div>
+        <div class="stat-value">42</div>
+        <div class="stat-sub">最近 90 天</div>
+      </div>
+      <div class="stat-card c-red">
+        <div class="stat-icon">🔴</div>
+        <div class="stat-label">高影響通告</div>
+        <div class="stat-value">14</div>
+        <div class="stat-sub">需優先處理</div>
+      </div>
+      <div class="stat-card c-yellow">
+        <div class="stat-icon">⏰</div>
+        <div class="stat-label">14天內截止</div>
+        <div class="stat-value">6</div>
+        <div class="stat-sub">即將到期</div>
+      </div>
+      <div class="stat-card c-green">
+        <div class="stat-icon">📌</div>
+        <div class="stat-label">強制執行</div>
+        <div class="stat-value">18</div>
+        <div class="stat-sub">mandatory</div>
+      </div>
+    </div>
+
+    <!-- Deadline countdown -->
+    <div class="deadlines-bar">
+      <div class="dl-label">⏰ 截止倒數：</div>
+      <div class="dl-chip" onclick="openDetail(0)">
+        <span class="dl-days">3天</span>
+        <span>EDBCM030 — SEN 津貼申請</span>
+      </div>
+      <div class="dl-chip" onclick="openDetail(1)">
+        <span class="dl-days soon">8天</span>
+        <span>EDBCM029 — 教師培訓報名</span>
+      </div>
+      <div class="dl-chip" onclick="openDetail(2)">
+        <span class="dl-days ok">21天</span>
+        <span>EDBCM028 — 校舍安全評估</span>
+      </div>
+      <div class="dl-chip" onclick="openDetail(3)">
+        <span class="dl-days ok">35天</span>
+        <span>EDBCM027 — 供應商資格預審</span>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+      <div class="filter-group" id="fg-time">
+        <button class="filter-btn active" onclick="setFilter('time','all',this)">全部</button>
+        <button class="filter-btn" onclick="setFilter('time','live',this)">🟢 即時</button>
+        <button class="filter-btn" onclick="setFilter('time','7d',this)">7天</button>
+        <button class="filter-btn" onclick="setFilter('time','30d',this)">30天</button>
+      </div>
+      <div class="filter-sep"></div>
+      <div class="filter-group" id="fg-impact">
+        <button class="filter-btn active" onclick="setFilter('impact','all',this)">全部影響</button>
+        <button class="filter-btn f-red" onclick="setFilter('impact','high',this)">🔴 高</button>
+        <button class="filter-btn f-yellow" onclick="setFilter('impact','mid',this)">🟡 中</button>
+        <button class="filter-btn f-green" onclick="setFilter('impact','low',this)">🟢 低</button>
+      </div>
+      <div class="filter-sep"></div>
+      <div class="filter-group" id="fg-type">
+        <button class="filter-btn active" onclick="setFilter('type','all',this)">全部類型</button>
+        <button class="filter-btn" onclick="setFilter('type','mandatory',this)">強制</button>
+        <button class="filter-btn" onclick="setFilter('type','recommended',this)">建議</button>
+        <button class="filter-btn" onclick="setFilter('type','informational',this)">資訊</button>
+      </div>
+    </div>
+
+    <!-- Circular cards -->
+    <div class="circular-list" id="circularList"></div>
+
+  </div><!-- end tab-overview -->
+
+  <!-- =========================================================
+       📅 月曆 TAB
+       ========================================================= -->
+  <div class="tab-panel" id="tab-calendar">
+    <div class="cal-header">
+      <button class="cal-nav-btn" onclick="calNav(-1)">‹</button>
+      <div class="cal-month-label" id="calMonthLabel">2026年3月</div>
+      <button class="cal-nav-btn" onclick="calNav(1)">›</button>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+    <div class="cal-legend">
+      <div class="cal-legend-item"><div class="cdot cdot-blue"></div>通告發佈日期</div>
+      <div class="cal-legend-item"><div class="cdot cdot-red"></div>截止日期</div>
+    </div>
+    <div class="day-events-panel" id="dayEventsPanel">
+      <div class="dep-title" id="depTitle"></div>
+      <div id="depList"></div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       🏢 供應商 TAB
+       ========================================================= -->
+  <div class="tab-panel" id="tab-supplier">
+    <div class="supplier-stats-grid">
+      <div class="supplier-stat-card">
+        <div class="sv">5</div><div class="sl">供應商相關通告</div>
+      </div>
+      <div class="supplier-stat-card">
+        <div class="sv">2</div><div class="sl">招標機會</div>
+      </div>
+      <div class="supplier-stat-card">
+        <div class="sv">1</div><div class="sl">規格要求變更</div>
+      </div>
+    </div>
+    <div class="circular-list" id="supplierList"></div>
+  </div>
+
+  <!-- =========================================================
+       ⚙️ 設定 TAB
+       ========================================================= -->
+  <div class="tab-panel" id="tab-settings">
+
+    <div class="settings-card">
+      <div class="settings-card-title">🎨 外觀設定</div>
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-label">主題模式</div>
+          <div class="setting-desc">切換介面深色 / 淺色顯示</div>
+        </div>
+        <div class="theme-group">
+          <button class="theme-opt active" id="to-dark" onclick="applyTheme('dark',this)">🌙 深色</button>
+          <button class="theme-opt" id="to-light" onclick="applyTheme('light',this)">☀️ 淺色</button>
+          <button class="theme-opt" id="to-auto" onclick="applyTheme('auto',this)">⚙️ 自動</button>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info">
+          <div class="setting-label">字體大小</div>
+          <div class="setting-desc">調整介面字體（12px – 18px）</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:11px;color:var(--text-muted)">A</span>
+          <input type="range" min="12" max="18" value="14"
+            oninput="document.body.style.fontSize=this.value+'px'">
+          <span style="font-size:16px;font-weight:700">A</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-card">
+      <div class="settings-card-title">📡 數據來源狀態</div>
+      <div class="setting-row">
+        <div class="setting-info"><div class="setting-label">circulars.json</div></div>
+        <span class="badge b-green">✅ 已載入（42條）</span>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info"><div class="setting-label">數據模式</div></div>
+        <span style="font-size:12px;color:var(--green)">🟢 即時數據</span>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info"><div class="setting-label">來源 URL</div></div>
+        <span style="font-size:11px;color:var(--text-muted)">edb.gov.hk/circular/circular.aspx?langno=2</span>
+      </div>
+      <div class="setting-row">
+        <div class="setting-info"><div class="setting-label">最後更新</div></div>
+        <span style="font-size:12px">2026-03-09 14:32 UTC+8</span>
+      </div>
+    </div>
+
+    <div class="settings-card">
+      <div class="settings-card-title">🤖 LLM 模型資訊</div>
+      <div class="info-block" style="margin-bottom:0">
+        <table class="model-table">
+          <tr><td>模型</td><td>gpt-5-nano（固定）</td></tr>
+          <tr><td>Temperature</td><td>1（固定，不可更改）</td></tr>
+          <tr><td>Context Window</td><td>400K tokens</td></tr>
+          <tr><td>Structured Output</td><td>json_schema</td></tr>
+          <tr><td>費用估計（40條）</td><td>~$0.60–1.10 USD</td></tr>
+          <tr><td>OPENAI_API_KEY</td><td style="color:var(--green)">✅ 已設定</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="settings-card">
+      <div class="settings-card-title">📖 使用指南 — 終端機指令</div>
+      <div class="code-block">
+        <div class="code-comment"># 1. 進入專案目錄並啟動虛擬環境</div>
+        <div>cd ~/Downloads/Claude-edb-Project</div>
+        <div>source venv/bin/activate</div>
+        <div style="margin-top:6px" class="code-comment"># 2. 設定 OpenAI API Key</div>
+        <div>export OPENAI_API_KEY="sk-..."</div>
+        <div style="margin-top:6px" class="code-comment"># 3. 抓取並分析（最近30天）</div>
+        <div>python3 edb_scraper.py --days 30 --output ./circulars.json -v</div>
+        <div style="margin-top:6px" class="code-comment"># 4. 啟動本地伺服器</div>
+        <div>python3 -m http.server 8080</div>
+        <div style="margin-top:6px" class="code-comment"># 5. 瀏覽 Dashboard</div>
+        <div>open http://localhost:8080/edb-dashboard.html</div>
+      </div>
+    </div>
+
+  </div><!-- end tab-settings -->
+
+</div><!-- end .main -->
+
+<!-- ============================================================
+     DETAIL PANEL
+     ============================================================ -->
+<aside class="detail-panel" id="detailPanel">
+  <div class="detail-header">
+    <div class="detail-header-info">
+      <div class="detail-num" id="dNum"></div>
+      <div class="detail-title-text" id="dTitle"></div>
+      <div class="detail-badges-row" id="dBadges"></div>
+    </div>
+    <button class="close-btn" onclick="closeDetail()">✕</button>
+  </div>
+
+  <div class="detail-tabs">
+    <button class="d-tab active" onclick="switchDTab('summary',this)">📝 總結</button>
+    <button class="d-tab" onclick="switchDTab('actions',this)">📋 行動方案</button>
+    <button class="d-tab" onclick="switchDTab('deadlines',this)">⏰ 截止日期</button>
+    <button class="d-tab" onclick="switchDTab('roles',this)">👥 角色分析</button>
+    <button class="d-tab" onclick="switchDTab('diff',this)">🔄 版本比較</button>
+  </div>
+
+  <div class="detail-body">
+
+    <!-- 📝 總結 -->
+    <div class="d-tab-content active" id="dtc-summary">
+      <div class="sec-label">LLM 摘要（gpt-5-nano）</div>
+      <div class="summary-text" id="dSummaryText"></div>
+      <div class="sec-label">官方摘要</div>
+      <div class="info-block" id="dOfficialText"></div>
+      <div class="sec-label">合規 / 緊迫度 / 範圍</div>
+      <div id="dComplianceBadges" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+      <div class="sec-label">PDF 下載</div>
+      <div class="pdf-links">
+        <a class="pdf-btn">📄 繁體中文</a>
+        <a class="pdf-btn">📄 English</a>
+        <a class="pdf-btn">📄 简体中文</a>
+      </div>
+    </div>
+
+    <!-- 📋 行動方案 -->
+    <div class="d-tab-content" id="dtc-actions">
+      <div class="action-list" id="dActionList"></div>
+    </div>
+
+    <!-- ⏰ 截止日期 -->
+    <div class="d-tab-content" id="dtc-deadlines">
+      <table class="dl-table">
+        <thead>
+          <tr>
+            <th>日期</th><th>事項描述</th><th>類型</th><th>負責角色</th>
+          </tr>
+        </thead>
+        <tbody id="dDeadlinesBody"></tbody>
+      </table>
+    </div>
+
+    <!-- 👥 角色分析 -->
+    <div class="d-tab-content" id="dtc-roles">
+      <div class="role-accordion" id="dRolesAccordion"></div>
+    </div>
+
+    <!-- 🔄 版本比較 -->
+    <div class="d-tab-content" id="dtc-diff">
+      <div id="dDiffBody"></div>
+    </div>
+
+  </div>
+</aside>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+/* =============================================================
+   MOCK DATA — 4 realistic circulars
+   ============================================================= */
+const DATA = [
+  {
+    id: 0,
+    number: "EDBCM030/2026", type: "EDBCM", date: "2026-03-07", isNew: true,
+    title: "2026/27 學年特殊教育需要學生支援津貼申請",
+    official: "本通告通知各公營及直資學校就 2026/27 學年特殊教育需要（SEN）學生支援津貼提交申請，截止日期為 2026 年 3 月 12 日。表格須透過「教師易」系統提交。",
+    impact: "high", compliance: "mandatory", urgency: "immediate", scope: "both_sec_pri",
+    tags: ["特殊教育","津貼申請","截止急"],
+    summary: `教育局本次通告要求全港公營及直資學校就 2026/27 學年特殊教育需要（SEN）學生支援津貼提交正式申請。此項津貼旨在協助學校為有特殊教育需要的學生提供適切的學習支援服務，包括聘用額外教學人員、購置專業評估工具及設備，以及安排專業培訓等。
+
+申請學校須完整填妥附件 A（申請表格），詳列本學年已識別的 SEN 學生人數（按類別分類）、現行支援措施、所需資源及預算概算。同時需提交附件 B（學校 SEN 支援計劃摘要）及附件 C（上學年支援成效評估報告）。
+
+重要注意事項：所有表格必須透過「教師易」系統於 2026 年 3 月 12 日下午 5 時前提交，逾期申請將不予受理。在審核過程中，教育局可能要求補交相關支援記錄。
+
+此通告影響全港約 1,100 所公營及直資學校，預計受益學生超過 50,000 人。`,
+    roles: {
+      principal:      { r: true,  pts: ["需授權並簽署所有申請表格（附件A/B/C）","確保學校SEN政策與申請一致","了解潛在撥款金額以作預算規劃"], acts: ["3月10日前召開SEN統籌會議","審閱並簽署所有表格"] },
+      vice_principal: { r: true,  pts: ["負責統籌各科SEN學生數據收集","協調特殊教育統籌主任準備文件","設定內部截止日（3月11日）"], acts: ["分配數據收集任務至各科主任"] },
+      department_head:{ r: true,  pts: ["提供本科SEN學生名單及支援記錄","確認學科調適措施文件化"], acts: ["整理本科SEN學生支援記錄，3月9日前交副校長"] },
+      teacher:        { r: true,  pts: ["需提供個別學生的學習支援觀察記錄"], acts: ["提交SEN學生課堂支援觀察記錄"] },
+      eo_admin:       { r: true,  pts: ["負責透過『教師易』系統提交申請","需備存提交確認截圖","追蹤附件提交狀態"], acts: ["登入 edb.gov.hk/teachers","3月12日17:00前完成提交，截圖確認編號"] },
+      supplier:       { r: false, pts: ["本通告主要針對學校直接申請，供應商暫不受影響"], acts: [] }
+    },
+    deadlines: [
+      { date: "2026-03-10", desc: "校長審閱並簽署申請文件（附件A/B/C）", type: "decision", role: "principal" },
+      { date: "2026-03-12", desc: "透過「教師易」提交 SEN 支援津貼申請表", type: "submission", role: "eo_admin" }
+    ],
+    actions: [
+      { text: "登入「教師易」系統（https://edb.gov.hk/teachers）下載附件A/B/C表格", role: "eo_admin", dl: "2026-03-08", note: "使用學校帳號登入" },
+      { text: "各科主任統計本科 SEN 學生人數及已提供支援措施（按類別分類）", role: "department_head", dl: "2026-03-09", note: "" },
+      { text: "特殊教育統籌主任匯整全校 SEN 數據並填寫附件A", role: "vice_principal", dl: "2026-03-10", note: "" },
+      { text: "校長審閱並簽署附件A、B、C", role: "principal", dl: "2026-03-10", note: "確保數據準確無誤" },
+      { text: "行政人員透過「教師易」系統正式提交並保存確認編號", role: "eo_admin", dl: "2026-03-12", note: "截止時間為下午5時" }
+    ],
+    diff: null
+  },
+  {
+    id: 1,
+    number: "EDBCM029/2026", type: "EDBCM", date: "2026-03-05", isNew: false,
+    title: "2026/27 年度教師專業發展培訓計劃報名",
+    official: "教育局現接受 2026/27 年度教師專業發展培訓計劃報名，涵蓋 STEM 教育、正向教育及融合教育三大範疇，共 28 項課程，截止日期為 2026 年 3 月 17 日。",
+    impact: "mid", compliance: "recommended", urgency: "high", scope: "both_sec_pri",
+    tags: ["教師培訓","STEM","專業發展"],
+    summary: `本通告公布 2026/27 年度教師專業發展培訓計劃詳情，提供三大主要培訓範疇共 28 項課程供教師選擇。STEM 教育範疇涵蓋數學思維、編程教學及科學探究等 12 項課程；正向教育範疇提供 8 項心理健康及學生支援相關培訓；融合教育範疇則有 8 項支援 SEN 學生的專業技能課程。
+
+每位教師最多可報讀 2 項課程，學校應確保各科組均有教師參與相關培訓，以促進學校整體專業發展。部分課程設有人數上限（每班20-30人），申請按先到先得原則處理。課程於 2026 年 9 月至 2027 年 3 月期間舉行，均設於教育局新界/九龍/港島培訓中心。`,
+    roles: {
+      principal:      { r: true,  pts: ["規劃全校教師培訓參與策略","確保各科組均有代表參與"], acts: ["制定學校培訓年度計劃"] },
+      vice_principal: { r: true,  pts: ["統籌各科培訓報名","追蹤報名截止日期"], acts: ["收集教師意向，3月15日前完成統籌"] },
+      department_head:{ r: true,  pts: ["推薦本科教師參與相關培訓"], acts: ["識別本科需優先培訓的範疇"] },
+      teacher:        { r: true,  pts: ["可選擇最多2項課程","按職業發展需要選擇"], acts: ["向科主任提交報名意向（截止3月14日）"] },
+      eo_admin:       { r: true,  pts: ["負責匯整報名表並提交"], acts: ["透過教育局系統完成正式報名"] },
+      supplier:       { r: false, pts: [], acts: [] }
+    },
+    deadlines: [
+      { date: "2026-03-17", desc: "2026/27年度教師培訓計劃報名截止", type: "submission", role: "eo_admin" }
+    ],
+    actions: [
+      { text: "下載培訓課程目錄，分發各科主任參閱", role: "vice_principal", dl: "2026-03-07", note: "" },
+      { text: "各教師填寫培訓報名意向表（最多2項課程）", role: "teacher", dl: "2026-03-14", note: "" },
+      { text: "行政人員匯整並透過系統提交正式報名表", role: "eo_admin", dl: "2026-03-17", note: "" }
+    ],
+    diff: null
+  },
+  {
+    id: 2,
+    number: "EDBCM028/2026", type: "EDBCM", date: "2026-03-01", isNew: false,
+    title: "校舍設施安全年度評估及匯報要求（2025/26）",
+    official: "要求全港學校於 2026 年 3 月 30 日前完成校舍設施安全年度評估，並透過學校管理資訊系統（SMIS）提交評估報告，以符合《教育條例》第54條要求。",
+    impact: "high", compliance: "mandatory", urgency: "high", scope: "all_schools",
+    tags: ["校舍安全","法律合規","年度評估"],
+    summary: `此通告為法律強制要求，根據《教育條例》第54條，所有持牌學校須每學年完成一次校舍設施安全評估。本次評估涵蓋八大範疇：建築結構安全、消防設備、電氣設施、水務衛生、通道及走廊、實驗室安全、體育設施及資訊科技設備（新增範疇）。
+
+學校須聘請認可評估機構進行實體評估，評估報告需由校長簽署確認，並透過「學校管理資訊系統（SMIS）」於指定日期前電子提交。此為本年度起的新要求，以往的郵寄紙本方式不再接受。
+
+若評估發現任何不合格項目，學校須在 30 天內提交改善計劃。情節嚴重者，教育局有權要求暫停使用相關設施。`,
+    roles: {
+      principal:      { r: true,  pts: ["需簽署評估報告，對結果負最終責任","若有不合格項目需向教育局匯報及跟進"], acts: ["聘請認可評估機構","審閱並簽署最終報告（3月28日前）"] },
+      vice_principal: { r: true,  pts: ["統籌評估機構安排及時間表","協調各部門配合評估工作"], acts: ["聯絡認可評估機構，安排3月20日前完成評估"] },
+      department_head:{ r: true,  pts: ["負責本科室設施的安全紀錄及配合"], acts: ["整理本科室設備安全記錄"] },
+      teacher:        { r: false, pts: ["需配合評估機構進行設施檢查"], acts: [] },
+      eo_admin:       { r: true,  pts: ["首次透過 SMIS 系統提交，需提前測試","備存提交確認截圖"], acts: ["登入 SMIS 完成電子提交（3月30日前）"] },
+      supplier:       { r: true,  pts: ["認可評估機構可提供校舍安全評估服務","安全設備供應商可關注學校採購需求"], acts: ["聯絡目標學校提供評估服務或安全設備"] }
+    },
+    deadlines: [
+      { date: "2026-03-20", desc: "認可機構完成實體評估八大範疇", type: "completion", role: "vice_principal" },
+      { date: "2026-03-28", desc: "校長審閱並簽署評估報告", type: "decision", role: "principal" },
+      { date: "2026-03-30", desc: "透過 SMIS 系統提交校舍安全評估報告", type: "submission", role: "eo_admin" },
+      { date: "2026-04-29", desc: "若有不合格項目，提交改善計劃", type: "completion", role: "principal" }
+    ],
+    actions: [
+      { text: "聯絡教育局認可評估機構安排實體評估（認可名單：https://edb.gov.hk/schools）", role: "vice_principal", dl: "2026-03-10", note: "需提前預約，勿遲延" },
+      { text: "配合評估機構完成八大範疇實體評估（含新增IT設備範疇）", role: "vice_principal", dl: "2026-03-20", note: "" },
+      { text: "在 SMIS 系統完成用戶登記並測試提交功能", role: "eo_admin", dl: "2026-03-25", note: "首次使用SMIS需預先測試" },
+      { text: "校長審閱並簽署評估報告（版本3.0表格）", role: "principal", dl: "2026-03-28", note: "" },
+      { text: "透過 SMIS 系統正式提交評估報告，截圖保存確認編號", role: "eo_admin", dl: "2026-03-30", note: "" }
+    ],
+    diff: {
+      summary: "主要變化：提交渠道電子化（SMIS取代郵寄），新增IT設備為第八評估範疇，截止日期由31日提前至30日",
+      changes: [
+        { t: "mod", sev: "high", cat: "提交方式", text: "提交渠道由郵寄紙本改為 SMIS 系統電子提交（本年度起生效）", ref: "第3.2節" },
+        { t: "add", sev: "mid",  cat: "評估範疇", text: "新增「資訊科技設備」為第八大評估範疇，涵蓋電腦、投影機、網絡設備等", ref: "附件A" },
+        { t: "mod", sev: "low",  cat: "截止日期", text: "截止日期由 3 月 31 日提前至 3 月 30 日", ref: "第2.1節" }
+      ],
+      compat: "partial",
+      migSteps: ["在 SMIS 完成系統用戶登記", "下載並使用新版評估表格（版本 3.0）", "確認 IT 設備部門納入評估範圍"],
+      risks: "SMIS 系統首次使用需提前測試，避免臨近截止日才發現技術問題"
+    }
+  },
+  {
+    id: 3,
+    number: "EDBCM027/2026", type: "EDBCM", date: "2026-02-28", isNew: false,
+    title: "2026/27 年度教育科技產品供應商資格預審",
+    official: "教育局現接受 2026/27 年度教育科技產品供應商資格預審申請，涵蓋電子教學平台、STEM 教具及數位內容三大類別。申請截止日期為 2026 年 4 月 13 日。",
+    impact: "mid", compliance: "informational", urgency: "medium", scope: "all_schools",
+    tags: ["供應商","教育科技","採購"],
+    summary: `此通告專門面向教育科技產品及服務供應商，邀請符合資格的企業申請加入 2026/27 年度教育局認可供應商名錄。申請範圍涵蓋三大類別：(1) 電子教學平台及學習管理系統；(2) STEM 及創意學習教具；(3) 數位教學內容及課程資源。
+
+入圍供應商將獲邀參與全港學校採購，並可列入教育局官方推薦名錄，享有直接向全港 1,100+ 所學校推介產品的機會。
+
+申請者須符合：本地商業登記、產品通過指定安全標準及數據私隱規定（PDPO合規）、有不少於2年相關行業經驗、提供本地技術支援服務等基本要求。`,
+    roles: {
+      principal:      { r: false, pts: [], acts: [] },
+      vice_principal: { r: false, pts: [], acts: [] },
+      department_head:{ r: false, pts: [], acts: [] },
+      teacher:        { r: false, pts: [], acts: [] },
+      eo_admin:       { r: false, pts: [], acts: [] },
+      supplier:       { r: true,  pts: ["認可名錄可直接接觸全港1,100+所學校","需符合本地商業登記及PDPO數據私隱要求","分三類提交：教學平台、STEM教具、數位內容"], acts: ["準備公司資料及產品說明","完成資格預審申請表（附件I）","4月13日前提交至教育局採購組"] }
+    },
+    deadlines: [
+      { date: "2026-04-13", desc: "2026/27年度供應商資格預審申請截止", type: "submission", role: "all" }
+    ],
+    actions: [
+      { text: "下載資格預審申請表格（附件I）及填寫指引（附件II）", role: "all", dl: "2026-03-15", note: "" },
+      { text: "準備公司商業登記、產品認證、PDPO合規政策等文件", role: "all", dl: "2026-04-01", note: "" },
+      { text: "提交完整申請至教育局採購組（截止4月13日）", role: "all", dl: "2026-04-13", note: "" }
+    ],
+    diff: null
+  }
+];
+
+/* =============================================================
+   HELPER MAPS
+   ============================================================= */
+const IMPACT_LABEL = { high: "🔴 高影響", mid: "🟡 中影響", low: "🟢 低影響" };
+const IMPACT_CLASS = { high: "b-red", mid: "b-yellow", low: "b-green" };
+const COMP_LABEL   = { mandatory: "強制執行", recommended: "建議執行", informational: "純資訊" };
+const COMP_CLASS   = { mandatory: "b-blue", recommended: "b-purple", informational: "b-gray" };
+const URG_LABEL    = { immediate: "即時", high: "高", medium: "中", low: "低" };
+const SCOPE_LABEL  = { all_schools: "全部學校", both_sec_pri: "中小學", secondary: "中學", primary: "小學", kindergarten: "幼稚園", mixed: "混合" };
+const ROLE_LABEL   = { principal: "👔 校長", vice_principal: "🏫 副校長", department_head: "📚 科主任", teacher: "🧑‍🏫 教師", eo_admin: "📋 行政主任", supplier: "🏢 供應商", all: "👥 全員" };
+const ROLE_SHORT   = { principal: "校長", vice_principal: "副校長", department_head: "科主任", teacher: "教師", eo_admin: "行政", supplier: "供應商", all: "全員" };
+const TYPE_LABEL   = { submission: "提交", decision: "決定", completion: "完成", training: "培訓", reporting: "匯報" };
+
+/* =============================================================
+   RENDER CIRCULAR CARD
+   ============================================================= */
+function mkCard(c) {
+  const relevantRoles = Object.entries(c.roles)
+    .filter(([,v]) => v.r).map(([k]) => ROLE_SHORT[k]);
+  const nearestDl = c.deadlines[0]?.date || null;
+  return `
+  <div class="circular-card" onclick="openDetail(${c.id})">
+    <div class="card-left">
+      <div class="card-number">${c.number}</div>
+      <div class="card-date">${c.date}</div>
+      ${c.isNew ? '<div style="margin-top:5px"><span class="badge b-new">NEW</span></div>' : ''}
+    </div>
+    <div class="card-body">
+      <div class="card-title">${c.title}</div>
+      <div class="card-summary">${c.official}</div>
+      <div class="card-meta">
+        <span class="badge ${IMPACT_CLASS[c.impact]}">${IMPACT_LABEL[c.impact]}</span>
+        <span class="badge ${COMP_CLASS[c.compliance]}">${COMP_LABEL[c.compliance]}</span>
+        ${c.tags.map(t=>`<span class="badge b-gray">${t}</span>`).join('')}
+      </div>
+    </div>
+    <div class="card-right">
+      <div class="role-chips">${relevantRoles.map(r=>`<span class="role-chip">${r}</span>`).join('')}</div>
+      ${nearestDl ? `<div style="font-size:11px;color:var(--red)">⏰ ${nearestDl}</div>` : ''}
+    </div>
+  </div>`;
+}
+
+function renderList(containerId, items) {
+  document.getElementById(containerId).innerHTML = items.map(mkCard).join('');
+}
+
+/* =============================================================
+   DETAIL PANEL
+   ============================================================= */
+function openDetail(id) {
+  const c = DATA[id];
+  if (!c) return;
+
+  // Header
+  document.getElementById('dNum').textContent = c.number + ' · ' + c.date;
+  document.getElementById('dTitle').textContent = c.title;
+  document.getElementById('dBadges').innerHTML = `
+    <span class="badge ${IMPACT_CLASS[c.impact]}">${IMPACT_LABEL[c.impact]}</span>
+    <span class="badge ${COMP_CLASS[c.compliance]}">${COMP_LABEL[c.compliance]}</span>
+    ${c.tags.map(t=>`<span class="badge b-gray">${t}</span>`).join('')}`;
+
+  // 📝 Summary
+  document.getElementById('dSummaryText').innerHTML =
+    '<p>' + c.summary.split('\n\n').join('</p><p style="margin-top:10px">') + '</p>';
+  document.getElementById('dOfficialText').textContent = c.official;
+  document.getElementById('dComplianceBadges').innerHTML = `
+    <span class="badge b-blue">合規：${COMP_LABEL[c.compliance]}</span>
+    <span class="badge ${c.urgency==='immediate'||c.urgency==='high'?'b-red':'b-yellow'}">緊迫：${URG_LABEL[c.urgency]}</span>
+    <span class="badge b-gray">範圍：${SCOPE_LABEL[c.scope]}</span>`;
+
+  // 📋 Actions
+  document.getElementById('dActionList').innerHTML = c.actions.length
+    ? c.actions.map((a,i) => `
+      <div class="action-item">
+        <div class="action-row1">
+          <div class="action-idx">${i+1}</div>
+          <div class="action-text">${a.text}</div>
+        </div>
+        <div class="action-meta">
+          <span class="a-role">${ROLE_SHORT[a.role]||a.role}</span>
+          ${a.dl ? `<span class="a-dl">📅 ${a.dl}</span>` : ''}
+          ${a.note ? `<span class="a-note">💬 ${a.note}</span>` : ''}
+        </div>
+      </div>`).join('')
+    : '<div style="color:var(--text-muted);padding:20px;text-align:center">暫無行動方案</div>';
+
+  // ⏰ Deadlines
+  document.getElementById('dDeadlinesBody').innerHTML = c.deadlines.length
+    ? c.deadlines.map(d => `
+      <tr>
+        <td><strong style="color:var(--red)">${d.date||'—'}</strong></td>
+        <td>${d.desc}</td>
+        <td><span class="type-chip">${TYPE_LABEL[d.type]||d.type}</span></td>
+        <td>${ROLE_SHORT[d.role]||d.role}</td>
+      </tr>`).join('')
+    : '<tr><td colspan="4" style="color:var(--text-muted);padding:16px">暫無截止日期</td></tr>';
+
+  // 👥 Roles
+  document.getElementById('dRolesAccordion').innerHTML =
+    Object.entries(ROLE_LABEL).map(([key, label]) => {
+      const r = c.roles[key];
+      if (!r) return '';
+      return `
+      <div class="role-card">
+        <div class="role-card-header" onclick="toggleRoleCard(this)">
+          <div class="role-card-name">${label}</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="role-tag ${r.r?'yes':'no'}">${r.r?'✅ 相關':'⬜ 不相關'}</span>
+            <span style="color:var(--text-muted);font-size:12px">▾</span>
+          </div>
+        </div>
+        <div class="role-card-body${r.r?' open':''}">
+          ${r.pts.length ? `
+          <div class="sec-label" style="margin-top:4px">重點事項</div>
+          <ul class="kp-list">${r.pts.map(p=>`<li>${p}</li>`).join('')}</ul>` : ''}
+          ${r.acts.length ? `
+          <div class="sec-label" style="margin-top:10px">行動事項</div>
+          <ul class="kp-list">${r.acts.map(a=>`<li>${a}</li>`).join('')}</ul>` : ''}
+          ${!r.r ? '<div style="font-size:12px;color:var(--text-muted);padding-bottom:4px">本通告與此角色關聯度低</div>' : ''}
+        </div>
+      </div>`;
+    }).join('');
+
+  // 🔄 Diff
+  if (c.diff) {
+    document.getElementById('dDiffBody').innerHTML = `
+      <div class="sec-label">版本比較摘要</div>
+      <div class="info-block" style="margin-bottom:16px">${c.diff.summary}</div>
+      <div class="sec-label">具體變更（${c.diff.changes.length} 項）</div>
+      <div class="change-list">
+        ${c.diff.changes.map(ch => `
+          <div class="change-item">
+            <div class="change-type-badge ct-${ch.t}">${{add:'新增',mod:'修改',del:'刪除'}[ch.t]}</div>
+            <div class="change-body">
+              <div class="change-text">${ch.text}</div>
+              <div class="change-meta-text">📁 ${ch.cat} · 嚴重：${{high:'高',mid:'中',low:'低'}[ch.sev]} · ${ch.ref}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+      <div class="sec-label" style="margin-top:16px">向後相容性 & 遷移計劃</div>
+      <div class="info-block">
+        <div style="margin-bottom:8px"><strong>相容：</strong>${{full:'完全相容',partial:'部分相容',none:'不相容'}[c.diff.compat]}</div>
+        <div><strong>遷移步驟：</strong></div>
+        <ul style="margin:6px 0 0 16px;font-size:12px">
+          ${c.diff.migSteps.map(s=>`<li style="margin-bottom:4px">${s}</li>`).join('')}
+        </ul>
+        <div style="margin-top:8px;font-size:12px;color:var(--yellow)">⚠️ ${c.diff.risks}</div>
+      </div>`;
+  } else {
+    document.getElementById('dDiffBody').innerHTML =
+      '<div style="color:var(--text-muted);font-size:13px;padding:30px;text-align:center">📄 此通告為全新發佈，無版本比較記錄</div>';
+  }
+
+  // Reset to summary tab
+  document.querySelectorAll('.d-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.d-tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelector('.d-tab').classList.add('active');
+  document.getElementById('dtc-summary').classList.add('active');
+
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('detailPanel').classList.add('open');
+}
+
+function closeDetail() {
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('detailPanel').classList.remove('open');
+}
+
+function switchDTab(tab, btn) {
+  document.querySelectorAll('.d-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.d-tab-content').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('dtc-'+tab).classList.add('active');
+}
+
+function toggleRoleCard(header) {
+  header.nextElementSibling.classList.toggle('open');
+}
+
+/* =============================================================
+   MAIN TABS
+   ============================================================= */
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+}
+
+/* =============================================================
+   FILTERS (visual only in mockup)
+   ============================================================= */
+function setFilter(group, val, btn) {
+  btn.closest('.filter-group').querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function filterByRole(r) { /* visual only */ }
+
+/* =============================================================
+   SEARCH SUGGESTIONS
+   ============================================================= */
+let suggTimer;
+function handleSearch(v) {
+  clearTimeout(suggTimer);
+  const box = document.getElementById('searchSugg');
+  if (!v.trim()) { box.classList.remove('open'); return; }
+  suggTimer = setTimeout(() => {
+    const hits = DATA.filter(c =>
+      c.number.includes(v) || c.title.includes(v) || c.tags.some(t=>t.includes(v))
+    ).slice(0,5);
+    if (!hits.length) { box.classList.remove('open'); return; }
+    box.innerHTML = hits.map(c => `
+      <div class="suggestion-item" onmousedown="pickSugg(${c.id})">
+        <span class="suggestion-num">${c.number}</span>
+        <span class="suggestion-title">${c.title}</span>
+        <span class="suggestion-icon">${c.impact==='high'?'🔴':c.impact==='mid'?'🟡':'🟢'}</span>
+      </div>`).join('');
+    box.classList.add('open');
+  }, 150);
+}
+function closeSuggestions() {
+  setTimeout(()=>document.getElementById('searchSugg').classList.remove('open'), 200);
+}
+function pickSugg(id) {
+  document.getElementById('searchInput').value = DATA[id].number;
+  document.getElementById('searchSugg').classList.remove('open');
+  openDetail(id);
+}
+
+/* =============================================================
+   SYNC
+   ============================================================= */
+function doSync(btn) {
+  btn.textContent = '⏳ 同步中…';
+  btn.disabled = true;
+  const dot = document.getElementById('sdot');
+  dot.style.background = 'var(--yellow)';
+  setTimeout(() => {
+    btn.textContent = '🔄 同步';
+    btn.disabled = false;
+    dot.style.background = 'var(--green)';
+    const now = new Date();
+    const hm = now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+    document.getElementById('statusMsg').innerHTML =
+      `🟢 即時數據 — 最後同步：2026-03-09 ${hm} | 共 <strong>42</strong> 條通告 | gpt-5-nano 分析完成`;
+  }, 2200);
+}
+
+/* =============================================================
+   THEME
+   ============================================================= */
+function applyTheme(t, btn) {
+  document.querySelectorAll('.theme-opt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const resolved = t==='auto'
+    ? (window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light') : t;
+  document.documentElement.setAttribute('data-theme', resolved);
+  try { localStorage.setItem('edb_theme', t); } catch(e) {}
+}
+
+/* =============================================================
+   CALENDAR
+   ============================================================= */
+let CAL_YEAR = 2026, CAL_MONTH = 2; // March = 2
+
+const CAL_EVENTS = {
+  '2026-03-01': [{t:'issue',  text:'EDBCM028 校舍安全評估通告發佈'}],
+  '2026-03-05': [{t:'issue',  text:'EDBCM029 教師培訓報名通告發佈'}],
+  '2026-03-07': [{t:'issue',  text:'EDBCM030 SEN 津貼申請通告發佈'}],
+  '2026-03-09': [{t:'issue',  text:'今日 — 系統同步基準日'}],
+  '2026-03-10': [{t:'deadline',text:'EDBCM030 — 校長簽署申請文件截止'}],
+  '2026-03-12': [{t:'deadline',text:'EDBCM030 — SEN 津貼申請截止（17:00）'}],
+  '2026-03-17': [{t:'deadline',text:'EDBCM029 — 教師培訓報名截止'}],
+  '2026-03-20': [{t:'deadline',text:'EDBCM028 — 認可機構完成實體評估截止'}],
+  '2026-03-28': [{t:'deadline',text:'EDBCM028 — 校長簽署評估報告截止'}],
+  '2026-03-30': [{t:'deadline',text:'EDBCM028 — SMIS 提交評估報告截止'}],
+};
+const MONTH_NAMES = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+
+function buildCalendar() {
+  document.getElementById('calMonthLabel').textContent = `${CAL_YEAR}年${MONTH_NAMES[CAL_MONTH]}`;
+  const grid = document.getElementById('calGrid');
+  const wdays = ['日','一','二','三','四','五','六'];
+  const firstDay = new Date(CAL_YEAR, CAL_MONTH, 1).getDay();
+  const daysInMonth = new Date(CAL_YEAR, CAL_MONTH+1, 0).getDate();
+  const today = new Date();
+
+  let html = wdays.map(d=>`<div class="cal-wday">${d}</div>`).join('');
+  for (let i=0; i<firstDay; i++) html += '<div class="cal-day empty"></div>';
+  for (let d=1; d<=daysInMonth; d++) {
+    const ds = `${CAL_YEAR}-${String(CAL_MONTH+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const evs = CAL_EVENTS[ds] || [];
+    const isToday = today.getFullYear()===CAL_YEAR && today.getMonth()===CAL_MONTH && today.getDate()===d;
+    const blueDots = evs.filter(e=>e.t==='issue').length;
+    const redDots  = evs.filter(e=>e.t==='deadline').length;
+    html += `
+    <div class="cal-day${isToday?' today':''}" onclick="showDayEvts('${ds}')">
+      <div class="cal-day-num">${d}</div>
+      <div class="cal-dots">
+        ${Array(blueDots).fill('<div class="cdot cdot-blue"></div>').join('')}
+        ${Array(redDots).fill('<div class="cdot cdot-red"></div>').join('')}
+      </div>
+    </div>`;
+  }
+  grid.innerHTML = html;
+}
+
+function calNav(dir) {
+  CAL_MONTH += dir;
+  if (CAL_MONTH < 0)  { CAL_MONTH = 11; CAL_YEAR--; }
+  if (CAL_MONTH > 11) { CAL_MONTH = 0;  CAL_YEAR++; }
+  buildCalendar();
+  document.getElementById('dayEventsPanel').classList.remove('open');
+}
+
+function showDayEvts(ds) {
+  const evs = CAL_EVENTS[ds] || [];
+  const panel = document.getElementById('dayEventsPanel');
+  if (!evs.length) { panel.classList.remove('open'); return; }
+  document.getElementById('depTitle').textContent = `📅 ${ds} 的事件（${evs.length} 項）`;
+  document.getElementById('depList').innerHTML = evs.map(e => `
+    <div class="dep-item">
+      <div class="cdot ${e.t==='issue'?'cdot-blue':'cdot-red'}"></div>
+      <span>${e.t==='issue'?'📋 發佈':'⏰ 截止'}：${e.text}</span>
+    </div>`).join('');
+  panel.classList.add('open');
+}
+
+/* =============================================================
+   INIT
+   ============================================================= */
+renderList('circularList', DATA);
+renderList('supplierList', DATA.filter(c => c.roles.supplier?.r));
+buildCalendar();
+
+// Restore theme
+try {
+  const saved = localStorage.getItem('edb_theme');
+  if (saved) {
+    const btn = document.getElementById('to-'+saved);
+    if (btn) applyTheme(saved, btn);
+  }
+} catch(e) {}
+</script>
+</body>
+</html>
