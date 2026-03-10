@@ -1,0 +1,99 @@
+============================================================
+EDB HTML DIAGNOSIS
+============================================================
+
+── ALL HIDDEN INPUTS ──
+  TEXT     name='(no name)'
+  TEXT     name='(no name)'
+  TEXT     name='(no name)'
+  TEXT     name='(no name)'
+  HIDDEN  name='__VIEWSTATE'  val='EWJjodBkO2yw0wOpMqtGzxZyDPpXfnJkKrTnoz/F+PuLHZdre62NaJbwOwLi41QQxcmMY+iqO1R82Rdk'
+  HIDDEN  name='ctl00$currentSection'  val='2'
+  SUBMIT   name='ctl00$MainContentPlaceHolder$lbltab_form'
+  SUBMIT   name='ctl00$MainContentPlaceHolder$lbltab_circular'
+  RADIO    name='ctl00$MainContentPlaceHolder$issueDay'
+  RADIO    name='ctl00$MainContentPlaceHolder$issueDay'
+  SUBMIT   name='ctl00$MainContentPlaceHolder$btnSearch'
+  SUBMIT   name='ctl00$MainContentPlaceHolder$btnReset'
+  TEXT     name='ctl00$MainContentPlaceHolder$txtKeyword'
+  TEXT     name='ctl00$MainContentPlaceHolder$txtCircularNumber'
+  TEXT     name='ctl00$MainContentPlaceHolder$txtPeriodFrom'
+  TEXT     name='ctl00$MainContentPlaceHolder$txtPeriodTo'
+  SUBMIT   name='ctl00$MainContentPlaceHolder$btnSearch2'
+  SUBMIT   name='ctl00$MainContentPlaceHolder$btnReset2'
+  HIDDEN  name='__VIEWSTATEGENERATOR'  val='16234380'
+  HIDDEN  name='__EVENTTARGET'  val=''
+  HIDDEN  name='__EVENTARGUMENT'  val=''
+  HIDDEN  name='__EVENTVALIDATION'  val='BTAycxxJFNnb3CR2zD3096p6h82WVznFDJBKPlvMsBzj9HzA86MLB2sxndPCq4popCILtKPwuIZe+dcd'
+
+── ALL SELECT FIELDS ──
+  SELECT  name='(no name)'
+    option value=''  text='請選擇'
+    option value='en'  text='English'
+    option value='sc'  text='简体中文'
+  SELECT  name='(no name)'
+    option value=''  text='請選擇'
+    option value='en'  text='English'
+    option value='sc'  text='简体中文'
+  SELECT  name='(no name)'
+    option value=''  text='請選擇'
+    option value='en'  text='English'
+    option value='sc'  text='简体中文'
+  SELECT  name='(no name)'
+    option value=''  text='請選擇'
+    option value='en'  text='English'
+    option value='sc'  text='简体中文'
+  SELECT  name='ctl00$MainContentPlaceHolder$ddlSchoolType'
+    option value=''  text='<--全選-->'
+    option value='1'  text='中學'
+    option value='2'  text='小學'
+    option value='5'  text='資助中學'
+    option value='6'  text='資助小學'
+    option value='7'  text='英基學校'
+    option value='8'  text='特殊學校'
+    option value='9'  text='私立中學'
+    option value='10'  text='私立小學'
+    option value='11'  text='按位津貼學校'
+  SELECT  name='ctl00$MainContentPlaceHolder$ddlSchoolType2'
+    option value=''  text='<--全選-->'
+    option value='1'  text='中學'
+    option value='2'  text='小學'
+    option value='5'  text='資助中學'
+    option value='6'  text='資助小學'
+    option value='7'  text='英基學校'
+    option value='8'  text='特殊學校'
+    option value='9'  text='私立中學'
+    option value='10'  text='私立小學'
+    option value='11'  text='按位津貼學校'
+  SELECT  name='ctl00$MainContentPlaceHolder$ddlCircularType'
+    option value=''  text='<--全選-->'
+    option value='EDUCATION BUREAU CIRCULAR'  text='教育局通告'
+    option value='EDUCATION BUREAU CIRCULAR MEMORANDUM'  text='教育局通函'
+
+── VIEWSTATE FIELDS FOUND ──
+  __VIEWSTATE: 2752 chars  (first 40: 'EWJjodBkO2yw0wOpMqtGzxZyDPpXfnJkKrTnoz/F')
+  __VIEWSTATEGENERATOR: 8 chars  (first 40: '16234380')
+  __EVENTVALIDATION: 1132 chars  (first 40: 'BTAycxxJFNnb3CR2zD3096p6h82WVznFDJBKPlvM')
+  __EVENTTARGET: 0 chars  (first 40: '')
+  __EVENTARGUMENT: 0 chars  (first 40: '')
+
+── ALL TABLES IN POST RESPONSE ──
+  Table[0]: 15 rows × 3 cols  EDB#=False  preview='    日期   主題   語言       日期  09/03/2026    主題  \r                                  '
+
+── EDB CIRCULAR NUMBERS FOUND IN POST RESPONSE ──
+  EDBCM015/2026
+  EDBCM019/2026
+  EDBCM025/2026
+  EDBCM026/2026
+  EDBCM027/2026
+  EDBCM030/2026
+  EDBCM031/2026
+  EDBCM032/2026
+  EDBCM033/2026
+  EDBCM035/2026
+  EDBCM036/2026
+  EDBCM037/2026
+  EDBCM040/2026
+  EDBCM045/2026
+
+── KEYWORDS IN PAGE (for debugging) ──

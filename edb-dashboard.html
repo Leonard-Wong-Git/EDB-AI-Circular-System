@@ -1,0 +1,2453 @@
+<!DOCTYPE html>
+<html lang="zh-HK" data-theme="dark" data-palette="summer" data-layout="standard">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDB 通告智能分析系統 v0.2.0</title>
+<style>
+/* ============================================================
+   PALETTES (accent colours only — theme-independent)
+   ============================================================ */
+:root {
+  --accent:#3b82f6; --accent-hover:#2563eb; --accent2:#06b6d4;
+  --green:#22c55e; --red:#ef4444; --yellow:#f59e0b;
+  --orange:#f97316; --purple:#a855f7;
+}
+/* summer is default root */
+[data-palette="spring"]  { --accent:#d946ef; --accent-hover:#c026d3; --accent2:#4ade80; }
+[data-palette="autumn"]  { --accent:#ea580c; --accent-hover:#c2410c; --accent2:#ca8a04; }
+[data-palette="winter"]  { --accent:#6366f1; --accent-hover:#4f46e5; --accent2:#0891b2; }
+
+/* palette surface tints — dark theme */
+[data-theme="dark"][data-palette="spring"]  { --surface:#1e1626; --surface2:#2d1f38; --border:#3d2850; }
+[data-theme="dark"][data-palette="summer"]  { --surface:#0f172a; --surface2:#1e293b; --border:#334155; }
+[data-theme="dark"][data-palette="autumn"]  { --surface:#1a1208; --surface2:#2a1c0e; --border:#3a2c1a; }
+[data-theme="dark"][data-palette="winter"]  { --surface:#0e1220; --surface2:#1a2035; --border:#2a3250; }
+/* palette surface tints — light theme */
+[data-theme="light"][data-palette="spring"] { --surface:#fff5fb; --surface2:#fce8f7; --border:#e8c8e8; }
+[data-theme="light"][data-palette="summer"] { --surface:#f8fafc; --surface2:#f1f5f9; --border:#e2e8f0; }
+[data-theme="light"][data-palette="autumn"] { --surface:#fffaf5; --surface2:#fef3e2; --border:#ead8be; }
+[data-theme="light"][data-palette="winter"] { --surface:#f4f6ff; --surface2:#eaeeff; --border:#c8d4f0; }
+
+/* ============================================================
+   THEMES (bg / surface / text)
+   ============================================================ */
+[data-theme="dark"] {
+  --bg:#0f172a; --surface:#1e293b; --surface2:#2d3f55;
+  --border:#334155; --text:#f1f5f9; --text-muted:#94a3b8;
+  --shadow:rgba(0,0,0,.4);
+}
+[data-theme="light"] {
+  --bg:#f8fafc; --surface:#ffffff; --surface2:#f1f5f9;
+  --border:#e2e8f0; --text:#1e293b; --text-muted:#64748b;
+  --shadow:rgba(0,0,0,.1);
+}
+
+/* ============================================================
+   RESET + BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang HK","Segoe UI",sans-serif;
+  background:var(--bg);color:var(--text);font-size:14px;
+  transition:background .25s,color .25s;line-height:1.5;
+  min-height:100vh;
+}
+button,select,input,textarea{font-family:inherit;}
+a{color:var(--accent);text-decoration:none;}
+
+/* ============================================================
+   LAYOUT — LAYOUTS
+   ============================================================ */
+[data-layout="standard"] .cards-grid{grid-template-columns:repeat(2,1fr);}
+[data-layout="wide"]     .cards-grid{grid-template-columns:repeat(3,1fr);}
+[data-layout="compact"]  .cards-grid{grid-template-columns:1fr;}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.header{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:0 20px;height:56px;display:flex;align-items:center;gap:10px;
+  position:sticky;top:0;z-index:50;box-shadow:0 1px 8px var(--shadow);
+}
+.brand{font-weight:800;font-size:15px;color:var(--accent);white-space:nowrap;
+  flex-shrink:0;display:flex;align-items:center;gap:6px;}
+.brand-sub{font-size:10px;color:var(--text-muted);font-weight:400;}
+.role-select{
+  background:var(--surface2);border:1px solid var(--border);color:var(--text);
+  padding:6px 26px 6px 10px;border-radius:6px;font-size:13px;cursor:pointer;
+  -webkit-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 8px center;min-width:120px;
+}
+.search-wrap{flex:1;position:relative;max-width:400px;}
+.search-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;pointer-events:none;}
+.search-input{
+  width:100%;background:var(--surface2);border:1px solid var(--border);
+  color:var(--text);padding:7px 12px 7px 32px;border-radius:6px;font-size:13px;
+  outline:none;transition:border-color .2s;
+}
+.search-input:focus{border-color:var(--accent);}
+.search-sugg{
+  position:absolute;top:calc(100% + 4px);left:0;right:0;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;box-shadow:0 8px 32px var(--shadow);
+  z-index:200;display:none;overflow:hidden;
+}
+.search-sugg.open{display:block;}
+.sugg-item{
+  padding:9px 12px;cursor:pointer;font-size:13px;display:flex;
+  align-items:center;gap:8px;border-bottom:1px solid var(--border);transition:background .1s;
+}
+.sugg-item:last-child{border-bottom:none;}
+.sugg-item:hover{background:var(--surface2);}
+.sugg-num{font-size:11px;color:var(--accent);font-weight:600;min-width:100px;}
+.hdr-actions{display:flex;gap:5px;margin-left:auto;align-items:center;}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn{
+  padding:6px 11px;border-radius:6px;border:1px solid var(--border);
+  background:var(--surface2);color:var(--text);cursor:pointer;
+  font-size:12px;transition:all .15s;display:flex;align-items:center;gap:4px;white-space:nowrap;
+}
+.btn:hover{background:var(--accent);border-color:var(--accent);color:white;}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:white;}
+.btn-primary:hover{background:var(--accent-hover);}
+.btn-icon{padding:6px 8px;font-size:14px;}
+.btn-active{background:var(--accent)!important;border-color:var(--accent)!important;color:white!important;}
+
+/* ============================================================
+   FILTER BAR
+   ============================================================ */
+.filter-bar{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  overflow:hidden;transition:max-height .25s ease,padding .25s;
+  max-height:0;padding:0 20px;
+}
+.filter-bar.open{max-height:220px;padding:12px 20px;}
+.filter-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;align-items:center;}
+.filter-row:last-child{margin-bottom:0;}
+.filter-label{font-size:11px;font-weight:700;color:var(--text-muted);min-width:55px;text-transform:uppercase;letter-spacing:.4px;}
+.f-chip{
+  padding:4px 10px;border-radius:16px;border:1px solid var(--border);
+  background:transparent;color:var(--text-muted);cursor:pointer;font-size:12px;transition:all .15s;
+}
+.f-chip:hover,.f-chip.on{background:var(--accent);border-color:var(--accent);color:white;}
+.f-chip.on-red{background:var(--red);border-color:var(--red);color:white;}
+.f-chip.on-yellow{background:var(--yellow);border-color:var(--yellow);color:#1e293b;}
+.f-chip.on-green{background:var(--green);border-color:var(--green);color:white;}
+.active-tags{display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
+.active-tag{
+  display:flex;align-items:center;gap:4px;
+  padding:3px 8px;background:rgba(59,130,246,.15);border:1px solid var(--accent);
+  border-radius:12px;font-size:11px;color:var(--accent);cursor:pointer;
+}
+.active-tag:hover{background:var(--red);border-color:var(--red);color:white;}
+
+/* ============================================================
+   STATS BAR
+   ============================================================ */
+.stats-bar{
+  display:flex;gap:10px;padding:10px 20px;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  overflow-x:auto;scrollbar-width:none;
+}
+.stats-bar::-webkit-scrollbar{display:none;}
+.stat-chip{
+  display:flex;align-items:center;gap:8px;padding:8px 14px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:10px;white-space:nowrap;flex-shrink:0;cursor:default;
+  transition:box-shadow .15s;
+}
+.stat-chip:hover{box-shadow:0 2px 8px var(--shadow);}
+.stat-chip.link{cursor:pointer;}
+.stat-chip.link:hover{border-color:var(--accent);box-shadow:0 2px 8px var(--shadow),0 0 0 1px var(--accent);}
+.stat-chip-icon{font-size:16px;}
+.stat-chip-body{}
+.stat-chip-val{font-size:18px;font-weight:800;line-height:1;}
+.stat-chip-lbl{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.3px;}
+.sc-red .stat-chip-val{color:var(--red);}
+.sc-yellow .stat-chip-val{color:var(--yellow);}
+.sc-blue .stat-chip-val{color:var(--accent);}
+.sc-green .stat-chip-val{color:var(--green);}
+.sc-purple .stat-chip-val{color:var(--purple);}
+
+/* ============================================================
+   TABS
+   ============================================================ */
+.tabs{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:0 20px;display:flex;position:sticky;top:56px;z-index:40;
+  overflow-x:auto;scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none;}
+.tab-btn{
+  padding:12px 16px;border:none;background:none;color:var(--text-muted);
+  cursor:pointer;font-size:13px;font-weight:500;
+  border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;
+}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-btn:hover:not(.active){color:var(--text);}
+#tabSupplier{display:none;}
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+.main{padding:18px 20px;max-width:1260px;margin:0 auto;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* View toggle */
+.view-toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;flex-wrap:wrap;gap:8px;
+}
+.view-toggle{display:flex;gap:3px;}
+
+/* ============================================================
+   ATTENTION SECTION
+   ============================================================ */
+.attention-section{
+  background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.25);
+  border-radius:12px;padding:14px;margin-bottom:16px;
+}
+.attention-header{
+  display:flex;align-items:center;gap:8px;margin-bottom:10px;
+  font-size:13px;font-weight:700;color:var(--red);
+}
+.attention-count{
+  background:var(--red);color:white;
+  border-radius:10px;padding:1px 8px;font-size:11px;
+}
+
+/* ============================================================
+   CIRCULAR CARDS (card grid)
+   ============================================================ */
+.cards-grid{display:grid;gap:10px;grid-template-columns:repeat(2,1fr);}
+.circular-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;overflow:hidden;
+  cursor:pointer;transition:border-color .2s,box-shadow .15s,transform .1s;
+}
+.circular-card:hover{
+  border-color:var(--accent);
+  box-shadow:0 0 0 1px var(--accent),0 4px 16px var(--shadow);
+  transform:translateY(-1px);
+}
+.circular-card.high-impact{border-top:3px solid var(--red);}
+.card-top-bar{
+  background:var(--red);color:white;
+  padding:3px 12px;font-size:11px;font-weight:700;
+  display:flex;align-items:center;gap:6px;
+}
+.card-inner{padding:12px 14px;}
+.card-row1{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
+.card-num{font-size:11px;font-weight:700;color:var(--accent);}
+.card-date{font-size:11px;color:var(--text-muted);}
+.card-title{font-size:13px;font-weight:600;line-height:1.4;margin-bottom:6px;}
+.card-summary{font-size:12px;color:var(--text-muted);line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.card-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:10px;flex-wrap:wrap;gap:6px;
+}
+.card-tags{display:flex;gap:4px;flex-wrap:wrap;}
+.card-actions-row{display:flex;gap:4px;align-items:center;}
+.card-grant{
+  display:flex;align-items:center;gap:4px;
+  font-size:11px;font-weight:600;
+  padding:2px 8px;border-radius:8px;
+}
+.cg-applicable{background:rgba(34,197,94,.15);color:var(--green);}
+.cg-resource{background:rgba(245,158,11,.15);color:var(--yellow);}
+
+/* status btn */
+.status-btn{
+  background:transparent;border:1px solid var(--border);
+  border-radius:6px;padding:3px 7px;font-size:11px;cursor:pointer;
+  transition:all .15s;color:var(--text-muted);
+}
+.status-btn:hover{border-color:var(--accent);color:var(--accent);}
+.status-btn.st-read{border-color:var(--accent);color:var(--accent);background:rgba(59,130,246,.1);}
+.status-btn.st-done{border-color:var(--green);color:var(--green);background:rgba(34,197,94,.1);}
+.bookmark-btn{
+  background:transparent;border:1px solid var(--border);
+  border-radius:6px;padding:3px 7px;font-size:13px;cursor:pointer;
+  transition:all .15s;color:var(--text-muted);
+}
+.bookmark-btn:hover{border-color:var(--yellow);color:var(--yellow);}
+.bookmark-btn.on{color:var(--yellow);border-color:var(--yellow);background:rgba(245,158,11,.1);}
+.pin-btn{
+  background:transparent;border:1px solid var(--border);
+  border-radius:6px;padding:3px 7px;font-size:13px;cursor:pointer;
+  transition:all .15s;color:var(--text-muted);
+}
+.pin-btn.on{color:var(--orange);border-color:var(--orange);background:rgba(249,115,22,.1);}
+
+/* ============================================================
+   LIST VIEW
+   ============================================================ */
+.list-view{display:none;}
+.list-view.active,.cards-grid.hidden{display:none!important;}
+.list-table{width:100%;border-collapse:collapse;font-size:13px;}
+.list-table th{
+  text-align:left;padding:9px 10px;font-size:11px;text-transform:uppercase;
+  letter-spacing:.4px;color:var(--text-muted);border-bottom:2px solid var(--border);
+  font-weight:700;cursor:pointer;white-space:nowrap;
+}
+.list-table th:hover{color:var(--text);}
+.list-table td{padding:10px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.list-table tr:last-child td{border-bottom:none;}
+.list-table tr:hover td{background:var(--surface2);}
+.list-table tr{cursor:pointer;}
+.lt-num{font-size:11px;font-weight:700;color:var(--accent);white-space:nowrap;}
+.lt-title{font-weight:500;max-width:320px;}
+.lt-dl{white-space:nowrap;}
+.dl-urgent{color:var(--red);font-weight:700;}
+.dl-soon{color:var(--orange);font-weight:600;}
+.dl-ok{color:var(--text-muted);}
+.dl-expired{color:var(--text-muted);text-decoration:line-through;}
+
+/* ============================================================
+   BADGES
+   ============================================================ */
+.badge{font-size:11px;padding:2px 8px;border-radius:12px;font-weight:500;}
+.b-red{background:rgba(239,68,68,.15);color:var(--red);}
+.b-yellow{background:rgba(245,158,11,.15);color:var(--yellow);}
+.b-green{background:rgba(34,197,94,.15);color:var(--green);}
+.b-blue{background:rgba(59,130,246,.15);color:var(--accent);}
+.b-purple{background:rgba(168,85,247,.15);color:var(--purple);}
+.b-gray{background:var(--surface2);color:var(--text-muted);border:1px solid var(--border);}
+.b-orange{background:rgba(249,115,22,.15);color:var(--orange);}
+
+/* ============================================================
+   DEADLINE COUNTDOWN BAR
+   ============================================================ */
+.dl-bar{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:8px 14px;margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;overflow-x:auto;scrollbar-width:none;
+}
+.dl-bar::-webkit-scrollbar{display:none;}
+.dl-bar-lbl{font-size:11px;color:var(--text-muted);white-space:nowrap;font-weight:700;flex-shrink:0;}
+.dl-chip{
+  display:flex;align-items:center;gap:6px;background:var(--surface2);
+  border:1px solid var(--border);border-radius:20px;padding:4px 10px;
+  white-space:nowrap;font-size:12px;cursor:pointer;flex-shrink:0;transition:border-color .15s;
+}
+.dl-chip:hover{border-color:var(--accent);}
+.dl-days{
+  background:var(--green);color:white;
+  border-radius:8px;padding:1px 6px;font-size:11px;font-weight:700;
+}
+.dl-days.urgent{background:var(--red);}
+.dl-days.soon{background:var(--orange);}
+.dl-days.warn{background:var(--yellow);color:#1e293b;}
+.dl-days.exp{background:var(--surface2);color:var(--text-muted);border:1px solid var(--border);}
+
+/* ============================================================
+   CALENDAR
+   ============================================================ */
+.cal-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.cal-nav{display:flex;align-items:center;gap:8px;}
+.cal-nav-btn{
+  background:var(--surface);border:1px solid var(--border);color:var(--text);
+  width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:16px;
+  transition:background .15s;display:flex;align-items:center;justify-content:center;
+}
+.cal-nav-btn:hover{background:var(--accent);border-color:var(--accent);color:white;}
+.cal-month-lbl{font-size:17px;font-weight:700;}
+.cal-controls{display:flex;gap:6px;flex-wrap:wrap;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.cal-wday{text-align:center;font-size:11px;font-weight:700;color:var(--text-muted);padding:7px 0;}
+.cal-cell{
+  background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  min-height:80px;padding:5px 6px;cursor:pointer;transition:border-color .15s;
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.cal-cell:hover{border-color:var(--accent);}
+.cal-cell.today{border-color:var(--accent);background:rgba(59,130,246,.06);}
+.cal-cell.empty{background:transparent;border-color:transparent;cursor:default;}
+.cal-cell.selected{border-color:var(--accent);background:rgba(59,130,246,.1);}
+.cal-num{font-size:12px;font-weight:500;flex-shrink:0;}
+.cal-cell.today .cal-num{color:var(--accent);font-weight:800;}
+.cal-events-wrap{flex:1;overflow:hidden;margin-top:3px;}
+.cal-ev{
+  font-size:10px;padding:1px 4px;border-radius:3px;margin-bottom:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  cursor:pointer;line-height:1.4;
+}
+.cal-ev.ev-red{background:rgba(239,68,68,.2);color:var(--red);}
+.cal-ev.ev-blue{background:rgba(59,130,246,.2);color:var(--accent);}
+.cal-ev.ev-green{background:rgba(34,197,94,.2);color:var(--green);}
+.cal-ev.ev-more{background:var(--surface2);color:var(--text-muted);text-align:center;}
+.cal-day-panel{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:14px;margin-top:14px;display:none;
+}
+.cal-day-panel.open{display:block;}
+.cal-day-title{font-size:14px;font-weight:600;margin-bottom:10px;}
+.cal-day-item{
+  padding:8px 10px;background:var(--surface2);border-radius:6px;
+  margin-bottom:6px;font-size:12px;display:flex;align-items:center;gap:8px;cursor:pointer;
+}
+.cal-day-item:hover{border:1px solid var(--accent);margin:-1px;}
+.cal-legend{display:flex;gap:14px;margin-top:10px;font-size:11px;color:var(--text-muted);}
+.cal-legend-i{display:flex;align-items:center;gap:5px;}
+.cl-dot{width:8px;height:8px;border-radius:2px;}
+
+/* ============================================================
+   RESOURCE APPLICATION TAB
+   ============================================================ */
+.resource-table{width:100%;border-collapse:collapse;font-size:13px;}
+.resource-table th{
+  text-align:left;padding:9px 10px;font-size:11px;text-transform:uppercase;
+  letter-spacing:.4px;color:var(--text-muted);border-bottom:2px solid var(--border);font-weight:700;
+}
+.resource-table td{padding:10px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.resource-table tr:last-child td{border-bottom:none;}
+.resource-table tr:hover td{background:var(--surface2);}
+.apply-sel{
+  background:var(--surface2);border:1px solid var(--border);color:var(--text);
+  padding:3px 8px;border-radius:6px;font-size:11px;cursor:pointer;
+}
+.grant-type{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:11px;padding:2px 8px;border-radius:8px;font-weight:600;
+}
+.gt-applicable{background:rgba(34,197,94,.15);color:var(--green);}
+.gt-resource{background:rgba(245,158,11,.15);color:var(--yellow);}
+
+/* ============================================================
+   BOOKMARKS TAB
+   ============================================================ */
+.bookmark-section{margin-bottom:20px;}
+.bm-section-header{
+  display:flex;align-items:center;gap:8px;padding:10px 0;
+  font-size:13px;font-weight:700;border-bottom:1px solid var(--border);margin-bottom:10px;
+}
+.bm-count{font-size:11px;background:var(--surface2);border:1px solid var(--border);
+  padding:1px 7px;border-radius:10px;color:var(--text-muted);}
+
+/* ============================================================
+   SUPPLIER TAB
+   ============================================================ */
+.supplier-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px;}
+.sup-stat{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:16px;text-align:center;
+}
+.sup-stat .sv{font-size:26px;font-weight:800;color:var(--accent);}
+.sup-stat .sl{font-size:11px;color:var(--text-muted);margin-top:3px;}
+
+/* ============================================================
+   DETAIL PANEL
+   ============================================================ */
+.overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.55);z-index:90;backdrop-filter:blur(2px);
+}
+.overlay.open{display:block;}
+.detail-panel{
+  position:fixed;top:0;right:-680px;width:680px;height:100vh;
+  background:var(--surface);border-left:1px solid var(--border);
+  z-index:100;display:flex;flex-direction:column;
+  transition:right .3s cubic-bezier(.4,0,.2,1);
+  box-shadow:-8px 0 48px var(--shadow);
+}
+.detail-panel.open{right:0;}
+.dp-header{
+  padding:14px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;gap:10px;flex-shrink:0;
+}
+.dp-info{flex:1;min-width:0;}
+.dp-num{font-size:11px;color:var(--accent);font-weight:700;margin-bottom:3px;}
+.dp-title{font-size:14px;font-weight:700;line-height:1.4;}
+.dp-badges{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap;}
+.dp-header-actions{display:flex;gap:5px;flex-shrink:0;}
+.close-btn{
+  background:var(--surface2);border:1px solid var(--border);color:var(--text);
+  width:30px;height:30px;border-radius:7px;cursor:pointer;font-size:15px;
+  display:flex;align-items:center;justify-content:center;transition:background .15s;
+}
+.close-btn:hover{background:var(--red);border-color:var(--red);color:white;}
+.dp-tabs{
+  padding:0 18px;border-bottom:1px solid var(--border);
+  display:flex;overflow-x:auto;scrollbar-width:none;flex-shrink:0;
+}
+.dp-tabs::-webkit-scrollbar{display:none;}
+.d-tab{
+  padding:9px 13px;border:none;background:none;color:var(--text-muted);
+  cursor:pointer;font-size:12px;border-bottom:2px solid transparent;
+  white-space:nowrap;transition:all .15s;
+}
+.d-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.d-tab:hover:not(.active){color:var(--text);}
+.dp-body{flex:1;overflow-y:auto;padding:18px;}
+.d-content{display:none;}
+.d-content.active{display:block;}
+
+/* detail inner elements */
+.sec-lbl{
+  font-size:11px;text-transform:uppercase;letter-spacing:.5px;
+  color:var(--text-muted);margin-bottom:7px;margin-top:16px;font-weight:700;
+}
+.sec-lbl:first-child{margin-top:0;}
+.summary-text{font-size:13px;line-height:1.75;color:var(--text);}
+.summary-text p{margin-bottom:9px;}
+.summary-text p:last-child{margin-bottom:0;}
+.info-block{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:11px;font-size:13px;color:var(--text-muted);line-height:1.6;
+}
+.grant-block{
+  display:flex;align-items:center;gap:10px;padding:10px 12px;
+  border-radius:10px;margin-bottom:8px;
+}
+.gb-applicable{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);}
+.gb-resource{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);}
+.gb-icon{font-size:20px;}
+.gb-body{flex:1;}
+.gb-amount{font-size:17px;font-weight:800;}
+.gb-note{font-size:11px;color:var(--text-muted);margin-top:2px;}
+.pdf-links{display:flex;gap:7px;flex-wrap:wrap;}
+.pdf-btn{
+  display:inline-flex;align-items:center;gap:5px;padding:5px 11px;
+  border-radius:6px;background:var(--surface2);border:1px solid var(--border);
+  color:var(--text);font-size:12px;cursor:pointer;text-decoration:none;transition:border-color .15s;
+}
+.pdf-btn:hover{border-color:var(--accent);color:var(--accent);}
+.action-list{display:flex;flex-direction:column;gap:9px;}
+.action-item{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:9px;padding:11px;
+}
+.action-row1{display:flex;gap:9px;align-items:flex-start;margin-bottom:6px;}
+.action-idx{
+  width:21px;height:21px;border-radius:50%;background:var(--accent);color:white;
+  font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.action-text{font-size:12px;color:var(--text);line-height:1.5;}
+.action-meta{display:flex;gap:7px;font-size:11px;color:var(--text-muted);flex-wrap:wrap;}
+.a-role{padding:2px 6px;background:var(--surface);border:1px solid var(--border);border-radius:4px;}
+.a-dl-urgent{color:var(--red);font-weight:700;}
+.a-dl-soon{color:var(--orange);font-weight:600;}
+.a-dl-ok{color:var(--text-muted);}
+.dl-table{width:100%;border-collapse:collapse;font-size:13px;}
+.dl-table th{
+  text-align:left;padding:7px 9px;font-size:11px;text-transform:uppercase;
+  letter-spacing:.4px;color:var(--text-muted);border-bottom:1px solid var(--border);font-weight:700;
+}
+.dl-table td{padding:9px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top;}
+.dl-table tr:last-child td{border-bottom:none;}
+.dl-date-urgent{color:var(--red);font-weight:700;}
+.dl-date-soon{color:var(--orange);font-weight:600;}
+.dl-date-exp{color:var(--text-muted);text-decoration:line-through;}
+.dl-countdown{
+  font-size:11px;font-weight:700;padding:2px 7px;border-radius:8px;
+  display:inline-block;margin-left:6px;
+}
+.dlc-urgent{background:var(--red);color:white;}
+.dlc-soon{background:var(--orange);color:white;}
+.dlc-warn{background:var(--yellow);color:#1e293b;}
+.dlc-ok{background:rgba(34,197,94,.15);color:var(--green);}
+.dlc-exp{background:var(--surface2);color:var(--text-muted);border:1px solid var(--border);}
+.type-chip{
+  font-size:11px;padding:2px 7px;border-radius:8px;
+  background:var(--surface2);border:1px solid var(--border);
+}
+.role-accordion{display:flex;flex-direction:column;gap:7px;}
+.role-card{background:var(--surface2);border:1px solid var(--border);border-radius:9px;overflow:hidden;}
+.role-card.current-role{border-color:var(--accent);}
+.role-card-hdr{
+  padding:10px 13px;display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;transition:background .15s;
+}
+.role-card-hdr:hover{background:var(--surface);}
+.role-card-name{font-size:13px;font-weight:600;}
+.role-tag{font-size:11px;padding:2px 8px;border-radius:9px;}
+.rt-yes{background:rgba(34,197,94,.15);color:var(--green);}
+.rt-no{background:var(--surface);color:var(--text-muted);border:1px solid var(--border);}
+.role-card-body{padding:0 13px 11px;display:none;}
+.role-card-body.open{display:block;}
+.kp-list{list-style:none;}
+.kp-list li{
+  font-size:12px;color:var(--text);padding:3px 0 3px 13px;
+  position:relative;line-height:1.5;
+}
+.kp-list li::before{content:"▸";position:absolute;left:0;color:var(--accent);}
+
+/* Diff panel */
+.diff-pane{display:flex;gap:10px;margin-bottom:12px;}
+.diff-col{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px;}
+.diff-col-hdr{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-muted);margin-bottom:8px;}
+.diff-col.old{border-color:rgba(239,68,68,.3);}
+.diff-col.new{border-color:rgba(34,197,94,.3);}
+.change-list{display:flex;flex-direction:column;gap:7px;}
+.change-item{
+  display:flex;gap:9px;padding:9px 11px;
+  background:var(--surface2);border:1px solid var(--border);border-radius:7px;font-size:12px;
+}
+.ct-badge{
+  flex-shrink:0;width:32px;height:32px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;
+}
+.ct-add{background:rgba(34,197,94,.15);color:var(--green);}
+.ct-mod{background:rgba(245,158,11,.15);color:var(--yellow);}
+.ct-del{background:rgba(239,68,68,.15);color:var(--red);}
+
+/* ============================================================
+   SETTINGS
+   ============================================================ */
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.settings-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:16px;
+}
+.sc-title{font-size:13px;font-weight:700;margin-bottom:13px;display:flex;align-items:center;gap:7px;}
+.setting-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 0;border-bottom:1px solid var(--border);
+}
+.setting-row:last-child{border-bottom:none;}
+.setting-info{flex:1;}
+.setting-lbl{font-size:13px;}
+.setting-desc{font-size:11px;color:var(--text-muted);margin-top:2px;}
+.opt-group{display:flex;gap:4px;flex-wrap:wrap;}
+.opt-btn{
+  padding:5px 10px;border-radius:6px;border:1px solid var(--border);
+  background:transparent;color:var(--text);font-size:12px;cursor:pointer;transition:all .15s;
+}
+.opt-btn.active,.opt-btn:hover{background:var(--accent);border-color:var(--accent);color:white;}
+.palette-opt{
+  width:30px;height:30px;border-radius:50%;cursor:pointer;
+  border:2px solid transparent;transition:all .15s;
+  display:flex;align-items:center;justify-content:center;font-size:13px;
+}
+.palette-opt.active{border-color:var(--text);box-shadow:0 0 0 2px var(--accent);}
+input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
+.code-block{
+  background:var(--surface2);border:1px solid var(--border);border-radius:8px;
+  padding:12px;font-family:monospace;font-size:12px;line-height:1.9;color:var(--text);
+}
+.cc{color:var(--text-muted);}
+
+/* ============================================================
+   DEV PAGE
+   ============================================================ */
+#devPage{
+  display:none;position:fixed;inset:0;background:var(--bg);
+  z-index:300;overflow-y:auto;padding:20px;
+}
+#devPage.open{display:block;}
+.dev-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);
+}
+.dev-title{font-size:18px;font-weight:700;color:var(--red);}
+.dev-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.dev-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;}
+.dev-card-title{font-size:13px;font-weight:700;margin-bottom:12px;color:var(--accent);}
+.dev-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.dev-row:last-child{border-bottom:none;}
+.dev-input{
+  background:var(--surface2);border:1px solid var(--border);color:var(--text);
+  padding:5px 9px;border-radius:6px;font-size:12px;font-family:monospace;width:200px;outline:none;
+}
+.dev-input:focus{border-color:var(--accent);}
+.dev-pre{
+  background:var(--surface2);border:1px solid var(--border);border-radius:8px;
+  padding:10px;font-size:11px;font-family:monospace;line-height:1.7;
+  max-height:200px;overflow-y:auto;color:var(--text-muted);white-space:pre-wrap;word-break:break-all;
+}
+
+/* ============================================================
+   SHORTCUT MODAL
+   ============================================================ */
+.sc-modal{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);
+  z-index:500;align-items:center;justify-content:center;
+}
+.sc-modal.open{display:flex;}
+.sc-box{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:24px;max-width:400px;width:90%;
+  box-shadow:0 20px 60px var(--shadow);
+}
+.sc-box-title{font-size:15px;font-weight:700;margin-bottom:14px;}
+.sc-item{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.sc-item:last-child{border-bottom:none;}
+.sc-key{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:5px;padding:2px 8px;font-family:monospace;font-size:12px;
+  box-shadow:0 1px 0 var(--border);
+}
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+.empty-state{
+  text-align:center;padding:50px 20px;color:var(--text-muted);
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+}
+.es-icon{font-size:36px;margin-bottom:10px;}
+.es-text{font-size:14px;}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:10px 18px;font-size:13px;
+  box-shadow:0 8px 32px var(--shadow);z-index:600;
+  transition:transform .3s cubic-bezier(.4,0,.2,1);white-space:nowrap;
+}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ============================================================
+   ROLE INDICATOR & FOOTER
+   ============================================================ */
+.role-indicator{
+  font-size:11px;padding:3px 10px;border-radius:12px;
+  background:rgba(59,130,246,.12);border:1px solid var(--accent);
+  color:var(--accent);white-space:nowrap;flex-shrink:0;font-weight:600;
+}
+.site-footer{
+  text-align:center;padding:12px 20px;font-size:11px;color:var(--text-muted);
+  border-top:1px solid var(--border);background:var(--surface);line-height:1.7;
+}
+.site-footer a{color:var(--text-muted);text-decoration:underline;}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--text-muted);}
+
+/* ============================================================
+   PRINT
+   ============================================================ */
+@media print{
+  .header,.filter-bar,.stats-bar,.tabs,.main,.overlay,
+  #devPage,.sc-modal,.toast,.dp-header-actions,.dp-tabs{display:none!important;}
+  .detail-panel{
+    position:static!important;width:100%!important;height:auto!important;
+    right:0!important;box-shadow:none!important;border:none!important;
+  }
+  .d-content{display:block!important;}
+  body{font-size:12pt;color:#000;background:#fff;}
+}
+
+/* ============================================================
+   RESPONSIVE — MOBILE
+   ============================================================ */
+@media(max-width:767px){
+  .header{padding:0 12px;gap:7px;}
+  .brand-sub{display:none;}
+  .search-wrap{max-width:none;}
+  .hdr-actions .btn span{display:none;}
+  .stats-bar{padding:8px 12px;}
+  .main{padding:12px;}
+  .cards-grid{grid-template-columns:1fr!important;}
+  .settings-grid{grid-template-columns:1fr;}
+  .dev-grid{grid-template-columns:1fr;}
+  .supplier-stats{grid-template-columns:1fr 1fr;}
+  .detail-panel{width:100%;right:-100%;}
+  .tabs{top:56px;padding:0 10px;}
+  .tab-btn{padding:10px 10px;font-size:12px;}
+  .cal-cell{min-height:52px;}
+  .cal-ev{display:none;}
+  .diff-pane{flex-direction:column;}
+}
+@media(min-width:768px) and (max-width:1023px){
+  .cards-grid{grid-template-columns:repeat(2,1fr)!important;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     OVERLAY
+     ============================================================ -->
+<div class="overlay" id="overlay" onclick="closeDetail()"></div>
+
+<!-- ============================================================
+     TOAST
+     ============================================================ -->
+<div class="toast" id="toast"></div>
+
+<!-- ============================================================
+     SHORTCUT MODAL
+     ============================================================ -->
+<div class="sc-modal" id="scModal" onclick="if(event.target===this)closeScModal()">
+  <div class="sc-box">
+    <div class="sc-box-title">⌨️ 鍵盤快捷鍵</div>
+    <div class="sc-item"><span>切換至校長</span><span><kbd class="sc-key">1</kbd></span></div>
+    <div class="sc-item"><span>切換至副校長</span><span><kbd class="sc-key">2</kbd></span></div>
+    <div class="sc-item"><span>切換至科主任</span><span><kbd class="sc-key">3</kbd></span></div>
+    <div class="sc-item"><span>切換至教師</span><span><kbd class="sc-key">4</kbd></span></div>
+    <div class="sc-item"><span>切換至行政主任</span><span><kbd class="sc-key">5</kbd></span></div>
+    <div class="sc-item"><span>切換至供應商</span><span><kbd class="sc-key">6</kbd></span></div>
+    <div class="sc-item"><span>聚焦搜尋欄</span><span><kbd class="sc-key">/</kbd></span></div>
+    <div class="sc-item"><span>切換深色/淺色主題</span><span><kbd class="sc-key">D</kbd></span></div>
+    <div class="sc-item"><span>關閉面板</span><span><kbd class="sc-key">Esc</kbd></span></div>
+    <div class="sc-item"><span>顯示快捷鍵</span><span><kbd class="sc-key">?</kbd></span></div>
+    <div style="margin-top:14px;text-align:right">
+      <button class="btn btn-primary" onclick="closeScModal()">關閉</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     DEV PAGE
+     ============================================================ -->
+<div id="devPage">
+  <div class="dev-header">
+    <div class="dev-title">🔧 開發者設定</div>
+    <button class="btn btn-primary" onclick="closeDevPage()">✕ 關閉</button>
+  </div>
+  <div class="dev-grid">
+    <div class="dev-card">
+      <div class="dev-card-title">🤖 LLM 設定</div>
+      <div class="dev-row">
+        <span>模型</span>
+        <select class="apply-sel" id="devModel" onchange="devSetModel(this.value)">
+          <option value="gpt-5-nano">gpt-5-nano（預設）</option>
+          <option value="gpt-4.1-mini">gpt-4.1-mini</option>
+          <option value="gpt-4o">gpt-4o</option>
+        </select>
+      </div>
+      <div class="dev-row"><span>Temperature</span><span class="badge b-yellow">1（固定）</span></div>
+      <div class="dev-row"><span>Structured Output</span><span>json_schema</span></div>
+    </div>
+    <div class="dev-card">
+      <div class="dev-card-title">📁 資料設定</div>
+      <div class="dev-row">
+        <span>circulars.json 路徑</span>
+        <input class="dev-input" id="devJsonPath" value="./circulars.json" onchange="devSetPath(this.value)">
+      </div>
+      <div class="dev-row">
+        <span>資料來源</span>
+        <button class="btn" onclick="location.reload()">🔄 重新載入</button>
+      </div>
+    </div>
+    <div class="dev-card">
+      <div class="dev-card-title">🗄️ localStorage 查看器</div>
+      <pre class="dev-pre" id="devLsPre">載入中...</pre>
+      <div style="margin-top:10px;display:flex;gap:7px">
+        <button class="btn" onclick="devRefreshLs()">刷新</button>
+        <button class="btn" onclick="devClearLs()" style="color:var(--red)">清除全部</button>
+      </div>
+    </div>
+    <div class="dev-card">
+      <div class="dev-card-title">ℹ️ 版本資訊</div>
+      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v0.2.0-frontend</span></div>
+      <div class="dev-row"><span>Build Date</span><span>2026-03-10</span></div>
+      <div class="dev-row"><span>知識庫更新</span><span>2026-03-09 20:48 UTC</span></div>
+      <div class="dev-row"><span>資料筆數</span><span id="devCount">—</span></div>
+    </div>
+    <div class="dev-card">
+      <div class="dev-card-title">📡 數據來源狀態</div>
+      <div class="dev-row"><span>circulars.json</span><span class="badge b-green" id="devDataStatus">⏳ 載入中</span></div>
+      <div class="dev-row"><span>通告筆數</span><span id="devDataCount">—</span></div>
+      <div class="dev-row"><span>模擬數據</span><span id="devMockBadge" class="badge b-yellow">模擬</span></div>
+      <div class="dev-row"><span>重新載入</span><button class="btn" onclick="location.reload()">🔄 重載</button></div>
+    </div>
+    <div class="dev-card" style="grid-column:1/-1">
+      <div class="dev-card-title">📖 使用指南（開發者）</div>
+      <div class="code-block">
+        <div class="cc"># 1. 進入專案目錄並啟動虛擬環境</div>
+        <div>cd ~/path/to/EDB-Circular-AI-analysis-system</div>
+        <div>source venv/bin/activate</div>
+        <div style="margin-top:6px" class="cc"># 2. 設定 OpenAI API Key</div>
+        <div>export OPENAI_API_KEY="sk-..."</div>
+        <div style="margin-top:6px" class="cc"># 3. 抓取並分析（最近30天）</div>
+        <div>python3 edb_scraper.py --days 30 --output ./circulars.json -v</div>
+        <div style="margin-top:6px" class="cc"># 4. 啟動本地伺服器</div>
+        <div>python3 -m http.server 8080</div>
+        <div style="margin-top:6px" class="cc"># 5. 瀏覽 Dashboard</div>
+        <div>open http://localhost:8080/edb-dashboard.html</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="header">
+  <div class="brand">
+    <span>📋</span>
+    <span>EDB 通告系統<span class="brand-sub"> v0.2.0</span></span>
+  </div>
+
+  <select class="role-select" id="roleSelect" onchange="setRole(this.value)">
+    <option value="principal">👔 校長</option>
+    <option value="vice_principal">🏫 副校長</option>
+    <option value="department_head">📚 科主任</option>
+    <option value="teacher">🧑‍🏫 教師</option>
+    <option value="eo_admin">📋 行政主任</option>
+    <option value="supplier">🏢 供應商</option>
+  </select>
+  <span class="role-indicator" id="roleIndicator" title="目前角色"></span>
+
+  <div class="search-wrap">
+    <span class="search-ico">🔍</span>
+    <input class="search-input" id="searchInput" placeholder="搜尋通告號、標題…" oninput="onSearch(this.value)" onfocus="showSugg()" onblur="setTimeout(hideSugg,200)">
+    <div class="search-sugg" id="searchSugg"></div>
+  </div>
+
+  <div class="hdr-actions">
+    <button class="btn btn-icon" id="filterToggleBtn" onclick="toggleFilterBar()" title="篩選">⚙️ <span>篩選</span></button>
+    <button class="btn btn-icon" onclick="toggleLang()" id="langBtn" title="語言">中/EN</button>
+    <button class="btn btn-icon" onclick="cycleTheme()" id="themeBtn" title="切換主題（D）">🌙</button>
+    <button class="btn btn-icon" onclick="showScModal()" title="快捷鍵">⌨️</button>
+  </div>
+</header>
+
+<!-- ============================================================
+     FILTER BAR
+     ============================================================ -->
+<div class="filter-bar" id="filterBar">
+  <div class="filter-row">
+    <span class="filter-label" data-zh="類型" data-en="Type">類型</span>
+    <div id="fType" class="filter-group">
+      <button class="f-chip on" data-v="all" onclick="setFilter('type','all',this)" data-zh="全部" data-en="All">全部</button>
+      <button class="f-chip" data-v="EDBCM" onclick="setFilter('type','EDBCM',this)">通告備忘 CM</button>
+      <button class="f-chip" data-v="EDBCL" onclick="setFilter('type','EDBCL',this)">通知書 CL</button>
+    </div>
+    <span class="filter-label" style="margin-left:12px" data-zh="學校" data-en="School">學校</span>
+    <div id="fSchool" class="filter-group">
+      <button class="f-chip on" data-v="all" onclick="setFilter('school','all',this)" data-zh="全部" data-en="All">全部</button>
+      <button class="f-chip" data-v="pri" onclick="setFilter('school','pri',this)" data-zh="小學" data-en="Primary">小學</button>
+      <button class="f-chip" data-v="sec" onclick="setFilter('school','sec',this)" data-zh="中學" data-en="Secondary">中學</button>
+      <button class="f-chip" data-v="spe" onclick="setFilter('school','spe',this)" data-zh="特殊" data-en="Special">特殊</button>
+      <button class="f-chip" data-v="kgn" onclick="setFilter('school','kgn',this)" data-zh="幼稚園" data-en="KG">幼稚園</button>
+    </div>
+  </div>
+  <div class="filter-row">
+    <span class="filter-label" data-zh="主題" data-en="Topic">主題</span>
+    <div id="fTopic" class="filter-group" style="flex-wrap:wrap">
+      <button class="f-chip on" data-v="all" onclick="setFilter('topic','all',this)" data-zh="全部" data-en="All">全部</button>
+      <button class="f-chip" data-v="curriculum" onclick="setFilter('topic','curriculum',this)" data-zh="課程" data-en="Curriculum">課程</button>
+      <button class="f-chip" data-v="student" onclick="setFilter('topic','student',this)" data-zh="學生支援" data-en="Student">學生支援</button>
+      <button class="f-chip" data-v="finance" onclick="setFilter('topic','finance',this)" data-zh="財務資助" data-en="Finance">財務資助</button>
+      <button class="f-chip" data-v="hr" onclick="setFilter('topic','hr',this)" data-zh="人事管理" data-en="HR">人事管理</button>
+      <button class="f-chip" data-v="it" onclick="setFilter('topic','it',this)" data-zh="資訊科技" data-en="IT">資訊科技</button>
+      <button class="f-chip" data-v="activity" onclick="setFilter('topic','activity',this)" data-zh="學校活動" data-en="Activity">學校活動</button>
+      <button class="f-chip" data-v="exam" onclick="setFilter('topic','exam',this)" data-zh="評估考試" data-en="Exam">評估考試</button>
+    </div>
+  </div>
+  <div class="filter-row">
+    <span class="filter-label" data-zh="影響" data-en="Impact">影響</span>
+    <div id="fImpact" class="filter-group">
+      <button class="f-chip on" data-v="all" onclick="setFilter('impact','all',this)">全部</button>
+      <button class="f-chip" data-v="high" onclick="setFilter('impact','high',this)">🔴 高</button>
+      <button class="f-chip" data-v="mid" onclick="setFilter('impact','mid',this)">🟠 中</button>
+      <button class="f-chip" data-v="low" onclick="setFilter('impact','low',this)">🟢 低</button>
+    </div>
+    <span class="filter-label" style="margin-left:12px" data-zh="行動" data-en="Action">行動</span>
+    <div id="fAction" class="filter-group">
+      <button class="f-chip on" data-v="all" onclick="setFilter('action','all',this)">全部</button>
+      <button class="f-chip" data-v="mandatory" onclick="setFilter('action','mandatory',this)" data-zh="必須" data-en="Mandatory">必須</button>
+      <button class="f-chip" data-v="recommended" onclick="setFilter('action','recommended',this)" data-zh="建議" data-en="Recommended">建議</button>
+      <button class="f-chip" data-v="informational" onclick="setFilter('action','informational',this)" data-zh="參考" data-en="Info">參考</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     STATS BAR
+     ============================================================ -->
+<div class="stats-bar" id="statsBar"></div>
+
+<!-- ============================================================
+     TABS
+     ============================================================ -->
+<nav class="tabs">
+  <button class="tab-btn active" id="tabOverview" onclick="switchTab('overview',this)" data-zh="📊 通告總覽" data-en="📊 Circulars">📊 通告總覽</button>
+  <button class="tab-btn" id="tabCalendar" onclick="switchTab('calendar',this)" data-zh="📅 月曆" data-en="📅 Calendar">📅 月曆</button>
+  <button class="tab-btn" id="tabResources" onclick="switchTab('resources',this)" data-zh="💰 資源申請" data-en="💰 Resources">💰 資源申請</button>
+  <button class="tab-btn" id="tabBookmarks" onclick="switchTab('bookmarks',this)" data-zh="⭐ 收藏" data-en="⭐ Saved">⭐ 收藏 <span id="bmTabBadge" style="display:none;font-size:10px;background:var(--orange);color:white;border-radius:8px;padding:0 5px;margin-left:2px"></span></button>
+  <button class="tab-btn" id="tabSupplier" onclick="switchTab('supplier',this)" data-zh="🏢 供應商" data-en="🏢 Supplier">🏢 供應商</button>
+  <button class="tab-btn" id="tabSettings" onclick="switchTab('settings',this)" data-zh="⚙️ 設定" data-en="⚙️ Settings">⚙️ 設定</button>
+</nav>
+
+<!-- ============================================================
+     MAIN
+     ============================================================ -->
+<main class="main">
+
+  <!-- ======== TAB: OVERVIEW ======== -->
+  <div class="tab-panel active" id="panel-overview">
+
+    <!-- Deadline bar -->
+    <div class="dl-bar" id="dlBar">
+      <span class="dl-bar-lbl">⏰ 截止：</span>
+    </div>
+
+    <!-- Needs attention -->
+    <div class="attention-section" id="attentionSection" style="display:none">
+      <div class="attention-header">
+        🔴 需關注通告
+        <span class="attention-count" id="attentionCount">0</span>
+      </div>
+      <div class="cards-grid" id="attentionGrid"></div>
+    </div>
+
+    <!-- View toolbar -->
+    <div class="view-toolbar">
+      <div style="font-size:13px;color:var(--text-muted)" id="resultCount"></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="view-toggle">
+          <button class="btn btn-active" id="btnCard" onclick="setView('card')" title="卡片視圖">⊞ <span>卡片</span></button>
+          <button class="btn" id="btnList" onclick="setView('list')" title="列表視圖">☰ <span>列表</span></button>
+        </div>
+        <button class="btn" onclick="exportExcel()" title="匯出 CSV">📥 匯出</button>
+        <button class="btn" onclick="printDetail()" title="列印目前開啟的通告">🖨️ <span>列印</span></button>
+      </div>
+    </div>
+
+    <!-- Card view -->
+    <div class="cards-grid" id="circularGrid"></div>
+
+    <!-- List view -->
+    <div class="list-view" id="listView">
+      <table class="list-table">
+        <thead>
+          <tr>
+            <th onclick="sortList('number')">通告號 ↕</th>
+            <th onclick="sortList('title')">標題 ↕</th>
+            <th onclick="sortList('date')">日期 ↕</th>
+            <th onclick="sortList('impact')">影響 ↕</th>
+            <th onclick="sortList('deadline')">截止 ↕</th>
+            <th onclick="sortList('grant')">金額</th>
+            <th>狀態</th>
+          </tr>
+        </thead>
+        <tbody id="listBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ======== TAB: CALENDAR ======== -->
+  <div class="tab-panel" id="panel-calendar">
+    <div class="cal-toolbar">
+      <div class="cal-nav">
+        <button class="cal-nav-btn" onclick="calNav(-1)">‹</button>
+        <span class="cal-month-lbl" id="calMonthLbl"></span>
+        <button class="cal-nav-btn" onclick="calNav(1)">›</button>
+        <button class="btn" onclick="calToday()" style="margin-left:6px">今天</button>
+      </div>
+      <div class="cal-controls">
+        <button class="f-chip on" data-v="all" onclick="setCalFilter('all',this)">全部</button>
+        <button class="f-chip" data-v="high" onclick="setCalFilter('high',this)">🔴 高影響</button>
+        <button class="f-chip" data-v="deadline" onclick="setCalFilter('deadline',this)">⏰ 截止日</button>
+      </div>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+    <div class="cal-legend">
+      <div class="cal-legend-i"><div class="cl-dot" style="background:var(--red)"></div>🔴 需關注（高影響+必須）</div>
+      <div class="cal-legend-i"><div class="cl-dot" style="background:var(--accent)"></div>📋 一般通告</div>
+      <div class="cal-legend-i"><div class="cl-dot" style="background:var(--green)"></div>⏰ 一般截止日</div>
+    </div>
+    <div class="cal-day-panel" id="calDayPanel">
+      <div class="cal-day-title" id="calDayTitle"></div>
+      <div id="calDayItems"></div>
+    </div>
+  </div>
+
+  <!-- ======== TAB: RESOURCES ======== -->
+  <div class="tab-panel" id="panel-resources">
+    <div class="view-toolbar">
+      <div><b data-zh="💰 資源申請清單" data-en="💰 Resource Applications">💰 資源申請清單</b>
+        <span style="font-size:12px;color:var(--text-muted);margin-left:8px" id="resourceNote">（只顯示含撥款或申請資訊的通告）</span>
+      </div>
+      <button class="btn" onclick="exportResourceExcel()">📥 Excel</button>
+    </div>
+    <table class="resource-table">
+      <thead>
+        <tr>
+          <th>通告號</th><th>資助名稱</th><th>金額 / 資源</th><th>類型</th><th>申請截止</th><th>申請狀態</th>
+        </tr>
+      </thead>
+      <tbody id="resourceBody"></tbody>
+    </table>
+  </div>
+
+  <!-- ======== TAB: BOOKMARKS ======== -->
+  <div class="tab-panel" id="panel-bookmarks">
+    <div style="display:flex;gap:8px;margin-bottom:14px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;font-size:12px;color:var(--text-muted);align-items:center">
+      <span>📌</span><span>常備通告（釘選）永久保存至收藏頁最上方，供隨時參閱。</span>
+      <span style="margin-left:8px">⭐</span><span>一般收藏則列於下方。</span>
+    </div>
+    <div class="bookmark-section">
+      <div class="bm-section-header">
+        📌 常備參考通告
+        <span class="bm-count" id="pinnedCount">0</span>
+        <span style="font-size:11px;color:var(--text-muted);font-weight:400;margin-left:6px">（按通告卡片右下角 📌 釘選）</span>
+      </div>
+      <div class="cards-grid" id="pinnedGrid">
+        <div class="empty-state"><div class="es-icon">📌</div><div class="es-text">按通告卡片的 📌 按鈕可加入常備參考</div></div>
+      </div>
+    </div>
+    <div class="bookmark-section">
+      <div class="bm-section-header">
+        ⭐ 一般收藏
+        <span class="bm-count" id="bookmarkCount">0</span>
+        <span style="font-size:11px;color:var(--text-muted);font-weight:400;margin-left:6px">（按通告卡片右下角 ⭐ 收藏）</span>
+      </div>
+      <div class="cards-grid" id="bookmarkGrid">
+        <div class="empty-state"><div class="es-icon">⭐</div><div class="es-text">按通告卡片的 ⭐ 按鈕可加入收藏</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== TAB: SUPPLIER ======== -->
+  <div class="tab-panel" id="panel-supplier">
+    <div class="supplier-stats" id="supplierStats"></div>
+    <div class="view-toolbar">
+      <b>供應商相關通告</b>
+      <div style="font-size:12px;color:var(--text-muted)">只顯示與供應商高度相關的通告</div>
+    </div>
+    <div class="cards-grid" id="supplierGrid"></div>
+  </div>
+
+  <!-- ======== TAB: SETTINGS ======== -->
+  <div class="tab-panel" id="panel-settings">
+    <div class="settings-grid">
+
+      <div class="settings-card">
+        <div class="sc-title">🎨 顯示設定</div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-lbl" data-zh="主題模式" data-en="Theme">主題模式</div>
+            <div class="setting-desc">深色 / 淺色 / 跟隨系統</div>
+          </div>
+          <div class="opt-group">
+            <button class="opt-btn" id="opt-dark" onclick="setThemeOpt('dark')">🌙 深色</button>
+            <button class="opt-btn" id="opt-light" onclick="setThemeOpt('light')">☀️ 淺色</button>
+            <button class="opt-btn" id="opt-auto" onclick="setThemeOpt('auto')">⚙️ 自動</button>
+          </div>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-lbl" data-zh="色調配搭" data-en="Palette">色調配搭</div>
+            <div class="setting-desc">春夏秋冬四款主題色</div>
+          </div>
+          <div class="opt-group" id="paletteGroup">
+            <div class="palette-opt" data-p="spring" onclick="setPalette('spring')" title="🌸 春" style="background:linear-gradient(135deg,#ec4899,#22c55e)">🌸</div>
+            <div class="palette-opt" data-p="summer" onclick="setPalette('summer')" title="☀️ 夏" style="background:linear-gradient(135deg,#3b82f6,#06b6d4)">☀️</div>
+            <div class="palette-opt" data-p="autumn" onclick="setPalette('autumn')" title="🍂 秋" style="background:linear-gradient(135deg,#f97316,#eab308)">🍂</div>
+            <div class="palette-opt" data-p="winter" onclick="setPalette('winter')" title="❄️ 冬" style="background:linear-gradient(135deg,#1e40af,#64748b)">❄️</div>
+          </div>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-lbl" data-zh="佈局" data-en="Layout">佈局</div>
+            <div class="setting-desc">卡片每行數量</div>
+          </div>
+          <div class="opt-group">
+            <button class="opt-btn" id="opt-standard" onclick="setLayout('standard')">標準 2列</button>
+            <button class="opt-btn" id="opt-wide" onclick="setLayout('wide')">寬屏 3列</button>
+            <button class="opt-btn" id="opt-compact" onclick="setLayout('compact')">精簡 1列</button>
+          </div>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-lbl" data-zh="字體大小" data-en="Font Size">字體大小</div>
+            <div class="setting-desc">12px – 20px</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <button class="btn" style="font-size:11px;padding:4px 8px" onclick="setFontSize(12)">小</button>
+            <button class="btn" style="padding:4px 8px" onclick="setFontSize(14)">標準</button>
+            <button class="btn" style="font-size:16px;padding:4px 8px" onclick="setFontSize(16)">大</button>
+            <button class="btn" style="font-size:18px;padding:4px 8px" onclick="setFontSize(18)">特大</button>
+            <input type="range" min="12" max="20" value="14" id="fontRange"
+              oninput="setFontSize(+this.value)">
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-card">
+        <div class="sc-title">🔔 通知設定</div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-lbl">截止提醒提前天數</div>
+            <div class="setting-desc">超過此天數的截止日以橙色提示</div>
+          </div>
+          <div class="opt-group">
+            <button class="opt-btn" id="opt-alert3" onclick="setAlertDays(3)">3 天</button>
+            <button class="opt-btn active" id="opt-alert7" onclick="setAlertDays(7)">7 天</button>
+            <button class="opt-btn" id="opt-alert14" onclick="setAlertDays(14)">14 天</button>
+          </div>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-lbl">顯示「已跟進」通告</div>
+          </div>
+          <button class="btn" id="showDoneBtn" onclick="toggleShowDone()">開</button>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-lbl">顯示「已截止」通告</div>
+          </div>
+          <button class="btn" id="showExpiredBtn" onclick="toggleShowExpired()">開</button>
+        </div>
+      </div>
+
+      <div class="settings-card">
+        <div class="sc-title">⌨️ 快捷鍵 &amp; 其他</div>
+        <div class="setting-row">
+          <div class="setting-info"><div class="setting-lbl">快捷鍵說明</div></div>
+          <button class="btn" onclick="showScModal()">查看</button>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info"><div class="setting-lbl">清除本地設定</div></div>
+          <button class="btn" onclick="clearAllSettings()" style="color:var(--red)">清除</button>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-lbl">開發者工具</div>
+            <div class="setting-desc">LLM 設定、資料來源、使用指南</div>
+          </div>
+          <button class="btn" onclick="openDevPage()">開啟</button>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info"><div class="setting-lbl">版本</div></div>
+          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v0.2.0-frontend</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ============================================================
+     DETAIL PANEL
+     ============================================================ -->
+<aside class="detail-panel" id="detailPanel">
+  <div class="dp-header">
+    <div class="dp-info">
+      <div class="dp-num" id="dpNum"></div>
+      <div class="dp-title" id="dpTitle"></div>
+      <div class="dp-badges" id="dpBadges"></div>
+    </div>
+    <div class="dp-header-actions">
+      <button class="btn btn-icon" onclick="printDetail()" title="列印">🖨️</button>
+      <button class="bookmark-btn" id="dpBookmarkBtn" onclick="dpToggleBookmark()">⭐</button>
+      <button class="pin-btn" id="dpPinBtn" onclick="dpTogglePin()">📌</button>
+      <button class="close-btn" onclick="closeDetail()">✕</button>
+    </div>
+  </div>
+  <div class="dp-tabs">
+    <button class="d-tab active" onclick="switchDTab('summary',this)">📝 總結</button>
+    <button class="d-tab" onclick="switchDTab('actions',this)">📋 行動</button>
+    <button class="d-tab" onclick="switchDTab('deadlines',this)">⏰ 截止</button>
+    <button class="d-tab" onclick="switchDTab('roles',this)">👥 角色</button>
+    <button class="d-tab" onclick="switchDTab('diff',this)">🔄 比較</button>
+  </div>
+  <div class="dp-body">
+    <div class="d-content active" id="dtc-summary"></div>
+    <div class="d-content" id="dtc-actions"></div>
+    <div class="d-content" id="dtc-deadlines"></div>
+    <div class="d-content" id="dtc-roles"></div>
+    <div class="d-content" id="dtc-diff"></div>
+  </div>
+</aside>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="site-footer">
+  <div>⚠️ <strong>免責聲明：</strong>本系統資料來源於<a href="https://www.edb.gov.hk" target="_blank" rel="noopener">香港特別行政區政府教育局（EDB）</a>官方網站，僅供參考及輔助管理用途，一切以教育局官方公告為準。本系統並非教育局官方產品。</div>
+  <div style="margin-top:4px;color:var(--border)">系統設計：Leonard Wong &nbsp;|&nbsp; EDB 通告智能分析系統 v0.2.0 &nbsp;|&nbsp; &copy; 2026</div>
+</footer>
+
+<script>
+/* ============================================================
+   MOCK DATA
+   ============================================================ */
+const MOCK = [
+  {
+    id:0, number:"EDBCM030/2026", type:"EDBCM", date:"2026-03-07", isNew:true,
+    title:"2026/27學年特殊教育需要學生支援津貼申請",
+    official:"本通告通知各公營及直資學校就2026/27學年特殊教育需要（SEN）學生支援津貼提交申請，截止日期為2026年3月12日。表格須透過「教師易」系統提交。",
+    impact:"high", compliance:"mandatory", urgency:"immediate",
+    scope:"both_sec_pri", topics:["student","finance"],
+    tags:["特殊教育","津貼申請","截止急"],
+    grant_info:{ type:"applicable", amount_hkd:800000, amount_label:"HK$800,000", note:"學校可直接申請，按SEN學生人數計算" },
+    summary:`教育局本次通告要求全港公營及直資學校就2026/27學年特殊教育需要（SEN）學生支援津貼提交正式申請。此項津貼旨在協助學校為有特殊教育需要的學生提供適切的學習支援服務，包括聘用額外教學人員、購置專業評估工具及設備，以及安排專業培訓等。\n\n申請學校須完整填妥附件A（申請表格），詳列本學年已識別的SEN學生人數、現行支援措施、所需資源及預算概算。同時需提交附件B（學校SEN支援計劃摘要）及附件C（上學年支援成效評估報告）。\n\n重要注意事項：所有表格必須透過「教師易」系統於2026年3月12日下午5時前提交，逾期申請將不予受理。`,
+    roles:{
+      principal:{r:true,pts:["需授權並簽署所有申請表格（附件A/B/C）","確保學校SEN政策與申請一致","了解潛在撥款金額以作預算規劃"],acts:["3月10日前召開SEN統籌會議","審閱並簽署所有表格"]},
+      vice_principal:{r:true,pts:["負責統籌各科SEN學生數據收集","協調特殊教育統籌主任準備文件"],acts:["分配數據收集任務至各科主任"]},
+      department_head:{r:true,pts:["提供本科SEN學生名單及支援記錄","確認學科調適措施文件化"],acts:["整理本科SEN學生支援記錄，3月9日前交副校長"]},
+      teacher:{r:true,pts:["需提供個別學生的學習支援觀察記錄"],acts:["提交SEN學生課堂支援觀察記錄"]},
+      eo_admin:{r:true,pts:["負責透過「教師易」系統提交申請","需備存提交確認截圖"],acts:["登入edb.gov.hk/teachers，3月12日17:00前完成提交"]},
+      supplier:{r:false,pts:["本通告主要針對學校直接申請，供應商暫不受影響"],acts:[]}
+    },
+    deadlines:[
+      {date:"2026-03-10",desc:"校長審閱並簽署申請文件",type:"submission_deadline",roles:["principal"],label:"文件簽署"},
+      {date:"2026-03-12",desc:"透過「教師易」提交SEN支援津貼申請表",type:"apply_deadline",roles:["eo_admin","principal"],label:"申請截止"}
+    ],
+    actions:[
+      {text:"登入「教師易」系統下載附件A/B/C表格",role:"eo_admin",dl:"2026-03-08",note:"使用學校帳號登入"},
+      {text:"各科主任統計本科SEN學生人數及已提供支援措施",role:"department_head",dl:"2026-03-09",note:""},
+      {text:"特殊教育統籌主任匯整全校SEN數據並填寫附件A",role:"vice_principal",dl:"2026-03-10",note:""},
+      {text:"校長審閱並簽署附件A、B、C",role:"principal",dl:"2026-03-10",note:"確保數據準確無誤"},
+      {text:"行政人員透過「教師易」系統正式提交並保存確認編號",role:"eo_admin",dl:"2026-03-12",note:"截止時間為下午5時"}
+    ],
+    diff:null
+  },
+  {
+    id:1, number:"EDBCM029/2026", type:"EDBCM", date:"2026-03-05", isNew:false,
+    title:"2026/27年度教師專業發展培訓計劃報名",
+    official:"教育局現接受2026/27年度教師專業發展培訓計劃報名，涵蓋STEM教育、正向教育及融合教育三大範疇，共28項課程，截止日期為2026年3月17日。",
+    impact:"mid", compliance:"recommended", urgency:"high",
+    scope:"both_sec_pri", topics:["hr","curriculum"],
+    tags:["教師培訓","STEM","專業發展"],
+    grant_info:{type:"resource", amount_hkd:null, amount_label:"培訓資源", resource_value_hkd:null, note:"政府提供培訓名額及場地，並非直接撥款"},
+    summary:`本通告公布2026/27年度教師專業發展培訓計劃詳情，提供三大主要培訓範疇共28項課程供教師選擇。STEM教育範疇涵蓋數學思維、編程教學及科學探究等12項課程；正向教育範疇提供8項心理健康及學生支援相關培訓；融合教育範疇則有8項支援SEN學生的專業技能課程。\n\n每位教師可報讀最多兩項課程，優先按教師類別分配名額。建議學校按年度CPD計劃安排教師報名，並確保教師CPD記錄達到每年150小時的建議目標。`,
+    roles:{
+      principal:{r:true,pts:["需確保教師CPD計劃配合學校發展需要","統籌學校整體報名安排"],acts:["審批教師報名申請","確保各科均有教師報名"]},
+      vice_principal:{r:true,pts:["統籌各科教師的培訓報名","追蹤教師CPD記錄是否達標（建議150小時/年）"],acts:["整理各科教師培訓需求，3月15日前提交報名表"]},
+      department_head:{r:true,pts:["根據科組發展需要為教師選擇合適課程"],acts:["安排本科教師報讀相關課程"]},
+      teacher:{r:true,pts:["可選報最多兩項課程","建議選擇與個人專業發展計劃相符的課程","完成培訓可計入CPD記錄"],acts:["3月17日前向科主任提交課程選擇"]},
+      eo_admin:{r:false,pts:["行政支援：協助收集及整理報名表格"],acts:[]},
+      supplier:{r:false,pts:["本通告與供應商無直接關係"],acts:[]}
+    },
+    deadlines:[
+      {date:"2026-03-17",desc:"教師專業發展培訓計劃報名截止",type:"apply_deadline",roles:["vice_principal","teacher"],label:"報名截止"}
+    ],
+    actions:[
+      {text:"副校長統籌各科教師培訓需求調查",role:"vice_principal",dl:"2026-03-12",note:""},
+      {text:"各教師按個人CPD計劃選擇最多兩項課程",role:"teacher",dl:"2026-03-15",note:""},
+      {text:"透過教育局eClass系統提交報名",role:"vice_principal",dl:"2026-03-17",note:"截止日期為3月17日"}
+    ],
+    diff:null
+  },
+  {
+    id:2, number:"EDBCM028/2026", type:"EDBCM", date:"2026-03-01", isNew:false,
+    title:"學校安全管理指引（2026年更新版）",
+    official:"教育局更新《學校安全管理指引》，涵蓋校園保安、緊急事故應變、防火管理及學生活動安全評估等範疇，所有公營及直資學校須於2026年4月15日前完成相關培訓及報備。",
+    impact:"high", compliance:"mandatory", urgency:"medium",
+    scope:"both_sec_pri", topics:["activity","student"],
+    tags:["學校安全","緊急應變","必須行動"],
+    grant_info:{type:"resource", amount_hkd:null, amount_label:"安全設施資源", resource_value_hkd:2000000, note:"政府提供安全設施支援（資源價值約HK$200萬），學校不可直接申請金額"},
+    summary:`教育局發布《學校安全管理指引》2026年更新版，是繼2023年版本後的重要更新。本次更新主要涵蓋四個範疇：\n\n1. 校園保安強化：新增人臉識別訪客管理系統的使用指引，以及閉路電視監控的最低要求。\n2. 緊急事故應變：更新颱風及惡劣天氣的停課通訊程序，新增網絡安全事故應變指引。\n3. 防火管理：更新消防演習的頻率要求（每學期最少一次），加強消防設備檢查記錄要求。\n4. 學生活動安全：更新高風險活動定義，加強戶外活動風險評估要求。`,
+    roles:{
+      principal:{r:true,pts:["全面負責確保學校符合新版安全指引","需授權更新學校安全政策及程序","需確保所有教職員完成相關培訓"],acts:["更新學校安全政策文件","安排全體教職員培訓","4月15日前向教育局報備"]},
+      vice_principal:{r:true,pts:["統籌各安全管理範疇的更新工作","監察消防演習及緊急應變演練"],acts:["制定學期內消防演習時間表","更新緊急聯絡樹"]},
+      department_head:{r:true,pts:["確保本科活動符合新版安全評估要求","更新本科戶外活動風險評估表格"],acts:["審閱並更新本科活動安全程序"]},
+      teacher:{r:true,pts:["必須完成新版安全管理培訓","高風險活動須重新提交風險評估"],acts:["完成安全管理培訓（4月10日前）","更新所有戶外活動風險評估"]},
+      eo_admin:{r:true,pts:["負責整理及提交學校安全報備表格","追蹤培訓完成記錄"],acts:["4月15日前提交安全管理報備表格"]},
+      supplier:{r:false,pts:["如供應商進行校園工程，須遵守校園保安進場程序"],acts:[]}
+    },
+    deadlines:[
+      {date:"2026-04-10",desc:"所有教職員完成安全管理培訓",type:"submission_deadline",roles:["principal","vice_principal"],label:"培訓完成"},
+      {date:"2026-04-15",desc:"向教育局提交學校安全管理更新報備表格",type:"apply_deadline",roles:["eo_admin","principal"],label:"報備截止"}
+    ],
+    actions:[
+      {text:"下載並閱讀《學校安全管理指引》2026年更新版",role:"principal",dl:"2026-03-15",note:""},
+      {text:"更新學校安全政策及緊急應變計劃",role:"vice_principal",dl:"2026-03-31",note:""},
+      {text:"安排全體教職員完成安全管理培訓",role:"vice_principal",dl:"2026-04-10",note:""},
+      {text:"更新所有戶外活動風險評估表格",role:"teacher",dl:"2026-04-10",note:"高風險活動必須"},
+      {text:"提交學校安全管理更新報備表格至教育局",role:"eo_admin",dl:"2026-04-15",note:""}
+    ],
+    diff:{
+      summary:"本次更新（2026版）相較2023版有以下主要變更：",
+      changes:[
+        {type:"mod",field:"消防演習頻率",old:"每學年最少一次",new:"每學期最少一次（即每學年至少兩次）"},
+        {type:"add",field:"網絡安全",old:"",new:"新增「網絡安全事故應變程序」章節，包括事故分類及通報要求"},
+        {type:"mod",field:"高風險活動定義",old:"攀岩、獨木舟、急流泛舟",new:"新增「無人機操作」及「虛擬實境活動」為需要風險評估的活動類別"},
+        {type:"add",field:"訪客管理",old:"",new:"新增智能訪客管理系統使用指引（選用）"}
+      ]
+    }
+  },
+  {
+    id:3, number:"EDBCM027/2026", type:"EDBCM", date:"2026-02-20", isNew:false,
+    title:"2026/27學年學校供應商預資格評審申請",
+    official:"教育局邀請有意向學校提供服務的供應商提交預資格評審申請，涵蓋資訊科技設備、教學耗材、維修工程及專業服務等類別。截止日期為2026年3月31日。",
+    impact:"mid", compliance:"informational", urgency:"medium",
+    scope:"both_sec_pri", topics:["finance","it"],
+    tags:["供應商","採購","預資格"],
+    grant_info:{type:"none", amount_hkd:null, amount_label:null, note:"此通告為供應商資格申請，不涉及撥款"},
+    summary:`教育局每年進行一次學校供應商預資格評審，通過評審的供應商將被納入「認可學校供應商名單」。本次評審涵蓋六大服務類別：資訊科技設備及軟件、教學耗材及用品、校舍維修及保養工程、校舍清潔服務、學生膳食服務、專業培訓及諮詢服務。\n\n申請供應商必須提交公司資料、財務狀況證明（最近三年核數報告）、過往學校服務記錄，以及廉潔承諾書。所有供應商均須遵守廉政公署《學校採購誠信指引》。`,
+    roles:{
+      principal:{r:true,pts:["需了解學校認可供應商名單的更新","可提名有意報名的供應商"],acts:["如有特定需求，可向教育局提交意見"]},
+      vice_principal:{r:false,pts:["本通告主要與學校採購決策有關"],acts:[]},
+      department_head:{r:false,pts:["如有特定供應商推薦，可透過校長渠道反映"],acts:[]},
+      teacher:{r:false,pts:["本通告與教師日常工作關係不大"],acts:[]},
+      eo_admin:{r:true,pts:["協助整理學校現有供應商記錄","了解認可供應商申請流程"],acts:["核對現有供應商是否需要更新資格"]},
+      supplier:{r:true,pts:["須提交預資格評審申請以成為認可供應商","必須附上廉潔承諾書","財務狀況須符合要求（最近三年核數報告）"],acts:["於3月31日前提交完整申請表及所需文件","確保附上廉潔承諾書（ICAC格式）","準備公司財務報告及過往服務記錄"]}
+    },
+    deadlines:[
+      {date:"2026-03-31",desc:"供應商預資格評審申請截止",type:"apply_deadline",roles:["supplier","eo_admin"],label:"申請截止"}
+    ],
+    actions:[
+      {text:"下載供應商預資格評審申請表格",role:"supplier",dl:"2026-03-15",note:""},
+      {text:"準備公司財務報告（最近三年核數報告）",role:"supplier",dl:"2026-03-25",note:""},
+      {text:"填寫並簽署廉政公署廉潔承諾書",role:"supplier",dl:"2026-03-28",note:"ICAC格式"},
+      {text:"提交完整申請表格至教育局",role:"supplier",dl:"2026-03-31",note:"截止為3月31日"}
+    ],
+    diff:null
+  }
+];
+
+/* ============================================================
+   PRESET REFERENCE CIRCULARS (常備參考通告 — 長期有效)
+   ============================================================ */
+const REFERENCE_CIRCULARS = [
+  {
+    id:10, number:"EDBCM004/2013", type:"EDBCM", date:"2013-01-15", isNew:false,
+    title:"整筆撥款津貼學校的財務管理",
+    official:"本通告就整筆撥款（LSG）津貼學校的財務管理提供全面指引，涵蓋撥款運用、賬目記錄、核數要求、廉潔守則及採購程序，為學校財務管理的核心參考文件。",
+    impact:"high", compliance:"mandatory", urgency:"low",
+    scope:"both_sec_pri", topics:["finance"],
+    tags:["整筆撥款","財務管理","採購","常備參考"],
+    grant_info:{type:"none",amount_hkd:null,amount_label:null,note:""},
+    summary:`本通告為整筆撥款津貼學校財務管理的核心指引，規定學校在運用整筆撥款時必須遵守的財務原則：\n\n1. 撥款用途限制：整筆撥款只可用於與學校教育有關的合法用途，不得挪作私用或轉移至非教育用途。\n2. 採購程序：學校須按金額執行相應採購程序，HK$1,000以下無需書面報價，HK$1,000–$50,000需三份書面報價，HK$50,000以上須公開招標。\n3. 賬目記錄：學校須妥善保存所有財務記錄，最少保存7年。\n4. 核數要求：每學年結束後須提交由核數師審核的財務報告。\n5. 廉潔要求：所有採購決定均須公正透明，避免利益衝突，並遵守廉政公署指引。`,
+    roles:{
+      principal:{r:true,pts:["最終負責確保學校財務管理符合本指引","須授權所有重要財務決定"],acts:[]},
+      vice_principal:{r:false,pts:[],acts:[]},
+      department_head:{r:true,pts:["科組申請物資須符合採購程序","須保存科組開支記錄"],acts:[]},
+      teacher:{r:false,pts:[],acts:[]},
+      eo_admin:{r:true,pts:["負責日常財務記錄及賬目管理","處理採購及報銷程序","準備每年核數所需文件"],acts:[]},
+      supplier:{r:true,pts:["須了解學校採購程序及廉潔要求","須提供正式報價及收據"],acts:[]}
+    },
+    deadlines:[], actions:[], diff:null
+  },
+  {
+    id:11, number:"EDBCM019/2004", type:"EDBCM", date:"2004-03-01", isNew:false,
+    title:"學校管治：學校管理委員會╱法團校董會的職能",
+    official:"本通告闡明學校管理委員會及法團校董會的職能與責任，涵蓋學校行政、財務監督、教職員聘任及學校發展規劃，為學校管治的基礎參考文件。",
+    impact:"mid", compliance:"mandatory", urgency:"low",
+    scope:"both_sec_pri", topics:["hr","finance"],
+    tags:["學校管治","校董會","常備參考"],
+    grant_info:{type:"none",amount_hkd:null,amount_label:null,note:""},
+    summary:`本通告界定學校管理委員會（SMC）及法團校董會（IMC）的職能，是學校管治的核心參考文件，適用於所有資助學校。主要規定包括：\n\n1. 財務監督：SMC/IMC須監察學校財務，確保撥款運用符合教育局規定。\n2. 校長責任：校長向SMC/IMC負責，須定期匯報學校行政及財務狀況。\n3. 教職員聘任：SMC/IMC負責校長聘任，校長負責其他教職員聘任。`,
+    roles:{
+      principal:{r:true,pts:["向SMC/IMC負責，定期匯報學校狀況"],acts:[]},
+      vice_principal:{r:false,pts:[],acts:[]},
+      department_head:{r:false,pts:[],acts:[]},
+      teacher:{r:false,pts:[],acts:[]},
+      eo_admin:{r:true,pts:["協助準備SMC/IMC會議文件"],acts:[]},
+      supplier:{r:false,pts:[],acts:[]}
+    },
+    deadlines:[], actions:[], diff:null
+  },
+  {
+    id:12, number:"EDBCM029/2012", type:"EDBCM", date:"2012-05-10", isNew:false,
+    title:"防止在學校中發生性騷擾",
+    official:"本通告提醒學校按《性別歧視條例》承擔責任，防止學校內發生性騷擾，並就制訂反性騷擾政策及申訴程序提供指引，為學校管理常備參考文件。",
+    impact:"mid", compliance:"mandatory", urgency:"low",
+    scope:"both_sec_pri", topics:["hr","student"],
+    tags:["性騷擾防止","平等機會","常備參考"],
+    grant_info:{type:"none",amount_hkd:null,amount_label:null,note:""},
+    summary:`本通告要求學校就防止性騷擾制定明確政策及程序。學校須：\n\n1. 訂立書面反性騷擾政策，清楚列明學校立場及相關後果。\n2. 設立透明的申訴程序，讓師生可安心舉報性騷擾事件。\n3. 定期舉辦培訓，提高師生對性騷擾的認識。\n4. 確保學校行政人員了解《性別歧視條例》的規定及學校的法律責任。`,
+    roles:{
+      principal:{r:true,pts:["負責制定及執行學校反性騷擾政策"],acts:[]},
+      vice_principal:{r:true,pts:["協助處理性騷擾申訴及調查"],acts:[]},
+      department_head:{r:false,pts:[],acts:[]},
+      teacher:{r:true,pts:["須了解反性騷擾政策，並向學生宣傳"],acts:[]},
+      eo_admin:{r:false,pts:[],acts:[]},
+      supplier:{r:false,pts:[],acts:[]}
+    },
+    deadlines:[], actions:[], diff:null
+  }
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let DATA = [];
+let S = {
+  role:'principal', theme:'dark', palette:'summer',
+  layout:'standard', fontSize:14, lang:'zh',
+  viewMode:'card', calYear:2026, calMonth:3,
+  calFilter:'all', alertDays:7,
+  showDone:true, showExpired:true,
+  filterType:'all', filterSchool:'all',
+  filterTopic:'all', filterImpact:'all', filterAction:'all',
+  searchQ:'', filterBarOpen:false,
+  bookmarks:{}, pinned:{}, statuses:{}, applyStatuses:{},
+  sortField:'date', sortAsc:false,
+  currentDetailId:null, devClickCount:0
+};
+
+/* ============================================================
+   LABELS (i18n)
+   ============================================================ */
+const L={
+  zh:{
+    overview:'📊 通告總覽',calendar:'📅 月曆',resources:'💰 資源申請',
+    bookmarks:'⭐ 收藏',supplier:'🏢 供應商',settings:'⚙️ 設定',
+    principal:'👔 校長',vice_principal:'🏫 副校長',department_head:'📚 科主任',
+    teacher:'🧑‍🏫 教師',eo_admin:'📋 行政主任',supplier_role:'🏢 供應商',
+    high:'高',mid:'中',low:'低',mandatory:'必須',recommended:'建議',
+    informational:'參考',applicable:'💰 可申請',resource:'📦 資源',
+    unread:'未讀',read:'已讀',done:'✅ 已跟進',
+    pending:'待申請',applying:'申請中',applied:'已申請',closed:'已截止',na:'不適用'
+  },
+  en:{
+    overview:'📊 Circulars',calendar:'📅 Calendar',resources:'💰 Resources',
+    bookmarks:'⭐ Saved',supplier:'🏢 Supplier',settings:'⚙️ Settings',
+    principal:'👔 Principal',vice_principal:'🏫 VP',department_head:'📚 HOD',
+    teacher:'🧑‍🏫 Teacher',eo_admin:'📋 Admin',supplier_role:'🏢 Supplier',
+    high:'High',mid:'Mid',low:'Low',mandatory:'Mandatory',recommended:'Recommended',
+    informational:'Info',applicable:'💰 Applicable',resource:'📦 Resource',
+    unread:'Unread',read:'Read',done:'✅ Done',
+    pending:'Pending',applying:'Applying',applied:'Applied',closed:'Closed',na:'N/A'
+  }
+};
+function t(k){ return (L[S.lang]||L.zh)[k]||k; }
+
+/* ============================================================
+   LOCALSTORAGE
+   ============================================================ */
+function lsGet(k,def){ try{ const v=localStorage.getItem(k); return v===null?def:JSON.parse(v); }catch(e){ return def; } }
+function lsSet(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+function lsLoad(){
+  S.role       = lsGet('edb_role','principal');
+  S.theme      = lsGet('edb_theme','dark');
+  S.palette    = lsGet('edb_palette','summer');
+  S.layout     = lsGet('edb_layout','standard');
+  S.fontSize   = lsGet('edb_fontsize',14);
+  S.lang       = lsGet('edb_lang','zh');
+  S.viewMode   = lsGet('edb_view_mode','card');
+  S.alertDays  = lsGet('edb_alert_days',7);
+  S.showDone   = lsGet('edb_show_done',true);
+  S.showExpired= lsGet('edb_show_expired',true);
+  S.bookmarks  = lsGet('edb_bookmarks',{});
+  S.pinned     = lsGet('edb_pinned',{});
+  S.statuses   = lsGet('edb_statuses',{});
+  S.applyStatuses = lsGet('edb_apply_statuses',{});
+}
+
+/* ============================================================
+   THEME / PALETTE / LAYOUT / FONT
+   ============================================================ */
+function applyTheme(){
+  const th = S.theme==='auto'?(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'):S.theme;
+  document.documentElement.setAttribute('data-theme',th);
+  document.getElementById('themeBtn').textContent = th==='dark'?'🌙':'☀️';
+  ['dark','light','auto'].forEach(x=> document.getElementById('opt-'+x)?.classList.toggle('active',x===S.theme));
+}
+function setThemeOpt(t){ S.theme=t; lsSet('edb_theme',t); applyTheme(); }
+function cycleTheme(){
+  const order=['dark','light','auto'];
+  S.theme=order[(order.indexOf(S.theme)+1)%3];
+  lsSet('edb_theme',S.theme); applyTheme();
+}
+function applyPalette(){
+  document.documentElement.setAttribute('data-palette',S.palette);
+  document.querySelectorAll('.palette-opt').forEach(el=>
+    el.classList.toggle('active',el.dataset.p===S.palette));
+}
+function setPalette(p){ S.palette=p; lsSet('edb_palette',p); applyPalette(); }
+function applyLayout(){
+  document.documentElement.setAttribute('data-layout',S.layout);
+  ['standard','wide','compact'].forEach(x=> document.getElementById('opt-'+x)?.classList.toggle('active',x===S.layout));
+}
+function setLayout(l){ S.layout=l; lsSet('edb_layout',l); applyLayout(); }
+function applyFontSize(){
+  document.body.style.fontSize=S.fontSize+'px';
+  const r=document.getElementById('fontRange'); if(r) r.value=S.fontSize;
+}
+function setFontSize(s){ S.fontSize=+s; lsSet('edb_fontsize',S.fontSize); applyFontSize(); }
+function applyLang(){
+  document.getElementById('langBtn').textContent=S.lang==='zh'?'中/EN':'EN/中';
+  document.querySelectorAll('[data-zh]').forEach(el=>{
+    el.textContent=S.lang==='zh'?el.dataset.zh:el.dataset.en;
+  });
+}
+function toggleLang(){ S.lang=S.lang==='zh'?'en':'zh'; lsSet('edb_lang',S.lang); applyLang(); renderAll(); }
+
+/* ============================================================
+   ROLE
+   ============================================================ */
+const ROLE_NAMES={principal:'👔 校長',vice_principal:'🏫 副校長',department_head:'📚 科主任',teacher:'🧑‍🏫 教師',eo_admin:'📋 行政主任',supplier:'🏢 供應商'};
+function getRoleName(r){ return ROLE_NAMES[r]||r; }
+function updateRoleIndicator(){
+  const el=document.getElementById('roleIndicator');
+  if(el){ el.textContent=getRoleName(S.role); el.title='目前角色：'+getRoleName(S.role); }
+}
+function setRole(r){
+  S.role=r; lsSet('edb_role',r);
+  document.getElementById('roleSelect').value=r;
+  updateRoleIndicator();
+  updateSupplierTab();
+  renderAll();
+}
+function updateSupplierTab(){
+  const el=document.getElementById('tabSupplier');
+  el.style.display=S.role==='supplier'?'':'none';
+  if(S.role!=='supplier'){
+    // if currently on supplier tab, switch to overview
+    if(document.querySelector('.tab-btn.active')===el){ switchTab('overview',document.getElementById('tabOverview')); }
+  }
+}
+
+/* ============================================================
+   TABS
+   ============================================================ */
+function switchTab(name,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  const panel=document.getElementById('panel-'+name);
+  if(panel) panel.classList.add('active');
+  if(name==='calendar') renderCalendar();
+  if(name==='resources') renderResources();
+  if(name==='bookmarks') renderBookmarks();
+  if(name==='supplier') renderSupplier();
+}
+
+/* ============================================================
+   FILTERS
+   ============================================================ */
+function toggleFilterBar(){
+  S.filterBarOpen=!S.filterBarOpen;
+  const fb=document.getElementById('filterBar');
+  fb.classList.toggle('open',S.filterBarOpen);
+  document.getElementById('filterToggleBtn').classList.toggle('btn-active',S.filterBarOpen);
+}
+function setFilter(dim,val,btn){
+  const map={type:'filterType',school:'filterSchool',topic:'filterTopic',impact:'filterImpact',action:'filterAction'};
+  S[map[dim]]=val;
+  const grp=btn.parentElement;
+  grp.querySelectorAll('.f-chip').forEach(b=>{ b.classList.remove('on','on-red','on-yellow','on-green'); });
+  btn.classList.add('on');
+  renderOverview();
+}
+function setCalFilter(val,btn){
+  S.calFilter=val;
+  document.querySelectorAll('.cal-controls .f-chip').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderCalendar();
+}
+function filteredData(){
+  return DATA.filter(d=>{
+    if(S.searchQ){
+      const q=S.searchQ.toLowerCase();
+      if(!d.number.toLowerCase().includes(q)&&!d.title.toLowerCase().includes(q)&&!d.official.toLowerCase().includes(q)) return false;
+    }
+    if(S.filterType!=='all'&&d.type!==S.filterType) return false;
+    if(S.filterImpact!=='all'&&d.impact!==S.filterImpact) return false;
+    if(S.filterAction!=='all'&&d.compliance!==S.filterAction) return false;
+    if(S.filterTopic!=='all'&&!(d.topics||[]).includes(S.filterTopic)) return false;
+    if(S.filterSchool!=='all'){
+      const sc=d.scope||'';
+      if(S.filterSchool==='pri'&&!sc.includes('pri')&&sc!=='both_sec_pri') return false;
+      if(S.filterSchool==='sec'&&!sc.includes('sec')&&sc!=='both_sec_pri') return false;
+    }
+    const st=S.statuses[d.id]||'unread';
+    if(!S.showDone&&st==='done') return false;
+    // expired check: most urgent deadline
+    const now=new Date(); now.setHours(0,0,0,0);
+    const soonest=getSoonestDeadline(d);
+    if(!S.showExpired&&soonest&&new Date(soonest)<now) return false;
+    return true;
+  });
+}
+
+/* ============================================================
+   DATE UTILS
+   ============================================================ */
+function getSoonestDeadline(d){
+  if(!d.deadlines||!d.deadlines.length) return null;
+  const sorted=[...d.deadlines].sort((a,b)=>a.date.localeCompare(b.date));
+  return sorted[0].date;
+}
+function daysUntil(dateStr){
+  const now=new Date(); now.setHours(0,0,0,0);
+  const target=new Date(dateStr); target.setHours(0,0,0,0);
+  return Math.round((target-now)/(1000*60*60*24));
+}
+function dlClass(days){
+  if(days<0) return 'dl-expired';
+  if(days<=3) return 'dl-urgent';
+  if(days<=S.alertDays) return 'dl-soon';
+  return 'dl-ok';
+}
+function dlCountdownClass(days){
+  if(days<0) return 'dlc-exp';
+  if(days<=3) return 'dlc-urgent';
+  if(days<=S.alertDays) return 'dlc-soon';
+  if(days<=14) return 'dlc-warn';
+  return 'dlc-ok';
+}
+function dlCountdownText(days){
+  if(days<0) return `已截止${Math.abs(days)}天`;
+  if(days===0) return '今天截止';
+  return `${days}天後`;
+}
+function impactBadge(imp){
+  if(imp==='high') return '<span class="badge b-red">🔴 高</span>';
+  if(imp==='mid') return '<span class="badge b-yellow">🟠 中</span>';
+  return '<span class="badge b-green">🟢 低</span>';
+}
+function complianceBadge(c){
+  if(c==='mandatory') return '<span class="badge b-red">必須執行</span>';
+  if(c==='recommended') return '<span class="badge b-yellow">建議執行</span>';
+  return '<span class="badge b-gray">參考</span>';
+}
+function grantChip(g){
+  if(!g||g.type==='none') return '';
+  if(g.type==='applicable') return `<span class="card-grant cg-applicable">💰${g.amount_label}</span>`;
+  if(g.type==='resource') return `<span class="card-grant cg-resource">📦${g.amount_label||'資源'}</span>`;
+  return '';
+}
+
+/* ============================================================
+   STATS BAR
+   ============================================================ */
+function renderStatsBar(){
+  const bar=document.getElementById('statsBar');
+  if(!bar) return;
+  const all=DATA;
+  const now=new Date(); now.setHours(0,0,0,0);
+  const thisMonth=all.filter(d=>{ const dt=new Date(d.date); return dt.getFullYear()===now.getFullYear()&&dt.getMonth()===now.getMonth(); });
+  const needAttn=all.filter(d=>d.impact==='high'&&d.compliance==='mandatory');
+  const expiring=all.filter(d=>{ const s=getSoonestDeadline(d); if(!s) return false; const days=daysUntil(s); return days>=0&&days<=S.alertDays; });
+  const saved=Object.values(S.bookmarks).filter(Boolean).length+Object.values(S.pinned).filter(Boolean).length;
+
+  if(S.role==='supplier'){
+    const supApplicable=all.filter(d=>d.grant_info?.type==='applicable'&&(d.roles?.supplier?.r));
+    const totalAmt=supApplicable.reduce((a,d)=>a+(d.grant_info?.amount_hkd||0),0);
+    bar.innerHTML=`
+      <div class="stat-chip sc-green link" onclick="switchTab('supplier',document.getElementById('tabSupplier'))" title="查看供應商可申請金額">
+        <span class="stat-chip-icon">💰</span><div class="stat-chip-body"><div class="stat-chip-val">${totalAmt?'HK$'+fmtAmt(totalAmt):'—'}</div><div class="stat-chip-lbl">可申請金額 ›</div></div></div>
+      <div class="stat-chip sc-yellow link" onclick="document.getElementById('dlBar').scrollIntoView({behavior:'smooth'})" title="查看即將截止項目">
+        <span class="stat-chip-icon">⏰</span><div class="stat-chip-body"><div class="stat-chip-val">${expiring.length}</div><div class="stat-chip-lbl">即將截止 ›</div></div></div>
+      <div class="stat-chip sc-blue link" onclick="switchTab('bookmarks',document.getElementById('tabBookmarks'))" title="查看已收藏">
+        <span class="stat-chip-icon">⭐</span><div class="stat-chip-body"><div class="stat-chip-val">${saved}</div><div class="stat-chip-lbl">已收藏 ›</div></div></div>
+      <div class="stat-chip" style="font-size:11px;color:var(--text-muted);padding:8px 12px">
+        ⚠️ 供應商政策指引請參閱<a href="https://www.edb.gov.hk" target="_blank" style="color:var(--accent);margin-left:3px">教育局官網</a>及<a href="https://www.icac.org.hk" target="_blank" style="color:var(--accent);margin-left:3px">廉政公署</a></div>
+    `;
+  } else {
+    bar.innerHTML=`
+      <div class="stat-chip sc-blue link" onclick="filterThisMonth()" title="查看本月通告">
+        <span class="stat-chip-icon">📋</span><div class="stat-chip-body"><div class="stat-chip-val">${thisMonth.length}</div><div class="stat-chip-lbl">本月通告 ›</div></div></div>
+      <div class="stat-chip sc-red link" onclick="filterByAttention()" title="查看需關注通告">
+        <span class="stat-chip-icon">🔴</span><div class="stat-chip-body"><div class="stat-chip-val">${needAttn.length}</div><div class="stat-chip-lbl">需關注 ›</div></div></div>
+      <div class="stat-chip sc-yellow link" onclick="document.getElementById('dlBar').scrollIntoView({behavior:'smooth'})" title="查看即將截止項目">
+        <span class="stat-chip-icon">⏰</span><div class="stat-chip-body"><div class="stat-chip-val">${expiring.length}</div><div class="stat-chip-lbl">即將截止 ›</div></div></div>
+      <div class="stat-chip sc-green link" onclick="switchTab('bookmarks',document.getElementById('tabBookmarks'))" title="查看已收藏">
+        <span class="stat-chip-icon">⭐</span><div class="stat-chip-body"><div class="stat-chip-val">${saved}</div><div class="stat-chip-lbl">已收藏 ›</div></div></div>
+    `;
+  }
+}
+function fmtAmt(n){ if(n>=1000000) return (n/1000000).toFixed(1)+'M'; if(n>=1000) return (n/1000).toFixed(0)+'K'; return n; }
+function filterThisMonth(){
+  const now=new Date();
+  const yr=now.getFullYear(), mo=String(now.getMonth()+1).padStart(2,'0');
+  S.searchQ=''; document.getElementById('searchInput').value='';
+  // Switch to overview
+  switchTab('overview',document.getElementById('tabOverview'));
+  // We'll filter by showing only this month — use a special year filter approach
+  showToast(`顯示 ${yr}年${now.getMonth()+1}月 通告`);
+  // Temporarily override filteredData to show this month only via search
+  S.searchQ=`${yr}-${mo}`; document.getElementById('searchInput').value=S.searchQ;
+  renderOverview();
+}
+function filterByAttention(){
+  switchTab('overview',document.getElementById('tabOverview'));
+  // Set impact filter to high
+  S.filterImpact='high'; S.filterAction='mandatory';
+  document.querySelectorAll('#fImpact .f-chip').forEach(b=>{ b.classList.remove('on'); if(b.dataset.v==='high') b.classList.add('on'); });
+  document.querySelectorAll('#fAction .f-chip').forEach(b=>{ b.classList.remove('on'); if(b.dataset.v==='mandatory') b.classList.add('on'); });
+  if(!S.filterBarOpen) toggleFilterBar();
+  renderOverview();
+  showToast('篩選：需關注通告（高影響 + 必須執行）');
+}
+
+/* ============================================================
+   DEADLINE BAR
+   ============================================================ */
+function renderDlBar(){
+  const bar=document.getElementById('dlBar');
+  if(!bar) return;
+  const upcoming=DATA
+    .flatMap(d=>(d.deadlines||[]).map(dl=>({...dl,circId:d.id,circNum:d.number,circTitle:d.title})))
+    .filter(dl=>{ const days=daysUntil(dl.date); return days>=0&&days<=30; })
+    .sort((a,b)=>a.date.localeCompare(b.date))
+    .slice(0,8);
+  let html='<span class="dl-bar-lbl">⏰ 截止：</span>';
+  if(!upcoming.length){ html+='<span style="font-size:12px;color:var(--text-muted)">近30天無截止項目</span>'; }
+  else {
+    upcoming.forEach(dl=>{
+      const days=daysUntil(dl.date);
+      const cls=days<=3?'urgent':days<=S.alertDays?'soon':days<=14?'warn':'';
+      html+=`<div class="dl-chip" onclick="openDetail(${dl.circId})">
+        <span class="dl-days${cls?' '+cls:''}">${days===0?'今天':days+'天'}</span>
+        <span>${dl.circNum}：${dl.label||dl.desc.slice(0,12)}</span>
+      </div>`;
+    });
+  }
+  bar.innerHTML=html;
+}
+
+/* ============================================================
+   CARD BUILDER
+   ============================================================ */
+function buildCard(d, inAttention=false){
+  const st=S.statuses[d.id]||'unread';
+  const bm=S.bookmarks[d.id]||false;
+  const pn=S.pinned[d.id]||false;
+  const soonest=getSoonestDeadline(d);
+  const days=soonest?daysUntil(soonest):null;
+  const isHighImpact=d.impact==='high'&&d.compliance==='mandatory';
+  let topBar = isHighImpact&&!inAttention ? `<div class="card-top-bar">🔴 需關注 ${soonest&&days<=3?'<span style="animation:blink 1s infinite">⚠️ 緊急</span>':''}</div>` : '';
+  const dlBadge=soonest&&days!==null?`<span class="badge ${days<0?'b-gray':days<=3?'b-red':days<=S.alertDays?'b-orange':'b-blue'}">${days<0?'已截止':days===0?'今天截止':days+'天後截止'}</span>`:'';
+  return `<div class="circular-card${isHighImpact?' high-impact':''}" onclick="openDetail(${d.id})">
+    ${topBar}
+    <div class="card-inner">
+      <div class="card-row1">
+        <span class="card-num">${d.number}</span>
+        <span class="card-date">${d.date}${d.isNew?' <span class="badge b-green">NEW</span>':''}</span>
+      </div>
+      <div class="card-title">${d.title}</div>
+      <div class="card-summary">${d.official}</div>
+      <div class="card-footer">
+        <div class="card-tags">
+          ${impactBadge(d.impact)} ${complianceBadge(d.compliance)}
+          ${dlBadge} ${grantChip(d.grant_info)}
+        </div>
+        <div class="card-actions-row" onclick="event.stopPropagation()">
+          <button class="status-btn${st==='done'?' st-done':st==='read'?' st-read':''}" onclick="cycleStatus(${d.id},this)" title="狀態">${st==='done'?'✅':st==='read'?'👁️':'○'}</button>
+          <button class="bookmark-btn${bm?' on':''}" onclick="toggleBookmark(${d.id},this)" title="收藏">⭐</button>
+          <button class="pin-btn${pn?' on':''}" onclick="togglePinned(${d.id},this)" title="常備參考">📌</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   OVERVIEW
+   ============================================================ */
+function renderOverview(){
+  const fd=filteredData();
+  // sort
+  fd.sort((a,b)=>{
+    let va,vb;
+    if(S.sortField==='date'){ va=a.date; vb=b.date; }
+    else if(S.sortField==='impact'){ const o={high:0,mid:1,low:2}; va=o[a.impact]; vb=o[b.impact]; }
+    else if(S.sortField==='deadline'){ va=getSoonestDeadline(a)||'9999'; vb=getSoonestDeadline(b)||'9999'; }
+    else { va=a[S.sortField]||''; vb=b[S.sortField]||''; }
+    return S.sortAsc?(va>vb?1:-1):(va<vb?1:-1);
+  });
+
+  // Attention section
+  const attn=fd.filter(d=>d.impact==='high'&&d.compliance==='mandatory');
+  const attnSec=document.getElementById('attentionSection');
+  const attnGrid=document.getElementById('attentionGrid');
+  const attnCount=document.getElementById('attentionCount');
+  if(attn.length>0){
+    attnSec.style.display='';
+    attnCount.textContent=attn.length;
+    attnGrid.innerHTML=attn.map(d=>buildCard(d,true)).join('');
+  } else {
+    attnSec.style.display='none';
+  }
+
+  // Card grid
+  const grid=document.getElementById('circularGrid');
+  const count=document.getElementById('resultCount');
+  const non_attn=fd.filter(d=>!(d.impact==='high'&&d.compliance==='mandatory'));
+  grid.innerHTML=non_attn.length?non_attn.map(d=>buildCard(d)).join(''):`<div class="empty-state" style="grid-column:1/-1"><div class="es-icon">🔍</div><div class="es-text">沒有符合條件的通告</div></div>`;
+  count.textContent=`共 ${fd.length} 條通告`;
+
+  // List view
+  renderListView(fd);
+  renderDlBar();
+}
+
+function renderListView(fd){
+  const tbody=document.getElementById('listBody');
+  tbody.innerHTML=fd.map(d=>{
+    const st=S.statuses[d.id]||'unread';
+    const soonest=getSoonestDeadline(d);
+    const days=soonest?daysUntil(soonest):null;
+    const dlHtml=soonest?`<span class="${dlClass(days)}">${soonest}${days!==null?` (${days<0?'過期':days+'天'})`:''}` :'—';
+    return `<tr onclick="openDetail(${d.id})">
+      <td><span class="lt-num">${d.number}</span></td>
+      <td><span class="lt-title">${d.title}</span></td>
+      <td>${d.date}</td>
+      <td>${impactBadge(d.impact)}</td>
+      <td>${dlHtml}</td>
+      <td>${grantChip(d.grant_info)||'—'}</td>
+      <td onclick="event.stopPropagation()">
+        <button class="status-btn${st==='done'?' st-done':st==='read'?' st-read':''}" onclick="cycleStatus(${d.id},this)">${st==='done'?'✅':st==='read'?'👁️':'○'}</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function setView(v){
+  S.viewMode=v; lsSet('edb_view_mode',v);
+  const grid=document.getElementById('circularGrid');
+  const list=document.getElementById('listView');
+  const attnGrid=document.getElementById('attentionGrid');
+  if(v==='card'){
+    grid.style.display=''; list.style.display='none'; attnGrid.style.display='';
+    document.getElementById('btnCard').classList.add('btn-active');
+    document.getElementById('btnList').classList.remove('btn-active');
+  } else {
+    grid.style.display='none'; list.style.display=''; attnGrid.style.display='none';
+    document.getElementById('btnList').classList.add('btn-active');
+    document.getElementById('btnCard').classList.remove('btn-active');
+  }
+}
+
+function sortList(field){
+  if(S.sortField===field) S.sortAsc=!S.sortAsc;
+  else { S.sortField=field; S.sortAsc=true; }
+  renderOverview();
+}
+
+/* ============================================================
+   CALENDAR
+   ============================================================ */
+function renderCalendar(){
+  const y=S.calYear, m=S.calMonth;
+  const lbl=document.getElementById('calMonthLbl');
+  if(lbl) lbl.textContent=`${y}年 ${m}月`;
+  const grid=document.getElementById('calGrid');
+  if(!grid) return;
+
+  // build events map
+  const evMap={};
+  const isAttention = d => d.impact==='high' && d.compliance==='mandatory';
+  DATA.forEach(d=>{
+    if(S.calFilter==='high'&&!isAttention(d)) return;
+    // circular publish date
+    const key=d.date;
+    if(!evMap[key]) evMap[key]=[];
+    evMap[key].push({title:d.title,num:d.number,impact:d.impact,compliance:d.compliance,type:'pub',id:d.id});
+    // deadlines
+    (d.deadlines||[]).forEach(dl=>{
+      if(S.calFilter==='high'&&!isAttention(d)) return;
+      if(S.calFilter==='deadline'&&dl.type!=='apply_deadline'&&dl.type!=='submission_deadline') return;
+      if(!evMap[dl.date]) evMap[dl.date]=[];
+      evMap[dl.date].push({title:`⏰ ${dl.label||dl.desc.slice(0,18)}`,num:d.number,impact:d.impact,compliance:d.compliance,type:'dl',dlType:dl.type,id:d.id});
+    });
+  });
+
+  // weekday headers
+  const wdays=['日','一','二','三','四','五','六'];
+  let html=wdays.map(w=>`<div class="cal-wday">${w}</div>`).join('');
+
+  // first day offset
+  const firstDay=new Date(y,m-1,1).getDay();
+  for(let i=0;i<firstDay;i++) html+=`<div class="cal-cell empty"></div>`;
+
+  const daysInMonth=new Date(y,m,0).getDate();
+  const today=new Date(); today.setHours(0,0,0,0);
+  const todayStr=`${y}-${String(m).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+
+  for(let day=1;day<=daysInMonth;day++){
+    const dateStr=`${y}-${String(m).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const evs=evMap[dateStr]||[];
+    const isTd=dateStr===todayStr;
+    let evHtml='';
+    const shown=evs.slice(0,2);
+    shown.forEach(ev=>{
+      const isAttn = ev.impact==='high' && ev.compliance==='mandatory';
+      let cls;
+      if(ev.type==='dl'){
+        cls = isAttn ? 'ev-red' : 'ev-green';
+      } else {
+        cls = isAttn ? 'ev-red' : 'ev-blue';
+      }
+      const shortTitle = ev.type==='dl'
+        ? `⏰ ${ev.num}`
+        : `${isAttn?'🔴':'📋'} ${ev.num}`;
+      evHtml+=`<div class="cal-ev ${cls}" onclick="event.stopPropagation();openDetail(${ev.id})" title="${ev.title}">${shortTitle}</div>`;
+    });
+    if(evs.length>2) evHtml+=`<div class="cal-ev ev-more">+${evs.length-2}</div>`;
+    html+=`<div class="cal-cell${isTd?' today':''}" onclick="selectCalDay('${dateStr}',${JSON.stringify(evs).replace(/"/g,'&quot;')})">
+      <div class="cal-num">${day}</div>
+      <div class="cal-events-wrap">${evHtml}</div>
+    </div>`;
+  }
+  grid.innerHTML=html;
+}
+
+function calNav(dir){
+  S.calMonth+=dir;
+  if(S.calMonth>12){ S.calMonth=1; S.calYear++; }
+  if(S.calMonth<1){ S.calMonth=12; S.calYear--; }
+  renderCalendar();
+  document.getElementById('calDayPanel').classList.remove('open');
+}
+function calToday(){
+  const now=new Date();
+  S.calYear=now.getFullYear(); S.calMonth=now.getMonth()+1;
+  renderCalendar();
+}
+function selectCalDay(dateStr, evs){
+  const panel=document.getElementById('calDayPanel');
+  const title=document.getElementById('calDayTitle');
+  const items=document.getElementById('calDayItems');
+  title.textContent=`📅 ${dateStr} 的通告`;
+  if(!evs||!evs.length){
+    items.innerHTML='<div style="color:var(--text-muted);font-size:13px">當日無通告或截止日</div>';
+  } else {
+    items.innerHTML=evs.map(ev=>`<div class="cal-day-item" onclick="openDetail(${ev.id})">
+      <span>${ev.type==='dl'?'⏰':'📋'}</span>
+      <span class="lt-num">${ev.num}</span>
+      <span style="flex:1;font-size:12px">${ev.title}</span>
+      ${impactBadge(ev.impact)}
+    </div>`).join('');
+  }
+  panel.classList.add('open');
+}
+
+/* ============================================================
+   RESOURCES TAB
+   ============================================================ */
+function renderResources(){
+  const tbody=document.getElementById('resourceBody');
+  if(!tbody) return;
+  const grants=DATA.filter(d=>d.grant_info&&d.grant_info.type!=='none');
+  if(!grants.length){ tbody.innerHTML=`<tr><td colspan="6"><div class="empty-state"><div class="es-icon">💰</div><div class="es-text">暫無資源申請通告</div></div></td></tr>`; return; }
+  tbody.innerHTML=grants.map(d=>{
+    const g=d.grant_info;
+    const soonestDl=d.deadlines.find(dl=>dl.type==='apply_deadline');
+    const aSt=S.applyStatuses[d.id]||'pending';
+    const days=soonestDl?daysUntil(soonestDl.date):null;
+    const dlHtml=soonestDl?`<span class="${days!==null&&days<=3?'dl-urgent':days!==null&&days<=S.alertDays?'dl-soon':'dl-ok'}">${soonestDl.date}${days!==null?` (${days<0?'過期':days+'天'})`:''}`:''
+    return `<tr onclick="openDetail(${d.id})">
+      <td><span class="lt-num">${d.number}</span></td>
+      <td>${d.title}</td>
+      <td>
+        <span class="grant-type ${g.type==='applicable'?'gt-applicable':'gt-resource'}">
+          ${g.type==='applicable'?'💰':'📦'} ${g.amount_label||'資源'}
+        </span>
+        ${g.note?`<div style="font-size:11px;color:var(--text-muted);margin-top:3px">${g.note}</div>`:''}
+      </td>
+      <td>${g.type==='applicable'?'直接撥款':'政府資源'}</td>
+      <td>${dlHtml||'—'}</td>
+      <td onclick="event.stopPropagation()">
+        <select class="apply-sel" onchange="setApplyStatus(${d.id},this.value)" onclick="event.stopPropagation()">
+          <option value="pending" ${aSt==='pending'?'selected':''}>待申請</option>
+          <option value="applying" ${aSt==='applying'?'selected':''}>申請中</option>
+          <option value="applied" ${aSt==='applied'?'selected':''}>已申請</option>
+          <option value="closed" ${aSt==='closed'?'selected':''}>已截止</option>
+          <option value="na" ${aSt==='na'?'selected':''}>不適用</option>
+        </select>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+/* ============================================================
+   BOOKMARKS TAB
+   ============================================================ */
+function renderBookmarks(){
+  const pg=document.getElementById('pinnedGrid');
+  const bg=document.getElementById('bookmarkGrid');
+  const pc=document.getElementById('pinnedCount');
+  const bc=document.getElementById('bookmarkCount');
+  const pinned=DATA.filter(d=>S.pinned[d.id]);
+  const bm=DATA.filter(d=>S.bookmarks[d.id]&&!S.pinned[d.id]);
+  pc.textContent=pinned.length;
+  bc.textContent=bm.length;
+  // update tab badge
+  const badge=document.getElementById('bmTabBadge');
+  const total=pinned.length+bm.length;
+  if(badge){ badge.textContent=total; badge.style.display=total?'':'none'; }
+  pg.innerHTML=pinned.length?pinned.map(d=>buildCard(d)).join(''):`<div class="empty-state"><div class="es-icon">📌</div><div class="es-text">按通告卡片的 📌 可加入常備參考</div></div>`;
+  bg.innerHTML=bm.length?bm.map(d=>buildCard(d)).join(''):`<div class="empty-state"><div class="es-icon">⭐</div><div class="es-text">按通告卡片的 ⭐ 可加入收藏</div></div>`;
+}
+
+/* ============================================================
+   SUPPLIER TAB
+   ============================================================ */
+function renderSupplier(){
+  const grid=document.getElementById('supplierGrid');
+  const stats=document.getElementById('supplierStats');
+  if(!grid) return;
+  const supData=DATA.filter(d=>d.roles?.supplier?.r);
+  const applicable=supData.filter(d=>d.grant_info?.type==='applicable');
+  const totalAmt=applicable.reduce((a,d)=>a+(d.grant_info?.amount_hkd||0),0);
+  const expiring=supData.filter(d=>{ const s=getSoonestDeadline(d); return s&&daysUntil(s)>=0&&daysUntil(s)<=S.alertDays; });
+  stats.innerHTML=`
+    <div class="sup-stat"><div class="sv">${supData.length}</div><div class="sl">相關通告</div></div>
+    <div class="sup-stat"><div class="sv" style="color:var(--green)">${totalAmt?'HK$'+fmtAmt(totalAmt):'—'}</div><div class="sl">💰 可申請金額合計</div></div>
+    <div class="sup-stat"><div class="sv" style="color:var(--yellow)">${expiring.length}</div><div class="sl">⏰ 即將截止</div></div>
+  `;
+  // Add disclaimer for supplier policy
+  const note=document.createElement('div');
+  note.style.cssText='font-size:11px;color:var(--text-muted);padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;margin-bottom:14px;';
+  note.innerHTML='⚠️ <strong>注意：</strong>本系統只顯示教育局（EDB）發出的通告。採購政策指引及廉潔要求請直接參閱 <a href="https://www.icac.org.hk" target="_blank">廉政公署</a> 及 <a href="https://www.edb.gov.hk" target="_blank">教育局官網</a>。';
+  grid.parentElement.insertBefore(note, grid.previousElementSibling?.nextElementSibling||grid);
+  grid.innerHTML=supData.length?supData.map(d=>buildCard(d)).join(''):`<div class="empty-state"><div class="es-icon">🏢</div><div class="es-text">目前沒有與供應商相關的通告</div></div>`;
+}
+
+/* ============================================================
+   STATUS / BOOKMARK / PIN
+   ============================================================ */
+function cycleStatus(id,btn){
+  const order=['unread','read','done'];
+  const cur=S.statuses[id]||'unread';
+  const next=order[(order.indexOf(cur)+1)%3];
+  S.statuses[id]=next; lsSet('edb_statuses',S.statuses);
+  btn.className='status-btn'+(next==='done'?' st-done':next==='read'?' st-read':'');
+  btn.textContent=next==='done'?'✅':next==='read'?'👁️':'○';
+  renderStatsBar();
+}
+function toggleBookmark(id,btn){
+  S.bookmarks[id]=!S.bookmarks[id]; lsSet('edb_bookmarks',S.bookmarks);
+  if(btn){ btn.classList.toggle('on',S.bookmarks[id]); }
+  renderStatsBar();
+}
+function togglePinned(id,btn){
+  S.pinned[id]=!S.pinned[id]; lsSet('edb_pinned',S.pinned);
+  if(btn){ btn.classList.toggle('on',S.pinned[id]); }
+  renderStatsBar();
+}
+function setApplyStatus(id,val){ S.applyStatuses[id]=val; lsSet('edb_apply_statuses',S.applyStatuses); }
+function dpToggleBookmark(){
+  const id=S.currentDetailId; if(id===null) return;
+  toggleBookmark(id,null);
+  document.getElementById('dpBookmarkBtn').classList.toggle('on',S.bookmarks[id]);
+  renderOverview();
+}
+function dpTogglePin(){
+  const id=S.currentDetailId; if(id===null) return;
+  togglePinned(id,null);
+  document.getElementById('dpPinBtn').classList.toggle('on',S.pinned[id]);
+}
+
+/* ============================================================
+   SEARCH
+   ============================================================ */
+function onSearch(q){
+  S.searchQ=q.trim();
+  renderOverview();
+  if(S.searchQ) showSugg(); else hideSugg();
+}
+function showSugg(){
+  if(!S.searchQ){ hideSugg(); return; }
+  const sugg=document.getElementById('searchSugg');
+  const matches=DATA.filter(d=>d.number.toLowerCase().includes(S.searchQ.toLowerCase())||d.title.toLowerCase().includes(S.searchQ.toLowerCase())).slice(0,8);
+  sugg.innerHTML=matches.map(d=>`<div class="sugg-item" onclick="openDetail(${d.id});hideSugg()">
+    <span class="sugg-num">${d.number}</span>
+    <span style="flex:1;font-size:12px">${d.title}</span>
+    ${impactBadge(d.impact)}
+  </div>`).join('');
+  sugg.classList.toggle('open',matches.length>0);
+}
+function hideSugg(){ document.getElementById('searchSugg').classList.remove('open'); }
+
+/* ============================================================
+   DETAIL PANEL
+   ============================================================ */
+function openDetail(id){
+  const d=DATA.find(x=>x.id===id); if(!d) return;
+  S.currentDetailId=id;
+  // mark as read if unread
+  if(!S.statuses[id]||S.statuses[id]==='unread'){ S.statuses[id]='read'; lsSet('edb_statuses',S.statuses); }
+
+  document.getElementById('dpNum').textContent=d.number;
+  document.getElementById('dpTitle').textContent=d.title;
+  document.getElementById('dpBadges').innerHTML=`${impactBadge(d.impact)} ${complianceBadge(d.compliance)} ${d.isNew?'<span class="badge b-green">NEW</span>':''}`;
+  document.getElementById('dpBookmarkBtn').classList.toggle('on',!!S.bookmarks[id]);
+  document.getElementById('dpPinBtn').classList.toggle('on',!!S.pinned[id]);
+
+  // Summary tab
+  const g=d.grant_info;
+  let grantHtml='';
+  if(g&&g.type!=='none'){
+    const cls=g.type==='applicable'?'gb-applicable':'gb-resource';
+    const ico=g.type==='applicable'?'💰':'📦';
+    grantHtml=`<div class="grant-block ${cls}">
+      <div class="gb-icon">${ico}</div>
+      <div class="gb-body">
+        <div class="gb-amount">${g.amount_label||'資源'}</div>
+        <div class="gb-note">${g.type==='applicable'?'可直接申請':'政府提供資源（非直接申請）'} — ${g.note||''}</div>
+      </div>
+    </div>`;
+  }
+  document.getElementById('dtc-summary').innerHTML=`
+    ${grantHtml}
+    <div class="sec-lbl">LLM 摘要</div>
+    <div class="summary-text">${(d.summary||'').split('\n\n').map(p=>`<p>${p}</p>`).join('')}</div>
+    <div class="sec-lbl">官方摘要</div>
+    <div class="info-block">${d.official}</div>
+    <div class="sec-lbl">PDF 下載</div>
+    <div class="pdf-links">
+      <a class="pdf-btn" href="#" onclick="return false">📄 繁體中文</a>
+      <a class="pdf-btn" href="#" onclick="return false">📄 English</a>
+      <a class="pdf-btn" href="#" onclick="return false">📄 简体中文</a>
+    </div>`;
+
+  // Actions tab
+  const rn={principal:'👔 校長',vice_principal:'🏫 副校長',department_head:'📚 科主任',teacher:'🧑‍🏫 教師',eo_admin:'📋 行政主任',supplier:'🏢 供應商'};
+  document.getElementById('dtc-actions').innerHTML=`<div class="action-list">${(d.actions||[]).map((a,i)=>{
+    const days=a.dl?daysUntil(a.dl):null;
+    const dlCls=days!==null?(days<0?'a-dl-ok':days<=3?'a-dl-urgent':days<=S.alertDays?'a-dl-soon':'a-dl-ok'):'a-dl-ok';
+    const isCurrentRole=a.role===S.role;
+    return `<div class="action-item" style="${isCurrentRole?'border-color:var(--accent);background:rgba(59,130,246,.04)':''}">
+      <div class="action-row1">
+        <div class="action-idx" style="${isCurrentRole?'background:var(--green)':''}">${i+1}</div>
+        <div class="action-text">${a.text}</div>
+      </div>
+      <div class="action-meta">
+        <span class="a-role" style="${isCurrentRole?'border-color:var(--accent);color:var(--accent);background:rgba(59,130,246,.1)':''}">${rn[a.role]||a.role}</span>
+        ${a.dl?`<span class="${dlCls}">📅 ${a.dl}${days!==null?` (${days<0?'已過期':days+'天後'})`:''}</span>`:''}
+        ${a.note?`<span style="font-style:italic;color:var(--text-muted)">${a.note}</span>`:''}
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+
+  // Deadlines tab
+  const dlRows=(d.deadlines||[]).map(dl=>{
+    const days=daysUntil(dl.date);
+    const dateCls=days<0?'dl-date-exp':days<=3?'dl-date-urgent':days<=S.alertDays?'':''
+    const cdCls=dlCountdownClass(days);
+    return `<tr>
+      <td class="${dateCls}">${dl.date}<span class="dl-countdown ${cdCls}">${dlCountdownText(days)}</span></td>
+      <td>${dl.desc}</td>
+      <td><span class="type-chip">${dl.type==='apply_deadline'?'申請截止':dl.type==='submission_deadline'?'提交截止':'知悉日期'}</span></td>
+      <td>${(dl.roles||[]).map(r=>rn[r]||r).join('、')}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('dtc-deadlines').innerHTML=`<table class="dl-table"><thead><tr><th>日期</th><th>事項</th><th>類型</th><th>負責角色</th></tr></thead><tbody>${dlRows||'<tr><td colspan="4" style="color:var(--text-muted);text-align:center;padding:20px">暫無截止日期</td></tr>'}</tbody></table>`;
+
+  // Roles tab
+  const roleOrder=['principal','vice_principal','department_head','teacher','eo_admin','supplier'];
+  const roleName=ROLE_NAMES;
+  document.getElementById('dtc-roles').innerHTML=`<div class="role-accordion">${roleOrder.map(r=>{
+    const info=d.roles?.[r]||{r:false,pts:[],acts:[]};
+    const isCurrent=r===S.role;
+    return `<div class="role-card${isCurrent?' current-role':''}">
+      <div class="role-card-hdr" onclick="this.nextElementSibling.classList.toggle('open')">
+        <span class="role-card-name">${roleName[r]||r}${isCurrent?' ← 目前角色':''}</span>
+        <span class="role-tag ${info.r?'rt-yes':'rt-no'}">${info.r?'相關':'不相關'}</span>
+      </div>
+      <div class="role-card-body${isCurrent?' open':''}">
+        ${info.pts?.length?`<div class="sec-lbl" style="margin-top:8px">重點事項</div><ul class="kp-list">${info.pts.map(p=>`<li>${p}</li>`).join('')}</ul>`:''}
+        ${info.acts?.length?`<div class="sec-lbl">行動清單</div><ul class="kp-list">${info.acts.map(a=>`<li>${a}</li>`).join('')}</ul>`:''}
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+
+  // Diff tab
+  if(d.diff&&d.diff.changes){
+    document.getElementById('dtc-diff').innerHTML=`
+      <div class="info-block" style="margin-bottom:12px">${d.diff.summary||'本通告相對上一版本的主要變更：'}</div>
+      <div class="change-list">${d.diff.changes.map(c=>`<div class="change-item">
+        <div class="ct-badge ${c.type==='add'?'ct-add':c.type==='del'?'ct-del':'ct-mod'}">${c.type==='add'?'新':c.type==='del'?'刪':'改'}</div>
+        <div style="flex:1">
+          <div style="font-weight:600;font-size:12px;margin-bottom:5px">${c.field}</div>
+          ${c.old?`<div class="diff-pane"><div class="diff-col old"><div class="diff-col-hdr">舊版</div>${c.old}</div><div class="diff-col new"><div class="diff-col-hdr">新版</div>${c.new}</div></div>`:`<div style="font-size:12px;color:var(--text)">${c.new}</div>`}
+        </div>
+      </div>`).join('')}</div>`;
+  } else {
+    document.getElementById('dtc-diff').innerHTML=`<div class="empty-state"><div class="es-icon">🔄</div><div class="es-text">此通告為首次發布，無版本比較資料</div></div>`;
+  }
+
+  // open panel
+  document.getElementById('detailPanel').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+  switchDTab('summary', document.querySelector('.d-tab'));
+  renderOverview();
+}
+
+function closeDetail(){
+  document.getElementById('detailPanel').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+  S.currentDetailId=null;
+}
+function switchDTab(name,btn){
+  document.querySelectorAll('.d-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.d-content').forEach(c=>c.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  const el=document.getElementById('dtc-'+name); if(el) el.classList.add('active');
+}
+
+/* ============================================================
+   EXPORT
+   ============================================================ */
+function exportExcel(){
+  const fd=filteredData();
+  const rows=[['通告號','標題','日期','影響','行動類型','截止日期','金額類型','金額']];
+  fd.forEach(d=>{
+    const g=d.grant_info;
+    rows.push([d.number,d.title,d.date,d.impact,d.compliance,getSoonestDeadline(d)||'',g?.type||'',g?.amount_label||'']);
+  });
+  const ws=rowsToSheet(rows);
+  downloadCsv(ws,'EDB_Circulars_'+new Date().toISOString().slice(0,10)+'.csv');
+  showToast('已匯出 '+fd.length+' 條通告');
+}
+function exportResourceExcel(){
+  const grants=DATA.filter(d=>d.grant_info&&d.grant_info.type!=='none');
+  const rows=[['通告號','標題','金額類型','金額','申請截止','申請狀態']];
+  grants.forEach(d=>{
+    const g=d.grant_info;
+    const dl=d.deadlines.find(x=>x.type==='apply_deadline');
+    rows.push([d.number,d.title,g.type,g.amount_label||'',dl?.date||'',S.applyStatuses[d.id]||'pending']);
+  });
+  downloadCsv(rowsToSheet(rows),'EDB_Resources_'+new Date().toISOString().slice(0,10)+'.csv');
+  showToast('已匯出 '+grants.length+' 條資源申請記錄');
+}
+function rowsToSheet(rows){ return rows.map(r=>r.map(c=>'"'+(c||'').toString().replace(/"/g,'""')+'"').join(',')).join('\n'); }
+function downloadCsv(csv,name){ const a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv); a.download=name; a.click(); }
+function printDetail(){
+  if(S.currentDetailId===null){ showToast('請先開啟一條通告'); return; }
+  window.print();
+}
+
+/* ============================================================
+   SETTINGS UI
+   ============================================================ */
+function applySettingsUI(){
+  ['dark','light','auto'].forEach(x=>{ const el=document.getElementById('opt-'+x); if(el) el.classList.toggle('active',x===S.theme); });
+  ['standard','wide','compact'].forEach(x=>{ const el=document.getElementById('opt-'+x); if(el) el.classList.toggle('active',x===S.layout); });
+  [3,7,14].forEach(x=>{ const el=document.getElementById('opt-alert'+x); if(el) el.classList.toggle('active',+x===+S.alertDays); });
+  document.getElementById('showDoneBtn').textContent=S.showDone?'開':'關';
+  document.getElementById('showExpiredBtn').textContent=S.showExpired?'開':'關';
+  const isMock = DATA.filter(d=>d.id<10).length===MOCK.length&&DATA.filter(d=>d.id<10).every((d,i)=>d.id===MOCK[i]?.id);
+  // dev page data status
+  const devDs=document.getElementById('devDataStatus'); if(devDs){ devDs.textContent=isMock?'⚠️ 模擬數據':'✅ 已載入'; devDs.className='badge '+(isMock?'b-yellow':'b-green'); }
+  const devDc=document.getElementById('devDataCount'); if(devDc) devDc.textContent=DATA.length;
+  const devMb=document.getElementById('devMockBadge'); if(devMb) devMb.style.display=isMock?'':'none';
+  const fr=document.getElementById('fontRange'); if(fr) fr.value=S.fontSize;
+}
+function setAlertDays(n){ S.alertDays=n; lsSet('edb_alert_days',n); [3,7,14].forEach(x=>{ const el=document.getElementById('opt-alert'+x); if(el) el.classList.toggle('active',x===n); }); renderDlBar(); renderOverview(); }
+function toggleShowDone(){ S.showDone=!S.showDone; lsSet('edb_show_done',S.showDone); document.getElementById('showDoneBtn').textContent=S.showDone?'開':'關'; renderOverview(); }
+function toggleShowExpired(){ S.showExpired=!S.showExpired; lsSet('edb_show_expired',S.showExpired); document.getElementById('showExpiredBtn').textContent=S.showExpired?'開':'關'; renderOverview(); }
+function clearAllSettings(){ if(!confirm('確定清除所有本地設定及記錄？')) return; localStorage.clear(); location.reload(); }
+
+/* ============================================================
+   DEV PAGE
+   ============================================================ */
+let _devClickTs=[];
+function devVersionClick(){
+  const now=Date.now();
+  _devClickTs=_devClickTs.filter(t=>now-t<2000);
+  _devClickTs.push(now);
+  if(_devClickTs.length>=5){ openDevPage(); _devClickTs=[]; }
+}
+function openDevPage(){
+  document.getElementById('devPage').classList.add('open');
+  devRefreshLs();
+  document.getElementById('devCount').textContent=DATA.length;
+}
+function closeDevPage(){ document.getElementById('devPage').classList.remove('open'); }
+function devRefreshLs(){
+  const pre=document.getElementById('devLsPre');
+  const keys=['edb_role','edb_theme','edb_palette','edb_layout','edb_fontsize','edb_lang','edb_alert_days','edb_show_done','edb_show_expired','edb_bookmarks','edb_pinned','edb_statuses','edb_apply_statuses'];
+  let txt='';
+  keys.forEach(k=>{ const v=localStorage.getItem(k); if(v!==null) txt+=k+': '+v+'\n'; });
+  pre.textContent=txt||'（無記錄）';
+}
+function devClearLs(){ if(!confirm('清除所有 localStorage？')) return; localStorage.clear(); devRefreshLs(); showToast('localStorage 已清除'); }
+function devSetModel(v){ showToast('模型設定為：'+v+'（後端生效）'); }
+function devSetPath(v){ showToast('路徑設定為：'+v+'（重新載入後生效）'); }
+
+/* ============================================================
+   SHORTCUTS MODAL
+   ============================================================ */
+function showScModal(){ document.getElementById('scModal').classList.add('open'); }
+function closeScModal(){ document.getElementById('scModal').classList.remove('open'); }
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+let _toastTimer=null;
+function showToast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(_toastTimer); _toastTimer=setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+/* ============================================================
+   KEYBOARD SHORTCUTS
+   ============================================================ */
+function initShortcuts(){
+  document.addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT'||e.target.tagName==='TEXTAREA') return;
+    const k=e.key;
+    if(k==='Escape'){ closeDetail(); closeScModal(); closeDevPage(); }
+    if(k==='?'){ showScModal(); return; }
+    if(k==='/'){ e.preventDefault(); document.getElementById('searchInput').focus(); return; }
+    if(k==='d'||k==='D'){ cycleTheme(); showToast('主題：'+(S.theme==='dark'?'🌙 深色':S.theme==='light'?'☀️ 淺色':'⚙️ 自動')); return; }
+    const roles=['principal','vice_principal','department_head','teacher','eo_admin','supplier'];
+    const idx=parseInt(k)-1;
+    if(idx>=0&&idx<6){ setRole(roles[idx]); showToast('角色：'+getRoleName(roles[idx])); }
+  });
+}
+
+/* ============================================================
+   DATA LOADING
+   ============================================================ */
+async function loadData(){
+  const path = (()=>{ try{ return lsGet('edb_json_path','./circulars.json'); }catch(e){ return './circulars.json'; } })();
+  try {
+    const res=await fetch(path);
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const json=await res.json();
+    DATA=[...(json.circulars||json), ...REFERENCE_CIRCULARS];
+    showToast('已載入 '+DATA.length+' 條通告');
+  } catch(e){
+    DATA=[...MOCK, ...REFERENCE_CIRCULARS];
+  }
+  // Pre-set pinned for reference circulars if never set before
+  if(!localStorage.getItem('edb_pinned')){
+    REFERENCE_CIRCULARS.forEach(d=>{ S.pinned[d.id]=true; });
+    lsSet('edb_pinned',S.pinned);
+  }
+  renderAll();
+}
+
+/* ============================================================
+   RENDER ALL
+   ============================================================ */
+function renderAll(){
+  renderStatsBar();
+  renderOverview();
+  applySettingsUI();
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+function init(){
+  lsLoad();
+  // check ?dev=1
+  if(location.search.includes('dev=1')) openDevPage();
+  // apply visual settings
+  applyTheme();
+  applyPalette();
+  applyLayout();
+  applyFontSize();
+  applyLang();
+  // sync UI controls
+  document.getElementById('roleSelect').value=S.role;
+  updateRoleIndicator();
+  updateSupplierTab();
+  // keyboard shortcuts
+  initShortcuts();
+  // load data
+  loadData();
+  // calendar defaults
+  const now=new Date(); S.calYear=now.getFullYear(); S.calMonth=now.getMonth()+1;
+  // set view mode
+  if(S.viewMode==='list') setView('list');
+}
+
+window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

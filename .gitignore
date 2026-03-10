@@ -1,0 +1,62 @@
+# ============================================================
+# EDB-AI-Circular-System — .gitignore
+# ============================================================
+
+# ---- Python ------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ---- Data & Output (generated, not versioned) -------------
+circulars.json
+edb_data/
+edb_data/pdfs/
+*.json.bak
+
+# ---- Secrets -----------------------------------------------
+.env
+.env.*
+*.key
+*_api_key*
+openai_key.txt
+
+# ---- macOS -------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ---- IDE / Editor ------------------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.cursor/
+
+# ---- Backup snapshots (governance, keep locally) ----------
+dev/init_backup/
+
+# ---- Logs --------------------------------------------------
+*.log
+logs/
+
+# ---- Misc --------------------------------------------------
+*.tmp
+*.temp
+.cache/

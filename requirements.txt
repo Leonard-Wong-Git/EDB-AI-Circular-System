@@ -1,0 +1,22 @@
+# EDB 通告智能分析系統 — Python 依賴
+# EDB Circular AI Analysis System — Python dependencies
+#
+# 安裝方法 / Install:
+#   pip install -r requirements.txt
+#
+# Python 版本要求：>= 3.10
+
+# ── 網絡爬蟲 / Scraping ────────────────────────────────────────
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+
+# ── PDF 文字提取 / PDF text extraction ────────────────────────
+pdfplumber>=0.10.0
+
+# ── OpenAI LLM / Structured Output ────────────────────────────
+# gpt-5-nano 需要 openai >= 1.30.0 以支援 json_schema Structured Output
+openai>=1.30.0
+
+# ── 可選：效能提升 / Optional performance ──────────────────────
+# lxml 可加快 BeautifulSoup 解析速度
+lxml>=4.9.0
