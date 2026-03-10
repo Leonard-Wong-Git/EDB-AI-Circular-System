@@ -7,12 +7,52 @@
 
 ## [Unreleased]
 
-### Planned — v0.3.0-backend
-- `edb_scraper.py` 後端管線
-- EDB ASP.NET WebForms POST 抓取（含 ViewState 處理）
-- pdfplumber PDF 全文提取
-- gpt-5-nano LLM 分析（json_schema Structured Output）
-- `circulars.json` v2 格式輸出
+### Planned — v1.0.0-release
+- 整合測試：真實 circulars.json 與 Dashboard 聯調驗收
+- 更多天數通告爬取（--days 90 / 365）
+- 定期自動更新（cron / 排程）
+- Mobile 優化（A6 批次）
+
+---
+
+## [v0.3.0-backend] — 2026-03-10
+
+### 里程碑：後端管線完成 + 真實數據 Dashboard 驗證 ✅
+
+#### Added
+- `edb_scraper.py` — 完整後端管線（v0.3.0，450+ 行）
+  - EDB ASP.NET WebForms POST 抓取（ViewState + 實測字段名稱）
+  - pdfplumber PDF 全文提取（C.pdf 繁中優先，上限 8,000 chars）
+  - gpt-5-nano LLM 分析（json_schema Structured Output，temperature=1 固定）
+  - 增量模式（--llm-only 跳過已分析通告）
+  - PDF 快取（.edb_cache/）
+  - CLI：--days / --output / --llm-only / --model / --dry-run / -v
+- `requirements.txt` — Python 依賴（requests / beautifulsoup4 / pdfplumber / openai / lxml）
+- `test_llm.py` — LLM API 診斷工具（3 階段測試）
+- `debug_edb_html.py` — EDB 網站 POST 診斷工具
+- `parse_form.py` — ASP.NET 表單結構解析工具
+- `parse_structure.py` — 通告 DOM 結構分析工具
+- `parse_row.py` — 完整 row 結構解析工具
+- `dev/tools/` — 診斷工具資料夾（保留備用）
+
+#### Fixed（後端調試過程）
+- EDB POST 表單字段全部修正（ContentPlaceHolder1 → MainContentPlaceHolder，日期/按鈕字段名稱）
+- `_parse_list()` 完整重寫（按真實 HTML 結構：td.circularResultRow + div.circulars_result_remark）
+- `_abs_url()` 改用 urljoin 正確解析 `../` 相對路徑
+- `max_tokens` → `max_completion_tokens`（gpt-5-nano 推理模型要求）
+- `"system"` role → `"developer"` role（gpt-5-nano 推理模型要求）
+- `max_completion_tokens` 4096 → 16000（推理 tokens 消耗大）
+- `datetime.utcnow()` → `datetime.now(timezone.utc)`（消除 DeprecationWarning）
+
+#### Verified（實測通過）
+- Dry-run：14 條真實 EDB 通告（2026-02 至 2026-03）+ PDF 提取 ✅
+- 完整 LLM 分析：EDBCM030/2026 high/721chars，EDBCM026/2026 mid/462chars ✅
+- Dashboard 真實數據整合：EDBCM030（HK$800,000 今天截止）正確顯示 ✅
+- GitHub：tag v0.3.0-backend 推送成功（52 objects，11.35 MiB）✅
+
+#### Technical
+- gpt-5-nano 已確認為推理模型（temperature=1, developer role, max_completion_tokens=16000）
+- EDB HTML 結構：3 cells per row，無 detail_url，PDF C/E/S 三語
 
 ---
 

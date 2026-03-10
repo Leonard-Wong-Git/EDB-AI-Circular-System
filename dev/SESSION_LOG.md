@@ -674,3 +674,176 @@
 關鍵規則：gpt-5-nano temperature=1 固定（不可更改）
 EDB HTML 結構：見 SESSION_HANDOFF Known Risks #5
 ```
+
+---
+
+## 2026-03-10（續）
+
+1. Agent & Session ID: Claude_20260310_BE04
+2. Task summary: gpt-5-nano LLM 修正（developer role + max_completion_tokens）+ 完整管線通過 + GitHub 推送
+3. Layer classification: Product / System Layer（後端 LLM 調試 + 發布）
+4. Source triage: OpenAI API 錯誤訊息驅動修正；Mac Terminal 實測驗證
+5. Files changed:
+   - `edb_scraper.py`（更新：max_tokens→max_completion_tokens，system→developer role，tokens 4096→16000）
+   - `test_llm.py`（更新：同步修正 + 增加 developer role）
+   - `dev/SESSION_HANDOFF.md`（更新：v0.3.0-backend 完成標記 + LLM 規則補充）
+   - `dev/SESSION_LOG.md`（本條目）
+6. Completed:
+   - 修正 `max_tokens` → `max_completion_tokens`（gpt-5-nano 推理模型要求）
+   - 修正 `"system"` → `"developer"` role（推理模型要求）
+   - 修正 `max_completion_tokens` 4096 → 16000（推理 tokens 消耗大）
+   - test_llm.py Test 2 ✅ Test 3 ✅（finish_reason: stop，1675 chars）
+   - 完整 LLM 執行成功：EDBCM030 high/721chars，EDBCM026 mid/462chars ✅
+   - GitHub force push 成功（52 objects，11.35 MiB）✅
+   - tag v0.3.0-backend 推送成功 ✅
+7. Validation / QC:
+   - LLM 分析：summary 有內容，impact/tags 正確 ✅
+   - GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git tag v0.3.0-backend ✅
+8. Pending: 瀏覽器開啟 edb-dashboard.html 確認真實數據顯示
+9. Next priorities:
+   - ⭐ open edb-dashboard.html 確認真實 circulars.json 整合
+   - 根據真實數據微調 Dashboard（如有需要）
+   - v1.0.0-release
+10. Notes: gpt-5-nano 確認為推理模型（需要 developer role + max_completion_tokens + 16000 tokens）
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem: LLM 返回空內容（finish_reason: length，0 chars）
+2. Root Cause: gpt-5-nano 是推理模型，max_completion_tokens=4096 被推理過程耗盡；system role 不支援
+3. Fix: developer role + max_completion_tokens=16000
+4. Verification: test_llm.py Test 3 finish_reason=stop，1675 chars ✅；完整管線 LLM 成功 ✅
+5. Regression / rule update: 記錄於 SESSION_HANDOFF Known Risks #1（補充）
+
+### Consolidation / Retirement Record
+1. SSOT: SESSION_HANDOFF Known Risks #1 = gpt-5-nano 所有規則（temperature=1, developer role, max_completion_tokens=16000）
+2. Retired: system role（已替換為 developer）；max_tokens（已替換為 max_completion_tokens）
+
+---
+
+### Next Session Handoff Prompt — v8（已由 v9 取代）
+```
+專案：EDB 通告智能分析系統 (EDB-Circular-AI-analysis-system)
+狀態：v0.3.0-backend ✅ 完成並推送 GitHub，準備瀏覽器整合確認
+
+已完成（全部 ✅）：
+- Dashboard v0.2.1（2453行）✅
+- edb_scraper.py v0.3.0：14條真實通告 + PDF + LLM 分析 ✅
+- circulars.json 已生成（真實 EDB 數據）✅
+- GitHub tag v0.3.0-backend 已推送 ✅
+
+⚠️ gpt-5-nano 規則（全部已確認，不可更改）：
+  temperature=1（固定）
+  role="developer"（非"system"）
+  max_completion_tokens=16000（非max_tokens，非4096）
+
+⭐ 下一步：
+  open edb-dashboard.html  # 確認真實 circulars.json 正確顯示
+  # 如有顯示問題，調整 Dashboard JS 數據載入邏輯
+
+最終里程碑：v1.0.0-release（整合測試通過後）
+```
+
+---
+
+## 2026-03-10（Session Close — Claude_20260310_BE04）
+
+1. Agent & Session ID: Claude_20260310_BE04（Session Close）
+2. Task summary: Session 收尾打包 — CHANGELOG 更新、診斷工具歸檔、手動 git 指南、SESSION 文件完成
+3. Layer classification: Development Governance Layer（Session 管理）
+4. Source triage: 用戶指示（「session close，pack 好相關文件，建設新資料夾，git 上載方法詳細清楚，handover 去其他 session」）
+5. Files read: SESSION_HANDOFF.md（驗證），CHANGELOG.md（更新前確認）
+6. Files changed:
+   - `CHANGELOG.md`（更新：新增完整 v0.3.0-backend 節，含 Added/Fixed/Verified/Technical 四段）
+   - `dev/tools/`（新建資料夾）：
+     * `debug_edb_html.py`（移入）
+     * `parse_form.py`（移入）
+     * `parse_structure.py`（移入）
+     * `parse_row.py`（移入）
+     * `test_llm.py`（移入）
+   - `dev/GIT_PUSH_MANUAL.md`（新建：完整手動 git 推送指南，含 PAT 方法、版本號規則、常用指令）
+   - `dev/SESSION_HANDOFF.md`（更新：Last Session Record 完整補全，Open Priorities 全部標記完成）
+   - `dev/SESSION_LOG.md`（本條目 + v9 Handoff Prompt）
+7. Completed:
+   - CHANGELOG.md v0.3.0-backend 完整記錄（Added 7項 + Fixed 8項 + Verified 4項 + Technical 2項）✅
+   - 診斷工具從根目錄移至 `dev/tools/`（保持根目錄整潔）✅
+   - `dev/GIT_PUSH_MANUAL.md` 建立（無需依賴 push-to-github.sh，手動 PAT 推送全流程）✅
+   - SESSION_HANDOFF.md Last Session Record 完整更新（BE04 全部完成事項）✅
+   - SESSION_LOG.md v9 Handoff Prompt 完成（見下方）✅
+8. Validation / QC:
+   - CHANGELOG.md 結構正確（Keep-a-Changelog 格式）
+   - dev/tools/ 5 個工具文件確認存在
+   - GIT_PUSH_MANUAL.md 包含：標準推送流程、首次設定、PAT 生成步驟、版本號規則、現有 tags
+9. Pending: 在 Mac Terminal 執行最終 git push（含 dev/tools/ + GIT_PUSH_MANUAL.md + CHANGELOG 更新）
+10. Notes: 下個 session 的首要任務是 v1.0.0-release 整合測試
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem: N/A（session close 無 bug）
+2. Root Cause: —
+3. Fix: —
+4. Verification: —
+5. Regression / rule update: 無新規則；診斷工具歸檔政策記錄於本條目
+
+### Consolidation / Retirement Record
+1. Duplicate / drift: 無
+2. SSOT: GIT_PUSH_MANUAL.md 為手動 git 推送的 SSOT（push-to-github.sh 仍保留作參考）
+3. Merged: 診斷工具集中於 dev/tools/
+4. Retired: v8 Handoff Prompt（由 v9 取代）
+5. Why: Session close 時清理工具文件，保持根目錄整潔
+
+---
+
+### Next Session Handoff Prompt — v9（最新版本 ✅，請用此版本）
+```
+專案：EDB 通告智能分析系統 (EDB-Circular-AI-analysis-system)
+狀態：v0.3.0-backend ✅ 完整完成 + GitHub 推送 + Session Close 打包完畢
+
+已完成（全部 ✅）：
+- 治理框架 ✅ | 需求文件解析 ✅ | Mockup ✅ | 知識庫 ✅
+- Dashboard v0.2.1（2453行，13修訂）✅
+- edb_scraper.py v0.3.0-backend：完整管線（POST + PDF + LLM）✅
+- circulars.json：14條真實 EDB 通告 + LLM 分析 ✅
+- GitHub tag v0.3.0-backend ✅
+- Session Close 打包：CHANGELOG ✅ | dev/tools/ ✅ | GIT_PUSH_MANUAL.md ✅
+
+⚠️ gpt-5-nano 規則（全部已確認，不可更改）：
+  temperature=1（固定）
+  role="developer"（非 "system"）
+  max_completion_tokens=16000（非 max_tokens，非 4096）
+
+⚠️ EDB 網站字段（已從實測確認，不可更改）：
+  PlaceholderID : MainContentPlaceHolder
+  日期字段      : txtPeriodFrom / txtPeriodTo
+  搜尋按鈕      : btnSearch2
+  必要字段      : ctl00$currentSection="2", lbltab_circular="通告"
+
+⚠️ EDB HTML 通告結構（已從實測確認）：
+  每條通告 = <tr> 含 3× <td class="circularResultRow circulartRow">
+  Cell[0]=日期（"日期DD/MM/YYYY"），Cell[1]=標題+通告號，Cell[2]=PDF連結（C/E/S）
+  無 detail_url；PDF C.pdf（繁中）優先
+
+主要檔案：
+  outputs/EDB-Circular-AI-analysis-system/
+  ├── edb-dashboard.html        ← 正式版 Dashboard v0.2.1
+  ├── edb_scraper.py            ← 後端管線 v0.3.0
+  ├── circulars.json            ← 14條真實通告（真實 LLM 分析）
+  ├── requirements.txt
+  ├── push-to-github.sh         ← 舊推送腳本（備用）
+  └── dev/
+      ├── SESSION_HANDOFF.md + SESSION_LOG.md
+      ├── GIT_PUSH_MANUAL.md    ← ⭐ 新版手動 git 推送指南
+      ├── v0.2.0-FRONTEND-SPEC.md
+      ├── tools/                ← 診斷工具（debug/parse/test）
+      └── knowledge/[9 個知識庫文件]
+
+⭐ 下一步（v1.0.0-release）：
+  1. 在瀏覽器開啟 edb-dashboard.html，確認 circulars.json 真實數據正確顯示
+  2. 如有顯示問題，微調 Dashboard JS 數據載入邏輯
+  3. 整合驗收通過後，參照 dev/GIT_PUSH_MANUAL.md 推送 tag v1.0.0-release
+
+Mac Terminal 最終 git push（先推送 session close 文件）：
+  cd "<EDB 項目路徑>"
+  git add dev/tools/ dev/GIT_PUSH_MANUAL.md CHANGELOG.md dev/SESSION_HANDOFF.md dev/SESSION_LOG.md
+  git commit -m "chore: session close — pack tools, git manual, update docs"
+  # 然後按 GIT_PUSH_MANUAL.md 步驟推送
+
+關鍵規則：gpt-5-nano temperature=1 固定 | VM 網絡封鎖→Mac Terminal
+```

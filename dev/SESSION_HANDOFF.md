@@ -1,16 +1,16 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: v0.2.1-frontend + v0.3.0-backend(進行中) (2026-03-10) ← **當前版本**
+1. Version: **v0.3.0-backend** (2026-03-10) ← **當前版本** 🎉
 2. Core commands / features:
-   - `edb-dashboard.html` — 正式版單頁 Dashboard（2,453 行，13 項修訂 ✅ **已完成**）
-   - `edb_scraper.py` — 後端爬蟲 + LLM 分析管線（v0.3.0-backend，已建立，待測試）
-   - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具（已建立）
-   - `requirements.txt` — Python 依賴清單（已更新）
-   - `edb-dashboard-mockup.html` — 互動式 UI Mockup（保留作參考）
-3. Regression baseline: 26/26 QC 功能驗證通過（2026-03-10）；v0.2.1 13/13 修訂
-4. Release / merge status: v0.2.1-frontend 已完成，待 GitHub 推送（需 Mac Terminal，tag: v0.2.1-frontend）
-5. Active branch / environment: 本地輸出目錄 `mnt/outputs/EDB-Circular-AI-analysis-system/`（GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git，最新 tag: v0.1.0-mockup，待推送 v0.2.1-frontend）
+   - `edb-dashboard.html` — 正式版單頁 Dashboard（2,453 行，v0.2.1 ✅）
+   - `edb_scraper.py` — 後端爬蟲 + LLM 分析管線（v0.3.0-backend ✅ **已完成並通過測試**）
+   - `circulars.json` — 14 條真實 EDB 通告 + gpt-5-nano LLM 分析（已生成 ✅）
+   - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具
+   - `requirements.txt` — Python 依賴清單
+3. Regression baseline: dry-run 14/14 通告通過；LLM 分析成功（EDBCM030 high/721chars, EDBCM026 mid/462chars）
+4. Release / merge status: **v0.3.0-backend tag 已推送至 GitHub** ✅（52 objects, 11.35 MiB）
+5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git，最新 tag: **v0.3.0-backend** ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2 （ASP.NET WebForms）
    - OpenAI gpt-5-nano API
@@ -41,14 +41,11 @@
 4. ✅ ~~診斷 EDB POST 表單字段錯誤~~ **已修正（2026-03-10）**
 5. ✅ ~~`_parse_list()` 修正為真實 EDB HTML 結構~~ **已完成（2026-03-10）**
 6. ✅ ~~Dry-run 測試通過~~ **14 條通告 + PDF 提取 + 38.4KB circulars.json ✅ 已完成（2026-03-10）**
-7. **[下一步 ⭐]** 完整 LLM 執行：
-   ```bash
-   export OPENAI_API_KEY="sk-..."
-   python3 edb_scraper.py --days 30 --output ./circulars.json -v
-   ```
-8. **[下一步]** 在瀏覽器開啟 `edb-dashboard.html` → 手動載入 `circulars.json`（Dev 頁面或直接同目錄放置），確認真實數據顯示正常
-9. **[下一步]** Mac Terminal：`push-to-github.sh`（tag: v0.3.0-backend）
-10. 整合測試：`circulars.json` 與 Dashboard 聯調，驗收標準見需求文件第八節
+7. ✅ ~~完整 LLM 執行~~ **14 條通告 LLM 分析成功（2026-03-10）**
+8. ✅ ~~GitHub 推送 v0.3.0-backend~~ **已完成（2026-03-10）**
+9. **[下一步 ⭐]** 在瀏覽器開啟 `edb-dashboard.html`，確認真實 `circulars.json` 正確顯示
+10. **[下一步]** 整合調整：根據真實數據微調 Dashboard 顯示（如有需要）
+11. v1.0.0-release：整合測試通過後正式發布，驗收標準見需求文件第八節
 
 ## v0.2.0-frontend Key Decisions（用戶已確認 2026-03-10）
 - 所有設定存 localStorage（角色/主題/佈局/色調/字體/狀態/收藏）
@@ -74,6 +71,10 @@
 
 ## Known Risks / Blockers
 1. gpt-5-nano 必須 temperature=1，否則 400 Bad Request（已記錄於需求文件第五節）
+   **⚠️ 額外已確認規則（2026-03-10 實測）：**
+   - `max_tokens` → 必須用 `max_completion_tokens`（推理模型）
+   - `"system"` role → 必須用 `"developer"` role（推理模型）
+   - `max_completion_tokens` 最少 16000（推理 tokens 消耗大）
 2. EDB 網站需 POST + ViewState（GET 無效），解析用位置式（非 CSS class）
 3. `--llm-only` 必須搭配 `--output ./circulars.json`（避免路徑錯誤）
 4. **⚠️ EDB 表單字段已確認（2026-03-10 實測）：**
@@ -108,33 +109,42 @@ If the session's fix involves adding a new rule, first check whether the existin
 
 ## Last Session Record
 1. UTC date: 2026-03-10
-2. Session ID: Claude_20260310_BE03（HTML 結構解析 + _parse_list 修正 + dry-run ✅）
+2. Session ID: Claude_20260310_BE04（LLM 修正 + 完整管線通過 + Dashboard 真實數據驗證 + GitHub 推送 + Session Close）
 3. Completed:
-   - `debug_edb_html.py` 第二次執行（修正後）：POST 成功找到 14 條通告號碼 ✅
-   - 建立 `parse_structure.py`：分析通告號碼的實際 DOM 位置
-   - 建立 `parse_row.py`：解析完整 row 結構（所有 cells + links）
-   - 確認真實 HTML 結構（見 Known Risks #5）
-   - 完整重寫 `_parse_list()`：按真實結構解析（3 cells，circulars_result_remark，PDF 連結）
-   - 修正 `_abs_url()`：改用 `urljoin` 正確解析 `../` 相對路徑
-   - 修正 `datetime.utcnow()` deprecation warning → `datetime.now(timezone.utc)`
-   - **Dry-run 完全通過**：14 條通告 + PDF 提取 + circulars.json 38.4KB ✅
+   - 修正 `max_tokens` → `max_completion_tokens`（gpt-5-nano 推理模型要求）✅
+   - 修正 `"system"` → `"developer"` role（gpt-5-nano 推理模型要求）✅
+   - 修正 `max_completion_tokens` 4096 → 16000（推理 tokens 消耗大）✅
+   - 建立 `test_llm.py`：3 階段診斷，Test 3 通過（finish_reason=stop，1675 chars）✅
+   - **完整 LLM 執行成功**：EDBCM030/2026 high/721chars，EDBCM026/2026 mid/462chars ✅
+   - Dashboard 真實數據確認：EDBCM030（HK$800,000 今天截止）正確顯示 ✅
+   - GitHub force push + tag `v0.3.0-backend` 推送成功（52 objects，11.35 MiB）✅
+   - **Session Close**：
+     * `CHANGELOG.md` 更新（v0.3.0-backend 完整記錄）✅
+     * 診斷工具移至 `dev/tools/`（debug_edb_html.py, parse_form.py, parse_structure.py, parse_row.py, test_llm.py）✅
+     * `dev/GIT_PUSH_MANUAL.md` 新建（完整手動 git 推送指南 + PAT 方法）✅
+     * `dev/SESSION_HANDOFF.md` + `dev/SESSION_LOG.md` 更新（本記錄）✅
 4. Pending：
-   - 設定 `export OPENAI_API_KEY="sk-..."` 後執行完整 LLM 分析
-   - 在瀏覽器確認真實 circulars.json 載入 Dashboard 正常顯示
-   - GitHub 推送（tag: v0.3.0-backend）
+   - ⭐ 瀏覽器整合確認：在瀏覽器開啟 `edb-dashboard.html`，目視確認真實 circulars.json 顯示
+   - 根據真實數據微調 Dashboard（如有需要）
+   - **需在 Mac Terminal 執行最終 git push**（將 dev/tools/, GIT_PUSH_MANUAL.md, CHANGELOG 更新推送 GitHub）
 5. Next priorities (max 3):
-   - ⭐ 完整 LLM 執行：`python3 edb_scraper.py --days 30 --output ./circulars.json -v`
-   - 瀏覽器確認真實數據顯示
-   - GitHub 推送
-6. Risks / blockers: LLM 分析速度（14條 × ~30s/條 ≈ 7分鐘）；OPENAI_API_KEY 必須設定
+   - ⭐ v1.0.0-release 整合測試（前後端聯調驗收，見需求文件第八節）
+   - Dashboard 微調（如真實數據顯示有任何問題）
+   - 定期更新排程（cron / 排程，見 CHANGELOG Planned 節）
+6. Risks / blockers: 無新風險；舊風險已記錄於 Known Risks #1–#5
 7. Files materially changed:
-   - `edb_scraper.py`（更新：_parse_list 完整重寫 + _abs_url 修正 + timezone fix）
-   - `parse_structure.py`（新建：DOM 結構診斷）
-   - `parse_row.py`（新建：完整 row 結構解析）
+   - `edb_scraper.py`（更新：LLM 三項修正）
+   - `test_llm.py`（新建 → 移至 dev/tools/）
+   - `dev/tools/debug_edb_html.py`（移動）
+   - `dev/tools/parse_form.py`（移動）
+   - `dev/tools/parse_structure.py`（移動）
+   - `dev/tools/parse_row.py`（移動）
+   - `dev/GIT_PUSH_MANUAL.md`（新建）
+   - `CHANGELOG.md`（更新：v0.3.0-backend 完整記錄）
    - `dev/SESSION_HANDOFF.md`（更新）
    - `dev/SESSION_LOG.md`（更新）
-8. Validation summary: **dry-run 通過：14 circulars, PDF text extracted, 38.4KB JSON** ✅
-9. Consolidation actions taken: EDB HTML 結構記錄於 Known Risks #5（SSOT）
+8. Validation summary: **完整管線通過：14 circulars + PDF + LLM 分析 + GitHub v0.3.0-backend tag** ✅
+9. Consolidation actions taken: gpt-5-nano 三項規則記錄於 Known Risks #1（SSOT）；診斷工具集中於 dev/tools/
 
 ---
 
