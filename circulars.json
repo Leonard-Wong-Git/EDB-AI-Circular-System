@@ -1,15 +1,169 @@
 {
-  "generated_at": "2026-03-10T23:36:36Z",
+  "generated_at": "2026-03-11T08:42:54Z",
   "model": "gpt-5-nano",
   "temperature": 1,
   "range": "school-year (from 2025-09-01)",
   "date_from": "2025-09-01",
-  "date_to": "2026-03-10",
+  "date_to": "2026-03-11",
   "days": 30,
-  "count": 104,
+  "count": 105,
   "circulars": [
     {
       "id": 0,
+      "number": "EDBCM041/2026",
+      "type": "EDBCM",
+      "date": "2026-03-11",
+      "isNew": true,
+      "title": "《「一國兩制」下香港維護國家安全的實踐》白皮書 相關學與教資源",
+      "official": "檔 號 ： 0001-0150-8060-9095-0030-0005-P001\n教育局通函第 41/2026 號\n分發名單：各官立、資助（包括特殊學 副本送：各組主管—備考\n校）、按位津貼及直接資助計\n劃中小學校長\n《「一國兩制」下香港維護國家安全的實踐》白皮書\n相關學與教資源\n摘要\n本通函旨在通知各中小學校長和教師有關上述學與教資源事宜。\n背景\n2. 國務院於 2026 年 2 月 10 日發布《「一國兩制」下香港維護國家安全\n的實踐》白皮書（《白皮書》），全面總結香港維護國家安全的實踐歷程和經\n驗啟示，正本清源、凝聚共識，以高水平安全護航「一國兩制」事業高質\n量發展。為此，教育局為師生提供相關學與教資源，讓他們深入了解《白\n皮書》的重要內容，增強國家安全意識和責任感。\n詳情\n3. 教育局於去年已公布更新版《香港國家安全教育課程框架》（2025）\n（《課程框架》）和 27 個科目的國家安全教育課程框架，涵蓋八個學習領域\n和公民與社會發展科，為教師提供更清晰和全面的指引，幫助學校在現行\n國家安全教育的良好基礎上，進一步推展和落實國家安全教育。\n4. 《課程框架》以及現行小學人文科、初",
+      "impact": "mid",
+      "compliance": "informational",
+      "urgency": "low",
+      "scope": "both_sec_pri",
+      "topics": [
+        "curriculum",
+        "student",
+        "activity"
+      ],
+      "tags": [
+        "國家安全教育",
+        "白皮書資源",
+        "學與教資源",
+        "校本落實",
+        "課程框架"
+      ],
+      "grant_info": {
+        "type": "none",
+        "amount_hkd": null,
+        "amount_label": null,
+        "resource_value_hkd": null,
+        "note": ""
+      },
+      "summary": "背景：2026年2月10日，中國國務院發布《一國兩制下香港維護國家安全的實踐》白皮書，旨在總結香港在維護國家安全方面的經驗與啟示，提升國家安全教育的水平與覆蓋。教育局基於已公布的更新版《香港國家安全教育課程框架》（2025）及涵蓋27個科目的學與教框架，整合白皮書內容，製作相關資源供師生學習，並於分階段上載至教育局網站，協助學校在現行課程基礎上推進國家安全教育。學校亦可參考教育局國家安全教育資源網頁，靈活將白皮書要點融入日常教學、早會、展覽及比賽等活動，提升學生國家安全意識與責任感。若有查詢，可致電提供的聯絡人；附件列出若干資源及二維碼、學科對應內容與教學活動建議，供學校參考使用。整體目標是讓學校在現有課程框架下，系統性地落實國家安全教育，促進學生對憲法、基本法及國家安全教育要點的理解與公民意識的養成，為香港與國家的長遠發展奠定穩固基礎。",
+      "roles": {
+        "principal": {
+          "r": true,
+          "pts": [
+            "公布及推動資源使用",
+            "指導校內落實與監督進度",
+            "提供諮詢以促進整體落地"
+          ],
+          "acts": [
+            "公佈本通函內容，指導學校使用學與教資源",
+            "協調校方落實資源於課程與活動中"
+          ]
+        },
+        "vice_principal": {
+          "r": true,
+          "pts": [
+            "協助推動資源落實",
+            "監督課程整合與進度",
+            "協調跨科目運用"
+          ],
+          "acts": [
+            "協助校長推動資源落實方案",
+            "協調科目組落實資源內容"
+          ]
+        },
+        "department_head": {
+          "r": true,
+          "pts": [
+            "協助科目組整合課程內容",
+            "推動本單位相關教學活動",
+            "回饋使用情況以改善資料"
+          ],
+          "acts": [
+            "協助科目組整合白皮書要點於課程中",
+            "推動科內活動以融入資源內容"
+          ]
+        },
+        "teacher": {
+          "r": true,
+          "pts": [
+            "參考資源融入課堂教學",
+            "提升學生國家安全意識",
+            "使用資源網頁支援教學"
+          ],
+          "acts": [
+            "於適當課程中融入白皮書內容",
+            "參考國家安全教育資源網頁設計教學活動"
+          ]
+        },
+        "eo_admin": {
+          "r": true,
+          "pts": [
+            "協調跨部門資源分發",
+            "建立使用指引與追蹤機制",
+            "提供諮詢協助"
+          ],
+          "acts": [
+            "協調部門資源落地與清單更新",
+            "建立學校層面的使用指引"
+          ]
+        },
+        "supplier": {
+          "r": false,
+          "pts": [],
+          "acts": []
+        }
+      },
+      "deadlines": [
+        {
+          "date": "2026-03-11",
+          "desc": "公眾知悉及生效日期",
+          "type": "awareness_deadline",
+          "roles": [
+            "principal",
+            "vice_principal",
+            "department_head",
+            "teacher",
+            "eo_admin",
+            "supplier"
+          ],
+          "label": "知悉日期"
+        }
+      ],
+      "actions": [
+        {
+          "text": "公布本次通告內容，指導學校使用相關學與教資源，協調校本推動安排。",
+          "role": "principal",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "協助跨科目資源落地，更新校內資源清單，建立資源使用指引與監控機制。",
+          "role": "eo_admin",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "協助科目組整合課程內容，將白皮書要點融入相關科目教學與活動。",
+          "role": "department_head",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "教師於課堂及學生活動中，靈活使用白皮書內容，參考資源網頁提升學生國家安全意識。",
+          "role": "teacher",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "協助追蹤資源使用情況，將反饋回校長與課程發展處，促進持續改進。",
+          "role": "vice_principal",
+          "dl": null,
+          "note": ""
+        }
+      ],
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26041C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26041E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26041S.pdf"
+      ]
+    },
+    {
+      "id": 1,
       "number": "EDBCM045/2026",
       "type": "EDBCM",
       "date": "2026-03-09",
@@ -160,10 +314,15 @@
           "note": "如需多於4張海報，請於(iv)/(v)欄位填寫需求"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26045C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26045E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26045S.pdf"
+      ]
     },
     {
-      "id": 1,
+      "id": 2,
       "number": "EDBCM030/2026",
       "type": "EDBCM",
       "date": "2026-03-05",
@@ -452,10 +611,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26030C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26030E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26030S.pdf"
+      ]
     },
     {
-      "id": 2,
+      "id": 3,
       "number": "EDBCM026/2026",
       "type": "EDBCM",
       "date": "2026-03-04",
@@ -654,10 +818,15 @@
           "note": "查詢處理"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26026C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26026E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26026S.pdf"
+      ]
     },
     {
-      "id": 3,
+      "id": 4,
       "number": "EDBCM036/2026",
       "type": "EDBCM",
       "date": "2026-03-02",
@@ -860,10 +1029,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26036C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26036E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26036S.pdf"
+      ]
     },
     {
-      "id": 4,
+      "id": 5,
       "number": "EDBCM040/2026",
       "type": "EDBCM",
       "date": "2026-03-02",
@@ -1174,10 +1348,15 @@
             "new": "新增3月研討會、4月更新、5/15、6/15通知、7/15提交等日程與程序"
           }
         ]
-      }
+      },
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26040C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26040E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26040S.pdf"
+      ]
     },
     {
-      "id": 5,
+      "id": 6,
       "number": "EDBCM032/2026",
       "type": "EDBCM",
       "date": "2026-03-02",
@@ -1437,10 +1616,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26032C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26032E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26032S.pdf"
+      ]
     },
     {
-      "id": 6,
+      "id": 7,
       "number": "EDBCM037/2026",
       "type": "EDBCM",
       "date": "2026-02-27",
@@ -1593,10 +1777,15 @@
           "note": "提供專門的諮詢渠道"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26037C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26037E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26037S.pdf"
+      ]
     },
     {
-      "id": 7,
+      "id": 8,
       "number": "EDBCM035/2026",
       "type": "EDBCM",
       "date": "2026-02-27",
@@ -1799,10 +1988,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26035C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26035E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26035S.pdf"
+      ]
     },
     {
-      "id": 8,
+      "id": 9,
       "number": "EDBCM025/2026",
       "type": "EDBCM",
       "date": "2026-02-16",
@@ -1953,10 +2147,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26025C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26025E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26025S.pdf"
+      ]
     },
     {
-      "id": 9,
+      "id": 10,
       "number": "EDBCM015/2026",
       "type": "EDBCM",
       "date": "2026-02-16",
@@ -2133,10 +2332,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26015C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26015E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26015S.pdf"
+      ]
     },
     {
-      "id": 10,
+      "id": 11,
       "number": "EDBCM031/2026",
       "type": "EDBCM",
       "date": "2026-02-13",
@@ -2287,10 +2491,15 @@
           "note": "以電郵通知格式通知中選學校"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26031C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26031E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26031S.pdf"
+      ]
     },
     {
-      "id": 11,
+      "id": 12,
       "number": "EDBCM019/2026",
       "type": "EDBCM",
       "date": "2026-02-13",
@@ -2450,10 +2659,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26019C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26019E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26019S.pdf"
+      ]
     },
     {
-      "id": 12,
+      "id": 13,
       "number": "EDBCM027/2026",
       "type": "EDBCM",
       "date": "2026-02-12",
@@ -2662,10 +2876,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26027C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26027E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26027S.pdf"
+      ]
     },
     {
-      "id": 13,
+      "id": 14,
       "number": "EDBCM033/2026",
       "type": "EDBCM",
       "date": "2026-02-10",
@@ -2851,10 +3070,14 @@
           "note": "結果通知及後續培訓安排"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26033C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26033S.pdf"
+      ]
     },
     {
-      "id": 14,
+      "id": 15,
       "number": "EDBCM007/2026",
       "type": "EDBCM",
       "date": "2026-02-03",
@@ -3010,10 +3233,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26007C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26007E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26007S.pdf"
+      ]
     },
     {
-      "id": 15,
+      "id": 16,
       "number": "EDBCM028/2026",
       "type": "EDBCM",
       "date": "2026-02-02",
@@ -3121,10 +3349,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26028C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26028E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26028S.pdf"
+      ]
     },
     {
-      "id": 16,
+      "id": 17,
       "number": "EDBCM023/2026",
       "type": "EDBCM",
       "date": "2026-02-02",
@@ -3552,10 +3785,15 @@
           "note": "若涉及外部設備或支援"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26023C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26023E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26023S.pdf"
+      ]
     },
     {
-      "id": 17,
+      "id": 18,
       "number": "EDBCM017/2026",
       "type": "EDBCM",
       "date": "2026-01-30",
@@ -3743,10 +3981,15 @@
           "note": "如天氣或行程調整，按營地安排執行"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26017C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26017E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26017S.pdf"
+      ]
     },
     {
-      "id": 18,
+      "id": 19,
       "number": "EDBCM010/2026",
       "type": "EDBCM",
       "date": "2026-01-28",
@@ -3911,10 +4154,13 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26010E.pdf"
+      ]
     },
     {
-      "id": 19,
+      "id": 20,
       "number": "EDBCM022/2026",
       "type": "EDBCM",
       "date": "2026-01-23",
@@ -4082,10 +4328,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26022C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26022E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26022S.pdf"
+      ]
     },
     {
-      "id": 20,
+      "id": 21,
       "number": "EDBCM020/2026",
       "type": "EDBCM",
       "date": "2026-01-16",
@@ -4222,10 +4473,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26020C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26020E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26020S.pdf"
+      ]
     },
     {
-      "id": 21,
+      "id": 22,
       "number": "EDBCM021/2026",
       "type": "EDBCM",
       "date": "2026-01-15",
@@ -4434,10 +4690,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26021C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26021E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26021S.pdf"
+      ]
     },
     {
-      "id": 22,
+      "id": 23,
       "number": "EDBCM008/2026",
       "type": "EDBCM",
       "date": "2026-01-15",
@@ -4581,10 +4842,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26008C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26008E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26008S.pdf"
+      ]
     },
     {
-      "id": 23,
+      "id": 24,
       "number": "EDBCM006/2026",
       "type": "EDBCM",
       "date": "2026-01-12",
@@ -4760,10 +5026,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26006C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26006E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26006S.pdf"
+      ]
     },
     {
-      "id": 24,
+      "id": 25,
       "number": "EDBCM005/2026",
       "type": "EDBCM",
       "date": "2026-01-12",
@@ -4964,10 +5235,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26005C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26005E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26005S.pdf"
+      ]
     },
     {
-      "id": 25,
+      "id": 26,
       "number": "EDBCM012/2026",
       "type": "EDBCM",
       "date": "2026-01-09",
@@ -5090,10 +5366,14 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26012C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26012E.pdf"
+      ]
     },
     {
-      "id": 26,
+      "id": 27,
       "number": "EDBCM011/2026",
       "type": "EDBCM",
       "date": "2026-01-09",
@@ -5240,10 +5520,14 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26011C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26011E.pdf"
+      ]
     },
     {
-      "id": 27,
+      "id": 28,
       "number": "EDBCM003/2026",
       "type": "EDBCM",
       "date": "2026-01-07",
@@ -5437,10 +5721,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26003C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26003E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26003S.pdf"
+      ]
     },
     {
-      "id": 28,
+      "id": 29,
       "number": "EDBCM014/2026",
       "type": "EDBCM",
       "date": "2026-01-06",
@@ -5596,10 +5885,15 @@
           "note": "變更須遵循註四及相關條件"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26014C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26014E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26014S.pdf"
+      ]
     },
     {
-      "id": 29,
+      "id": 30,
       "number": "EDBCM013/2026",
       "type": "EDBCM",
       "date": "2026-01-06",
@@ -5770,10 +6064,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26013C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26013E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26013S.pdf"
+      ]
     },
     {
-      "id": 30,
+      "id": 31,
       "number": "EDBCM016/2026",
       "type": "EDBCM",
       "date": "2026-01-02",
@@ -5923,10 +6222,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26016C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26016E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26016S.pdf"
+      ]
     },
     {
-      "id": 31,
+      "id": 32,
       "number": "EDBCM004/2026",
       "type": "EDBCM",
       "date": "2026-01-02",
@@ -6205,10 +6509,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26004C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26004E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26004S.pdf"
+      ]
     },
     {
-      "id": 32,
+      "id": 33,
       "number": "EDBCM222/2025",
       "type": "EDBCM",
       "date": "2025-12-19",
@@ -6399,10 +6708,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25222C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25222E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25222S.pdf"
+      ]
     },
     {
-      "id": 33,
+      "id": 34,
       "number": "EDBCM221/2025",
       "type": "EDBCM",
       "date": "2025-12-16",
@@ -6567,10 +6881,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25221C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25221E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25221S.pdf"
+      ]
     },
     {
-      "id": 34,
+      "id": 35,
       "number": "EDBCM218/2025",
       "type": "EDBCM",
       "date": "2025-12-15",
@@ -6751,10 +7070,15 @@
           "note": "代表參加"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25218C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25218E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25218S.pdf"
+      ]
     },
     {
-      "id": 35,
+      "id": 36,
       "number": "EDBCM213/2025",
       "type": "EDBCM",
       "date": "2025-12-15",
@@ -6963,10 +7287,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25213C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25213E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25213S.pdf"
+      ]
     },
     {
-      "id": 36,
+      "id": 37,
       "number": "EDBCM214/2025",
       "type": "EDBCM",
       "date": "2025-12-15",
@@ -7130,10 +7459,15 @@
           "note": "確保物流與供貨暢順"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25214C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25214E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25214S.pdf"
+      ]
     },
     {
-      "id": 37,
+      "id": 38,
       "number": "EDBCM207/2025",
       "type": "EDBCM",
       "date": "2025-12-15",
@@ -7296,10 +7630,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25207C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25207E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25207S.pdf"
+      ]
     },
     {
-      "id": 38,
+      "id": 39,
       "number": "EDBCM201/2025",
       "type": "EDBCM",
       "date": "2025-12-10",
@@ -7573,10 +7912,15 @@
           "note": "無需行動"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25201C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25201E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25201S.pdf"
+      ]
     },
     {
-      "id": 39,
+      "id": 40,
       "number": "EDBCM220/2025",
       "type": "EDBCM",
       "date": "2025-12-08",
@@ -7795,10 +8139,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25220C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25220E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25220S.pdf"
+      ]
     },
     {
-      "id": 40,
+      "id": 41,
       "number": "EDBCM217/2025",
       "type": "EDBCM",
       "date": "2025-12-08",
@@ -7987,10 +8336,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25217C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25217E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25217S.pdf"
+      ]
     },
     {
-      "id": 41,
+      "id": 42,
       "number": "EDBCM176/2025",
       "type": "EDBCM",
       "date": "2025-12-01",
@@ -8112,10 +8466,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25176C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25176E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25176S.pdf"
+      ]
     },
     {
-      "id": 42,
+      "id": 43,
       "number": "EDBCM216/2025",
       "type": "EDBCM",
       "date": "2025-11-28",
@@ -8310,10 +8669,15 @@
           "note": "適用於未參與前測的教師"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25216C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25216E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25216S.pdf"
+      ]
     },
     {
-      "id": 43,
+      "id": 44,
       "number": "EDBCM212/2025",
       "type": "EDBCM",
       "date": "2025-11-28",
@@ -8492,10 +8856,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25212C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25212E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25212S.pdf"
+      ]
     },
     {
-      "id": 44,
+      "id": 45,
       "number": "EDBCM208/2025",
       "type": "EDBCM",
       "date": "2025-11-28",
@@ -8696,10 +9065,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25208C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25208E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25208S.pdf"
+      ]
     },
     {
-      "id": 45,
+      "id": 46,
       "number": "EDBCM202/2025",
       "type": "EDBCM",
       "date": "2025-11-20",
@@ -8997,10 +9371,14 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25202C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25202S.pdf"
+      ]
     },
     {
-      "id": 46,
+      "id": 47,
       "number": "EDBCM215/2025",
       "type": "EDBCM",
       "date": "2025-11-20",
@@ -9171,10 +9549,15 @@
           "note": "物料與對接"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25215C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25215E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25215S.pdf"
+      ]
     },
     {
-      "id": 47,
+      "id": 48,
       "number": "EDBCM206/2025",
       "type": "EDBCM",
       "date": "2025-11-20",
@@ -9325,10 +9708,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25206C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25206E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25206S.pdf"
+      ]
     },
     {
-      "id": 48,
+      "id": 49,
       "number": "EDBCM197/2025",
       "type": "EDBCM",
       "date": "2025-11-20",
@@ -9486,10 +9874,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25197C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25197E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25197S.pdf"
+      ]
     },
     {
-      "id": 49,
+      "id": 50,
       "number": "EDBCM177/2025",
       "type": "EDBCM",
       "date": "2025-11-14",
@@ -9663,10 +10056,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25177C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25177E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25177S.pdf"
+      ]
     },
     {
-      "id": 50,
+      "id": 51,
       "number": "EDBCM205/2025",
       "type": "EDBCM",
       "date": "2025-11-11",
@@ -9832,10 +10230,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25205C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25205E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25205S.pdf"
+      ]
     },
     {
-      "id": 51,
+      "id": 52,
       "number": "EDBCM200/2025",
       "type": "EDBCM",
       "date": "2025-11-10",
@@ -9973,10 +10376,15 @@
           "note": "首月示例流程"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25200C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25200E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25200S.pdf"
+      ]
     },
     {
-      "id": 52,
+      "id": 53,
       "number": "EDBCM183/2025",
       "type": "EDBCM",
       "date": "2025-11-07",
@@ -10144,10 +10552,15 @@
           "note": "確保無遺漏的存檔與報告"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25183C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25183E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25183S.pdf"
+      ]
     },
     {
-      "id": 53,
+      "id": 54,
       "number": "EDBCM186/2025",
       "type": "EDBCM",
       "date": "2025-11-06",
@@ -10327,10 +10740,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25186C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25186E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25186S.pdf"
+      ]
     },
     {
-      "id": 54,
+      "id": 55,
       "number": "EDBCM204/2025",
       "type": "EDBCM",
       "date": "2025-11-06",
@@ -10541,10 +10959,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25204C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25204E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25204S.pdf"
+      ]
     },
     {
-      "id": 55,
+      "id": 56,
       "number": "EDBCM203/2025",
       "type": "EDBCM",
       "date": "2025-11-06",
@@ -10722,10 +11145,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25203C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25203E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25203S.pdf"
+      ]
     },
     {
-      "id": 56,
+      "id": 57,
       "number": "EDBCM179/2025",
       "type": "EDBCM",
       "date": "2025-11-04",
@@ -10904,10 +11332,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25179C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25179E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25179S.pdf"
+      ]
     },
     {
-      "id": 57,
+      "id": 58,
       "number": "EDBCM174/2025",
       "type": "EDBCM",
       "date": "2025-10-28",
@@ -11244,10 +11677,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25174C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25174E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25174S.pdf"
+      ]
     },
     {
-      "id": 58,
+      "id": 59,
       "number": "EDBCM198/2025",
       "type": "EDBCM",
       "date": "2025-10-27",
@@ -11357,10 +11795,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25198C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25198E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25198S.pdf"
+      ]
     },
     {
-      "id": 59,
+      "id": 60,
       "number": "EDBCM195/2025",
       "type": "EDBCM",
       "date": "2025-10-27",
@@ -11484,10 +11927,15 @@
           "note": "提高校本活動計劃的合規性與落實度"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25195C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25195E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25195S.pdf"
+      ]
     },
     {
-      "id": 60,
+      "id": 61,
       "number": "EDBCM196/2025",
       "type": "EDBCM",
       "date": "2025-10-24",
@@ -11632,10 +12080,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25196C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25196E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25196S.pdf"
+      ]
     },
     {
-      "id": 61,
+      "id": 62,
       "number": "EDBCM193/2025",
       "type": "EDBCM",
       "date": "2025-10-24",
@@ -11799,10 +12252,15 @@
           "note": "以附件與 sample 內容為媒介"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25193C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25193E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25193S.pdf"
+      ]
     },
     {
-      "id": 62,
+      "id": 63,
       "number": "EDBCM162/2025",
       "type": "EDBCM",
       "date": "2025-10-22",
@@ -12006,10 +12464,15 @@
           "note": "完成校方參與確認與資源安排"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25162C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25162E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25162S.pdf"
+      ]
     },
     {
-      "id": 63,
+      "id": 64,
       "number": "EDBCM192/2025",
       "type": "EDBCM",
       "date": "2025-10-20",
@@ -12175,10 +12638,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25192C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25192E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25192S.pdf"
+      ]
     },
     {
-      "id": 64,
+      "id": 65,
       "number": "EDBCM190/2025",
       "type": "EDBCM",
       "date": "2025-10-20",
@@ -12351,10 +12819,15 @@
           "note": "家長活動與參與培訓的結合"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25190C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25190E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25190S.pdf"
+      ]
     },
     {
-      "id": 65,
+      "id": 66,
       "number": "EDBCM189/2025",
       "type": "EDBCM",
       "date": "2025-10-20",
@@ -12520,10 +12993,15 @@
           "note": "確保場地與技術支持就緒"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25189C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25189E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25189S.pdf"
+      ]
     },
     {
-      "id": 66,
+      "id": 67,
       "number": "EDBCM182/2025",
       "type": "EDBCM",
       "date": "2025-10-16",
@@ -12663,10 +13141,15 @@
           "note": "電話2624 1000"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25182C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25182E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25182S.pdf"
+      ]
     },
     {
-      "id": 67,
+      "id": 68,
       "number": "EDBCM187/2025",
       "type": "EDBCM",
       "date": "2025-10-16",
@@ -12838,10 +13321,15 @@
           "note": "如有外部參與必須符合安全與教育宗旨"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25187C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25187E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25187S.pdf"
+      ]
     },
     {
-      "id": 68,
+      "id": 69,
       "number": "EDBCM157/2025",
       "type": "EDBCM",
       "date": "2025-10-15",
@@ -12994,10 +13482,15 @@
           "note": "確保申請流程順暢與資源分配"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25157C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25157E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25157S.pdf"
+      ]
     },
     {
-      "id": 69,
+      "id": 70,
       "number": "EDBCM191/2025",
       "type": "EDBCM",
       "date": "2025-10-15",
@@ -13178,10 +13671,15 @@
           "note": " contingency/exit procedure."
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25191C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25191E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25191S.pdf"
+      ]
     },
     {
-      "id": 70,
+      "id": 71,
       "number": "EDBCM180/2025",
       "type": "EDBCM",
       "date": "2025-10-13",
@@ -13358,10 +13856,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25180C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25180E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25180S.pdf"
+      ]
     },
     {
-      "id": 71,
+      "id": 72,
       "number": "EDBCM169/2025",
       "type": "EDBCM",
       "date": "2025-10-08",
@@ -13505,10 +14008,13 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25169E.pdf"
+      ]
     },
     {
-      "id": 72,
+      "id": 73,
       "number": "EDBCM184/2025",
       "type": "EDBCM",
       "date": "2025-10-06",
@@ -13652,10 +14158,15 @@
           "note": "主講人：劉智鵬教授；課程連結 CDI020251414。"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25184C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25184E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25184S.pdf"
+      ]
     },
     {
-      "id": 73,
+      "id": 74,
       "number": "EDBCM152/2025",
       "type": "EDBCM",
       "date": "2025-10-06",
@@ -13822,10 +14333,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25152C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25152E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25152S.pdf"
+      ]
     },
     {
-      "id": 74,
+      "id": 75,
       "number": "EDBCM138/2025",
       "type": "EDBCM",
       "date": "2025-10-02",
@@ -13972,10 +14488,15 @@
           "note": "完成年度透明度發布與歸檔"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25138C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25138E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25138S.pdf"
+      ]
     },
     {
-      "id": 75,
+      "id": 76,
       "number": "EDBCM147/2025",
       "type": "EDBCM",
       "date": "2025-09-29",
@@ -14174,10 +14695,15 @@
           "note": "無實際供應相關事項"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25147C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25147E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25147S.pdf"
+      ]
     },
     {
-      "id": 76,
+      "id": 77,
       "number": "EDBCM143/2025",
       "type": "EDBCM",
       "date": "2025-09-29",
@@ -14374,10 +14900,15 @@
           "note": "作好跨部門通訊與協調"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25143C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25143E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25143S.pdf"
+      ]
     },
     {
-      "id": 77,
+      "id": 78,
       "number": "EDBCM178/2025",
       "type": "EDBCM",
       "date": "2025-09-26",
@@ -14534,10 +15065,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25178C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25178E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25178S.pdf"
+      ]
     },
     {
-      "id": 78,
+      "id": 79,
       "number": "EDBCM168/2025",
       "type": "EDBCM",
       "date": "2025-09-25",
@@ -14650,10 +15186,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25168C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25168E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25168S.pdf"
+      ]
     },
     {
-      "id": 79,
+      "id": 80,
       "number": "EDBCM160/2025",
       "type": "EDBCM",
       "date": "2025-09-25",
@@ -14836,10 +15377,15 @@
           "note": "頒獎典禮當日亦舉行入圍作品的現場演繹"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25160C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25160E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25160S.pdf"
+      ]
     },
     {
-      "id": 80,
+      "id": 81,
       "number": "EDBCM171/2025",
       "type": "EDBCM",
       "date": "2025-09-23",
@@ -15034,10 +15580,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25171C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25171E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25171S.pdf"
+      ]
     },
     {
-      "id": 81,
+      "id": 82,
       "number": "EDBCM139/2025",
       "type": "EDBCM",
       "date": "2025-09-22",
@@ -15248,10 +15799,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25139C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25139E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25139S.pdf"
+      ]
     },
     {
-      "id": 82,
+      "id": 83,
       "number": "EDBCM159/2025",
       "type": "EDBCM",
       "date": "2025-09-19",
@@ -15443,10 +15999,14 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25159C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25159S.pdf"
+      ]
     },
     {
-      "id": 83,
+      "id": 84,
       "number": "EDBCM155/2025",
       "type": "EDBCM",
       "date": "2025-09-17",
@@ -15640,10 +16200,15 @@
           "note": "提供網頁及線上宣傳資源"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25155C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25155E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25155S.pdf"
+      ]
     },
     {
-      "id": 84,
+      "id": 85,
       "number": "EDBCM154/2025",
       "type": "EDBCM",
       "date": "2025-09-17",
@@ -15813,10 +16378,15 @@
           "note": "監督科內活動與跨部門協調"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25154C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25154E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25154S.pdf"
+      ]
     },
     {
-      "id": 85,
+      "id": 86,
       "number": "EDBCM141/2025",
       "type": "EDBCM",
       "date": "2025-09-16",
@@ -16064,10 +16634,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25141C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25141E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25141S.pdf"
+      ]
     },
     {
-      "id": 86,
+      "id": 87,
       "number": "EDBCM156/2025",
       "type": "EDBCM",
       "date": "2025-09-15",
@@ -16213,10 +16788,15 @@
           "note": "抽籤結果以教育局通知為準"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25156C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25156E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25156S.pdf"
+      ]
     },
     {
-      "id": 87,
+      "id": 88,
       "number": "EDBCM172/2025",
       "type": "EDBCM",
       "date": "2025-09-12",
@@ -16406,10 +16986,15 @@
           "note": "級別二頒獎禮暨學校分享"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25172C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25172E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25172S.pdf"
+      ]
     },
     {
-      "id": 88,
+      "id": 89,
       "number": "EDBCM164/2025",
       "type": "EDBCM",
       "date": "2025-09-12",
@@ -16579,10 +17164,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25164C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25164E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25164S.pdf"
+      ]
     },
     {
-      "id": 89,
+      "id": 90,
       "number": "EDBCM132/2025",
       "type": "EDBCM",
       "date": "2025-09-11",
@@ -16764,10 +17354,15 @@
           "note": "以後續公告為準"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25132C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25132E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25132S.pdf"
+      ]
     },
     {
-      "id": 90,
+      "id": 91,
       "number": "EDBCM129/2025",
       "type": "EDBCM",
       "date": "2025-09-10",
@@ -16950,10 +17545,15 @@
           "note": "正式提交申請材料"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25129C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25129E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25129S.pdf"
+      ]
     },
     {
-      "id": 91,
+      "id": 92,
       "number": "EDBCM173/2025",
       "type": "EDBCM",
       "date": "2025-09-09",
@@ -17115,10 +17715,14 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25173C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25173S.pdf"
+      ]
     },
     {
-      "id": 92,
+      "id": 93,
       "number": "EDBCM140/2025",
       "type": "EDBCM",
       "date": "2025-09-09",
@@ -17288,10 +17892,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25140C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25140E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25140S.pdf"
+      ]
     },
     {
-      "id": 93,
+      "id": 94,
       "number": "EDBCM149/2025",
       "type": "EDBCM",
       "date": "2025-09-08",
@@ -17473,10 +18082,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25149C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25149E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25149S.pdf"
+      ]
     },
     {
-      "id": 94,
+      "id": 95,
       "number": "EDBCM146/2025",
       "type": "EDBCM",
       "date": "2025-09-08",
@@ -17633,10 +18247,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25146C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25146E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25146S.pdf"
+      ]
     },
     {
-      "id": 95,
+      "id": 96,
       "number": "EDBCM135/2025",
       "type": "EDBCM",
       "date": "2025-09-08",
@@ -17911,10 +18530,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25135C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25135E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25135S.pdf"
+      ]
     },
     {
-      "id": 96,
+      "id": 97,
       "number": "EDBCM148/2025",
       "type": "EDBCM",
       "date": "2025-09-08",
@@ -18064,10 +18688,14 @@
           "note": "資訊查詢回覆"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25148C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25148S.pdf"
+      ]
     },
     {
-      "id": 97,
+      "id": 98,
       "number": "EDBCM144/2025",
       "type": "EDBCM",
       "date": "2025-09-08",
@@ -18229,10 +18857,15 @@
           "note": "不影響基本團費與最初核定費用。"
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25144C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25144E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25144S.pdf"
+      ]
     },
     {
-      "id": 98,
+      "id": 99,
       "number": "EDBCM131/2025",
       "type": "EDBCM",
       "date": "2025-09-08",
@@ -18420,10 +19053,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25131C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25131E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25131S.pdf"
+      ]
     },
     {
-      "id": 99,
+      "id": 100,
       "number": "EDBCM127/2025",
       "type": "EDBCM",
       "date": "2025-09-08",
@@ -18594,10 +19232,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25127C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25127E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25127S.pdf"
+      ]
     },
     {
-      "id": 100,
+      "id": 101,
       "number": "EDBCM101/2025",
       "type": "EDBCM",
       "date": "2025-09-08",
@@ -18835,10 +19478,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25101C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25101E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25101S.pdf"
+      ]
     },
     {
-      "id": 101,
+      "id": 102,
       "number": "EDBCM145/2025",
       "type": "EDBCM",
       "date": "2025-09-05",
@@ -19032,10 +19680,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25145C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25145E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25145S.pdf"
+      ]
     },
     {
-      "id": 102,
+      "id": 103,
       "number": "EDBCM158/2025",
       "type": "EDBCM",
       "date": "2025-09-01",
@@ -19200,10 +19853,15 @@
           "note": ""
         }
       ],
-      "diff": null
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25158C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25158E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25158S.pdf"
+      ]
     },
     {
-      "id": 103,
+      "id": 104,
       "number": "EDBCM151/2025",
       "type": "EDBCM",
       "date": "2025-09-01",
@@ -19362,7 +20020,12 @@
             "new": "自2025-09-01起，附錄列出的通告不再生效，現行有效通告以最新指引為準"
           }
         ]
-      }
+      },
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25151C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25151E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25151S.pdf"
+      ]
     }
   ]
 }
