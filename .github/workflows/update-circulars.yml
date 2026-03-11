@@ -1,0 +1,118 @@
+name: Update EDB Circulars
+
+# ============================================================
+# 自動更新 EDB 通告數據並部署至 GitHub Pages
+#
+# 觸發方式：
+#   1. 定時：每天 HKT 07:00（UTC 23:00 前一天）自動執行
+#   2. 手動：GitHub Actions 頁面點擊 "Run workflow"，可選模式
+#
+# 所需 Secret（Settings → Secrets → Actions）：
+#   OPENAI_API_KEY  ← 你的 OpenAI API 金鑰
+# ============================================================
+
+on:
+  schedule:
+    # 每天 HKT 07:00 = UTC 23:00（前一天）
+    - cron: '0 23 * * *'
+
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: '抓取模式 / Scrape mode'
+        required: false
+        default: 'school-year'
+        type: choice
+        options:
+          - school-year      # 本學年（9月1日至今）
+          - days-14          # 最近14天（快速增量更新）
+          - days-30          # 最近30天
+          - days-365         # 最近365天
+
+jobs:
+  update-and-deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write   # 允許 commit circulars.json 回 repo
+      pages: write      # 允許部署至 GitHub Pages
+      id-token: write   # GitHub Pages OIDC 驗證
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      # ── 1. 取出 repo ──────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. 設置 Python ────────────────────────────────────
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      # ── 3. 安裝依賴 ───────────────────────────────────────
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # ── 4. 解析模式參數 ───────────────────────────────────
+      - name: Resolve scrape arguments
+        id: mode
+        run: |
+          MODE="${{ github.event.inputs.mode || 'school-year' }}"
+          case "$MODE" in
+            school-year) ARGS="--school-year" ;;
+            days-14)     ARGS="--days 14" ;;
+            days-30)     ARGS="--days 30" ;;
+            days-365)    ARGS="--days 365" ;;
+            *)           ARGS="--school-year" ;;
+          esac
+          echo "args=$ARGS" >> $GITHUB_OUTPUT
+          echo "mode=$MODE" >> $GITHUB_OUTPUT
+          echo "Scrape mode: $MODE → args: $ARGS"
+
+      # ── 5. 執行 EDB 爬蟲 + LLM 分析 ──────────────────────
+      - name: Run EDB scraper
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          echo "Starting scraper: ${{ steps.mode.outputs.args }}"
+          python3 edb_scraper.py \
+            ${{ steps.mode.outputs.args }} \
+            --output ./circulars.json \
+            -v
+
+      # ── 6. Commit 更新後的 circulars.json ─────────────────
+      - name: Commit updated circulars.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add circulars.json
+          # 只有在有實際變更時才 commit（避免空 commit）
+          if git diff --staged --quiet; then
+            echo "No changes to circulars.json — skipping commit"
+          else
+            TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
+            COUNT=$(python3 -c "import json; d=json.load(open('circulars.json')); print(d.get('count',0))")
+            git commit -m "chore: auto-update circulars.json [$TIMESTAMP] ($COUNT circulars)"
+            git push
+            echo "Committed and pushed: $COUNT circulars"
+          fi
+
+      # ── 7. 上傳 Pages artifact ────────────────────────────
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # 部署整個 repo 根目錄（含 edb-dashboard.html + circulars.json）
+          path: '.'
+
+      # ── 8. 部署至 GitHub Pages ────────────────────────────
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

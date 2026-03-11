@@ -847,3 +847,83 @@ Mac Terminal 最終 git push（先推送 session close 文件）：
 
 關鍵規則：gpt-5-nano temperature=1 固定 | VM 網絡封鎖→Mac Terminal
 ```
+
+---
+
+## 2026-03-10（SESSION CLOSE — Claude_20260310_RE01）
+
+1. Agent & Session ID: Claude_20260310_RE01
+2. Task summary: v1.0.0 整合測試修復 + --school-year 功能 + GitHub Pages 部署配置 + Session Close
+3. Layer classification: Product / System Layer（整合修復 + 部署）
+4. Source triage: 整合測試發現 bug（title 污染、ID 碰撞）+ 用戶新需求（學年模式、公開部署）
+5. Files read: edb_scraper.py, edb-dashboard.html, CHANGELOG.md, .gitignore, SESSION_HANDOFF.md
+6. Files changed:
+   - `edb_scraper.py`（更新：title 污染修復 + school_year_start() + date_from + v1.0.0）
+   - `edb-dashboard.html`（更新：REFERENCE_CIRCULARS id 9001/9002/9003）
+   - `.github/workflows/update-circulars.yml`（新建）
+   - `index.html`（新建）
+   - `.gitignore`（更新）
+   - `CHANGELOG.md`（更新：v1.0.0-release + v1.0.1-hosting）
+   - `dev/SESSION_HANDOFF.md`（更新）
+   - `dev/SESSION_LOG.md`（本條目）
+7. Completed:
+   - title 污染修復 ✅ | REFERENCE_CIRCULARS ID 碰撞修復 ✅
+   - `school_year_start()` + `--school-year` + `date_from` 參數 ✅
+   - circulars.json 新增 range/date_from/date_to 欄位 ✅
+   - GitHub Actions workflow（每天 HKT 07:00 + 手動 4 模式）✅
+   - index.html + .gitignore 更新 ✅
+   - py_compile 語法驗證 ✅
+   - ⏳ 學年爬蟲執行中（用戶確認後補錄）
+8. Pending: 確認學年爬蟲結果 → GitHub Pages 一次性設定 → tag v1.0.1-hosting
+
+### Problem -> Root Cause -> Fix -> Verification
+1. title 含「摘要：」→ EDB content_div 直接文字節點包含摘要 → `re.sub(r"\s*摘要[：:].*$","",title)` → py_compile ✅
+2. REFERENCE_CIRCULARS id 碰撞 → 固定 id 10/11/12 與真實數據重疊 → 改為 9001/9002/9003 → 代碼審閱 ✅
+
+### Consolidation / Retirement Record
+1. Retired: v9 Handoff Prompt（由 v10 取代）
+
+---
+
+### Next Session Handoff Prompt — v10（最新版本 ✅，請用此版本）
+```
+專案：EDB 通告智能分析系統 (EDB-Circular-AI-analysis-system)
+狀態：v1.0.1-hosting 配置完成，學年爬蟲 ✅ 104條/834.5KB，待 GitHub Pages 設定
+
+已完成（全部 ✅）：
+- Dashboard v0.2.1（2453行）✅
+- edb_scraper.py v1.0.0：--school-year + title fix + ID fix ✅
+- GitHub Actions workflow + index.html + .gitignore 更新 ✅
+- ✅ 學年爬蟲完成：104 條通告，834.5KB circulars.json
+
+⚠️ gpt-5-nano 規則（不可更改）：
+  temperature=1 | role="developer" | max_completion_tokens=16000
+
+⚠️ EDB 字段 + HTML 結構：見 SESSION_HANDOFF Known Risks #4 + #5
+
+⭐ 下一步（按序）：
+  1. 在瀏覽器開啟 edb-dashboard.html，確認 104 條學年通告正確顯示
+  2. GitHub Pages 一次性設定（見下方步驟）
+  3. GitHub Pages 一次性設定（Mac Terminal + GitHub 網頁操作）：
+     a. git add . && git commit && git push（含 .github/workflows/, index.html, .gitignore 更新）
+     b. github.com/Leonard-Wong-Git/EDB-AI-Circular-System
+        → Settings → Secrets → Actions → New secret: OPENAI_API_KEY
+        → Settings → Pages → Source: GitHub Actions
+        → Actions → Update EDB Circulars → Run workflow → school-year
+  4. 確認公開 URL：https://leonard-wong-git.github.io/EDB-AI-Circular-System/
+
+完成後：
+  git tag v1.0.1-hosting
+  git push --force origin main && git push origin --tags
+  cp -r "." "../EDB-Circular-AI-analysis-system-snapshot-v1.0.1"
+
+主要檔案：
+  outputs/EDB-Circular-AI-analysis-system/
+  ├── edb-dashboard.html, edb_scraper.py, circulars.json
+  ├── index.html（新）← GitHub Pages 根 URL 跳轉
+  ├── .github/workflows/update-circulars.yml（新）← 自動更新
+  ├── requirements.txt, .gitignore（更新）
+  └── dev/ [SESSION_HANDOFF, SESSION_LOG, GIT_PUSH_MANUAL, tools/, knowledge/]
+
+關鍵規則：gpt-5-nano temperature=1 固定 | VM 網絡封鎖→Mac Terminal
+```

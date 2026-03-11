@@ -19,11 +19,20 @@ dist/
 build/
 .eggs/
 
-# ---- Data & Output (generated, not versioned) -------------
-circulars.json
+# ---- Data & Output -----------------------------------------
+# circulars.json is TRACKED — required for GitHub Pages hosting
+# !circulars.json  ← do NOT add this back to ignore list
 edb_data/
 edb_data/pdfs/
 *.json.bak
+
+# ---- PDF cache (large, regenerable, not versioned) ---------
+.edb_cache/
+
+# ---- Debug HTML snapshots (dev only) -----------------------
+debug_edb_GET.html
+debug_edb_POST.html
+debug_edb_info.txt
 
 # ---- Secrets -----------------------------------------------
 .env

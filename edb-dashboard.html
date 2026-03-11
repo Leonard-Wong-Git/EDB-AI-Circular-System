@@ -1406,7 +1406,7 @@ const MOCK = [
    ============================================================ */
 const REFERENCE_CIRCULARS = [
   {
-    id:10, number:"EDBCM004/2013", type:"EDBCM", date:"2013-01-15", isNew:false,
+    id:9001, number:"EDBCM004/2013", type:"EDBCM", date:"2013-01-15", isNew:false,
     title:"整筆撥款津貼學校的財務管理",
     official:"本通告就整筆撥款（LSG）津貼學校的財務管理提供全面指引，涵蓋撥款運用、賬目記錄、核數要求、廉潔守則及採購程序，為學校財務管理的核心參考文件。",
     impact:"high", compliance:"mandatory", urgency:"low",
@@ -1425,7 +1425,7 @@ const REFERENCE_CIRCULARS = [
     deadlines:[], actions:[], diff:null
   },
   {
-    id:11, number:"EDBCM019/2004", type:"EDBCM", date:"2004-03-01", isNew:false,
+    id:9002, number:"EDBCM019/2004", type:"EDBCM", date:"2004-03-01", isNew:false,
     title:"學校管治：學校管理委員會╱法團校董會的職能",
     official:"本通告闡明學校管理委員會及法團校董會的職能與責任，涵蓋學校行政、財務監督、教職員聘任及學校發展規劃，為學校管治的基礎參考文件。",
     impact:"mid", compliance:"mandatory", urgency:"low",
@@ -1444,7 +1444,7 @@ const REFERENCE_CIRCULARS = [
     deadlines:[], actions:[], diff:null
   },
   {
-    id:12, number:"EDBCM029/2012", type:"EDBCM", date:"2012-05-10", isNew:false,
+    id:9003, number:"EDBCM029/2012", type:"EDBCM", date:"2012-05-10", isNew:false,
     title:"防止在學校中發生性騷擾",
     official:"本通告提醒學校按《性別歧視條例》承擔責任，防止學校內發生性騷擾，並就制訂反性騷擾政策及申訴程序提供指引，為學校管理常備參考文件。",
     impact:"mid", compliance:"mandatory", urgency:"low",
@@ -2367,9 +2367,9 @@ function closeScModal(){ document.getElementById('scModal').classList.remove('op
    TOAST
    ============================================================ */
 let _toastTimer=null;
-function showToast(msg){
+function showToast(msg, duration=2500){
   const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
-  clearTimeout(_toastTimer); _toastTimer=setTimeout(()=>t.classList.remove('show'),2500);
+  clearTimeout(_toastTimer); _toastTimer=setTimeout(()=>t.classList.remove('show'),duration);
 }
 
 /* ============================================================
@@ -2399,9 +2399,17 @@ async function loadData(){
     if(!res.ok) throw new Error('HTTP '+res.status);
     const json=await res.json();
     DATA=[...(json.circulars||json), ...REFERENCE_CIRCULARS];
-    showToast('已載入 '+DATA.length+' 條通告');
+    showToast('已載入 ' + (json.circulars||json).length + ' 條通告');
   } catch(e){
     DATA=[...MOCK, ...REFERENCE_CIRCULARS];
+    // Show warning if likely caused by file:// protocol restriction
+    const isFileProtocol = location.protocol === 'file:';
+    const msg = isFileProtocol
+      ? '⚠️ 請用本地伺服器開啟（見說明）'
+      : '⚠️ 無法載入 circulars.json，顯示模擬數據';
+    showToast(msg, 6000);
+    console.warn('[loadData] fetch failed:', e.message,
+      isFileProtocol ? '— file:// protocol blocks fetch(). Run: python3 -m http.server 8080' : '');
   }
   // Pre-set pinned for reference circulars if never set before
   if(!localStorage.getItem('edb_pinned')){

@@ -7,11 +7,59 @@
 
 ## [Unreleased]
 
-### Planned — v1.0.0-release
-- 整合測試：真實 circulars.json 與 Dashboard 聯調驗收
-- 更多天數通告爬取（--days 90 / 365）
-- 定期自動更新（cron / 排程）
+### Planned — v1.1.0
 - Mobile 優化（A6 批次）
+- 自訂域名設定（CNAME）
+
+---
+
+## [v1.0.1-hosting] — 2026-03-10
+
+### 里程碑：GitHub Pages 公開部署配置 ✅
+
+#### Added
+- `.github/workflows/update-circulars.yml` — GitHub Actions 自動更新工作流程
+  - 定時：每天 HKT 07:00 自動執行（cron `0 23 * * *`）
+  - 手動：支援 workflow_dispatch，可選 school-year / days-14 / days-30 / days-365
+  - 自動 commit 更新後的 circulars.json 並部署至 GitHub Pages
+  - OPENAI_API_KEY 透過 GitHub Secrets 安全注入（不暴露於前端）
+- `index.html` — GitHub Pages 根 URL 自動跳轉至 edb-dashboard.html
+- `.gitignore` 更新：
+  - 移除 `circulars.json` 排除規則（現需 track 以供 Pages 服務）
+  - 新增 `.edb_cache/` 排除（PDF 快取，可重新生成，不納入版本控制）
+  - 新增 `debug_edb_*.html` 排除（本地診斷文件）
+
+#### Deployment
+- 公開 URL：`https://leonard-wong-git.github.io/EDB-AI-Circular-System/`
+- 設定步驟：見下方 Hosting Setup 章節（README.md 已更新）
+- 所需 GitHub Secret：`OPENAI_API_KEY`
+
+---
+
+## [v1.0.0-release] — 2026-03-10
+
+### 里程碑：前後端整合測試通過 + 學年模式支援 ✅
+
+#### Added
+- `edb_scraper.py`：新增 `--school-year` 旗標 — 自動計算本學年9月1日為起始日，抓取本學年全部通告
+  - 香港學年定義：9月1日起。若當前日期 < 9月1日，則使用上一年9月1日
+  - 例：2026-03-10 → school-year starts 2025-09-01
+  - 與 `--days` 互斥，`--school-year` 優先
+- `edb_scraper.py`：新增 `school_year_start()` helper 函數
+- `edb_scraper.py`：`get_circular_list()` 新增 `date_from` 參數（DD/MM/YYYY，override --days）
+- `edb_scraper.py`：circulars.json 輸出新增 `range`、`date_from`、`date_to` 欄位（保留 `days` 向後兼容）
+- `--days 365` 已全面支援
+
+#### Fixed
+- `edb_scraper.py` `_parse_list()`：修正 title 污染問題 — EDB 頁面的「摘要：」文字段落被誤抓入 title，現以 `re.sub(r"\s*摘要[：:].*$", "", title)` 截斷
+- `edb-dashboard.html` REFERENCE_CIRCULARS：修正 ID 碰撞 — 舊 ids 10/11/12 與真實數據重疊，改為 9001/9002/9003
+
+#### Verified
+- `school_year_start()` 4 個邊界條件測試通過（學年中、9/1、8/31、10/1）✅
+- `py_compile` 語法驗證通過 ✅
+- Dashboard 載入真實 circulars.json：14 條通告正確顯示 ✅
+- REFERENCE_CIRCULARS 正確釘選，不與真實數據衝突 ✅
+- Title 欄位顯示純淨通告標題，無摘要文字污染 ✅
 
 ---
 

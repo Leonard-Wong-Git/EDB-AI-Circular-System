@@ -1,21 +1,24 @@
 #!/usr/bin/env python3
 """
-EDB 通告智能分析系統 — 爬蟲及 LLM 分析管線 v0.3.0
+EDB 通告智能分析系統 — 爬蟲及 LLM 分析管線 v1.0.0
 EDB Circular Scraper + gpt-5-nano Analyzer
 
 用法 / Usage:
   python3 edb_scraper.py --days 30 --output ./circulars.json [-v]
+  python3 edb_scraper.py --days 365 --output ./circulars.json -v
+  python3 edb_scraper.py --school-year --output ./circulars.json -v
   python3 edb_scraper.py --days 7  --output ./circulars.json --dry-run
   python3 edb_scraper.py --llm-only --output ./circulars.json
-  python3 edb_scraper.py --days 30 --output ./circulars.json --model gpt-5-nano
 
 參數 / Arguments:
-  --days N       抓取最近 N 天通告（預設 30）
-  --output PATH  輸出 circulars.json 路徑（必須）
-  --llm-only     跳過爬取，只重新分析已有 PDF 快取
-  --model MODEL  LLM 模型（預設 gpt-5-nano）
-  --dry-run      只爬取元數據，不呼叫 LLM（網絡測試用）
-  -v / --verbose 詳細輸出
+  --days N         抓取最近 N 天通告（預設 30；最大建議 365）
+  --school-year    抓取本學年通告（由9月1日起至今，覆蓋完整學年）
+                   與 --days 互斥，--school-year 優先
+  --output PATH    輸出 circulars.json 路徑（必須）
+  --llm-only       跳過爬取，只重新分析已有 PDF 快取
+  --model MODEL    LLM 模型（預設 gpt-5-nano）
+  --dry-run        只爬取元數據，不呼叫 LLM（網絡測試用）
+  -v / --verbose   詳細輸出
 
 環境變數 / Environment:
   OPENAI_API_KEY  OpenAI API 金鑰（必須，--dry-run 除外）
@@ -25,6 +28,7 @@ EDB Circular Scraper + gpt-5-nano Analyzer
   - temperature: 1  ← 固定，不可更改
   - output format: json_schema Structured Output
   - --llm-only 必須搭配 --output
+  - --school-year 學年由每年9月1日起計（如9月前則取上一年9月1日）
 """
 
 import argparse
@@ -335,9 +339,15 @@ class EDBScraper:
 
     # ── Listing page ─────────────────────────────────────────────────────────
 
-    def get_circular_list(self, days: int = 30) -> list:
+    def get_circular_list(self, days: int = 30, date_from: str = None) -> list:
         """
-        Fetch EDB circular listing for the past `days` days.
+        Fetch EDB circular listing.
+
+        Args:
+            days:       Number of past days to fetch (used when date_from is None).
+            date_from:  Explicit start date in DD/MM/YYYY format (overrides days).
+                        Use for --school-year mode or any fixed start date.
+
         Returns list of dicts: {number, title, date, type, detail_url, pdf_urls}
         """
         self.log.info(f"[Step 1] GET listing page: {EDB_LIST_URL}")
@@ -347,8 +357,11 @@ class EDBScraper:
             return []
 
         vs = self._viewstate(soup)
-        cutoff = (datetime.now() - timedelta(days=days)).strftime("%d/%m/%Y")
         today  = datetime.now().strftime("%d/%m/%Y")
+        if date_from:
+            cutoff = date_from
+        else:
+            cutoff = (datetime.now() - timedelta(days=days)).strftime("%d/%m/%Y")
 
         # ASP.NET POST — field names verified from live page source (2026-03-10)
         # PlaceholderID = MainContentPlaceHolder  (NOT ContentPlaceHolder1)
@@ -372,7 +385,8 @@ class EDBScraper:
             "ctl00$MainContentPlaceHolder$btnSearch2":      "搜尋",
         }
 
-        self.log.info(f"[Step 2] POST search (past {days} days: {cutoff} – {today})")
+        label = f"school-year from {cutoff}" if date_from else f"past {days} days: {cutoff}"
+        self.log.info(f"[Step 2] POST search ({label} – {today})")
         time.sleep(REQUEST_DELAY)
         soup = self._fetch(EDB_LIST_URL, post_data)
         if not soup:
@@ -423,6 +437,8 @@ class EDBScraper:
                     if s.parent == content_div and s.strip()
                 ]
                 title = re.sub(r"\s+", " ", " ".join(title_parts)).strip()
+                # Strip summary text appended after "摘要" or "摘要：" (EDB page includes it as direct text node)
+                title = re.sub(r"\s*摘要[：:].*$", "", title, flags=re.DOTALL).strip()
                 # Remove any leaked remark brackets just in case
                 title = re.sub(r"\(通告編號[：:][^\)]*\)", "", title).strip()
             else:
@@ -708,6 +724,21 @@ def _is_new(date_str: str, days: int = 7) -> bool:
         return False
 
 
+def school_year_start() -> datetime:
+    """
+    Return September 1 of the current Hong Kong school year.
+    School year starts on Sep 1. If today is before Sep 1, the school year
+    started on Sep 1 of the previous calendar year.
+
+    Examples (HK):
+      2026-03-10  →  2025-09-01  (mid school year 2025/26)
+      2026-10-01  →  2026-09-01  (start of school year 2026/27)
+    """
+    today = datetime.now()
+    year = today.year if today.month >= 9 else today.year - 1
+    return datetime(year, 9, 1)
+
+
 def _empty_analysis() -> dict:
     """Return a safe default analysis for circulars that LLM failed on."""
     return {
@@ -792,6 +823,18 @@ def run_pipeline(args) -> int:
         except Exception as exc:
             log.warning(f"Could not read existing file: {exc}")
 
+    # ── Resolve date range ────────────────────────────────────────────────────
+    # --school-year takes priority over --days
+    if getattr(args, 'school_year', False):
+        sy = school_year_start()
+        date_from_str = sy.strftime("%d/%m/%Y")      # DD/MM/YYYY for POST
+        date_from_iso = sy.strftime("%Y-%m-%d")       # ISO for JSON output
+        range_label   = f"school-year (from {date_from_iso})"
+    else:
+        date_from_str = None
+        date_from_iso = (datetime.now() - timedelta(days=args.days)).strftime("%Y-%m-%d")
+        range_label   = f"past {args.days} days (from {date_from_iso})"
+
     # =========================================================================
     # PHASE 1 — SCRAPE
     # =========================================================================
@@ -799,8 +842,8 @@ def run_pipeline(args) -> int:
         log.info("━━━ Phase 1: SKIP (--llm-only) ━━━")
         raw = list(existing.values())
     else:
-        log.info(f"━━━ Phase 1: SCRAPE  (past {args.days} days) ━━━")
-        raw = scraper.get_circular_list(days=args.days)
+        log.info(f"━━━ Phase 1: SCRAPE  ({range_label}) ━━━")
+        raw = scraper.get_circular_list(days=args.days, date_from=date_from_str)
         if not raw:
             log.error("No circulars found. Check network access to edb.gov.hk")
             log.error("Tip: Run from Mac Terminal (not the Claude VM)")
@@ -919,7 +962,10 @@ def run_pipeline(args) -> int:
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "model":        args.model if not args.dry_run else "dry-run",
         "temperature":  LLM_TEMPERATURE,
-        "days":         args.days,
+        "range":        range_label,
+        "date_from":    date_from_iso,
+        "date_to":      datetime.now().strftime("%Y-%m-%d"),
+        "days":         args.days,           # kept for backward-compat
         "count":        len(output_list),
         "circulars":    output_list,
     }
@@ -939,12 +985,18 @@ def run_pipeline(args) -> int:
 def main() -> int:
     parser = argparse.ArgumentParser(
         prog="edb_scraper.py",
-        description="EDB 通告爬蟲 + gpt-5-nano 分析管線 v0.3.0",
+        description="EDB 通告爬蟲 + gpt-5-nano 分析管線 v1.0.0",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
   # 抓取最近30天並分析
   python3 edb_scraper.py --days 30 --output ./circulars.json -v
+
+  # 抓取本學年全部通告（9月1日至今）
+  python3 edb_scraper.py --school-year --output ./circulars.json -v
+
+  # 抓取最近365天通告
+  python3 edb_scraper.py --days 365 --output ./circulars.json -v
 
   # 只爬取不分析（測試網絡）
   python3 edb_scraper.py --days 7 --output ./circulars.json --dry-run
@@ -953,12 +1005,16 @@ Examples:
   python3 edb_scraper.py --llm-only --output ./circulars.json
 
   # 使用較強模型
-  python3 edb_scraper.py --days 30 --output ./circulars.json --model gpt-4.1-mini
+  python3 edb_scraper.py --school-year --output ./circulars.json --model gpt-4.1-mini
 """,
     )
     parser.add_argument(
         "--days", type=int, default=30, metavar="N",
-        help="抓取最近 N 天通告（預設 30）",
+        help="抓取最近 N 天通告（預設 30；最大建議 365）",
+    )
+    parser.add_argument(
+        "--school-year", action="store_true",
+        help="抓取本學年通告，由9月1日起至今（與 --days 互斥，此旗標優先）",
     )
     parser.add_argument(
         "--output", required=True, metavar="PATH",
@@ -983,12 +1039,24 @@ Examples:
 
     args = parser.parse_args()
 
+    # Determine range label for display
+    if args.school_year:
+        sy = school_year_start()
+        range_display = f"school-year (from {sy.strftime('%Y-%m-%d')})"
+    else:
+        range_display = f"past {args.days} days"
+
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v0.3.0")
+    print(f"  EDB Circular Scraper + Analyzer  v1.0.0")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")
-    print(f"  Mode       : {'llm-only' if args.llm_only else 'dry-run' if args.dry_run else f'full ({args.days}d)'}")
+    if args.llm_only:
+        print(f"  Mode       : llm-only (re-analyse cached PDFs)")
+    elif args.dry_run:
+        print(f"  Mode       : dry-run  ({range_display})")
+    else:
+        print(f"  Mode       : full     ({range_display})")
     print(f"{'='*60}\n")
 
     return run_pipeline(args)

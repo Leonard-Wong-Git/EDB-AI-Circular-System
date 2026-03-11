@@ -34,6 +34,44 @@
 8. Search for related SSOT / spec / runbook before change: 後端規格參閱 `EDB-項目需求及規則總覽.docx` 第五節（LLM）+ 第六節（爬蟲）
 9. Search for duplicate rule / duplicate term / prior related fixes: 見 SESSION_LOG
 
+## ⚠️ Session Close 必做保障（每次 Session 結束前強制執行）
+> 目的：確保每個版本有快照，可隨時回退，不依賴 VM 環境
+
+**每個 session 結束前，必須在 Mac Terminal 完成以下兩項：**
+
+### 保障 A：打 Git Tag（版本快照）
+```bash
+# 1. Commit session close 文件更新
+git add .
+git commit -m "chore: session close — <本 session 簡述>"
+
+# 2. 打版本 tag（格式：v主版本.次版本.修訂-說明）
+git tag v0.x.x-<說明>          # 例：v0.3.0-backend, v1.0.0-release
+
+# 3. 推送（按 dev/GIT_PUSH_MANUAL.md 操作）
+git push --force origin main
+git push origin --tags
+```
+> GitHub 有 tag 就等同快照，任何時候可 `git checkout <tag>` 取回
+
+### 保障 B：複製資料夾（本機備份）
+```bash
+# 在 Mac Terminal 執行
+cp -r "<PROJECT_PATH>" "<PROJECT_PATH>-snapshot-v0.x.x"
+# 例：cp -r ".../EDB-Circular-AI-analysis-system" ".../EDB-Circular-AI-analysis-system-snapshot-v0.3.0"
+```
+> 本機有副本，即使 git 歷史因 force push 被覆蓋仍可還原
+
+### 如需從舊版本回退
+```bash
+# 方法 A：從 GitHub 取回特定版本
+cd /tmp && git clone https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git EDB-old
+cd EDB-old && git checkout v0.2.1-frontend
+
+# 方法 B：直接使用本機快照副本
+cp -r "<PROJECT_PATH>-snapshot-v0.x.x" "<PROJECT_PATH>-restored"
+```
+
 ## Open Priorities
 1. ✅ ~~開發正式 `edb-dashboard.html`（v0.2.0-frontend）~~ **已完成（2026-03-10）**
 2. ✅ ~~v0.2.1-frontend 13 項 UI 修訂~~ **已完成（2026-03-10）**
@@ -109,42 +147,49 @@ If the session's fix involves adding a new rule, first check whether the existin
 
 ## Last Session Record
 1. UTC date: 2026-03-10
-2. Session ID: Claude_20260310_BE04（LLM 修正 + 完整管線通過 + Dashboard 真實數據驗證 + GitHub 推送 + Session Close）
+2. Session ID: Claude_20260310_RE01（v1.0.0 整合修復 + --school-year + GitHub Pages 部署配置）
 3. Completed:
-   - 修正 `max_tokens` → `max_completion_tokens`（gpt-5-nano 推理模型要求）✅
-   - 修正 `"system"` → `"developer"` role（gpt-5-nano 推理模型要求）✅
-   - 修正 `max_completion_tokens` 4096 → 16000（推理 tokens 消耗大）✅
-   - 建立 `test_llm.py`：3 階段診斷，Test 3 通過（finish_reason=stop，1675 chars）✅
-   - **完整 LLM 執行成功**：EDBCM030/2026 high/721chars，EDBCM026/2026 mid/462chars ✅
-   - Dashboard 真實數據確認：EDBCM030（HK$800,000 今天截止）正確顯示 ✅
-   - GitHub force push + tag `v0.3.0-backend` 推送成功（52 objects，11.35 MiB）✅
-   - **Session Close**：
-     * `CHANGELOG.md` 更新（v0.3.0-backend 完整記錄）✅
-     * 診斷工具移至 `dev/tools/`（debug_edb_html.py, parse_form.py, parse_structure.py, parse_row.py, test_llm.py）✅
-     * `dev/GIT_PUSH_MANUAL.md` 新建（完整手動 git 推送指南 + PAT 方法）✅
-     * `dev/SESSION_HANDOFF.md` + `dev/SESSION_LOG.md` 更新（本記錄）✅
+   - **整合 Bug 修復**：
+     * `edb_scraper.py` title 污染修復（`摘要：` 截斷）✅
+     * `edb-dashboard.html` REFERENCE_CIRCULARS ID 碰撞修復（9001/9002/9003）✅
+   - **--school-year 新功能**：
+     * `school_year_start()` helper（9月1日學年定義，4個邊界條件測試通過）✅
+     * `get_circular_list()` 新增 `date_from` 參數 ✅
+     * circulars.json 輸出新增 `range` / `date_from` / `date_to` 欄位 ✅
+     * `--days 365` 全面支援 ✅
+   - **GitHub Pages 部署配置**：
+     * `.github/workflows/update-circulars.yml` 新建（每天 HKT 07:00 自動更新）✅
+     * `index.html` 新建（根 URL 自動跳轉 edb-dashboard.html）✅
+     * `.gitignore` 更新（移除 circulars.json 排除，加入 .edb_cache/）✅
+   - **用戶教育**：說明 folder snapshot + git tag 兩層保障策略 ✅
+   - **版本更新**：`edb_scraper.py` 版本號更新至 v1.0.0 ✅
+   - **✅ 學年爬蟲完成**：`python3 edb_scraper.py --school-year --output ./circulars.json -v` → **104 條通告，834.5KB** ✅
 4. Pending：
-   - ⭐ 瀏覽器整合確認：在瀏覽器開啟 `edb-dashboard.html`，目視確認真實 circulars.json 顯示
-   - 根據真實數據微調 Dashboard（如有需要）
-   - **需在 Mac Terminal 執行最終 git push**（將 dev/tools/, GIT_PUSH_MANUAL.md, CHANGELOG 更新推送 GitHub）
+   - ⭐ 在瀏覽器開啟 `edb-dashboard.html`，確認 104 條學年通告正確顯示
+   - **GitHub Pages 一次性設定**（見 CHANGELOG v1.0.1-hosting）：
+     1. push 所有文件至 GitHub
+     2. 設定 GitHub Secret：`OPENAI_API_KEY`
+     3. Settings → Pages → Source: GitHub Actions
+     4. 手動觸發第一次 workflow
+   - Dashboard 目視確認（學年數據載入後）
 5. Next priorities (max 3):
-   - ⭐ v1.0.0-release 整合測試（前後端聯調驗收，見需求文件第八節）
-   - Dashboard 微調（如真實數據顯示有任何問題）
-   - 定期更新排程（cron / 排程，見 CHANGELOG Planned 節）
-6. Risks / blockers: 無新風險；舊風險已記錄於 Known Risks #1–#5
+   - ⭐ 完成 GitHub Pages 一次性設定，取得公開 URL
+   - 確認學年爬蟲 circulars.json 在 Dashboard 正常顯示
+   - 推送 tag `v1.0.1-hosting`
+6. Risks / blockers:
+   - 學年爬蟲通告數量未知（估計 50–100+），LLM 費用需留意
+   - GitHub Pages 首次設定需要手動操作（Settings → Pages → Source: GitHub Actions）
 7. Files materially changed:
-   - `edb_scraper.py`（更新：LLM 三項修正）
-   - `test_llm.py`（新建 → 移至 dev/tools/）
-   - `dev/tools/debug_edb_html.py`（移動）
-   - `dev/tools/parse_form.py`（移動）
-   - `dev/tools/parse_structure.py`（移動）
-   - `dev/tools/parse_row.py`（移動）
-   - `dev/GIT_PUSH_MANUAL.md`（新建）
-   - `CHANGELOG.md`（更新：v0.3.0-backend 完整記錄）
+   - `edb_scraper.py`（更新：title fix + school_year_start + date_from + v1.0.0）
+   - `edb-dashboard.html`（更新：REFERENCE_CIRCULARS id 9001/9002/9003）
+   - `.github/workflows/update-circulars.yml`（新建）
+   - `index.html`（新建）
+   - `.gitignore`（更新）
+   - `CHANGELOG.md`（更新：v1.0.0-release + v1.0.1-hosting）
    - `dev/SESSION_HANDOFF.md`（更新）
    - `dev/SESSION_LOG.md`（更新）
-8. Validation summary: **完整管線通過：14 circulars + PDF + LLM 分析 + GitHub v0.3.0-backend tag** ✅
-9. Consolidation actions taken: gpt-5-nano 三項規則記錄於 Known Risks #1（SSOT）；診斷工具集中於 dev/tools/
+8. Validation summary: `py_compile` OK ✅；`school_year_start()` 4 邊界條件 ✅；學年爬蟲執行中 ⏳
+9. Consolidation actions taken: 無新規則；部署架構記錄於 CHANGELOG v1.0.1-hosting
 
 ---
 
