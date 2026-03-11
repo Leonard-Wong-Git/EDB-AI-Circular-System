@@ -1,9 +1,9 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v0.3.0-backend** (2026-03-10) ← **當前版本** 🎉
+1. Version: **v1.1.0-features** (2026-03-11) ← **當前版本** 🎉
 2. Core commands / features:
-   - `edb-dashboard.html` — 正式版單頁 Dashboard（2,453 行，v0.2.1 ✅）
+   - `edb-dashboard.html` — 正式版單頁 Dashboard（2,796 行，v1.1.0 ✅；含 8 項新功能：CSV增強/格式化列印/.ics匯出/多選批量/排序持久/時段主題/狀態互通/資源行色）
    - `edb_scraper.py` — 後端爬蟲 + LLM 分析管線（v0.3.0-backend ✅ **已完成並通過測試**）
    - `circulars.json` — 14 條真實 EDB 通告 + gpt-5-nano LLM 分析（已生成 ✅）
    - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具
@@ -147,31 +147,48 @@ If the session's fix involves adding a new rule, first check whether the existin
 
 ## Last Session Record
 1. UTC date: 2026-03-11
-2. Session ID: Claude_20260311_RE03（自動化驗收測試 + grantChip null 修復）
+2. Session ID: Claude_20260311_RE04（8 項功能實作：匯出、列印、多選、排序、主題、狀態同步）
 3. Completed:
-   - **自動化驗收測試**：
-     * 瀏覽器 JS 執行，A–K 全部 11 類別逐項測試 ✅
-     * 完整報告：73/80（91%）通過 ✅
-     * Live site：105 條通告，全部含 pdf_urls，PDF 連結用真實 applications.edb.gov.hk URL ✅
-   - **Bug 修復：`💰null` 顯示問題**：
-     * `grantChip()` applicable 類型直接 `${g.amount_label}` 無 null guard → 加 `||'資助'` ✅
-     * 影響：EDBCM033/2026, EDBCM005/2026 等 10+ 張卡片由「💰null」改為「💰資助」
-   - **git push upstream 診斷**：
-     * 用戶錯誤：`fatal: no upstream branch` → 建議 `git push --set-upstream origin main` ✅
+   - **F1 — 排序持久化**：`lsLoad()` 讀取 `edb_sort_field`/`edb_sort_asc`；`sortList()` 寫入 localStorage；預設按日期降序 ✅
+   - **F2 — 時段自動主題**：`applyTheme()` 改用 `new Date().getHours()`（07:00–18:00=淺色，其餘=深色）；`setInterval` 每 60 秒重評 ✅
+   - **C1 — 狀態互通**：`updateBmBadge()`（書籤 tab badge 即時更新）+ `syncStatusBtns(id,status)`（多處狀態按鈕即時同步，無需重繪）；所有狀態按鈕加 `data-sid` ✅
+   - **C2 — 資源狀態有意義**：row 顏色 CSS（`.res-applying/applied/closed/na`）；`setApplyStatus()` 改寫（即時 DOM 行顏色更新 + 申請日期記錄 + toast 通知）；新增 `edb_apply_dates` localStorage key ✅
+   - **B5 — CSV 增強**：`exportExcel()` 新增「行動數」+「AI摘要（前200字）」欄位 ✅
+   - **B7 — .ics 日曆匯出**：新增 `exportICS()` 函數（iCalendar 格式，含所有截止日期）；工具列新增 📅 日曆按鈕 ✅
+   - **B6 — 格式化列印**：`printDetail()` 改寫（在新視窗開啟結構化 HTML 報告，含列印/關閉按鈕）；移除舊 `window.print()` 版本（避免重複函數） ✅
+   - **B8 — 多選批量匯出**：`toggleMultiSelect()`/`cardClick()`/`exportSelected()` 新增；浮動批量操作列（#batchBar）；卡片選中框和 CSS；工具列 ☑️ 多選按鈕 ✅
+   - **HTML 驗證**：`html.parser` 確認標籤平衡（HTML OK）；所有 11 個新函數 grep 確認存在 ✅
+   - **git push 診斷**：
+     * `fatal: no upstream branch` → `git push --set-upstream origin main`
+     * `fatal: not a git repository` → 需先 `cd` 至項目目錄
+     * `[rejected] fetch first` → `git pull --rebase origin main && git push`（GitHub Actions 有衝突）
 4. Pending：
-   - ⭐ `git push --set-upstream origin main`（推送 grantChip 修復至 GitHub）
-   - 選做：修復次要缺陷（D8/D9 月曆篩選、F4 收藏 badge、H5 天數選擇器、H6 已跟進切換）
+   - ⭐ `git pull --rebase origin main && git push`（推送全部更改至 GitHub）
+   - 選做：次要缺陷（D8/D9 月曆篩選、F4 badge 計數、H5 天數選擇器、H6 已跟進切換）
+   - 討論：K1 知識庫參考文件框架、R1 全角色職責精確度、LLM 引擎切換機制
 5. Next priorities (max 3):
-   - ⭐ `git push --set-upstream origin main`（推送後 GitHub Actions 自動重部署）
-   - 選做次要缺陷修復 + tag `v1.0.3-bugfix`
-   - 響應式設計測試（手機/平板）
-6. Risks / blockers: 無重大阻礙；次要缺陷均非功能性 bug
+   - ⭐ Git push（含 git pull --rebase 解決衝突），tag `v1.1.0-features`
+   - K1/R1 知識框架討論（知識庫底稿 + 角色職責參考文件）
+   - 次要缺陷修復 + 響應式設計測試
+6. Risks / blockers: git 衝突（GitHub Actions 持續 push，需 pull --rebase）；用戶需先找到項目路徑
 7. Files materially changed:
-   - `edb-dashboard.html`（修復：grantChip null fallback）
+   - `edb-dashboard.html`（2453→2796 行；8 項新功能）
    - `dev/SESSION_HANDOFF.md`（更新）
    - `dev/SESSION_LOG.md`（更新）
-8. Validation summary: 驗收測試 73/80（91%）✅；grantChip 修復邏輯確認正確
-9. Consolidation actions taken: 無新規則
+8. Validation summary: HTML parser「HTML OK」✅；11 函數 grep 全找到 ✅；edb-dashboard.html 2796 行
+9. New localStorage keys added: `edb_sort_field`、`edb_sort_asc`、`edb_apply_dates`（共現 12 個 keys）
+10. Consolidation actions taken: 移除舊 `printDetail()` 重複函數（`window.print()` 版本）
+
+## Previous Session Record
+1. UTC date: 2026-03-11
+2. Session ID: Claude_20260311_RE03（自動化驗收測試 + grantChip null 修復）
+3. Completed:
+   - 自動化驗收測試：73/80（91%）通過 ✅；Live site 105 條通告，PDF 連結 ✅
+   - Bug 修復：`grantChip()` applicable 類型加 `||'資助'` ✅（影響 10+ 張卡片）
+   - git push upstream 診斷：`fatal: no upstream branch` → `git push --set-upstream origin main`
+4. Files materially changed:
+   - `edb-dashboard.html`（修復：grantChip null fallback）
+   - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
 
 ## Previous Session Record
 1. UTC date: 2026-03-11
