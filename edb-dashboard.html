@@ -1773,7 +1773,7 @@ function complianceBadge(c){
 }
 function grantChip(g){
   if(!g||g.type==='none') return '';
-  if(g.type==='applicable') return `<span class="card-grant cg-applicable">💰${g.amount_label}</span>`;
+  if(g.type==='applicable') return `<span class="card-grant cg-applicable">💰${g.amount_label||'資助'}</span>`;
   if(g.type==='resource') return `<span class="card-grant cg-resource">📦${g.amount_label||'資源'}</span>`;
   return '';
 }

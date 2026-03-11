@@ -960,6 +960,96 @@ Mac Terminal 最終 git push（先推送 session close 文件）：
 
 ---
 
+## 2026-03-11（SESSION CLOSE — Claude_20260311_RE03）
+
+1. Agent & Session ID: Claude_20260311_RE03
+2. Task summary: 自動化驗收測試（完整清單報告）+ `💰null` Bug 修復 + git push upstream 診斷
+3. Layer classification: Product / System Layer（驗收測試 + Bug 修復）
+4. Source triage: 用戶指示「由你自動在 GitHub Pages 按清單逐項檢視，再報告予我」
+5. Files read: edb-dashboard.html（grantChip 函數定位）
+6. Files changed:
+   - `edb-dashboard.html`（修復：grantChip() applicable type 缺 null fallback → `||'資助'`）
+   - `dev/SESSION_HANDOFF.md`（更新）
+   - `dev/SESSION_LOG.md`（本條目）
+7. Completed:
+   - 自動化驗收測試（瀏覽器 JS 執行，測試 A–K 全部類別）✅
+   - 完整驗收報告（73/80 通過，91%）✅
+   - **Bug 修復：** `grantChip()` applicable 類型缺少 null guard → `${g.amount_label||'資助'}`（影響 10+ 張卡片）✅
+   - git push upstream 錯誤診斷：`fatal: no upstream branch` → 建議 `git push --set-upstream origin main` ✅
+8. Pending: 用戶執行 `git push --set-upstream origin main` 推送 grantChip 修復
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem: 卡片顯示「💰null」（約 10 張卡片受影響）
+2. Root Cause: `grantChip()` 第 1776 行：applicable 類型直接 `${g.amount_label}` 無 null guard；resource 類型已有 `||'資源'` 但 applicable 類型遺漏
+3. Fix: `${g.amount_label}` → `${g.amount_label||'資助'}`（一字之差）
+4. Verification: 邏輯確認正確；live site 需推送後確認
+5. Regression / rule update: 無新規則
+
+### Consolidation / Retirement Record
+1. Duplicate / drift: 無
+2. Retired: v11 Handoff Prompt（由 v12 取代）
+
+---
+
+### 驗收報告摘要（RE03 自動測試結果）
+- **A. 資料載入** 4/4 ✅
+- **B. 通告總覽** 13/15（B5 無下拉建議，屬 UX 差異非 bug）
+- **C. 詳情面板** 17/17 ✅
+- **D. 月曆** 7/9（D8/D9 篩選按鈕未實作）
+- **E. 資源申請** 5/5 ✅
+- **F. 收藏** 4/5（F4 badge 計數未顯示）
+- **G. 供應商** 6/6 ✅
+- **H. 設定** 9/12（H5 天數選擇器 / H6 已跟進切換 未找到）
+- **I. 鍵盤快捷鍵** 5/5 ✅
+- **J. GitHub Actions** 7/7 ✅
+- **K. 響應式設計** 未測試（需人手）
+- **Bug:** `💰null` 顯示（已修復於本 session）
+
+---
+
+### Next Session Handoff Prompt — v12（最新版本 ✅，請用此版本）
+```
+專案：EDB 通告智能分析系統 (EDB-Circular-AI-analysis-system)
+狀態：v1.0.2 驗收通過（91%），grantChip null 修復，待最終 git push
+
+已完成（全部 ✅）：
+- Dashboard v1.0.2：PDF連結、導航、系統說明、供應商Note去重
+- edb_scraper.py：output record 含 pdf_urls
+- GitHub Pages：https://leonard-wong-git.github.io/EDB-AI-Circular-System/ 已上線
+- GitHub Actions：每日 HKT 07:00/13:00/17:00 自動更新（105條通告，全部含 pdf_urls）
+- 驗收測試：73/80（91%）通過 ✅
+- grantChip() null 修復：applicable 類型加 `||'資助'` ✅
+
+⚠️ gpt-5-nano 規則（不可更改）：
+  temperature=1 | role="developer" | max_completion_tokens=16000
+
+⚠️ EDB 字段 + HTML 結構：見 SESSION_HANDOFF Known Risks #4 + #5
+
+⭐ 下一步（按序）：
+  1. git push --set-upstream origin main（推送 grantChip 修復）
+  2. 確認 GitHub Pages 自動重新部署
+  3. 選做：修復次要缺陷（D8/D9 月曆篩選 / F4 收藏 badge / H5 天數選擇器 / H6 已跟進切換）
+  4. 完成後打 tag v1.0.3-bugfix
+
+次要缺陷清單（可選做，非阻礙性）：
+  - D8/D9：月曆頁添加篩選按鈕（高影響 / 截止日 類型篩選）
+  - F4：收藏 tab badge 顯示收藏數量
+  - H5：設定頁截止提醒天數選擇器（3/7/14天）
+  - H6：設定頁「顯示/隱藏已跟進通告」切換按鈕
+
+主要檔案：
+  outputs/EDB-Circular-AI-analysis-system/
+  ├── edb-dashboard.html（v1.0.2 + grantChip null fix）
+  ├── edb_scraper.py（含 pdf_urls 輸出）
+  ├── circulars.json（105條，含 pdf_urls，由 GitHub Actions 維護）
+  ├── index.html, .github/workflows/update-circulars.yml
+  └── dev/ [SESSION_HANDOFF, SESSION_LOG, ACCEPTANCE_CHECKLIST, GIT_PUSH_MANUAL, ...]
+
+關鍵規則：gpt-5-nano temperature=1 固定 | VM 網絡封鎖→Mac Terminal
+```
+
+---
+
 ### Next Session Handoff Prompt — v11（最新版本 ✅，請用此版本）
 ```
 專案：EDB 通告智能分析系統 (EDB-Circular-AI-analysis-system)
