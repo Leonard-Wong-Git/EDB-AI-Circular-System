@@ -4,7 +4,11 @@ name: Update EDB Circulars
 # 自動更新 EDB 通告數據並部署至 GitHub Pages
 #
 # 觸發方式：
-#   1. 定時：每天 HKT 07:00（UTC 23:00 前一天）自動執行
+#   1. 定時：每天三次自動執行（HKT 時間）
+#        07:00 → UTC 23:00（前一天）
+#        13:00 → UTC 05:00
+#        17:00 → UTC 09:00
+#      ⚡ 排程模式自動用 --days 3（增量，快速省費）
 #   2. 手動：GitHub Actions 頁面點擊 "Run workflow"，可選模式
 #
 # 所需 Secret（Settings → Secrets → Actions）：
@@ -13,8 +17,9 @@ name: Update EDB Circulars
 
 on:
   schedule:
-    # 每天 HKT 07:00 = UTC 23:00（前一天）
-    - cron: '0 23 * * *'
+    - cron: '0 23 * * *'   # HKT 07:00（UTC 23:00 前一天）
+    - cron: '0 5 * * *'    # HKT 13:00（UTC 05:00）
+    - cron: '0 9 * * *'    # HKT 17:00（UTC 09:00）
 
   workflow_dispatch:
     inputs:
@@ -24,8 +29,9 @@ on:
         default: 'school-year'
         type: choice
         options:
-          - school-year      # 本學年（9月1日至今）
-          - days-14          # 最近14天（快速增量更新）
+          - school-year      # 本學年（9月1日至今）—— 完整重建
+          - days-3           # 最近3天（輕量增量）
+          - days-14          # 最近14天
           - days-30          # 最近30天
           - days-365         # 最近365天
 
@@ -62,17 +68,24 @@ jobs:
       - name: Resolve scrape arguments
         id: mode
         run: |
-          MODE="${{ github.event.inputs.mode || 'school-year' }}"
+          # 排程觸發（schedule）自動用 --days 3（增量，快速省費）
+          # 手動觸發（workflow_dispatch）使用用戶選擇的模式
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            MODE="days-3"
+          else
+            MODE="${{ github.event.inputs.mode || 'school-year' }}"
+          fi
           case "$MODE" in
             school-year) ARGS="--school-year" ;;
+            days-3)      ARGS="--days 3" ;;
             days-14)     ARGS="--days 14" ;;
             days-30)     ARGS="--days 30" ;;
             days-365)    ARGS="--days 365" ;;
-            *)           ARGS="--school-year" ;;
+            *)           ARGS="--days 3" ;;
           esac
           echo "args=$ARGS" >> $GITHUB_OUTPUT
           echo "mode=$MODE" >> $GITHUB_OUTPUT
-          echo "Scrape mode: $MODE → args: $ARGS"
+          echo "Trigger: ${{ github.event_name }} | Mode: $MODE → args: $ARGS"
 
       # ── 5. 執行 EDB 爬蟲 + LLM 分析 ──────────────────────
       - name: Run EDB scraper
