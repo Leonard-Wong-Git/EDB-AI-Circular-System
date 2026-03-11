@@ -1225,6 +1225,78 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
           <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v0.2.0-frontend</span>
         </div>
       </div>
+
+      <!-- ── SYSTEM DOCUMENTATION (full-width) ── -->
+      <div class="settings-card" style="grid-column:1/-1">
+        <div class="sc-title">📖 系統功能說明</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:4px">
+
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">📊 通告總覽</div>
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
+              顯示所有 EDB 通告的卡片或列表視圖。紅色頂欄 = 高影響必須行動。點擊任意通告開啟右側詳情面板（含 LLM 摘要、行動清單、截止日、角色分配、版本比較五個子頁）。支援多維篩選（類型、學校類別、主題、影響級別、行動類型）及全文搜尋。
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">⏰ 截止日追蹤</div>
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
+              頁頂「截止」橫列顯示未來30天內的截止項目，按緊迫度以顏色標示（🔴 3天內 / 🟠 提醒天數內 / 🟡 14天內）。月曆視圖可按月瀏覽通告發出日及截止日，點擊日期格可展開當日清單。
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">👥 角色視圖</div>
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
+              頂部下拉選單切換角色（校長／副校長／科主任／教師／行政主任／供應商）。選擇後，詳情面板的「行動」欄會以藍色高亮當前角色的行動項；「角色」頁顯示每個角色的責任及行動清單。鍵盤 1–6 可快速切換角色。
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">💰 資源申請</div>
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
+              匯總所有含撥款或資源資訊的通告。支援申請狀態追蹤（待申請 / 申請中 / 已申請 / 已截止 / 不適用），狀態儲存於本機。可匯出為 CSV 方便記錄。
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">⭐ 收藏 &amp; 📌 常備</div>
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
+              ⭐ 一般收藏：標記常用通告，顯示於「收藏」頁。📌 常備參考：標記長期適用的政策通告（如整筆撥款指引），置頂於「收藏」頁首，方便隨時查閱。三個常備參考通告已預設釘選。
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">🔄 自動更新</div>
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
+              數據由 GitHub Actions 自動更新：每日 HKT 07:00、13:00、17:00 各執行一次增量抓取（最近3天）。每次抓取後透過 OpenAI gpt-5-nano 進行 LLM 分析。管理員可在 GitHub Actions 頁面手動觸發完整抓取（本學年 / 最近14天 / 30天 / 365天）。
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">📄 PDF 原文件</div>
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
+              每份通告的詳情面板底部「PDF 原文件」區域提供繁體中文、English、简体中文三個版本的 EDB 原始 PDF 連結，直接連至教育局伺服器。（注意：EDB 舊通告 PDF 連結可能已失效，以教育局官網為準。）
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">💾 本機儲存</div>
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
+              所有個人設定（主題、角色、收藏、釘選、已讀狀態、申請狀態）均儲存於瀏覽器 localStorage，無需登入，不會上傳至伺服器。清除瀏覽器資料將重置所有記錄。按「清除本地設定」可手動重置。
+            </div>
+          </div>
+
+        </div>
+
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted);line-height:1.7">
+          ⚠️ <strong>免責聲明：</strong>本系統 LLM 摘要及分析由人工智能生成，僅供輔助參考，一切以
+          <a href="https://www.edb.gov.hk/tc/circular/index.html" target="_blank" rel="noopener">教育局官方通告</a>為準。
+          &nbsp;|&nbsp; 系統設計：Leonard Wong &nbsp;|&nbsp; v1.0.0
+          &nbsp;|&nbsp; <a href="https://github.com/leonard-wong-git/EDB-AI-Circular-System" target="_blank" rel="noopener">GitHub 源碼</a>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1725,7 +1797,7 @@ function renderStatsBar(){
     bar.innerHTML=`
       <div class="stat-chip sc-green link" onclick="switchTab('supplier',document.getElementById('tabSupplier'))" title="查看供應商可申請金額">
         <span class="stat-chip-icon">💰</span><div class="stat-chip-body"><div class="stat-chip-val">${totalAmt?'HK$'+fmtAmt(totalAmt):'—'}</div><div class="stat-chip-lbl">可申請金額 ›</div></div></div>
-      <div class="stat-chip sc-yellow link" onclick="document.getElementById('dlBar').scrollIntoView({behavior:'smooth'})" title="查看即將截止項目">
+      <div class="stat-chip sc-yellow link" onclick="switchTab('overview',document.getElementById('tabOverview'));setTimeout(()=>document.getElementById('dlBar').scrollIntoView({behavior:'smooth'}),50)" title="查看即將截止項目">
         <span class="stat-chip-icon">⏰</span><div class="stat-chip-body"><div class="stat-chip-val">${expiring.length}</div><div class="stat-chip-lbl">即將截止 ›</div></div></div>
       <div class="stat-chip sc-blue link" onclick="switchTab('bookmarks',document.getElementById('tabBookmarks'))" title="查看已收藏">
         <span class="stat-chip-icon">⭐</span><div class="stat-chip-body"><div class="stat-chip-val">${saved}</div><div class="stat-chip-lbl">已收藏 ›</div></div></div>
@@ -1738,7 +1810,7 @@ function renderStatsBar(){
         <span class="stat-chip-icon">📋</span><div class="stat-chip-body"><div class="stat-chip-val">${thisMonth.length}</div><div class="stat-chip-lbl">本月通告 ›</div></div></div>
       <div class="stat-chip sc-red link" onclick="filterByAttention()" title="查看需關注通告">
         <span class="stat-chip-icon">🔴</span><div class="stat-chip-body"><div class="stat-chip-val">${needAttn.length}</div><div class="stat-chip-lbl">需關注 ›</div></div></div>
-      <div class="stat-chip sc-yellow link" onclick="document.getElementById('dlBar').scrollIntoView({behavior:'smooth'})" title="查看即將截止項目">
+      <div class="stat-chip sc-yellow link" onclick="switchTab('overview',document.getElementById('tabOverview'));setTimeout(()=>document.getElementById('dlBar').scrollIntoView({behavior:'smooth'}),50)" title="查看即將截止項目">
         <span class="stat-chip-icon">⏰</span><div class="stat-chip-body"><div class="stat-chip-val">${expiring.length}</div><div class="stat-chip-lbl">即將截止 ›</div></div></div>
       <div class="stat-chip sc-green link" onclick="switchTab('bookmarks',document.getElementById('tabBookmarks'))" title="查看已收藏">
         <span class="stat-chip-icon">⭐</span><div class="stat-chip-body"><div class="stat-chip-val">${saved}</div><div class="stat-chip-lbl">已收藏 ›</div></div></div>
@@ -2086,11 +2158,14 @@ function renderSupplier(){
     <div class="sup-stat"><div class="sv" style="color:var(--green)">${totalAmt?'HK$'+fmtAmt(totalAmt):'—'}</div><div class="sl">💰 可申請金額合計</div></div>
     <div class="sup-stat"><div class="sv" style="color:var(--yellow)">${expiring.length}</div><div class="sl">⏰ 即將截止</div></div>
   `;
-  // Add disclaimer for supplier policy
-  const note=document.createElement('div');
-  note.style.cssText='font-size:11px;color:var(--text-muted);padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;margin-bottom:14px;';
-  note.innerHTML='⚠️ <strong>注意：</strong>本系統只顯示教育局（EDB）發出的通告。採購政策指引及廉潔要求請直接參閱 <a href="https://www.icac.org.hk" target="_blank">廉政公署</a> 及 <a href="https://www.edb.gov.hk" target="_blank">教育局官網</a>。';
-  grid.parentElement.insertBefore(note, grid.previousElementSibling?.nextElementSibling||grid);
+  // Add disclaimer for supplier policy (guard against duplicate insertion)
+  if(!document.getElementById('supplierNote')){
+    const note=document.createElement('div');
+    note.id='supplierNote';
+    note.style.cssText='font-size:11px;color:var(--text-muted);padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;margin-bottom:14px;';
+    note.innerHTML='⚠️ <strong>注意：</strong>本系統只顯示教育局（EDB）發出的通告。採購政策指引及廉潔要求請直接參閱 <a href="https://www.icac.org.hk" target="_blank">廉政公署</a> 及 <a href="https://www.edb.gov.hk" target="_blank">教育局官網</a>。';
+    grid.parentElement.insertBefore(note, grid);
+  }
   grid.innerHTML=supData.length?supData.map(d=>buildCard(d)).join(''):`<div class="empty-state"><div class="es-icon">🏢</div><div class="es-text">目前沒有與供應商相關的通告</div></div>`;
 }
 
@@ -2151,6 +2226,45 @@ function showSugg(){
 function hideSugg(){ document.getElementById('searchSugg').classList.remove('open'); }
 
 /* ============================================================
+   DETAIL PANEL — PDF LINKS HELPER
+   ============================================================ */
+function buildPdfLinks(d){
+  const urls = d.pdf_urls || [];
+  const defs = [
+    { label:'📄 繁體中文', flag:'C' },
+    { label:'📄 English',  flag:'E' },
+    { label:'📄 简体中文', flag:'S' },
+  ];
+
+  if(urls.length > 0){
+    // Use actual URLs scraped from EDB listing page (sorted C/E/S already)
+    return defs.map((item, i) => {
+      const url = urls[i];
+      if(!url) return '';
+      return `<a class="pdf-btn" href="${url}" target="_blank" rel="noopener">${item.label}</a>`;
+    }).filter(Boolean).join('') +
+    `<a class="pdf-btn" href="https://www.edb.gov.hk/tc/circular/index.html" target="_blank" rel="noopener" title="教育局通告列表" style="margin-left:6px;opacity:.7">🔗 EDB</a>`;
+  }
+
+  // Fallback: no pdf_urls in data (old circulars.json without field).
+  // Try to construct EDB PDF URL from circular number pattern.
+  // EDB format: EDBCM[yy][NNN] e.g. EDBCM045/2026 → EDBCM26045C.pdf
+  const m = d.number.match(/^(EDBCM|EDBCL)(\d+)\/(\d{4})$/);
+  if(m){
+    const [,type,num,yr] = m;
+    const yy = yr.slice(2); // e.g. "26"
+    const base = `https://www.edb.gov.hk/circular/upload/${type}/${type}${yy}${num}`;
+    return defs.map(item =>
+      `<a class="pdf-btn" href="${base}${item.flag}.pdf" target="_blank" rel="noopener">${item.label}</a>`
+    ).join('') +
+    `<a class="pdf-btn" href="https://www.edb.gov.hk/tc/circular/index.html" target="_blank" rel="noopener" title="教育局通告列表" style="margin-left:6px;opacity:.7">🔗 EDB</a>`;
+  }
+
+  // Last resort: just link to EDB circular index
+  return `<a class="pdf-btn" href="https://www.edb.gov.hk/tc/circular/index.html" target="_blank" rel="noopener">🔗 教育局通告頁面</a>`;
+}
+
+/* ============================================================
    DETAIL PANEL
    ============================================================ */
 function openDetail(id){
@@ -2185,12 +2299,8 @@ function openDetail(id){
     <div class="summary-text">${(d.summary||'').split('\n\n').map(p=>`<p>${p}</p>`).join('')}</div>
     <div class="sec-lbl">官方摘要</div>
     <div class="info-block">${d.official}</div>
-    <div class="sec-lbl">PDF 下載</div>
-    <div class="pdf-links">
-      <a class="pdf-btn" href="#" onclick="return false">📄 繁體中文</a>
-      <a class="pdf-btn" href="#" onclick="return false">📄 English</a>
-      <a class="pdf-btn" href="#" onclick="return false">📄 简体中文</a>
-    </div>`;
+    <div class="sec-lbl">PDF 原文件</div>
+    <div class="pdf-links">${buildPdfLinks(d)}</div>`;
 
   // Actions tab
   const rn={principal:'👔 校長',vice_principal:'🏫 副校長',department_head:'📚 科主任',teacher:'🧑‍🏫 教師',eo_admin:'📋 行政主任',supplier:'🏢 供應商'};

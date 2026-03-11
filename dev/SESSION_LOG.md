@@ -927,3 +927,76 @@ Mac Terminal 最終 git push（先推送 session close 文件）：
 
 關鍵規則：gpt-5-nano temperature=1 固定 | VM 網絡封鎖→Mac Terminal
 ```
+
+## 2026-03-11（SESSION CLOSE — Claude_20260311_RE02）
+
+1. Agent & Session ID: Claude_20260311_RE02
+2. Task summary: PDF 連結修復 + 導航 Bug 修復 + 系統說明 + 驗收清單
+3. Layer classification: Product / System Layer（UI 修復 + 文件）
+4. Source triage: 用戶要求（PDF 連結未能直link EDB原文件、導航未互通、系統說明、驗收清單）
+5. Files read: edb_scraper.py, edb-dashboard.html, circulars.json（結構確認）, SESSION_HANDOFF.md
+6. Files changed:
+   - `edb_scraper.py`（更新：output record 新增 `pdf_urls` 欄位）
+   - `edb-dashboard.html`（更新：buildPdfLinks() + 導航修復 + 系統說明卡）
+   - `dev/ACCEPTANCE_CHECKLIST.md`（新建）
+   - `dev/SESSION_HANDOFF.md`（更新）
+   - `dev/SESSION_LOG.md`（本條目）
+7. Completed:
+   - pdf_urls 修復（scraper 未輸出→已加，dashboard 靜態#→動態 EDB URL）✅
+   - buildPdfLinks() helper：pdf_urls有時→用真實URL；無時→推算EDBCM格式URL；fallback→EDB列表頁 ✅
+   - Stats Bar「即將截止」chip：先 switchTab('overview')，再 scrollIntoView ✅
+   - 供應商 Tab Note 重複插入 bug：加 id='supplierNote' guard ✅
+   - Settings 新增全寬「📖 系統功能說明」卡片（8個功能模組說明）✅
+   - dev/ACCEPTANCE_CHECKLIST.md：11類別 80+測試項目 ✅
+8. Pending: git push → 重新爬取取得 pdf_urls → 按驗收清單測試
+
+### Problem -> Root Cause -> Fix -> Verification
+1. PDF 按鈕 href="#" → 靜態硬碼，未使用 pdf_urls 欄位；且 pdf_urls 本身未輸出至 JSON → 雙重修復：scraper 加 pdf_urls 至 record；dashboard 改用 buildPdfLinks() ✅
+2. Stats Bar「即將截止」在非總覽 tab 點擊不切換 tab → 未加 switchTab() 呼叫 → 加入 switchTab 後 setTimeout scroll ✅
+3. Supplier Note 每次 renderSupplier() 都插入 → 無 guard → 加 id='supplierNote' 防重複 ✅
+
+### Consolidation / Retirement Record
+1. Retired: v10 Handoff Prompt（由 v11 取代）
+
+---
+
+### Next Session Handoff Prompt — v11（最新版本 ✅，請用此版本）
+```
+專案：EDB 通告智能分析系統 (EDB-Circular-AI-analysis-system)
+狀態：v1.0.2-ui-fixes 就緒，待 git push + 重新爬取確認 pdf_urls
+
+已完成（全部 ✅）：
+- Dashboard v1.0.2 修復：PDF 連結、導航 Bug、系統說明（Settings）、供應商Note去重
+- edb_scraper.py：output record 新增 pdf_urls 欄位
+- GitHub Actions：每日 HKT 07:00/13:00/17:00 自動更新（schedule=--days 3，手動可選 school-year）
+- dev/ACCEPTANCE_CHECKLIST.md：11類別 80+測試項目驗收清單
+
+⚠️ gpt-5-nano 規則（不可更改）：
+  temperature=1 | role="developer" | max_completion_tokens=16000
+
+⚠️ EDB 字段 + HTML 結構：見 SESSION_HANDOFF Known Risks #4 + #5
+
+⭐ 下一步（按序）：
+  1. git push 本次更改（Mac Terminal）：
+     git add edb_scraper.py edb-dashboard.html dev/
+     git commit -m "fix: pdf_urls output, PDF links, nav fixes, system doc, acceptance checklist"
+     git tag v1.0.2-ui-fixes
+     git push --force origin main && git push origin --tags
+  2. 確認 GitHub Pages 仍正常（workflow 自動部署後訪問 URL）
+  3. 手動觸發 workflow（school-year 模式）取得含 pdf_urls 的最新 circulars.json
+  4. 在 GitHub Pages 開啟 Dashboard，確認 PDF 按鈕有真實 EDB URL
+  5. 按 dev/ACCEPTANCE_CHECKLIST.md 逐項驗收各功能
+
+完成後：
+  cp -r "." "../EDB-Circular-AI-analysis-system-snapshot-v1.0.2"
+
+主要檔案：
+  outputs/EDB-Circular-AI-analysis-system/
+  ├── edb-dashboard.html（修復：PDF連結、導航、系統說明）
+  ├── edb_scraper.py（修復：輸出 pdf_urls）
+  ├── circulars.json（現有：104條，無pdf_urls；重新爬取後會有）
+  ├── index.html, .github/workflows/update-circulars.yml
+  └── dev/ [SESSION_HANDOFF, SESSION_LOG, ACCEPTANCE_CHECKLIST, GIT_PUSH_MANUAL, ...]
+
+關鍵規則：gpt-5-nano temperature=1 固定 | VM 網絡封鎖→Mac Terminal
+```

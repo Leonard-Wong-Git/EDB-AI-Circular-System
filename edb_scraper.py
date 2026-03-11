@@ -935,6 +935,9 @@ def run_pipeline(args) -> int:
         official_text = (circ.get("official") or
                          circ.get("pdf_text", "")[:500]).strip()
 
+        # Build pdf_urls: already sorted C/E/S order by _parse_list
+        pdf_urls = circ.get("pdf_urls", [])
+
         record = {
             "id":         idx,
             "number":     circ.get("number", f"UNKNOWN_{idx}"),
@@ -955,6 +958,7 @@ def run_pipeline(args) -> int:
             "deadlines":  circ.get("deadlines", []),
             "actions":    circ.get("actions", []),
             "diff":       circ.get("diff", None),
+            "pdf_urls":   pdf_urls,   # [C.pdf, E.pdf, S.pdf] — sorted TC/EN/SC
         }
         output_list.append(record)
 

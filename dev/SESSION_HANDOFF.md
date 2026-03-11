@@ -146,50 +146,41 @@ If the session's changes affect specifications, runbooks, regression thresholds,
 If the session's fix involves adding a new rule, first check whether the existing definition should be integrated or outdated wording retired — avoid stacking without consolidating.
 
 ## Last Session Record
-1. UTC date: 2026-03-10
-2. Session ID: Claude_20260310_RE01（v1.0.0 整合修復 + --school-year + GitHub Pages 部署配置）
+1. UTC date: 2026-03-11
+2. Session ID: Claude_20260311_RE02（PDF 連結修復 + 導航修復 + 系統說明 + 驗收清單）
 3. Completed:
-   - **整合 Bug 修復**：
-     * `edb_scraper.py` title 污染修復（`摘要：` 截斷）✅
-     * `edb-dashboard.html` REFERENCE_CIRCULARS ID 碰撞修復（9001/9002/9003）✅
-   - **--school-year 新功能**：
-     * `school_year_start()` helper（9月1日學年定義，4個邊界條件測試通過）✅
-     * `get_circular_list()` 新增 `date_from` 參數 ✅
-     * circulars.json 輸出新增 `range` / `date_from` / `date_to` 欄位 ✅
-     * `--days 365` 全面支援 ✅
-   - **GitHub Pages 部署配置**：
-     * `.github/workflows/update-circulars.yml` 新建（每天 HKT 07:00 自動更新）✅
-     * `index.html` 新建（根 URL 自動跳轉 edb-dashboard.html）✅
-     * `.gitignore` 更新（移除 circulars.json 排除，加入 .edb_cache/）✅
-   - **用戶教育**：說明 folder snapshot + git tag 兩層保障策略 ✅
-   - **版本更新**：`edb_scraper.py` 版本號更新至 v1.0.0 ✅
-   - **✅ 學年爬蟲完成**：`python3 edb_scraper.py --school-year --output ./circulars.json -v` → **104 條通告，834.5KB** ✅
+   - **PDF 連結修復**：
+     * `edb_scraper.py` 輸出 record 新增 `pdf_urls` 欄位（之前只在內部處理，未寫入 JSON）✅
+     * `edb-dashboard.html` 新增 `buildPdfLinks(d)` helper function ✅
+     * PDF 按鈕使用真實 EDB URL；無 pdf_urls 時以通告號推算 URL；最終 fallback 連至 EDB 通告列表頁 ✅
+   - **導航 Bug 修復**：
+     * Stats Bar「即將截止」chip — 現先切換至通告總覽頁，再滾動至 dlBar（原本不切換 tab）✅
+     * 供應商 Tab Disclaimer Note 重複插入 bug — 加入 `id='supplierNote'` guard ✅
+   - **系統功能說明**：
+     * 設定頁新增全寬「📖 系統功能說明」卡片 ✅
+     * 涵蓋 8 個功能模組：通告總覽、截止追蹤、角色視圖、資源申請、收藏/常備、自動更新、PDF原文件、本機儲存 ✅
+   - **驗收清單**：
+     * 新建 `dev/ACCEPTANCE_CHECKLIST.md` ✅
+     * 涵蓋 A–K 11 個類別，共 80+ 個測試項目 ✅
 4. Pending：
-   - ⭐ 在瀏覽器開啟 `edb-dashboard.html`，確認 104 條學年通告正確顯示
-   - **GitHub Pages 一次性設定**（見 CHANGELOG v1.0.1-hosting）：
-     1. push 所有文件至 GitHub
-     2. 設定 GitHub Secret：`OPENAI_API_KEY`
-     3. Settings → Pages → Source: GitHub Actions
-     4. 手動觸發第一次 workflow
-   - Dashboard 目視確認（學年數據載入後）
+   - ⭐ git push 本 session 更改至 GitHub（推送 edb_scraper.py + edb-dashboard.html + dev/）
+   - 執行 `--school-year` 重新爬取以取得含 `pdf_urls` 的 circulars.json
+   - 按 dev/ACCEPTANCE_CHECKLIST.md 逐項驗收各功能
 5. Next priorities (max 3):
-   - ⭐ 完成 GitHub Pages 一次性設定，取得公開 URL
-   - 確認學年爬蟲 circulars.json 在 Dashboard 正常顯示
-   - 推送 tag `v1.0.1-hosting`
+   - ⭐ git push + tag `v1.0.2-ui-fixes`
+   - 重新爬取學年數據（含 pdf_urls）並確認 PDF 連結正確
+   - 按驗收清單做系統性功能測試
 6. Risks / blockers:
-   - 學年爬蟲通告數量未知（估計 50–100+），LLM 費用需留意
-   - GitHub Pages 首次設定需要手動操作（Settings → Pages → Source: GitHub Actions）
+   - EDB 舊年度通告 PDF URL 可能 404（URL 路徑隨學年改變，scraper 抓到的才是正確路徑）
+   - `pdf_urls` 只有重新爬取後的 circulars.json 才會有
 7. Files materially changed:
-   - `edb_scraper.py`（更新：title fix + school_year_start + date_from + v1.0.0）
-   - `edb-dashboard.html`（更新：REFERENCE_CIRCULARS id 9001/9002/9003）
-   - `.github/workflows/update-circulars.yml`（新建）
-   - `index.html`（新建）
-   - `.gitignore`（更新）
-   - `CHANGELOG.md`（更新：v1.0.0-release + v1.0.1-hosting）
+   - `edb_scraper.py`（更新：輸出 record 加入 pdf_urls）
+   - `edb-dashboard.html`（更新：buildPdfLinks + 導航修復 + 系統說明卡）
+   - `dev/ACCEPTANCE_CHECKLIST.md`（新建）
    - `dev/SESSION_HANDOFF.md`（更新）
    - `dev/SESSION_LOG.md`（更新）
-8. Validation summary: `py_compile` OK ✅；`school_year_start()` 4 邊界條件 ✅；學年爬蟲執行中 ⏳
-9. Consolidation actions taken: 無新規則；部署架構記錄於 CHANGELOG v1.0.1-hosting
+8. Validation summary: `py_compile` OK ✅；HTML 語法目視確認 ✅
+9. Consolidation actions taken: 無新規則
 
 ---
 
