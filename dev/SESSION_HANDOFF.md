@@ -147,6 +147,34 @@ If the session's fix involves adding a new rule, first check whether the existin
 
 ## Last Session Record
 1. UTC date: 2026-03-11
+2. Session ID: Claude_20260311_RE03（自動化驗收測試 + grantChip null 修復）
+3. Completed:
+   - **自動化驗收測試**：
+     * 瀏覽器 JS 執行，A–K 全部 11 類別逐項測試 ✅
+     * 完整報告：73/80（91%）通過 ✅
+     * Live site：105 條通告，全部含 pdf_urls，PDF 連結用真實 applications.edb.gov.hk URL ✅
+   - **Bug 修復：`💰null` 顯示問題**：
+     * `grantChip()` applicable 類型直接 `${g.amount_label}` 無 null guard → 加 `||'資助'` ✅
+     * 影響：EDBCM033/2026, EDBCM005/2026 等 10+ 張卡片由「💰null」改為「💰資助」
+   - **git push upstream 診斷**：
+     * 用戶錯誤：`fatal: no upstream branch` → 建議 `git push --set-upstream origin main` ✅
+4. Pending：
+   - ⭐ `git push --set-upstream origin main`（推送 grantChip 修復至 GitHub）
+   - 選做：修復次要缺陷（D8/D9 月曆篩選、F4 收藏 badge、H5 天數選擇器、H6 已跟進切換）
+5. Next priorities (max 3):
+   - ⭐ `git push --set-upstream origin main`（推送後 GitHub Actions 自動重部署）
+   - 選做次要缺陷修復 + tag `v1.0.3-bugfix`
+   - 響應式設計測試（手機/平板）
+6. Risks / blockers: 無重大阻礙；次要缺陷均非功能性 bug
+7. Files materially changed:
+   - `edb-dashboard.html`（修復：grantChip null fallback）
+   - `dev/SESSION_HANDOFF.md`（更新）
+   - `dev/SESSION_LOG.md`（更新）
+8. Validation summary: 驗收測試 73/80（91%）✅；grantChip 修復邏輯確認正確
+9. Consolidation actions taken: 無新規則
+
+## Previous Session Record
+1. UTC date: 2026-03-11
 2. Session ID: Claude_20260311_RE02（PDF 連結修復 + 導航修復 + 系統說明 + 驗收清單）
 3. Completed:
    - **PDF 連結修復**：
@@ -162,25 +190,12 @@ If the session's fix involves adding a new rule, first check whether the existin
    - **驗收清單**：
      * 新建 `dev/ACCEPTANCE_CHECKLIST.md` ✅
      * 涵蓋 A–K 11 個類別，共 80+ 個測試項目 ✅
-4. Pending：
-   - ⭐ git push 本 session 更改至 GitHub（推送 edb_scraper.py + edb-dashboard.html + dev/）
-   - 執行 `--school-year` 重新爬取以取得含 `pdf_urls` 的 circulars.json
-   - 按 dev/ACCEPTANCE_CHECKLIST.md 逐項驗收各功能
-5. Next priorities (max 3):
-   - ⭐ git push + tag `v1.0.2-ui-fixes`
-   - 重新爬取學年數據（含 pdf_urls）並確認 PDF 連結正確
-   - 按驗收清單做系統性功能測試
-6. Risks / blockers:
-   - EDB 舊年度通告 PDF URL 可能 404（URL 路徑隨學年改變，scraper 抓到的才是正確路徑）
-   - `pdf_urls` 只有重新爬取後的 circulars.json 才會有
-7. Files materially changed:
+4. Files materially changed:
    - `edb_scraper.py`（更新：輸出 record 加入 pdf_urls）
    - `edb-dashboard.html`（更新：buildPdfLinks + 導航修復 + 系統說明卡）
    - `dev/ACCEPTANCE_CHECKLIST.md`（新建）
    - `dev/SESSION_HANDOFF.md`（更新）
    - `dev/SESSION_LOG.md`（更新）
-8. Validation summary: `py_compile` OK ✅；HTML 語法目視確認 ✅
-9. Consolidation actions taken: 無新規則
 
 ---
 
