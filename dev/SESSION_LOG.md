@@ -1050,6 +1050,114 @@ Mac Terminal 最終 git push（先推送 session close 文件）：
 
 ---
 
+## 2026-03-11（SESSION CLOSE — Claude_20260311_RE04）
+
+1. Agent & Session ID: Claude_20260311_RE04
+2. Task summary: 8 項功能實作（B5/B6/B7/B8 匯出列印日曆多選 + F1/F2 排序主題 + C1/C2 狀態互通）
+3. Layer classification: Product / System Layer（前端功能擴展）
+4. Source triage: 用戶確認「自做一、及二」= Batch 1（F1/F2/C1/C2/B5/B7）+ Batch 2（B6/B8）；K1/R1 留後討論
+5. Files read: edb-dashboard.html（多次，修改前後確認）
+6. Files changed:
+   - `edb-dashboard.html`（更新：2453→2796 行，8 項功能，HTML 驗證通過）
+   - `dev/SESSION_HANDOFF.md`（更新）
+   - `dev/SESSION_LOG.md`（本條目）
+7. Completed（全部 8 項）：
+   - **F1（排序持久化）**：`lsLoad()` 讀 `edb_sort_field`/`edb_sort_asc`；`sortList()` 寫 localStorage；預設日期降序 ✅
+   - **F2（時段自動主題）**：`applyTheme()` 改用時鐘（07-18=淺色，其餘=深色）；60秒 setInterval ✅
+   - **C1（狀態互通）**：`updateBmBadge()` + `syncStatusBtns(id,status)`；所有狀態/書籤/釘選按鈕改為 DOM 即時更新（無 full re-render）；data-sid 屬性 ✅
+   - **C2（資源行色+日期）**：行色 CSS（.res-applying/applied/closed/na）；`setApplyStatus()` 即時更新行 CSS + 記錄申請日期至 `edb_apply_dates` localStorage + toast ✅
+   - **B5（CSV 增強）**：`exportExcel()` 加「行動數」「AI摘要前200字」兩欄 ✅
+   - **B7（.ics 日曆匯出）**：新增 `exportICS()`（iCalendar VCALENDAR/VEVENT 格式）；📅 日曆工具列按鈕 ✅
+   - **B6（格式化列印）**：`printDetail()` 改寫（`window.open` 新視窗，完整 HTML 報告含列印/關閉按鈕）；移除舊 `window.print()` 重複函數 ✅
+   - **B8（多選批量匯出）**：新增 `toggleMultiSelect()`/`cardClick()`/`exportSelected()`；浮動 #batchBar；.card-selected CSS + 框 overlay；☑️ 多選工具列按鈕 ✅
+   - **HTML 驗證**：`html.parser` 確認「HTML OK — All tags balanced」✅
+   - **函數驗證**：所有 11 個新函數 grep 全部找到 ✅
+   - **git 衝突診斷**：
+     * `fatal: no upstream` → `git push --set-upstream origin main`
+     * `fatal: not a git repository` → 需先 cd 至項目目錄（`find ~ -maxdepth 6 -name ".git" -type d 2>/dev/null | grep -i EDB`）
+     * `[rejected] fetch first` → `git pull --rebase origin main && git push`（GitHub Actions 持續 push 造成衝突）
+8. New localStorage keys: `edb_sort_field`、`edb_sort_asc`、`edb_apply_dates`（總共 12 個 keys）
+9. Validation / QC:
+   - HTML parser: HTML OK ✅
+   - 11 新函數全部 grep 找到 ✅
+   - 2796 行（+343 行 vs v1.0.2）
+10. Pending:
+    - ⭐ Mac Terminal：`git pull --rebase origin main && git push`（推送全部 RE03+RE04 更改）
+    - Tag：`v1.1.0-features`
+    - K1 知識庫框架、R1 全角色職責精確度
+    - 次要缺陷（D8/D9/F4/H5/H6）、LLM 引擎切換機制討論
+11. Risks / blockers: GitHub Actions 持續 push → 每次 git push 前需先 git pull --rebase；用戶需先確認項目路徑
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem: B6 `printDetail()` 重複定義（新舊兩個版本同時存在）
+2. Root Cause: 實作新版本時，舊 `window.print()` 版本未移除
+3. Fix: 找出舊版本（Export section）並移除
+4. Verification: grep 確認只有一個 `printDetail` 定義 ✅
+5. Regression / rule update: 實作新函數前先搜尋是否存在舊版本
+
+### Consolidation / Retirement Record
+1. Duplicate / drift: 舊 `printDetail()` 移除（只保留新格式化版本）
+2. SSOT: 無新 SSOT；功能規格沿用 `dev/v0.2.0-FRONTEND-SPEC.md`
+3. Merged: B6/B7/B8 工具列按鈕整合至現有工具列
+4. Retired: v12 Handoff Prompt（由 v13 取代）
+5. Why: 版本進度更新，8 項功能完成
+
+---
+
+### Next Session Handoff Prompt — v13（最新版本 ✅，請用此版本）
+```
+專案：EDB 通告智能分析系統 (EDB-Circular-AI-analysis-system)
+狀態：v1.1.0-features 8項新功能已實作，待 git push（需先 pull --rebase）
+
+已完成（全部 ✅）：
+- Dashboard v1.1.0（2796行）：8 項新功能
+  * F1：排序持久化（預設日期降序，localStorage edb_sort_field/edb_sort_asc）
+  * F2：時段自動主題（07-18=淺色，其餘=深色，每60秒重評）
+  * C1：狀態即時互通（updateBmBadge / syncStatusBtns / data-sid）
+  * C2：資源行色+申請日期（.res-applying/applied/closed/na + edb_apply_dates）
+  * B5：CSV增強（行動數 + AI摘要前200字欄）
+  * B7：.ics日曆匯出（所有截止日期，iCalendar格式）
+  * B6：格式化列印報告（新視窗 HTML，含列印/關閉按鈕）
+  * B8：多選批量匯出（浮動操作列，卡片選中框）
+- GitHub Pages：https://leonard-wong-git.github.io/EDB-AI-Circular-System/ 上線
+- GitHub Actions：每日自動更新（105條通告）
+
+⚠️ gpt-5-nano 規則（不可更改）：
+  temperature=1 | role="developer" | max_completion_tokens=16000
+
+⭐ 立即執行（Mac Terminal）：
+  # 先找項目路徑（如果未知）：
+  find ~ -maxdepth 6 -name ".git" -type d 2>/dev/null | grep -i EDB
+
+  # 進入目錄後推送：
+  cd "<EDB 項目路徑>"
+  git pull --rebase origin main   ← 重要！GitHub Actions 持續 push，必須先 pull
+  git add .
+  git commit -m "feat: CSV export, ICS calendar, print report, multi-select, sort persist, time theme, state sync"
+  git tag v1.1.0-features
+  git remote set-url origin https://<你的PAT>@github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git
+  git push origin main
+  git push origin v1.1.0-features
+  git remote set-url origin https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git
+
+待討論（下個 session）：
+- K1：知識庫參考文件框架（每主題域濃縮底稿；半年一次或新通告觸發自動更新）
+- R1：全角色職責精確度（6角色×真實 EDB 職責；更新 LLM 提示）
+- LLM 引擎切換：長/短文件用不同 model 的機制
+- 次要缺陷：D8/D9（月曆篩選）、F4（badge 計數）、H5（天數選擇器）、H6（已跟進切換）
+
+主要檔案：
+  outputs/EDB-Circular-AI-analysis-system/
+  ├── edb-dashboard.html（v1.1.0，2796行，8項新功能）
+  ├── edb_scraper.py, circulars.json, index.html
+  ├── .github/workflows/update-circulars.yml
+  └── dev/ [SESSION_HANDOFF, SESSION_LOG, GIT_PUSH_MANUAL, ACCEPTANCE_CHECKLIST, tools/, knowledge/]
+
+關鍵規則：gpt-5-nano temperature=1 固定 | VM 網絡封鎖→Mac Terminal
+```
+
+---
+
 ### Next Session Handoff Prompt — v11（最新版本 ✅，請用此版本）
 ```
 專案：EDB 通告智能分析系統 (EDB-Circular-AI-analysis-system)

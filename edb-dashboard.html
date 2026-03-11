@@ -230,7 +230,7 @@ a{color:var(--accent);text-decoration:none;}
 .cards-grid{display:grid;gap:10px;grid-template-columns:repeat(2,1fr);}
 .circular-card{
   background:var(--surface);border:1px solid var(--border);
-  border-radius:12px;overflow:hidden;
+  border-radius:12px;overflow:hidden;position:relative;
   cursor:pointer;transition:border-color .2s,box-shadow .15s,transform .1s;
 }
 .circular-card:hover{
@@ -251,6 +251,8 @@ a{color:var(--accent);text-decoration:none;}
 .card-title{font-size:13px;font-weight:600;line-height:1.4;margin-bottom:6px;}
 .card-summary{font-size:12px;color:var(--text-muted);line-height:1.5;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.card-selected{outline:2px solid var(--accent);outline-offset:2px;background:rgba(59,130,246,.08);}
+.card-checkbox{position:absolute;top:8px;right:8px;font-size:18px;color:var(--accent);pointer-events:none;}
 .card-footer{
   display:flex;align-items:center;justify-content:space-between;
   margin-top:10px;flex-wrap:wrap;gap:6px;
@@ -411,10 +413,15 @@ a{color:var(--accent);text-decoration:none;}
 .resource-table td{padding:10px;border-bottom:1px solid var(--border);vertical-align:middle;}
 .resource-table tr:last-child td{border-bottom:none;}
 .resource-table tr:hover td{background:var(--surface2);}
+.res-applying td{background:rgba(245,158,11,.07);}
+.res-applied  td{background:rgba(34,197,94,.07);}
+.res-closed   td{background:rgba(148,163,184,.07);opacity:.7;}
+.res-na       td{opacity:.45;}
 .apply-sel{
   background:var(--surface2);border:1px solid var(--border);color:var(--text);
   padding:3px 8px;border-radius:6px;font-size:11px;cursor:pointer;
 }
+.apply-note{font-size:10px;color:var(--text-muted);margin-top:3px;}
 .grant-type{
   display:inline-flex;align-items:center;gap:4px;
   font-size:11px;padding:2px 8px;border-radius:8px;font-weight:600;
@@ -1010,7 +1017,9 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
           <button class="btn btn-active" id="btnCard" onclick="setView('card')" title="卡片視圖">⊞ <span>卡片</span></button>
           <button class="btn" id="btnList" onclick="setView('list')" title="列表視圖">☰ <span>列表</span></button>
         </div>
-        <button class="btn" onclick="exportExcel()" title="匯出 CSV">📥 匯出</button>
+        <button class="btn" onclick="exportExcel()" title="匯出當前篩選結果為 CSV（含 AI 摘要）">📥 匯出</button>
+        <button class="btn" onclick="exportICS()" title="匯出截止日至 Outlook/Google Calendar">📅 日曆</button>
+        <button class="btn" id="btnMultiSel" onclick="toggleMultiSelect()" title="多選模式：選取通告後批量匯出">☑️ <span>多選</span></button>
         <button class="btn" onclick="printDetail()" title="列印目前開啟的通告">🖨️ <span>列印</span></button>
       </div>
     </div>
@@ -1035,6 +1044,17 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
         <tbody id="listBody"></tbody>
       </table>
     </div>
+  </div>
+
+  <!-- Batch action bar (multi-select mode) -->
+  <div id="batchBar" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+    background:var(--accent);color:white;padding:10px 20px;border-radius:28px;box-shadow:0 4px 20px rgba(0,0,0,.35);
+    z-index:500;align-items:center;gap:12px;font-size:13px;font-weight:600">
+    <span id="batchCount">0 條已選</span>
+    <button onclick="exportSelected()" id="btnBatchExport" disabled
+      style="background:white;color:var(--accent);border:none;border-radius:16px;padding:5px 14px;font-weight:700;cursor:pointer">📥 匯出</button>
+    <button onclick="toggleMultiSelect()"
+      style="background:rgba(255,255,255,.2);color:white;border:none;border-radius:16px;padding:5px 14px;cursor:pointer">✕ 取消</button>
   </div>
 
   <!-- ======== TAB: CALENDAR ======== -->
@@ -1549,9 +1569,10 @@ let S = {
   filterType:'all', filterSchool:'all',
   filterTopic:'all', filterImpact:'all', filterAction:'all',
   searchQ:'', filterBarOpen:false,
-  bookmarks:{}, pinned:{}, statuses:{}, applyStatuses:{},
+  bookmarks:{}, pinned:{}, statuses:{}, applyStatuses:{}, applyDates:{},
   sortField:'date', sortAsc:false,
-  currentDetailId:null, devClickCount:0
+  currentDetailId:null, devClickCount:0,
+  multiSelect:false, selected:{}
 };
 
 /* ============================================================
@@ -1601,13 +1622,22 @@ function lsLoad(){
   S.pinned     = lsGet('edb_pinned',{});
   S.statuses   = lsGet('edb_statuses',{});
   S.applyStatuses = lsGet('edb_apply_statuses',{});
+  S.applyDates    = lsGet('edb_apply_dates',{});
+  S.sortField  = lsGet('edb_sort_field','date');
+  S.sortAsc    = lsGet('edb_sort_asc', false);
 }
 
 /* ============================================================
    THEME / PALETTE / LAYOUT / FONT
    ============================================================ */
 function applyTheme(){
-  const th = S.theme==='auto'?(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'):S.theme;
+  let th;
+  if(S.theme==='auto'){
+    const h=new Date().getHours();
+    th=(h>=7&&h<18)?'light':'dark';
+  } else {
+    th=S.theme;
+  }
   document.documentElement.setAttribute('data-theme',th);
   document.getElementById('themeBtn').textContent = th==='dark'?'🌙':'☀️';
   ['dark','light','auto'].forEach(x=> document.getElementById('opt-'+x)?.classList.toggle('active',x===S.theme));
@@ -1879,7 +1909,9 @@ function buildCard(d, inAttention=false){
   const isHighImpact=d.impact==='high'&&d.compliance==='mandatory';
   let topBar = isHighImpact&&!inAttention ? `<div class="card-top-bar">🔴 需關注 ${soonest&&days<=3?'<span style="animation:blink 1s infinite">⚠️ 緊急</span>':''}</div>` : '';
   const dlBadge=soonest&&days!==null?`<span class="badge ${days<0?'b-gray':days<=3?'b-red':days<=S.alertDays?'b-orange':'b-blue'}">${days<0?'已截止':days===0?'今天截止':days+'天後截止'}</span>`:'';
-  return `<div class="circular-card${isHighImpact?' high-impact':''}" onclick="openDetail(${d.id})">
+  const selCls=S.multiSelect&&S.selected[d.id]?' card-selected':'';
+  return `<div class="circular-card${isHighImpact?' high-impact':''}${selCls}" onclick="cardClick(${d.id},event)">
+    ${S.multiSelect?`<div class="card-checkbox">${S.selected[d.id]?'☑':'☐'}</div>`:''}
     ${topBar}
     <div class="card-inner">
       <div class="card-row1">
@@ -1894,7 +1926,7 @@ function buildCard(d, inAttention=false){
           ${dlBadge} ${grantChip(d.grant_info)}
         </div>
         <div class="card-actions-row" onclick="event.stopPropagation()">
-          <button class="status-btn${st==='done'?' st-done':st==='read'?' st-read':''}" onclick="cycleStatus(${d.id},this)" title="狀態">${st==='done'?'✅':st==='read'?'👁️':'○'}</button>
+          <button class="status-btn${st==='done'?' st-done':st==='read'?' st-read':''}" onclick="cycleStatus(${d.id},this)" data-sid="${d.id}" title="狀態">${st==='done'?'✅':st==='read'?'👁️':'○'}</button>
           <button class="bookmark-btn${bm?' on':''}" onclick="toggleBookmark(${d.id},this)" title="收藏">⭐</button>
           <button class="pin-btn${pn?' on':''}" onclick="togglePinned(${d.id},this)" title="常備參考">📌</button>
         </div>
@@ -1958,7 +1990,7 @@ function renderListView(fd){
       <td>${dlHtml}</td>
       <td>${grantChip(d.grant_info)||'—'}</td>
       <td onclick="event.stopPropagation()">
-        <button class="status-btn${st==='done'?' st-done':st==='read'?' st-read':''}" onclick="cycleStatus(${d.id},this)">${st==='done'?'✅':st==='read'?'👁️':'○'}</button>
+        <button class="status-btn${st==='done'?' st-done':st==='read'?' st-read':''}" onclick="cycleStatus(${d.id},this)" data-sid="${d.id}">${st==='done'?'✅':st==='read'?'👁️':'○'}</button>
       </td>
     </tr>`;
   }).join('');
@@ -1983,6 +2015,8 @@ function setView(v){
 function sortList(field){
   if(S.sortField===field) S.sortAsc=!S.sortAsc;
   else { S.sortField=field; S.sortAsc=true; }
+  lsSet('edb_sort_field',S.sortField);
+  lsSet('edb_sort_asc',S.sortAsc);
   renderOverview();
 }
 
@@ -2096,9 +2130,12 @@ function renderResources(){
     const g=d.grant_info;
     const soonestDl=d.deadlines.find(dl=>dl.type==='apply_deadline');
     const aSt=S.applyStatuses[d.id]||'pending';
+    const aDate=S.applyDates?.[d.id]||'';
     const days=soonestDl?daysUntil(soonestDl.date):null;
     const dlHtml=soonestDl?`<span class="${days!==null&&days<=3?'dl-urgent':days!==null&&days<=S.alertDays?'dl-soon':'dl-ok'}">${soonestDl.date}${days!==null?` (${days<0?'過期':days+'天'})`:''}`:''
-    return `<tr onclick="openDetail(${d.id})">
+    const rowCls=aSt==='applying'?'res-applying':aSt==='applied'?'res-applied':aSt==='closed'?'res-closed':aSt==='na'?'res-na':'';
+    const stNote=aSt==='applied'&&aDate?`<div class="apply-note">✅ 已於 ${aDate} 提交</div>`:aSt==='applying'?`<div class="apply-note">🔄 進行中</div>`:'';
+    return `<tr class="${rowCls}" onclick="openDetail(${d.id})">
       <td><span class="lt-num">${d.number}</span></td>
       <td>${d.title}</td>
       <td>
@@ -2110,13 +2147,14 @@ function renderResources(){
       <td>${g.type==='applicable'?'直接撥款':'政府資源'}</td>
       <td>${dlHtml||'—'}</td>
       <td onclick="event.stopPropagation()">
-        <select class="apply-sel" onchange="setApplyStatus(${d.id},this.value)" onclick="event.stopPropagation()">
-          <option value="pending" ${aSt==='pending'?'selected':''}>待申請</option>
-          <option value="applying" ${aSt==='applying'?'selected':''}>申請中</option>
-          <option value="applied" ${aSt==='applied'?'selected':''}>已申請</option>
-          <option value="closed" ${aSt==='closed'?'selected':''}>已截止</option>
-          <option value="na" ${aSt==='na'?'selected':''}>不適用</option>
+        <select class="apply-sel" data-rid="${d.id}" onchange="setApplyStatus(${d.id},this.value)" onclick="event.stopPropagation()">
+          <option value="pending" ${aSt==='pending'?'selected':''}>⬜ 待申請</option>
+          <option value="applying" ${aSt==='applying'?'selected':''}>🔄 申請中</option>
+          <option value="applied" ${aSt==='applied'?'selected':''}>✅ 已申請</option>
+          <option value="closed" ${aSt==='closed'?'selected':''}>🔒 已截止</option>
+          <option value="na" ${aSt==='na'?'selected':''}>— 不適用</option>
         </select>
+        ${stNote}
       </td>
     </tr>`;
   }).join('');
@@ -2172,36 +2210,83 @@ function renderSupplier(){
 /* ============================================================
    STATUS / BOOKMARK / PIN
    ============================================================ */
+/* ---- shared state-sync helpers ---- */
+function updateBmBadge(){
+  const badge=document.getElementById('bmTabBadge');
+  if(!badge) return;
+  const total=DATA.filter(d=>S.bookmarks[d.id]||S.pinned[d.id]).length;
+  badge.textContent=total; badge.style.display=total?'':'none';
+}
+function syncStatusBtns(id,status){
+  document.querySelectorAll(`.status-btn[data-sid="${id}"]`).forEach(b=>{
+    b.className='status-btn'+(status==='done'?' st-done':status==='read'?' st-read':'');
+    b.textContent=status==='done'?'✅':status==='read'?'👁️':'○';
+  });
+}
 function cycleStatus(id,btn){
   const order=['unread','read','done'];
   const cur=S.statuses[id]||'unread';
   const next=order[(order.indexOf(cur)+1)%3];
   S.statuses[id]=next; lsSet('edb_statuses',S.statuses);
-  btn.className='status-btn'+(next==='done'?' st-done':next==='read'?' st-read':'');
-  btn.textContent=next==='done'?'✅':next==='read'?'👁️':'○';
+  syncStatusBtns(id,next);
   renderStatsBar();
 }
 function toggleBookmark(id,btn){
   S.bookmarks[id]=!S.bookmarks[id]; lsSet('edb_bookmarks',S.bookmarks);
   if(btn){ btn.classList.toggle('on',S.bookmarks[id]); }
-  renderStatsBar();
+  // sync detail panel btn if open
+  if(S.currentDetailId===id) document.getElementById('dpBookmarkBtn')?.classList.toggle('on',S.bookmarks[id]);
+  renderStatsBar(); updateBmBadge();
 }
 function togglePinned(id,btn){
   S.pinned[id]=!S.pinned[id]; lsSet('edb_pinned',S.pinned);
   if(btn){ btn.classList.toggle('on',S.pinned[id]); }
-  renderStatsBar();
+  if(S.currentDetailId===id) document.getElementById('dpPinBtn')?.classList.toggle('on',S.pinned[id]);
+  renderStatsBar(); updateBmBadge();
 }
-function setApplyStatus(id,val){ S.applyStatuses[id]=val; lsSet('edb_apply_statuses',S.applyStatuses); }
+function setApplyStatus(id,val){
+  S.applyStatuses[id]=val; lsSet('edb_apply_statuses',S.applyStatuses);
+  // record date when marked as applied
+  if(val==='applied'){
+    if(!S.applyDates) S.applyDates={};
+    S.applyDates[id]=new Date().toLocaleDateString('zh-HK');
+    lsSet('edb_apply_dates',S.applyDates);
+  }
+  // update row class + note live (avoid full re-render)
+  const sel=document.querySelector(`.apply-sel[data-rid="${id}"]`);
+  if(sel){
+    const row=sel.closest('tr');
+    if(row){
+      row.className=['res-applying','res-applied','res-closed','res-na'].join(' ').split(' ').reduce((r,c)=>{r.classList.remove(c);return r;},row).className;
+      ['res-applying','res-applied','res-closed','res-na'].forEach(c=>row.classList.remove(c));
+      if(val==='applying') row.classList.add('res-applying');
+      else if(val==='applied') row.classList.add('res-applied');
+      else if(val==='closed') row.classList.add('res-closed');
+      else if(val==='na') row.classList.add('res-na');
+      // update note
+      let note=sel.nextElementSibling;
+      if(note&&note.classList.contains('apply-note')) note.remove();
+      if(val==='applied'){
+        const n=document.createElement('div'); n.className='apply-note';
+        n.textContent='✅ 已於 '+S.applyDates[id]+' 提交';
+        sel.after(n);
+      } else if(val==='applying'){
+        const n=document.createElement('div'); n.className='apply-note';
+        n.textContent='🔄 進行中'; sel.after(n);
+      }
+    }
+  }
+  const labels={pending:'待申請',applying:'申請中',applied:'已申請',closed:'已截止',na:'不適用'};
+  const d=DATA.find(x=>x.id===id);
+  showToast(`${d?.number||'通告'} 狀態更新：${labels[val]||val}`);
+}
 function dpToggleBookmark(){
   const id=S.currentDetailId; if(id===null) return;
-  toggleBookmark(id,null);
-  document.getElementById('dpBookmarkBtn').classList.toggle('on',S.bookmarks[id]);
-  renderOverview();
+  toggleBookmark(id,null); // toggleBookmark now handles dpBookmarkBtn and badge
 }
 function dpTogglePin(){
   const id=S.currentDetailId; if(id===null) return;
-  togglePinned(id,null);
-  document.getElementById('dpPinBtn').classList.toggle('on',S.pinned[id]);
+  togglePinned(id,null); // togglePinned now handles dpPinBtn and badge
 }
 
 /* ============================================================
@@ -2380,6 +2465,109 @@ function closeDetail(){
   document.getElementById('overlay').classList.remove('open');
   S.currentDetailId=null;
 }
+
+/* ============================================================
+   FORMATTED PRINT (B6)
+   ============================================================ */
+function printDetail(){
+  const id=S.currentDetailId;
+  if(id===null){ window.print(); return; }
+  const d=DATA.find(x=>x.id===id); if(!d) return;
+  const roleKey=S.role;
+  const roleActions=(d.actions||[]).filter(a=>!a.role||a.role===roleKey||a.role==='all');
+  const roleInfo=d.roles?.[roleKey];
+  const html=`<!DOCTYPE html><html lang="zh-HK"><head><meta charset="UTF-8">
+  <title>${d.number} — EDB 通告報告</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'PingFang TC','Noto Sans TC',sans-serif;font-size:11pt;color:#1e293b;line-height:1.65;
+         max-width:21cm;margin:16px auto;padding:24px;}
+    h1{font-size:15pt;color:#1e293b;border-bottom:3px solid #3b82f6;padding-bottom:8px;margin-bottom:14px;}
+    h2{font-size:11pt;font-weight:700;color:#3b82f6;margin:18px 0 6px;}
+    .meta{font-size:9.5pt;color:#64748b;margin-bottom:14px;display:flex;gap:16px;flex-wrap:wrap;}
+    .badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:9pt;font-weight:600;margin-right:4px;}
+    .b-red{background:#fee2e2;color:#dc2626;} .b-yellow{background:#fef3c7;color:#d97706;}
+    .b-blue{background:#dbeafe;color:#1d4ed8;} .b-green{background:#dcfce7;color:#16a34a;}
+    .block{background:#f8fafc;border-left:3px solid #3b82f6;padding:10px 14px;margin:8px 0;
+           border-radius:0 6px 6px 0;font-size:10.5pt;}
+    .action-item{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;
+                 padding:8px 12px;margin:5px 0;font-size:10.5pt;}
+    .action-item .dl{font-size:9.5pt;color:#059669;margin-top:3px;}
+    .pts-item{padding:3px 0;font-size:10.5pt;}
+    ul{margin:4px 0 4px 18px;} li{margin-bottom:3px;}
+    .footer{margin-top:28px;padding-top:10px;border-top:1px solid #e2e8f0;
+            font-size:8.5pt;color:#94a3b8;display:flex;justify-content:space-between;}
+    @media print{body{margin:0;}button{display:none;} .no-print{display:none;}}
+  </style></head><body>
+  <h1>${d.number}　${d.title}</h1>
+  <div class="meta">
+    <span>📅 發出日期：<strong>${d.date}</strong></span>
+    <span>影響：<span class="badge ${d.impact==='high'?'b-red':d.impact==='mid'?'b-yellow':'b-blue'}">${d.impact==='high'?'高影響':d.impact==='mid'?'中影響':'低影響'}</span></span>
+    <span>類型：<span class="badge b-blue">${d.compliance==='mandatory'?'必須執行':d.compliance==='recommended'?'建議執行':'參考'}</span></span>
+    ${d.tags?.length?'<span>標籤：'+d.tags.join('、')+'</span>':''}
+  </div>
+  <h2>📝 AI 分析摘要</h2>
+  <div class="block">${(d.summary||'無').split('\n\n').map(p=>`<p style="margin-bottom:6px">${p}</p>`).join('')}</div>
+  ${roleInfo?`<h2>👤 ${roleKey} 角色重點</h2>
+  <div class="block">${(roleInfo.pts||[]).map(p=>`<div class="pts-item">• ${p}</div>`).join('')||'—'}</div>`:''}
+  ${roleActions.length?`<h2>📋 需要行動（${roleKey} 角色）</h2>
+  ${roleActions.map(a=>`<div class="action-item">
+    <div>${a.text}</div>
+    ${a.dl&&a.dl!=='9999'?`<div class="dl">⏰ 截止：${a.dl}${a.note?' — '+a.note:''}</div>`:''}
+  </div>`).join('')}`:''}
+  ${d.deadlines?.length?`<h2>⏰ 所有截止日期</h2>
+  <ul>${d.deadlines.map(dl=>`<li><strong>${dl.date||'—'}</strong>　${dl.label||dl.type||''}${dl.note?' — '+dl.note:''}</li>`).join('')}</ul>`:''}
+  <h2>📄 官方原文摘要</h2>
+  <div class="block" style="font-size:9.5pt;color:#475569">${d.official||'—'}</div>
+  <div class="footer">
+    <span>由 EDB 通告智能分析系統生成</span>
+    <span>${new Date().toLocaleString('zh-HK')}　|　數據來源：香港教育局</span>
+  </div>
+  <div class="no-print" style="margin-top:16px;text-align:center">
+    <button onclick="window.print()" style="padding:8px 24px;background:#3b82f6;color:white;border:none;border-radius:6px;cursor:pointer;font-size:12pt">列印 / 儲存 PDF</button>
+    <button onclick="window.close()" style="padding:8px 24px;margin-left:8px;background:#64748b;color:white;border:none;border-radius:6px;cursor:pointer;font-size:12pt">關閉</button>
+  </div>
+  </body></html>`;
+  const w=window.open('','_blank','width=820,height=950');
+  w.document.write(html); w.document.close(); w.focus();
+}
+
+/* ============================================================
+   MULTI-SELECT BATCH EXPORT (B8)
+   ============================================================ */
+function toggleMultiSelect(){
+  S.multiSelect=!S.multiSelect; S.selected={};
+  document.getElementById('btnMultiSel').classList.toggle('btn-active',S.multiSelect);
+  document.getElementById('batchBar').style.display=S.multiSelect?'flex':'none';
+  renderOverview();
+}
+function cardClick(id,evt){
+  if(S.multiSelect){
+    evt.stopPropagation();
+    S.selected[id]=!S.selected[id];
+    const card=evt.currentTarget;
+    card.classList.toggle('card-selected',S.selected[id]);
+    const n=Object.values(S.selected).filter(Boolean).length;
+    document.getElementById('batchCount').textContent=n+' 條已選';
+    document.getElementById('btnBatchExport').disabled=n===0;
+  } else {
+    openDetail(id);
+  }
+}
+function exportSelected(){
+  const ids=Object.keys(S.selected).filter(k=>S.selected[k]).map(Number);
+  if(!ids.length){ showToast('⚠️ 未選擇任何通告'); return; }
+  const sel=DATA.filter(d=>ids.includes(d.id));
+  const rows=[['通告號','標題','日期','影響','行動類型','最近截止','行動數','AI摘要（前200字）']];
+  sel.forEach(d=>{
+    rows.push([d.number,d.title,d.date,d.impact,d.compliance,
+      getSoonestDeadline(d)||'',d.actions?.length||0,
+      (d.summary||'').replace(/\n+/g,' ').substring(0,200)]);
+  });
+  downloadCsv(rowsToSheet(rows),'EDB_Selected_'+new Date().toISOString().slice(0,10)+'.csv');
+  showToast('已匯出 '+sel.length+' 條選定通告');
+  toggleMultiSelect();
+}
 function switchDTab(name,btn){
   document.querySelectorAll('.d-tab').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.d-content').forEach(c=>c.classList.remove('active'));
@@ -2392,14 +2580,54 @@ function switchDTab(name,btn){
    ============================================================ */
 function exportExcel(){
   const fd=filteredData();
-  const rows=[['通告號','標題','日期','影響','行動類型','截止日期','金額類型','金額']];
+  const rows=[['通告號','標題','日期','影響','行動類型','最近截止','行動數','資助類型','金額','AI摘要（前200字）']];
   fd.forEach(d=>{
     const g=d.grant_info;
-    rows.push([d.number,d.title,d.date,d.impact,d.compliance,getSoonestDeadline(d)||'',g?.type||'',g?.amount_label||'']);
+    rows.push([
+      d.number, d.title, d.date, d.impact, d.compliance,
+      getSoonestDeadline(d)||'',
+      d.actions?.length||0,
+      g?.type||'none', g?.amount_label||'',
+      (d.summary||'').replace(/\n+/g,' ').substring(0,200)
+    ]);
   });
   const ws=rowsToSheet(rows);
   downloadCsv(ws,'EDB_Circulars_'+new Date().toISOString().slice(0,10)+'.csv');
-  showToast('已匯出 '+fd.length+' 條通告');
+  showToast('已匯出 '+fd.length+' 條通告（含 AI 摘要）');
+}
+function exportICS(){
+  const fd=filteredData();
+  const events=[];
+  fd.forEach(d=>{
+    (d.deadlines||[]).forEach(dl=>{
+      if(!dl.date||dl.date==='9999') return;
+      const dt=dl.date.replace(/-/g,'');
+      const typeLabel=dl.type==='apply_deadline'?'申請截止':dl.type==='submission_deadline'?'提交截止':'留意事項';
+      const summary=`[EDB ${typeLabel}] ${d.number} ${d.title}`;
+      const desc=(d.summary||'').substring(0,200).replace(/[,;\\]/g,' ').replace(/\n/g,'\\n');
+      events.push([
+        'BEGIN:VEVENT',
+        `DTSTART;VALUE=DATE:${dt}`,
+        `DTEND;VALUE=DATE:${dt}`,
+        `SUMMARY:${summary}`,
+        `DESCRIPTION:${desc}`,
+        `URL:https://leonard-wong-git.github.io/EDB-AI-Circular-System/`,
+        `UID:edb-${d.id}-${dl.type}-${dt}@edb-dashboard`,
+        'END:VEVENT'
+      ].join('\r\n'));
+    });
+  });
+  if(!events.length){ showToast('⚠️ 沒有截止日期可匯出'); return; }
+  const ics=['BEGIN:VCALENDAR','VERSION:2.0','CALSCALE:GREGORIAN',
+    'X-WR-CALNAME:EDB 通告截止日期','X-WR-TIMEZONE:Asia/Hong_Kong',
+    'PRODID:-//EDB Dashboard//ZH',
+    ...events,'END:VCALENDAR'].join('\r\n');
+  const blob=new Blob([ics],{type:'text/calendar;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='EDB_Deadlines_'+new Date().toISOString().slice(0,10)+'.ics';
+  a.click();
+  showToast('已匯出 '+events.length+' 個截止日期 → 可直接加入 Outlook / Google Calendar');
 }
 function exportResourceExcel(){
   const grants=DATA.filter(d=>d.grant_info&&d.grant_info.type!=='none');
@@ -2414,11 +2642,6 @@ function exportResourceExcel(){
 }
 function rowsToSheet(rows){ return rows.map(r=>r.map(c=>'"'+(c||'').toString().replace(/"/g,'""')+'"').join(',')).join('\n'); }
 function downloadCsv(csv,name){ const a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv); a.download=name; a.click(); }
-function printDetail(){
-  if(S.currentDetailId===null){ showToast('請先開啟一條通告'); return; }
-  window.print();
-}
-
 /* ============================================================
    SETTINGS UI
    ============================================================ */
@@ -2557,6 +2780,8 @@ function init(){
   updateSupplierTab();
   // keyboard shortcuts
   initShortcuts();
+  // auto theme interval — re-evaluate hour-based theme every minute
+  setInterval(()=>{ if(S.theme==='auto') applyTheme(); }, 60000);
   // load data
   loadData();
   // calendar defaults
