@@ -561,8 +561,19 @@ class EDBScraper:
 # PDF EXTRACTOR
 # =============================================================================
 
-def _pdf_timeout_handler(signum, frame):
-    raise TimeoutError("PDF parsing exceeded time limit")
+def _pdf_extract_worker(pdf_path_str, max_pages, queue):
+    """Runs in a child process so it can be forcefully killed on timeout."""
+    try:
+        import pdfplumber
+        with pdfplumber.open(pdf_path_str) as pdf:
+            parts = []
+            for page in pdf.pages[:max_pages]:
+                text = page.extract_text()
+                if text:
+                    parts.append(text.strip())
+            queue.put("\n\n".join(parts))
+    except Exception:
+        queue.put("")
 
 
 def extract_pdf_text(pdf_path: Path, max_pages: int = PDF_MAX_PAGES, timeout_secs: int = 10) -> str:
