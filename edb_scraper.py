@@ -577,44 +577,29 @@ def _pdf_extract_worker(pdf_path_str, max_pages, queue):
 
 
 def extract_pdf_text(pdf_path: Path, max_pages: int = PDF_MAX_PAGES, timeout_secs: int = 10) -> str:
-    """Extract text from PDF using pdfplumber. Returns raw text string.
-    Enforces a per-PDF timeout (default 60s) to prevent pdfminer hanging on
-    complex/malformed PDFs (observed: workflow stuck >1 hour on single PDF).
-    """
+    """Extract PDF text in a subprocess; forcefully kill if it exceeds timeout_secs."""
     if not HAS_PDF:
         return ""
-    import signal
-    # signal.SIGALRM is only available on Unix/Linux (GitHub Actions is Linux)
-    use_timeout = hasattr(signal, "SIGALRM")
-    if use_timeout:
-        signal.signal(signal.SIGALRM, _pdf_timeout_handler)
-        signal.alarm(timeout_secs)
-    try:
-        with pdfplumber.open(pdf_path) as pdf:
-            pages = pdf.pages[:max_pages]
-            parts = []
-            for page in pages:
-                text = page.extract_text()
-                if text:
-                    parts.append(text.strip())
-            full = "\n\n".join(parts)
-            return full[:PDF_MAX_CHARS]
-    except TimeoutError:
+    import multiprocessing
+    q: "multiprocessing.Queue[str]" = multiprocessing.Queue()
+    proc = multiprocessing.Process(
+        target=_pdf_extract_worker,
+        args=(str(pdf_path), max_pages, q),
+    )
+    proc.start()
+    proc.join(timeout_secs)
+    if proc.is_alive():
+        proc.terminate()
+        proc.join()
         logging.getLogger("PDF").warning(
-            f"Skipped ({pdf_path.name}): exceeded {timeout_secs}s timeout — pdfminer hang protection"
+            f"Skipped ({pdf_path.name}): exceeded {timeout_secs}s — process killed"
         )
         return ""
-    except Exception as exc:
-        logging.getLogger("PDF").warning(f"Extraction failed ({pdf_path.name}): {exc}")
+    try:
+        return q.get_nowait()[:PDF_MAX_CHARS]
+    except Exception:
         return ""
-    finally:
-        if use_timeout:
-            signal.alarm(0)  # Cancel any pending alarm
 
-
-# =============================================================================
-# LLM ANALYZER
-# =============================================================================
 
 class LLMAnalyzer:
     """Wraps gpt-5-nano Structured Output analysis."""
