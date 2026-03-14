@@ -129,11 +129,25 @@ cp -r "<PROJECT_PATH>-snapshot-v0.x.x" "<PROJECT_PATH>-restored"
    - Cell[2] 語言：`<a href="../circular/upload/EDBCM/EDBCMyyNNNC.pdf">繁體中文</a>` 等3個連結
    - **無 detail_url**（列表頁沒有通告詳情連結）
    - PDF 優先順序：C.pdf（繁中）> E.pdf（英文）> S.pdf（簡體）
-6. ⚠️ **pdfminer 無 timeout 保護（2026-03-11 新增）**：
-   - 症狀：GitHub Actions workflow 在「Run EDB scraper」步驟卡死超過 1 小時（正常約 25 分鐘），日誌停在 pdfminer.psparser DEBUG 行 108782
-   - 根本原因：edb_scraper.py 的 PDF 解析無超時限制，某些複雜 PDF 令 pdfminer 進入近乎無限的解析循環
-   - 修復方案：在 PDF 解析加入 `signal.alarm(60)` timeout（Linux/macOS），捕獲 TimeoutError 後跳過該 PDF
-   - **⚠️ 修復前勿再手動觸發 school-year 模式 workflow，否則會再次卡死**
+6. ⚠️ **pdfminer/pdfplumber 在 GitHub Actions 卡死（2026-03-11~14 RE05 實測）**：
+   - 症狀：GitHub Actions workflow 在「Run EDB scraper」步驟卡死 30~60+ 分鐘，日誌 107,000+ 行 pdfminer.psparser DEBUG
+   - 根本原因：某些 EDB PDF 令 pdfminer C 擴展（psparser/pdfinterp）進入近乎無限的解析循環
+   - **❌ 已失敗的方案（RE05 實測，全部無效）：**
+     * `signal.SIGALRM` + `signal.alarm(60)` → 無法打斷 C 擴展層迴圈（Python 信號只在 bytecode 間處理）
+     * `signal.alarm(10)` 降低至 10 秒 → 同上，C 擴展不回應
+     * `multiprocessing.Process` + `proc.terminate()` (SIGTERM) → SIGTERM 同樣被 C 擴展忽略
+   - **⭐ 待測試方案（下個 session）：**
+     * `multiprocessing.Process` + `proc.kill()` (SIGKILL) → SIGKILL 無法被攔截，OS 直接強殺，理論上可行
+     * 同時需關閉 pdfminer DEBUG logging（防止 log 爆炸 107K+ 行）
+     * 替代方案：改用 `subprocess.run(timeout=10)` 呼叫外部 Python 腳本做 PDF 提取
+     * 替代方案：改用 PyMuPDF (fitz) 替代 pdfplumber/pdfminer（不同 C 底層，可能不卡）
+   - **⚠️ 目前 GitHub repo 中的 edb_scraper.py 狀態：**
+     * `extract_pdf_text()` 已改為 multiprocessing 版本（用 `proc.terminate()`，但無效）
+     * `_pdf_extract_worker()` 函數已存在（子程序 worker）
+     * `HAS_PDF = True`（PDF 提取仍開啟 — 會在 workflow 中卡死）
+     * 下個 session 需要將 `proc.terminate()` 改為 `proc.kill()` 並測試
+   - **⚠️ 觸發 school-year 模式 workflow 前必須先修好 PDF timeout，否則會再次卡死**
+   - **安全的 workflow 模式**：`days-3`（增量，通常無新 PDF，43 秒完成）
 
 ## Regression / Verification Notes
 1. Required checks: 後端驗收（見需求文件 8.1）、前端驗收（見需求文件 8.2）
@@ -151,6 +165,38 @@ If the session's changes affect specifications, runbooks, regression thresholds,
 If the session's fix involves adding a new rule, first check whether the existing definition should be integrated or outdated wording retired — avoid stacking without consolidating.
 
 ## Last Session Record
+1. UTC date: 2026-03-14
+2. Session ID: Claude_20260314_RE05（PDF timeout 修復嘗試 — 未成功）
+3. Completed:
+   - **edb_scraper.py PDF timeout 修復** — 三種方案全部失敗：
+     * ❌ `signal.SIGALRM(60)` → C 擴展不回應 Python 信號
+     * ❌ `signal.SIGALRM(10)` → 同上 + NameError（handler 被刪但調用殘留）
+     * ❌ `multiprocessing.Process` + `proc.terminate()` → SIGTERM 被 C 擴展忽略
+   - **git push 成功** — edb_scraper.py multiprocessing 版本已推送至 GitHub（commit 87c9e08）
+   - **GitHub Actions workflow** — 三次 Run workflow 全部失敗/卡死（#14 卡死取消, #15 NameError, #16 卡死 32 分鐘）
+4. Pending：
+   - ⭐ **PDF timeout 修復**：改 `proc.terminate()` → `proc.kill()` (SIGKILL) 並測試
+   - ⭐ **GitHub Pages 部署**：仍是舊版本（缺 📅 日曆 / ☑️ 多選按鈕）
+   - ⭐ **pdfminer DEBUG logging**：需關閉（107K 行 log 爆炸）
+   - 討論：K1 知識庫框架、R1 全角色精確度、LLM 引擎切換
+   - 選做：D8/D9 月曆篩選、F4 badge 計數、H5 天數選擇器、H6 已跟進切換
+5. Next priorities (max 3):
+   - ⭐ `proc.kill()` 方案修復 PDF timeout → push → Run workflow → 確認 Pages 部署
+   - 考慮替代 PDF 庫（PyMuPDF/fitz）替代 pdfplumber/pdfminer
+   - K1/R1 知識框架討論
+6. Risks / blockers: pdfminer C 擴展卡死問題仍未解決；觸發 school-year workflow 必定卡死
+7. Files materially changed:
+   - `edb_scraper.py`（多次修改：SIGALRM → multiprocessing → 當前用 proc.terminate()）
+   - `dev/SESSION_HANDOFF.md`（更新）
+   - `dev/SESSION_LOG.md`（更新）
+8. Validation summary: `python3 -c "import ast; ast.parse(...)"` Syntax OK ✅；但 workflow 仍卡死
+9. Git commits in RE05:
+   - `78b0832` — fix: PDF parse timeout (60s); update dev docs
+   - `118e1e1` — fix: reduce PDF timeout 60s→10s
+   - `f24685f` — fix: use multiprocessing for PDF timeout
+   - `87c9e08` — fix: rewrite extract_pdf_text with multiprocessing — remove broken SIGALRM refs
+
+## Previous Session Record (RE04)
 1. UTC date: 2026-03-11
 2. Session ID: Claude_20260311_RE04（8 項功能實作：匯出、列印、多選、排序、主題、狀態同步）
 3. Completed:
