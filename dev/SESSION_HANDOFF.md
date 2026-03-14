@@ -9,8 +9,8 @@
    - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具
    - `requirements.txt` — Python 依賴清單
 3. Regression baseline: dry-run 14/14 通告通過；LLM 分析成功（EDBCM030 high/721chars, EDBCM026 mid/462chars）
-4. Release / merge status: **v0.3.0-backend tag 已推送至 GitHub** ✅（52 objects, 11.35 MiB）
-5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git，最新 tag: **v0.3.0-backend** ✅
+4. Release / merge status: **v1.1.0-features tag 已推送至 GitHub** ✅（commit b593707，3 files, 404 insertions）
+5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git，最新 tag: **v1.1.0-features** ✅；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/（⚠️ 待下次 Actions 觸發才顯示新功能）
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2 （ASP.NET WebForms）
    - OpenAI gpt-5-nano API
@@ -129,6 +129,11 @@ cp -r "<PROJECT_PATH>-snapshot-v0.x.x" "<PROJECT_PATH>-restored"
    - Cell[2] 語言：`<a href="../circular/upload/EDBCM/EDBCMyyNNNC.pdf">繁體中文</a>` 等3個連結
    - **無 detail_url**（列表頁沒有通告詳情連結）
    - PDF 優先順序：C.pdf（繁中）> E.pdf（英文）> S.pdf（簡體）
+6. ⚠️ **pdfminer 無 timeout 保護（2026-03-11 新增）**：
+   - 症狀：GitHub Actions workflow 在「Run EDB scraper」步驟卡死超過 1 小時（正常約 25 分鐘），日誌停在 pdfminer.psparser DEBUG 行 108782
+   - 根本原因：edb_scraper.py 的 PDF 解析無超時限制，某些複雜 PDF 令 pdfminer 進入近乎無限的解析循環
+   - 修復方案：在 PDF 解析加入 `signal.alarm(60)` timeout（Linux/macOS），捕獲 TimeoutError 後跳過該 PDF
+   - **⚠️ 修復前勿再手動觸發 school-year 模式 workflow，否則會再次卡死**
 
 ## Regression / Verification Notes
 1. Required checks: 後端驗收（見需求文件 8.1）、前端驗收（見需求文件 8.2）
@@ -163,14 +168,15 @@ If the session's fix involves adding a new rule, first check whether the existin
      * `fatal: not a git repository` → 需先 `cd` 至項目目錄
      * `[rejected] fetch first` → `git pull --rebase origin main && git push`（GitHub Actions 有衝突）
 4. Pending：
-   - ⭐ `git pull --rebase origin main && git push`（推送全部更改至 GitHub）
+   - ⭐ **edb_scraper.py 加 PDF 解析 timeout**（pdfminer 在某 PDF 卡死 1 小時以上，workflow 被取消）
+   - ⭐ GitHub Pages 仍是舊版本（無 📅 日曆 / ☑️ 多選按鈕）；修復 timeout 後重新觸發 workflow 才能部署
+   - 討論（下個 session）：K1 知識庫參考文件框架、R1 全角色職責精確度、LLM 引擎切換機制
    - 選做：次要缺陷（D8/D9 月曆篩選、F4 badge 計數、H5 天數選擇器、H6 已跟進切換）
-   - 討論：K1 知識庫參考文件框架、R1 全角色職責精確度、LLM 引擎切換機制
 5. Next priorities (max 3):
-   - ⭐ Git push（含 git pull --rebase 解決衝突），tag `v1.1.0-features`
-   - K1/R1 知識框架討論（知識庫底稿 + 角色職責參考文件）
+   - ⭐ 修復 `edb_scraper.py` PDF timeout（signal.alarm 60秒），push → 觸發 workflow → 確認 Pages 部署
+   - K1/R1 知識框架討論
    - 次要缺陷修復 + 響應式設計測試
-6. Risks / blockers: git 衝突（GitHub Actions 持續 push，需 pull --rebase）；用戶需先找到項目路徑
+6. Risks / blockers: ⚠️ pdfminer 無 timeout 保護 → 某些 PDF 令 workflow 卡死超過 1 小時（已記錄於 Known Risks #6）
 7. Files materially changed:
    - `edb-dashboard.html`（2453→2796 行；8 項新功能）
    - `dev/SESSION_HANDOFF.md`（更新）

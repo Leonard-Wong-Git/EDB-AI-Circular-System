@@ -1082,11 +1082,12 @@ Mac Terminal 最終 git push（先推送 session close 文件）：
    - 11 新函數全部 grep 找到 ✅
    - 2796 行（+343 行 vs v1.0.2）
 10. Pending:
-    - ⭐ Mac Terminal：`git pull --rebase origin main && git push`（推送全部 RE03+RE04 更改）
-    - Tag：`v1.1.0-features`
-    - K1 知識庫框架、R1 全角色職責精確度
-    - 次要缺陷（D8/D9/F4/H5/H6）、LLM 引擎切換機制討論
-11. Risks / blockers: GitHub Actions 持續 push → 每次 git push 前需先 git pull --rebase；用戶需先確認項目路徑
+    - ✅ git push 已完成（commit b593707，tag v1.1.0-features 已推送）
+    - ❌ GitHub Pages 仍是舊版（無 📅 日曆 / ☑️ 多選）：手動觸發 workflow 因 pdfminer 卡死逾 1 小時被取消
+    - ⭐ 下個 session 首要：修復 edb_scraper.py PDF timeout → 重新 push → workflow 自動觸發 → Pages 部署
+    - 討論：K1 知識庫框架、R1 全角色職責精確度、LLM 引擎切換機制
+    - 選做：次要缺陷（D8/D9/F4/H5/H6）
+11. Risks / blockers: ⚠️ pdfminer 無 timeout → workflow 卡死（已記錄 SESSION_HANDOFF Known Risks #6）；修復前勿手動觸發 school-year workflow
 
 ### Problem -> Root Cause -> Fix -> Verification
 1. Problem: B6 `printDetail()` 重複定義（新舊兩個版本同時存在）
@@ -1107,49 +1108,54 @@ Mac Terminal 最終 git push（先推送 session close 文件）：
 ### Next Session Handoff Prompt — v13（最新版本 ✅，請用此版本）
 ```
 專案：EDB 通告智能分析系統 (EDB-Circular-AI-analysis-system)
-狀態：v1.1.0-features 8項新功能已實作，待 git push（需先 pull --rebase）
+狀態：v1.1.0-features ✅ 代碼已推送 GitHub，但 GitHub Pages 仍是舊版（待修 PDF timeout 後重新部署）
 
 已完成（全部 ✅）：
-- Dashboard v1.1.0（2796行）：8 項新功能
-  * F1：排序持久化（預設日期降序，localStorage edb_sort_field/edb_sort_asc）
-  * F2：時段自動主題（07-18=淺色，其餘=深色，每60秒重評）
-  * C1：狀態即時互通（updateBmBadge / syncStatusBtns / data-sid）
-  * C2：資源行色+申請日期（.res-applying/applied/closed/na + edb_apply_dates）
-  * B5：CSV增強（行動數 + AI摘要前200字欄）
-  * B7：.ics日曆匯出（所有截止日期，iCalendar格式）
-  * B6：格式化列印報告（新視窗 HTML，含列印/關閉按鈕）
-  * B8：多選批量匯出（浮動操作列，卡片選中框）
-- GitHub Pages：https://leonard-wong-git.github.io/EDB-AI-Circular-System/ 上線
-- GitHub Actions：每日自動更新（105條通告）
+- Dashboard v1.1.0（2796行）：8 項新功能已寫入代碼並推送 ✅
+  * F1 排序持久化 / F2 時段主題 / C1 狀態互通 / C2 資源行色
+  * B5 CSV增強 / B6 格式化列印 / B7 .ics日曆 / B8 多選批量匯出
+- git push 完成：commit b593707，tag v1.1.0-features ✅
+- GitHub Pages 功能正常（舊版），但新按鈕尚未顯示
+
+⚠️ 緊急修復（第一優先）：pdfminer PDF 解析無 timeout
+  症狀：Actions workflow 卡死超過 1 小時（正常 25 分鐘），日誌停在 pdfminer DEBUG
+  影響：GitHub Pages 無法部署新版本（workflow 被取消）
+  ⚠️ 勿再手動觸發 school-year workflow，修復前會再次卡死
+
+  修復方案（在 edb_scraper.py PDF 解析函數加入）：
+  import signal
+  def _pdf_timeout(signum, frame): raise TimeoutError("PDF parse timeout")
+  signal.signal(signal.SIGALRM, _pdf_timeout)
+  signal.alarm(60)   # 60秒 timeout
+  try:
+      text = pdfplumber.open(...)...
+  except TimeoutError:
+      text = ""      # 跳過此 PDF
+  finally:
+      signal.alarm(0)
 
 ⚠️ gpt-5-nano 規則（不可更改）：
   temperature=1 | role="developer" | max_completion_tokens=16000
 
-⭐ 立即執行（Mac Terminal）：
-  # 先找項目路徑（如果未知）：
-  find ~ -maxdepth 6 -name ".git" -type d 2>/dev/null | grep -i EDB
+⚠️ EDB 字段 + HTML 結構：見 SESSION_HANDOFF Known Risks #4 + #5 + #6
 
-  # 進入目錄後推送：
-  cd "<EDB 項目路徑>"
-  git pull --rebase origin main   ← 重要！GitHub Actions 持續 push，必須先 pull
-  git add .
-  git commit -m "feat: CSV export, ICS calendar, print report, multi-select, sort persist, time theme, state sync"
-  git tag v1.1.0-features
-  git remote set-url origin https://<你的PAT>@github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git
-  git push origin main
-  git push origin v1.1.0-features
-  git remote set-url origin https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git
+⭐ 下一步（按序）：
+  1. 修復 edb_scraper.py PDF timeout（見上方方案）
+  2. git add edb_scraper.py && git commit -m "fix: PDF parse timeout to prevent workflow hang"
+  3. git push → GitHub Actions 自動觸發 → 等待完成（約 25 分鐘）
+  4. Cmd+Shift+R 確認 GitHub Pages 出現 📅 日曆 + ☑️ 多選 按鈕
 
 待討論（下個 session）：
-- K1：知識庫參考文件框架（每主題域濃縮底稿；半年一次或新通告觸發自動更新）
-- R1：全角色職責精確度（6角色×真實 EDB 職責；更新 LLM 提示）
-- LLM 引擎切換：長/短文件用不同 model 的機制
-- 次要缺陷：D8/D9（月曆篩選）、F4（badge 計數）、H5（天數選擇器）、H6（已跟進切換）
+- K1：知識庫參考文件框架（每主題域濃縮底稿；半年自動更新）
+- R1：全角色職責精確度（6角色×真實 EDB 職責）
+- LLM 引擎切換機制
+- 次要缺陷：D8/D9 / F4 / H5 / H6
 
 主要檔案：
   outputs/EDB-Circular-AI-analysis-system/
   ├── edb-dashboard.html（v1.1.0，2796行，8項新功能）
-  ├── edb_scraper.py, circulars.json, index.html
+  ├── edb_scraper.py（⚠️ 需加 PDF timeout）
+  ├── circulars.json, index.html
   ├── .github/workflows/update-circulars.yml
   └── dev/ [SESSION_HANDOFF, SESSION_LOG, GIT_PUSH_MANUAL, ACCEPTANCE_CHECKLIST, tools/, knowledge/]
 
@@ -1158,43 +1164,4 @@ Mac Terminal 最終 git push（先推送 session close 文件）：
 
 ---
 
-### Next Session Handoff Prompt — v11（最新版本 ✅，請用此版本）
-```
-專案：EDB 通告智能分析系統 (EDB-Circular-AI-analysis-system)
-狀態：v1.0.2-ui-fixes 就緒，待 git push + 重新爬取確認 pdf_urls
-
-已完成（全部 ✅）：
-- Dashboard v1.0.2 修復：PDF 連結、導航 Bug、系統說明（Settings）、供應商Note去重
-- edb_scraper.py：output record 新增 pdf_urls 欄位
-- GitHub Actions：每日 HKT 07:00/13:00/17:00 自動更新（schedule=--days 3，手動可選 school-year）
-- dev/ACCEPTANCE_CHECKLIST.md：11類別 80+測試項目驗收清單
-
-⚠️ gpt-5-nano 規則（不可更改）：
-  temperature=1 | role="developer" | max_completion_tokens=16000
-
-⚠️ EDB 字段 + HTML 結構：見 SESSION_HANDOFF Known Risks #4 + #5
-
-⭐ 下一步（按序）：
-  1. git push 本次更改（Mac Terminal）：
-     git add edb_scraper.py edb-dashboard.html dev/
-     git commit -m "fix: pdf_urls output, PDF links, nav fixes, system doc, acceptance checklist"
-     git tag v1.0.2-ui-fixes
-     git push --force origin main && git push origin --tags
-  2. 確認 GitHub Pages 仍正常（workflow 自動部署後訪問 URL）
-  3. 手動觸發 workflow（school-year 模式）取得含 pdf_urls 的最新 circulars.json
-  4. 在 GitHub Pages 開啟 Dashboard，確認 PDF 按鈕有真實 EDB URL
-  5. 按 dev/ACCEPTANCE_CHECKLIST.md 逐項驗收各功能
-
-完成後：
-  cp -r "." "../EDB-Circular-AI-analysis-system-snapshot-v1.0.2"
-
-主要檔案：
-  outputs/EDB-Circular-AI-analysis-system/
-  ├── edb-dashboard.html（修復：PDF連結、導航、系統說明）
-  ├── edb_scraper.py（修復：輸出 pdf_urls）
-  ├── circulars.json（現有：104條，無pdf_urls；重新爬取後會有）
-  ├── index.html, .github/workflows/update-circulars.yml
-  └── dev/ [SESSION_HANDOFF, SESSION_LOG, ACCEPTANCE_CHECKLIST, GIT_PUSH_MANUAL, ...]
-
-關鍵規則：gpt-5-nano temperature=1 固定 | VM 網絡封鎖→Mac Terminal
-```
+### Next Session Handoff Prompt — v11（已由 v13 取代，內容略）
