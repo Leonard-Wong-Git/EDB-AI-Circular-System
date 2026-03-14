@@ -565,7 +565,7 @@ def _pdf_timeout_handler(signum, frame):
     raise TimeoutError("PDF parsing exceeded time limit")
 
 
-def extract_pdf_text(pdf_path: Path, max_pages: int = PDF_MAX_PAGES, timeout_secs: int = 60) -> str:
+def extract_pdf_text(pdf_path: Path, max_pages: int = PDF_MAX_PAGES, timeout_secs: int = 10) -> str:
     """Extract text from PDF using pdfplumber. Returns raw text string.
     Enforces a per-PDF timeout (default 60s) to prevent pdfminer hanging on
     complex/malformed PDFs (observed: workflow stuck >1 hour on single PDF).
