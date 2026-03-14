@@ -561,10 +561,23 @@ class EDBScraper:
 # PDF EXTRACTOR
 # =============================================================================
 
-def extract_pdf_text(pdf_path: Path, max_pages: int = PDF_MAX_PAGES) -> str:
-    """Extract text from PDF using pdfplumber. Returns raw text string."""
+def _pdf_timeout_handler(signum, frame):
+    raise TimeoutError("PDF parsing exceeded time limit")
+
+
+def extract_pdf_text(pdf_path: Path, max_pages: int = PDF_MAX_PAGES, timeout_secs: int = 60) -> str:
+    """Extract text from PDF using pdfplumber. Returns raw text string.
+    Enforces a per-PDF timeout (default 60s) to prevent pdfminer hanging on
+    complex/malformed PDFs (observed: workflow stuck >1 hour on single PDF).
+    """
     if not HAS_PDF:
         return ""
+    import signal
+    # signal.SIGALRM is only available on Unix/Linux (GitHub Actions is Linux)
+    use_timeout = hasattr(signal, "SIGALRM")
+    if use_timeout:
+        signal.signal(signal.SIGALRM, _pdf_timeout_handler)
+        signal.alarm(timeout_secs)
     try:
         with pdfplumber.open(pdf_path) as pdf:
             pages = pdf.pages[:max_pages]
@@ -575,9 +588,17 @@ def extract_pdf_text(pdf_path: Path, max_pages: int = PDF_MAX_PAGES) -> str:
                     parts.append(text.strip())
             full = "\n\n".join(parts)
             return full[:PDF_MAX_CHARS]
+    except TimeoutError:
+        logging.getLogger("PDF").warning(
+            f"Skipped ({pdf_path.name}): exceeded {timeout_secs}s timeout — pdfminer hang protection"
+        )
+        return ""
     except Exception as exc:
         logging.getLogger("PDF").warning(f"Extraction failed ({pdf_path.name}): {exc}")
         return ""
+    finally:
+        if use_timeout:
+            signal.alarm(0)  # Cancel any pending alarm
 
 
 # =============================================================================
