@@ -917,6 +917,12 @@ def run_pipeline(args) -> int:
                 for key in _empty_analysis():
                     if key not in circ:
                         circ[key] = existing[num].get(key)
+                # Restore official text from cache: prevents subsequent runs from
+                # clearing an already-populated official field when PDF re-extraction
+                # fails (e.g. GitHub Actions env differences).
+                if not circ.get("official") and existing[num].get("official"):
+                    circ["official"] = existing[num]["official"]
+                    log.debug(f"  {num}: official restored from cache")
                 continue
 
             if not circ.get("pdf_text") and not circ.get("official"):
