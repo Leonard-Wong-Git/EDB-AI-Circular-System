@@ -53,12 +53,12 @@ except ImportError:
     print("   pip install requests beautifulsoup4")
 
 try:
-    import pdfplumber
+    import fitz  # PyMuPDF — fast, no pdfminer DEBUG log flood
     HAS_PDF = True
 except ImportError:
     HAS_PDF = False
-    print("⚠️  Missing: pdfplumber — PDF text extraction disabled")
-    print("   pip install pdfplumber")
+    print("⚠️  Missing: PyMuPDF — PDF text extraction disabled")
+    print("   pip install PyMuPDF")
 
 try:
     from openai import OpenAI
@@ -561,42 +561,40 @@ class EDBScraper:
 # PDF EXTRACTOR
 # =============================================================================
 
-def _pdf_extract_worker(pdf_path_str, max_pages, queue):
-    """Runs in a child process so it can be forcefully killed on timeout."""
-    try:
-        import pdfplumber
-        with pdfplumber.open(pdf_path_str) as pdf:
-            parts = []
-            for page in pdf.pages[:max_pages]:
-                text = page.extract_text()
-                if text:
-                    parts.append(text.strip())
-            queue.put("\n\n".join(parts))
-    except Exception:
-        queue.put("")
-
-
 def extract_pdf_text(pdf_path: Path, max_pages: int = PDF_MAX_PAGES, timeout_secs: int = 10) -> str:
-    """Extract PDF text in a subprocess; forcefully kill if it exceeds timeout_secs."""
+    """Extract text from a PDF using PyMuPDF (fitz).
+
+    PyMuPDF uses MuPDF C library — fast, no DEBUG log flood, no subprocess needed.
+    Still uses subprocess with timeout as safety net for rare corrupted PDFs.
+    """
     if not HAS_PDF:
         return ""
-    import multiprocessing
-    q: "multiprocessing.Queue[str]" = multiprocessing.Queue()
-    proc = multiprocessing.Process(
-        target=_pdf_extract_worker,
-        args=(str(pdf_path), max_pages, q),
+    import subprocess, sys as _sys
+    # Inline script: PyMuPDF has no logging issues, but subprocess isolates
+    # against rare hangs on malformed PDFs (timeout + SIGKILL).
+    script = (
+        "import sys, fitz;"
+        "doc=fitz.open(sys.argv[1]);"
+        "ps=[doc[i].get_text() for i in range(min(len(doc),int(sys.argv[2])))];"
+        "sys.stdout.write(chr(10)*2 .join(p.strip() for p in ps if p.strip()))"
     )
-    proc.start()
-    proc.join(timeout_secs)
-    if proc.is_alive():
-        proc.terminate()
-        proc.join()
-        logging.getLogger("PDF").warning(
-            f"Skipped ({pdf_path.name}): exceeded {timeout_secs}s — process killed"
-        )
-        return ""
     try:
-        return q.get_nowait()[:PDF_MAX_CHARS]
+        proc = subprocess.Popen(
+            [_sys.executable, "-c", script, str(pdf_path), str(max_pages)],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            text=True,
+        )
+        try:
+            stdout, _ = proc.communicate(timeout=timeout_secs)
+            return stdout[:PDF_MAX_CHARS]
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            proc.wait(2)
+            logging.getLogger("PDF").warning(
+                f"Skipped ({pdf_path.name}): exceeded {timeout_secs}s — process killed"
+            )
+            return ""
     except Exception:
         return ""
 

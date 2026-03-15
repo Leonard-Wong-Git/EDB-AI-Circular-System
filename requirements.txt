@@ -11,7 +11,8 @@ requests>=2.31.0
 beautifulsoup4>=4.12.0
 
 # ── PDF 文字提取 / PDF text extraction ────────────────────────
-pdfplumber>=0.10.0
+# PyMuPDF replaces pdfplumber — faster, no pdfminer DEBUG log flood
+PyMuPDF>=1.24.0
 
 # ── OpenAI LLM / Structured Output ────────────────────────────
 # gpt-5-nano 需要 openai >= 1.30.0 以支援 json_schema Structured Output
