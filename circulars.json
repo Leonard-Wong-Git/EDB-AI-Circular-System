@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-03-14T23:54:21Z",
+  "generated_at": "2026-03-15T07:35:52Z",
   "model": "gpt-5-nano",
   "temperature": 1,
-  "range": "past 3 days (from 2026-03-11)",
-  "date_from": "2026-03-11",
-  "date_to": "2026-03-14",
+  "range": "past 3 days (from 2026-03-12)",
+  "date_from": "2026-03-12",
+  "date_to": "2026-03-15",
   "days": 3,
-  "count": 2,
+  "count": 1,
   "circulars": [
     {
       "id": 0,
@@ -122,160 +122,6 @@
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26043C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26043E.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26043S.pdf"
-      ]
-    },
-    {
-      "id": 1,
-      "number": "EDBCM041/2026",
-      "type": "EDBCM",
-      "date": "2026-03-11",
-      "isNew": true,
-      "title": "《「一國兩制」下香港維護國家安全的實踐》白皮書 相關學與教資源",
-      "official": "檔 號 ： 0001-0150-8060-9095-0030-0005-P001\n教育局通函第 41/2026 號\n分發名單：各官立、資助（包括特殊學 副本送：各組主管—備考\n校）、按位津貼及直接資助計\n劃中小學校長\n《「一國兩制」下香港維護國家安全的實踐》白皮書\n相關學與教資源\n摘要\n本通函旨在通知各中小學校長和教師有關上述學與教資源事宜。\n背景\n2. 國務院於 2026 年 2 月 10 日發布《「一國兩制」下香港維護國家安全\n的實踐》白皮書（《白皮書》），全面總結香港維護國家安全的實踐歷程和經\n驗啟示，正本清源、凝聚共識，以高水平安全護航「一國兩制」事業高質\n量發展。為此，教育局為師生提供相關學與教資源，讓他們深入了解《白\n皮書》的重要內容，增強國家安全意識和責任感。\n詳情\n3. 教育局於去年已公布更新版《香港國家安全教育課程框架》（2025）\n（《課程框架》）和 27 個科目的國家安全教育課程框架，涵蓋八個學習領域\n和公民與社會發展科，為教師提供更清晰和全面的指引，幫助學校在現行\n國家安全教育的良好基礎上，進一步推展和落實國家安全教育。\n4. 《課程框架》以及現行小學人文科、初",
-      "impact": "mid",
-      "compliance": "informational",
-      "urgency": "low",
-      "scope": "both_sec_pri",
-      "topics": [
-        "curriculum",
-        "student",
-        "activity"
-      ],
-      "tags": [
-        "國家安全教育",
-        "白皮書資源",
-        "學與教資源",
-        "校本落實",
-        "課程框架"
-      ],
-      "grant_info": {
-        "type": "none",
-        "amount_hkd": null,
-        "amount_label": null,
-        "resource_value_hkd": null,
-        "note": ""
-      },
-      "summary": "背景：2026年2月10日，中國國務院發布《一國兩制下香港維護國家安全的實踐》白皮書，旨在總結香港在維護國家安全方面的經驗與啟示，提升國家安全教育的水平與覆蓋。教育局基於已公布的更新版《香港國家安全教育課程框架》（2025）及涵蓋27個科目的學與教框架，整合白皮書內容，製作相關資源供師生學習，並於分階段上載至教育局網站，協助學校在現行課程基礎上推進國家安全教育。學校亦可參考教育局國家安全教育資源網頁，靈活將白皮書要點融入日常教學、早會、展覽及比賽等活動，提升學生國家安全意識與責任感。若有查詢，可致電提供的聯絡人；附件列出若干資源及二維碼、學科對應內容與教學活動建議，供學校參考使用。整體目標是讓學校在現有課程框架下，系統性地落實國家安全教育，促進學生對憲法、基本法及國家安全教育要點的理解與公民意識的養成，為香港與國家的長遠發展奠定穩固基礎。",
-      "roles": {
-        "principal": {
-          "r": true,
-          "pts": [
-            "公布及推動資源使用",
-            "指導校內落實與監督進度",
-            "提供諮詢以促進整體落地"
-          ],
-          "acts": [
-            "公佈本通函內容，指導學校使用學與教資源",
-            "協調校方落實資源於課程與活動中"
-          ]
-        },
-        "vice_principal": {
-          "r": true,
-          "pts": [
-            "協助推動資源落實",
-            "監督課程整合與進度",
-            "協調跨科目運用"
-          ],
-          "acts": [
-            "協助校長推動資源落實方案",
-            "協調科目組落實資源內容"
-          ]
-        },
-        "department_head": {
-          "r": true,
-          "pts": [
-            "協助科目組整合課程內容",
-            "推動本單位相關教學活動",
-            "回饋使用情況以改善資料"
-          ],
-          "acts": [
-            "協助科目組整合白皮書要點於課程中",
-            "推動科內活動以融入資源內容"
-          ]
-        },
-        "teacher": {
-          "r": true,
-          "pts": [
-            "參考資源融入課堂教學",
-            "提升學生國家安全意識",
-            "使用資源網頁支援教學"
-          ],
-          "acts": [
-            "於適當課程中融入白皮書內容",
-            "參考國家安全教育資源網頁設計教學活動"
-          ]
-        },
-        "eo_admin": {
-          "r": true,
-          "pts": [
-            "協調跨部門資源分發",
-            "建立使用指引與追蹤機制",
-            "提供諮詢協助"
-          ],
-          "acts": [
-            "協調部門資源落地與清單更新",
-            "建立學校層面的使用指引"
-          ]
-        },
-        "supplier": {
-          "r": false,
-          "pts": [],
-          "acts": []
-        }
-      },
-      "deadlines": [
-        {
-          "date": "2026-03-11",
-          "desc": "公眾知悉及生效日期",
-          "type": "awareness_deadline",
-          "roles": [
-            "principal",
-            "vice_principal",
-            "department_head",
-            "teacher",
-            "eo_admin",
-            "supplier"
-          ],
-          "label": "知悉日期"
-        }
-      ],
-      "actions": [
-        {
-          "text": "公布本次通告內容，指導學校使用相關學與教資源，協調校本推動安排。",
-          "role": "principal",
-          "dl": null,
-          "note": ""
-        },
-        {
-          "text": "協助跨科目資源落地，更新校內資源清單，建立資源使用指引與監控機制。",
-          "role": "eo_admin",
-          "dl": null,
-          "note": ""
-        },
-        {
-          "text": "協助科目組整合課程內容，將白皮書要點融入相關科目教學與活動。",
-          "role": "department_head",
-          "dl": null,
-          "note": ""
-        },
-        {
-          "text": "教師於課堂及學生活動中，靈活使用白皮書內容，參考資源網頁提升學生國家安全意識。",
-          "role": "teacher",
-          "dl": null,
-          "note": ""
-        },
-        {
-          "text": "協助追蹤資源使用情況，將反饋回校長與課程發展處，促進持續改進。",
-          "role": "vice_principal",
-          "dl": null,
-          "note": ""
-        }
-      ],
-      "diff": null,
-      "pdf_urls": [
-        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26041C.pdf",
-        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26041E.pdf",
-        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26041S.pdf"
       ]
     }
   ]
