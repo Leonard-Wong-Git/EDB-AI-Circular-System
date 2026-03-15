@@ -1919,7 +1919,7 @@ function buildCard(d, inAttention=false){
         <span class="card-date">${d.date}${d.isNew?' <span class="badge b-green">NEW</span>':''}</span>
       </div>
       <div class="card-title">${d.title}</div>
-      <div class="card-summary">${d.official}</div>
+      <div class="card-summary">${d.official || (d.summary||'').substring(0,150)}</div>
       <div class="card-footer">
         <div class="card-tags">
           ${impactBadge(d.impact)} ${complianceBadge(d.compliance)}
@@ -2382,8 +2382,7 @@ function openDetail(id){
     ${grantHtml}
     <div class="sec-lbl">LLM 摘要</div>
     <div class="summary-text">${(d.summary||'').split('\n\n').map(p=>`<p>${p}</p>`).join('')}</div>
-    <div class="sec-lbl">官方摘要</div>
-    <div class="info-block">${d.official}</div>
+    ${d.official ? `<div class="sec-lbl">官方摘要</div><div class="info-block">${d.official}</div>` : ''}
     <div class="sec-lbl">PDF 原文件</div>
     <div class="pdf-links">${buildPdfLinks(d)}</div>`;
 
