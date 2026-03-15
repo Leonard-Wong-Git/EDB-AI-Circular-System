@@ -668,7 +668,87 @@ class LLMAnalyzer:
             lines += ["【通告全文（PDF 提取）】", circ["pdf_text"]]
         elif not circ.get("official"):
             lines.append("（注意：未能提取通告全文，請根據標題及通告號作合理推斷）")
+
+        # K1 Knowledge injection — load role/topic facts from role_facts.json
+        knowledge = _load_knowledge_context(
+            _detect_topics_early(
+                circ.get("title", ""),
+                circ.get("official", "") + " " + circ.get("pdf_text", ""),
+            )
+        )
+        if knowledge:
+            lines += ["", knowledge]
+
         return "\n".join(lines)
+
+
+# =============================================================================
+# K1 KNOWLEDGE INJECTION
+# Reads dev/knowledge/role_facts.json and injects relevant facts into LLM prompt.
+# To upgrade knowledge quality: replace role_facts.json — no code change needed.
+# Interface spec: dev/K1_KNOWLEDGE_INTERFACE_SPEC.md
+# =============================================================================
+
+def _detect_topics_early(title: str, text: str) -> list:
+    """Keyword-based topic detection from circular title + text (pre-LLM).
+    Returns list of matching topic IDs from role_facts.json.
+    Falls back to ['general'] if no match.
+    """
+    combined = (title + " " + text).lower()
+    matches = []
+    topic_keywords = {
+        "finance":    ["採購", "財務", "津貼", "撥款", "資助", "金額", "申請款項", "財政", "費用", "預算", "整筆"],
+        "hr":         ["教師", "教職員", "人力", "cpd", "培訓", "聘任", "晉升", "薪酬", "員工", "專業發展", "持續進修"],
+        "curriculum": ["課程", "科目", "評估", "學習", "教學", "考試", "評核", "課時", "stem", "通識", "公民"],
+        "activity":   ["活動", "考察", "旅行", "比賽", "遠足", "境外", "海外", "外出", "表演", "展覽"],
+        "student":    ["學生", "意外", "安全", "健康", "sen", "特殊教育", "融合", "欺凌", "輔導", "精神健康"],
+        "it":         ["資訊科技", "電腦", "網絡", "設備", "it", "軟件", "硬件", "數碼", "人工智能"],
+    }
+    for topic_id, keywords in topic_keywords.items():
+        if any(kw in combined for kw in keywords):
+            matches.append(topic_id)
+    return matches if matches else ["general"]
+
+
+def _load_knowledge_context(topics: list, budget: int = 600) -> str:
+    """Load and format knowledge snippets for the given topics.
+    Reads from dev/knowledge/role_facts.json (K1 interface slot).
+    Returns a formatted string ≤ budget chars, or '' if file missing/empty.
+    """
+    facts_path = Path(__file__).parent / "dev" / "knowledge" / "role_facts.json"
+    if not facts_path.exists():
+        return ""
+    try:
+        with open(facts_path, encoding="utf-8") as f:
+            db = json.load(f)
+    except Exception:
+        return ""
+
+    seen: set = set()
+    bullets: list = []
+    char_count = 0
+    header = "【背景知識參考】\n"
+
+    for topic_id in topics:
+        topic_data = db.get(topic_id, {})
+        if not topic_data:
+            continue
+        label = topic_data.get("_label", topic_id)
+        # Collect all_roles first, then role-specific (flattened; no role filter pre-LLM)
+        for key in ["all_roles"] + [k for k in topic_data if not k.startswith("_") and k != "all_roles"]:
+            for fact in topic_data.get(key, []):
+                if fact in seen:
+                    continue
+                seen.add(fact)
+                line = f"[{label}] {fact}"
+                if char_count + len(line) + 1 > budget:
+                    return header + "\n".join(f"- {b}" for b in bullets)
+                bullets.append(line)
+                char_count += len(line) + 1
+
+    if not bullets:
+        return ""
+    return header + "\n".join(f"- {b}" for b in bullets)
 
 
 # =============================================================================
