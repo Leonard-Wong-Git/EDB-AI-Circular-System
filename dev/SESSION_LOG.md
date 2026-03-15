@@ -1,5 +1,145 @@
 # Session Log
 
+## 2026-03-15
+
+1. Agent & Session ID: Claude_20260315_1400
+2. Task summary: 次要 UI 修復（D8/D9/F4/H5/H6）+ pdfplumber→PyMuPDF 遷移 + school-year workflow 首次成功
+3. Layer classification: Product / System Layer（前端修復 + 後端 PDF 引擎替換）
+4. Source triage: D8/D9 = 程式碼邏輯問題；F4 = 初始化遺漏；pdfminer = 外部依賴行為問題
+5. Files read:
+   - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
+   - `dev/v0.2.0-FRONTEND-SPEC.md`（月曆/設定規格）
+   - `dev/ACCEPTANCE_CHECKLIST.md`（D8/D9/F4/H5/H6 定義）
+   - `edb-dashboard.html`（月曆/書籤/設定程式碼）
+   - `edb_scraper.py`（PDF 提取 + pdfminer 抑制邏輯）
+   - `.github/workflows/update-circulars.yml`
+6. Files changed:
+   - `edb-dashboard.html`（D8/D9 月曆篩選修復 + F4 badge 初始化 + 版本標籤 v1.1.0→v1.1.1）
+   - `edb_scraper.py`（pdfplumber/pdfminer 完全替換為 PyMuPDF/fitz）
+   - `requirements.txt`（pdfplumber→PyMuPDF）
+   - `dev/ACCEPTANCE_CHECKLIST.md`（D8/D9/F4/H5/H6 標記 ✅）
+7. Completed:
+   - ✅ **D8 月曆高影響篩選**：`isAttention(d)`（high+mandatory）改為 `d.impact!=='high'`，與按鈕標示語義一致
+   - ✅ **D9 月曆截止日篩選**：`calFilter==='deadline'` 時跳過通告發布日事件，只顯示 deadline 類型
+   - ✅ **F4 書籤 Tab badge**：`renderAll()` 新增 `updateBmBadge()` 調用，初始載入後 badge 正確顯示
+   - ✅ **H5 截止天數切換**：程式碼審查確認已完整實作（`setAlertDays` + `applySettingsUI`）
+   - ✅ **H6 已跟進顯示切換**：程式碼審查確認已完整實作（`toggleShowDone` + `filteredData`）
+   - ✅ **pdfplumber→PyMuPDF 遷移**：完全移除 pdfminer 依賴，消除 107K+ 行 DEBUG 洪流
+   - ✅ **school-year workflow 首次成功**：1h 25m 4s，全步驟綠色，GitHub Pages 已部署
+8. Validation / QC:
+   - HTML 語法驗證：OK（2800 行）
+   - Python 語法驗證：OK（1085 行）
+   - Inline worker script 語法驗證：OK
+   - GitHub Actions school-year workflow：全綠 ✅（1h 25m 4s）
+   - pdfminer 引用檢查：0（僅 1 處註釋）
+   - GitHub Pages 部署：✅
+9. Pending:
+   - K1 知識庫參考文件框架
+   - R1 全角色職責精確度
+   - LLM 引擎切換機制
+10. Next priorities:
+    - K1/R1 知識框架實作
+    - 觀察 school-year 數據在 Dashboard 的顯示效果
+    - 考慮 days-3 排程是否需要調整（school-year 已成功）
+11. Risks / blockers:
+    - school-year 耗時 1h25m + OpenAI API 費用可觀（僅適合偶爾全量重建，日常用 days-3）
+    - VM workspace 路徑 ≠ git repo 路徑（必須用 mount 或手動複製同步）
+12. Notes: 本 session 發現並確認 VM workspace (`Claude-edb-Project-V3`) 和 git repo (`EDB-Circular-AI-analysis-system`) 是不同資料夾。日後 VM 修改後端文件需先 mount git repo 再複製。
+
+### Problem -> Root Cause -> Fix -> Verification
+
+**Issue 1: D8/D9 月曆篩選邏輯**
+1. Problem: D8 高影響篩選過於嚴格（只顯示 high+mandatory）；D9 截止日篩選仍顯示所有通告發布日
+2. Root Cause: D8 使用 `isAttention()` 而非 `impact==='high'`；D9 無 guard 阻止發布日事件加入 evMap
+3. Fix: D8 改用 `d.impact!=='high'`；D9 加 `if(S.calFilter!=='deadline')` guard
+4. Verification: HTML parser OK；grep 確認程式碼正確
+5. Regression: ACCEPTANCE_CHECKLIST.md D8/D9 標記 ✅
+
+**Issue 2: F4 書籤 Tab badge 初始載入不顯示**
+1. Problem: 頁面載入後如有 localStorage 書籤記錄，Tab badge 不顯示數字
+2. Root Cause: `renderAll()` 未調用 `updateBmBadge()`
+3. Fix: `renderAll()` 末尾新增 `updateBmBadge()` 調用
+4. Verification: grep 確認調用存在
+5. Regression: ACCEPTANCE_CHECKLIST.md F4 標記 ✅
+
+**Issue 3: pdfminer DEBUG 洪流（107K+ 行，school-year 模式）**
+1. Problem: GitHub Actions 日誌被 pdfminer.psparser/pdfinterp DEBUG 輸出淹沒（107,600+ 行），步驟被截斷
+2. Root Cause: pdfminer 的 C 擴展（psparser/pdfinterp）直接寫入 fd 2（stderr），繞過 Python logging 控制。`fork()` 後子程序繼承父程序的 file descriptor，無論 `logging.disable()`、`logging.setLevel()`、`sys.stderr = devnull` 都無法攔截 C 層直接 I/O
+3. **❌ 已失敗的方案（本 session 實測）：**
+   - `logging.disable(CRITICAL)` in child → 無效（C 擴展不走 Python logging）
+   - `sys.stderr = open(os.devnull, 'w')` in child → 無效（只影響 Python 層，不影響 fd 2）
+   - `os.dup2(os.open(os.devnull, os.O_WRONLY), 2)` in child → 無效（fork 後 fd 2 已被繼承）
+   - `subprocess.Popen` + `stderr=subprocess.DEVNULL` → 無效（pdfminer 仍在子程序內部產生洪流）
+   - 三層防禦（module-level + handler filter + subprocess）→ 無效
+4. **✅ 成功方案：完全移除 pdfplumber/pdfminer，替換為 PyMuPDF（fitz）**
+   - PyMuPDF 使用 MuPDF C 庫，無 DEBUG 洪流問題
+   - 速度更快（MuPDF vs pdfminer）
+   - 保留 subprocess.Popen + SIGKILL timeout 作為安全網
+   - requirements.txt：`pdfplumber>=0.10.0` → `PyMuPDF>=1.24.0`
+5. Verification: school-year workflow 全綠，1h 25m 4s，零 pdfminer 輸出
+6. **Regression / rule update：**
+   - ⭐ **新規則：不要對有問題的依賴疊補丁，直接替換為已知可行的方案**
+   - Known Risk #6（pdfminer 卡死）→ 已解決，降級為 historical record
+   - `edb_scraper.py` PDF 引擎：pdfplumber/pdfminer → PyMuPDF/fitz（永久替換）
+
+**Issue 4: VM workspace ≠ git repo**
+1. Problem: VM 對 `edb_scraper.py` 的修改未到達 GitHub（3 次 push 嘗試全部失敗）
+2. Root Cause: VM mount `Claude-edb-Project-V3` 和 git repo `EDB-Circular-AI-analysis-system` 是不同的 Mac 資料夾
+3. Fix: 使用 `request_cowork_directory` mount git repo 路徑，直接 `cp` 文件過去
+4. Verification: `git status` 顯示 modified，commit + push 成功（`184b867`）
+5. **Regression / rule update：**
+   - ⭐ **新規則：修改後端文件（edb_scraper.py / requirements.txt 等）時，必須先 mount git repo 資料夾再寫入**
+   - RE06 的「VM 路徑 ≠ Mac git repo 路徑」規則已擴展
+
+### Consolidation / Retirement Record
+1. Duplicate / drift found: pdfminer 相關的 3 層抑制程式碼 + SESSION_HANDOFF Known Risk #6 的舊方案描述
+2. Single source of truth chosen: PyMuPDF 為唯一 PDF 引擎
+3. What was merged: 所有 pdfminer 補丁代碼合併為單一方案（PyMuPDF 替換）
+4. What was retired / superseded: pdfplumber, pdfminer, signal.SIGALRM, multiprocessing.Process+SIGTERM, multiprocessing.Process+SIGKILL, logging.disable, handler filter, 三層防禦
+5. Why consolidation was needed: 6 次補丁嘗試均失敗，根本原因是 C 擴展層 I/O 無法被 Python 攔截；替換依賴是唯一正確方案
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+項目：EDB Circular AI Analysis System
+GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git
+GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/
+你是此項目的 AI 開發助手，請先讀取以下文件（按順序）：
+1. dev/SESSION_HANDOFF.md — 當前狀態 + 所有已知風險 + Session Close 保障規則
+2. dev/SESSION_LOG.md — 完整歷史記錄
+3. dev/v0.2.0-FRONTEND-SPEC.md — 前端規格 SSOT
+
+當前系統狀態（2026-03-15 全部正常）✅
+* GitHub Pages：v1.1.1 已上線，school-year 數據已部署
+* GitHub Actions school-year workflow：1h 25m 完成（首次成功 ✅）
+* GitHub Actions days-3 workflow：33 秒完成（穩定）
+* edb_scraper.py：PyMuPDF (fitz) 替換 pdfplumber/pdfminer（零 DEBUG 洪流 ✅）
+* edb-dashboard.html：~2800 行，版本標籤 v1.1.1
+* D8/D9/F4/H5/H6 次要 UI 修復全部完成 ✅
+
+待辦（按優先級）
+1. K1 知識庫參考文件框架
+2. R1 全角色職責精確度
+3. LLM 引擎切換機制
+4. 觀察 school-year 數據在 Dashboard 的顯示效果
+
+⭐ 重要規則
+* 版本標籤同步：每次功能 push 後在 Mac Terminal 執行 sed 更新 5 處版本標籤
+* VM ≠ git repo：修改後端文件時必須先 mount git repo 再寫入
+  - VM workspace: Claude-edb-Project-V3（前端文件在此）
+  - Git repo: EDB-Circular-AI-analysis-system（後端文件必須寫到這裏）
+  - Mount 方法：request_cowork_directory 掛載 git repo 路徑
+* gpt-5-nano：temperature=1 / max_completion_tokens=16000 / role="developer"
+* Git push：git push https://Leonard-Wong-Git@github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git main
+* Workflow 觸發：手動 GitHub Actions / 安全模式：days-3（33秒）/ school-year（1h25m）
+* Mac git repo 路徑：
+  /Users/leonard/Library/Application Support/Claude/local-agent-mode-sessions/f52b21f7-e7c9-49a3-80dc-00ab322afbcf/51c234d2-cb9f-4b55-bb07-b71de9e93c27/local_e454964f-74da-4734-9a60-bf4b4362ca65/outputs/EDB-Circular-AI-analysis-system
+
+建議第一個動作：開啟 GitHub Pages 檢視 school-year 數據顯示效果，討論 K1/R1。
+```
+
+---
+
 ## 2026-03-09
 
 1. Agent & Session ID: Claude_20260309_1943

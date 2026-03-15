@@ -1,20 +1,20 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v1.1.0-features** (2026-03-11) ← **當前版本** 🎉
+1. Version: **v1.1.1** (2026-03-15) ← **當前版本** 🎉
 2. Core commands / features:
-   - `edb-dashboard.html` — 正式版單頁 Dashboard（2,796 行，v1.1.0 ✅；含 8 項新功能：CSV增強/格式化列印/.ics匯出/多選批量/排序持久/時段主題/狀態互通/資源行色）
-   - `edb_scraper.py` — 後端爬蟲 + LLM 分析管線（v0.3.0-backend ✅ **已完成並通過測試**）
-   - `circulars.json` — 14 條真實 EDB 通告 + gpt-5-nano LLM 分析（已生成 ✅）
+   - `edb-dashboard.html` — 正式版單頁 Dashboard（~2,800 行，v1.1.1 ✅；含 8 項功能 + D8/D9/F4 修復）
+   - `edb_scraper.py` — 後端爬蟲 + LLM 分析管線（PyMuPDF 引擎 ✅ **school-year 首次成功**）
+   - `circulars.json` — school-year 全量 EDB 通告 + gpt-5-nano LLM 分析（GitHub Pages 已部署 ✅）
    - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具
-   - `requirements.txt` — Python 依賴清單
-3. Regression baseline: dry-run 14/14 通告通過；LLM 分析成功（EDBCM030 high/721chars, EDBCM026 mid/462chars）
-4. Release / merge status: **v1.1.0-features tag 已推送至 GitHub** ✅（commit b593707，3 files, 404 insertions）
-5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git，最新 tag: **v1.1.0-features** ✅；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/（⚠️ 待下次 Actions 觸發才顯示新功能）
+   - `requirements.txt` — Python 依賴清單（PyMuPDF 替換 pdfplumber）
+3. Regression baseline: school-year workflow 全綠 1h25m；days-3 workflow 33s；D8/D9/F4/H5/H6 驗收 ✅
+4. Release / merge status: **v1.1.1 已推送至 GitHub** ✅；GitHub Pages school-year 數據已部署 ✅
+5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/（school-year 數據已上線 ✅）
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2 （ASP.NET WebForms）
    - OpenAI gpt-5-nano API
-   - Python: requests, beautifulsoup4, pdfplumber, openai
+   - Python: requests, beautifulsoup4, PyMuPDF (fitz), openai
    - Frontend: 純 HTML/CSS/JS（無框架），SheetJS CDN
 
 ## Layer Map
@@ -129,25 +129,16 @@ cp -r "<PROJECT_PATH>-snapshot-v0.x.x" "<PROJECT_PATH>-restored"
    - Cell[2] 語言：`<a href="../circular/upload/EDBCM/EDBCMyyNNNC.pdf">繁體中文</a>` 等3個連結
    - **無 detail_url**（列表頁沒有通告詳情連結）
    - PDF 優先順序：C.pdf（繁中）> E.pdf（英文）> S.pdf（簡體）
-6. ⚠️ **pdfminer/pdfplumber 在 GitHub Actions 卡死（2026-03-11~14 RE05 實測）**：
-   - 症狀：GitHub Actions workflow 在「Run EDB scraper」步驟卡死 30~60+ 分鐘，日誌 107,000+ 行 pdfminer.psparser DEBUG
-   - 根本原因：某些 EDB PDF 令 pdfminer C 擴展（psparser/pdfinterp）進入近乎無限的解析循環
-   - **❌ 已失敗的方案（RE05 實測，全部無效）：**
-     * `signal.SIGALRM` + `signal.alarm(60)` → 無法打斷 C 擴展層迴圈（Python 信號只在 bytecode 間處理）
-     * `signal.alarm(10)` 降低至 10 秒 → 同上，C 擴展不回應
-     * `multiprocessing.Process` + `proc.terminate()` (SIGTERM) → SIGTERM 同樣被 C 擴展忽略
-   - **⭐ 待測試方案（下個 session）：**
-     * `multiprocessing.Process` + `proc.kill()` (SIGKILL) → SIGKILL 無法被攔截，OS 直接強殺，理論上可行
-     * 同時需關閉 pdfminer DEBUG logging（防止 log 爆炸 107K+ 行）
-     * 替代方案：改用 `subprocess.run(timeout=10)` 呼叫外部 Python 腳本做 PDF 提取
-     * 替代方案：改用 PyMuPDF (fitz) 替代 pdfplumber/pdfminer（不同 C 底層，可能不卡）
-   - **⚠️ 目前 GitHub repo 中的 edb_scraper.py 狀態：**
-     * `extract_pdf_text()` 已改為 multiprocessing 版本（用 `proc.terminate()`，但無效）
-     * `_pdf_extract_worker()` 函數已存在（子程序 worker）
-     * `HAS_PDF = True`（PDF 提取仍開啟 — 會在 workflow 中卡死）
-     * 下個 session 需要將 `proc.terminate()` 改為 `proc.kill()` 並測試
-   - **⚠️ 觸發 school-year 模式 workflow 前必須先修好 PDF timeout，否則會再次卡死**
-   - **安全的 workflow 模式**：`days-3`（增量，通常無新 PDF，43 秒完成）
+6. ✅ **pdfminer/pdfplumber 問題已解決（2026-03-15）** — 完全替換為 PyMuPDF (fitz)
+   - 歷史記錄：pdfminer C 擴展 DEBUG 洪流（107K+ 行），6 種補丁方案全部失敗
+   - 最終方案：移除 pdfplumber/pdfminer，替換為 PyMuPDF (fitz)，零 DEBUG 輸出
+   - school-year workflow 首次成功：1h 25m，全綠 ✅
+   - **安全的 workflow 模式**：`days-3`（增量，33 秒）/ `school-year`（全量，~1h25m）
+7. **⚠️ VM workspace ≠ git repo（2026-03-15 確認）：**
+   - VM workspace: `Claude-edb-Project-V3`（前端文件在此）
+   - Git repo: `EDB-Circular-AI-analysis-system`（後端文件必須寫到這裏）
+   - 修改後端文件時必須先 `request_cowork_directory` mount git repo 再寫入
+   - Mac git repo 路徑：`/Users/leonard/Library/Application Support/Claude/local-agent-mode-sessions/f52b21f7-e7c9-49a3-80dc-00ab322afbcf/51c234d2-cb9f-4b55-bb07-b71de9e93c27/local_e454964f-74da-4734-9a60-bf4b4362ca65/outputs/EDB-Circular-AI-analysis-system`
 
 ## Regression / Verification Notes
 1. Required checks: 後端驗收（見需求文件 8.1）、前端驗收（見需求文件 8.2）
@@ -166,35 +157,43 @@ If the session's fix involves adding a new rule, first check whether the existin
 
 ## Last Session Record
 1. UTC date: 2026-03-14
+2. Session ID: Claude_20260315_1400（D8/D9/F4 修復 + PyMuPDF 遷移 + school-year 首次成功）
+3. Completed:
+   - ✅ **D8 月曆高影響篩選修復**：`isAttention()` → `d.impact!=='high'`
+   - ✅ **D9 月曆截止日篩選修復**：加 `if(S.calFilter!=='deadline')` guard
+   - ✅ **F4 書籤 badge 初始載入**：`renderAll()` 新增 `updateBmBadge()` 調用
+   - ✅ **H5/H6 確認已實作**：程式碼審查通過
+   - ✅ **pdfplumber→PyMuPDF 完全遷移**：移除所有 pdfminer 依賴，消除 107K+ 行 DEBUG 洪流
+   - ✅ **school-year workflow 首次成功**：1h 25m 4s，全綠，GitHub Pages 部署完成
+   - ✅ **版本標籤 v1.1.0→v1.1.1**
+4. Pending：
+   - K1 知識庫參考文件框架
+   - R1 全角色職責精確度
+   - LLM 引擎切換機制
+   - 觀察 school-year 數據在 Dashboard 的顯示效果
+5. Next priorities (max 3):
+   - K1/R1 知識框架實作
+   - 觀察 school-year 數據在 Dashboard 的顯示效果
+   - 考慮 days-3 排程是否需要調整
+6. Risks / blockers: school-year 耗時 1h25m + API 費用可觀（日常用 days-3）；VM ≠ git repo 路徑需注意
+7. Files materially changed:
+   - `edb-dashboard.html`（D8/D9/F4 修復 + v1.1.1）
+   - `edb_scraper.py`（PyMuPDF 替換 pdfplumber/pdfminer）
+   - `requirements.txt`（pdfplumber→PyMuPDF）
+   - `dev/ACCEPTANCE_CHECKLIST.md`（D8/D9/F4/H5/H6 ✅）
+   - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
+8. Validation summary: HTML OK；Python syntax OK；school-year workflow 全綠 ✅；pdfminer 引用 = 0
+9. Git commits in RE06:
+   - D8/D9/F4 前端修復 commit
+   - `184b867` — PyMuPDF 遷移 + requirements.txt 更新
+
+## Previous Session Record (RE05)
+1. UTC date: 2026-03-14
 2. Session ID: Claude_20260314_RE05（PDF timeout 修復嘗試 — 未成功）
 3. Completed:
-   - **edb_scraper.py PDF timeout 修復** — 三種方案全部失敗：
-     * ❌ `signal.SIGALRM(60)` → C 擴展不回應 Python 信號
-     * ❌ `signal.SIGALRM(10)` → 同上 + NameError（handler 被刪但調用殘留）
-     * ❌ `multiprocessing.Process` + `proc.terminate()` → SIGTERM 被 C 擴展忽略
-   - **git push 成功** — edb_scraper.py multiprocessing 版本已推送至 GitHub（commit 87c9e08）
-   - **GitHub Actions workflow** — 三次 Run workflow 全部失敗/卡死（#14 卡死取消, #15 NameError, #16 卡死 32 分鐘）
-4. Pending：
-   - ⭐ **PDF timeout 修復**：改 `proc.terminate()` → `proc.kill()` (SIGKILL) 並測試
-   - ⭐ **GitHub Pages 部署**：仍是舊版本（缺 📅 日曆 / ☑️ 多選按鈕）
-   - ⭐ **pdfminer DEBUG logging**：需關閉（107K 行 log 爆炸）
-   - 討論：K1 知識庫框架、R1 全角色精確度、LLM 引擎切換
-   - 選做：D8/D9 月曆篩選、F4 badge 計數、H5 天數選擇器、H6 已跟進切換
-5. Next priorities (max 3):
-   - ⭐ `proc.kill()` 方案修復 PDF timeout → push → Run workflow → 確認 Pages 部署
-   - 考慮替代 PDF 庫（PyMuPDF/fitz）替代 pdfplumber/pdfminer
-   - K1/R1 知識框架討論
-6. Risks / blockers: pdfminer C 擴展卡死問題仍未解決；觸發 school-year workflow 必定卡死
-7. Files materially changed:
-   - `edb_scraper.py`（多次修改：SIGALRM → multiprocessing → 當前用 proc.terminate()）
-   - `dev/SESSION_HANDOFF.md`（更新）
-   - `dev/SESSION_LOG.md`（更新）
-8. Validation summary: `python3 -c "import ast; ast.parse(...)"` Syntax OK ✅；但 workflow 仍卡死
-9. Git commits in RE05:
-   - `78b0832` — fix: PDF parse timeout (60s); update dev docs
-   - `118e1e1` — fix: reduce PDF timeout 60s→10s
-   - `f24685f` — fix: use multiprocessing for PDF timeout
-   - `87c9e08` — fix: rewrite extract_pdf_text with multiprocessing — remove broken SIGALRM refs
+   - ❌ PDF timeout 三種方案全部失敗（SIGALRM / multiprocessing+SIGTERM）
+   - git push 成功（87c9e08）；3 次 workflow 全部卡死
+4. Files: `edb_scraper.py`、`dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
 
 ## Previous Session Record (RE04)
 1. UTC date: 2026-03-11
