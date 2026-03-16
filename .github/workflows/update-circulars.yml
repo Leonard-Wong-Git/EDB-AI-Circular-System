@@ -112,7 +112,13 @@ jobs:
             COUNT=$(python3 -c "import json; d=json.load(open('circulars.json')); print(d.get('count',0))")
             git commit -m "chore: auto-update circulars.json [$TIMESTAMP] ($COUNT circulars)"
             # Pull rebase 以防遠端在 workflow 執行期間有新 commit（例如本機 push）
-            git pull --rebase origin main
+            # -X theirs = rebase 衝突時優先保留 workflow 新產生的 circulars.json
+            git pull --rebase -X theirs origin main || {
+              echo "Rebase conflict detected — resolving circulars.json with workflow version"
+              git checkout --theirs circulars.json
+              git add circulars.json
+              git rebase --continue --no-edit
+            }
             git push
             echo "Committed and pushed: $COUNT circulars"
           fi
