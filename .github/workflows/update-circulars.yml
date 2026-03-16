@@ -103,7 +103,18 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # 保存 workflow 新產生的 circulars.json
+          cp circulars.json /tmp/circulars_fresh.json
+
+          # 拉取最新 remote（避免與本機 push 衝突）
+          git fetch origin main
+          git reset --hard origin/main
+
+          # 用 workflow 新產生的版本覆蓋
+          cp /tmp/circulars_fresh.json circulars.json
           git add circulars.json
+
           # 只有在有實際變更時才 commit（避免空 commit）
           if git diff --staged --quiet; then
             echo "No changes to circulars.json — skipping commit"
@@ -111,14 +122,6 @@ jobs:
             TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
             COUNT=$(python3 -c "import json; d=json.load(open('circulars.json')); print(d.get('count',0))")
             git commit -m "chore: auto-update circulars.json [$TIMESTAMP] ($COUNT circulars)"
-            # Pull rebase 以防遠端在 workflow 執行期間有新 commit（例如本機 push）
-            # -X theirs = rebase 衝突時優先保留 workflow 新產生的 circulars.json
-            git pull --rebase -X theirs origin main || {
-              echo "Rebase conflict detected — resolving circulars.json with workflow version"
-              git checkout --theirs circulars.json
-              git add circulars.json
-              git rebase --continue --no-edit
-            }
             git push
             echo "Committed and pushed: $COUNT circulars"
           fi
