@@ -259,10 +259,45 @@ grant_info：
   none               — 無資助，amount_hkd / amount_label / resource_value_hkd 填 null
 
 roles（每角色分析）：
-  r    — 此通告是否與該角色相關（true/false）
-  pts  — 重點事項，最多 3 項中文短句
-  acts — 具體行動，最多 3 項（如無需行動則為空數組）
+  r    — 該角色是否有「直接職責」（true/false）
+  pts  — 重點事項，最多 3 項中文短句（r=true 才填；必須為該角色獨有職責，非泛泛「知悉」）
+  acts — 具體行動，最多 3 項（r=true 才填；r=false 則為空數組 []）
   角色清單：principal, vice_principal, department_head, teacher, eo_admin, supplier
+
+  ⭐ r=true 條件（符合至少一項）：
+    1. 通告明確點名要求該角色採取行動或作出決定
+    2. 該角色需提交文件、申請、報告、或出席指定活動
+    3. 該角色的日常工作範疇受到直接影響（如課程調整影響教師，採購流程影響 eo_admin）
+
+  ⛔ r=false 的情況（符合任一項則設為 false）：
+    1. 該角色只是被動「知悉」，無需採取任何具體行動
+    2. 職責僅為「協助上司執行」，無獨立責任
+    3. 通告內容完全不涉及該角色的工作範疇
+    4. supplier：僅適用於採購/招標/資源供應類通告；一般政策/課程/行政通告一律 false
+
+  角色職責邊界（只在範疇內才標 true）：
+    principal      — 全校決策、審批預算、對外簽署、收取校長信、政策執行責任
+    vice_principal — 課程統籌、教師人事協調、跨部門執行（≠ 只是「協助校長」）
+    department_head— 科務決策、課程調整、科內資源管理、科目評核改動
+    teacher        — 課堂執行、學生直接指導、個人培訓登記、教學改動、個人申請
+    eo_admin       — 行政申請、採購、文書記錄、預算記錄、校內通告發布
+    supplier       — 投標、供應合約、EDB 採購計劃的直接供應商
+
+  ⚠️ 每條通告預期只有 2-4 個角色為 true（全部 true 是罕見例外，只適用於全校必須共同參與的大型計劃）
+
+  ━━━ 角色標記參考範例 ━━━
+
+  範例 A —「申請發還差餉及地租的年終安排」
+  ✅ principal (審批)、eo_admin (提交申請)
+  ❌ vice_principal (無獨立職責)、department_head (非科務)、teacher (非教學相關)、supplier (非採購)
+
+  範例 B —「員工交流計劃：教師借調 / 自願調任 / 跨職系調配」
+  ✅ principal (審批推薦)、teacher (個人申請)
+  ❌ vice_principal (無獨立職責)、department_head (非科務決策)、eo_admin (非行政申請)、supplier (無關)
+
+  範例 C —「派發有關熱帶氣旋安排的宣傳物品」
+  ✅ principal (決定分發)、eo_admin (物料管理分發)
+  ❌ vice_principal (無獨立職責)、department_head (非科務)、teacher (非教學改動)、supplier (非採購通告)
 
 deadlines（截止日期）：
   apply_deadline      — 申請撥款/服務的截止
@@ -638,12 +673,19 @@ class LLMAnalyzer:
             )
             raw = resp.choices[0].message.content
             result = json.loads(raw)
+            # R1 post-processing: tighten role relevance
+            result = _postprocess_roles(result)
             if self.verbose:
+                role_count = sum(
+                    1 for d in result.get("roles", {}).values()
+                    if isinstance(d, dict) and d.get("r")
+                )
                 self.log.debug(
                     f"  ← impact={result.get('impact')} "
                     f"compliance={result.get('compliance')} "
                     f"deadlines={len(result.get('deadlines', []))} "
-                    f"actions={len(result.get('actions', []))}"
+                    f"actions={len(result.get('actions', []))} "
+                    f"roles={role_count}/6"
                 )
             return result
         except json.JSONDecodeError as exc:
@@ -749,6 +791,91 @@ def _load_knowledge_context(topics: list, budget: int = 600) -> str:
     if not bullets:
         return ""
     return header + "\n".join(f"- {b}" for b in bullets)
+
+
+# ── R1 Post-processing: tighten role relevance ──────────────────────────────
+
+# Generic phrases that indicate passive awareness, not direct responsibility.
+_WEAK_ACT_PATTERNS = [
+    "知悉", "了解", "留意", "注意", "配合", "遵守", "按指示",
+    "協助校長", "協助上司", "一般了解", "一般配合",
+    "提交所需證明", "遵守時限", "按時完成",
+    "協助資料核對", "協助資料整理", "協助分發",
+    "轉發通知", "轉發通告", "傳閱",
+    "存檔", "備案", "歸檔",
+    "提交回饋報告", "整理月度報告",
+    "協調IT", "協調媒體",
+]
+
+# Patterns in pts that suggest passive awareness, not active responsibility.
+_WEAK_PTS_PATTERNS = [
+    "一般知悉", "被動", "純粹了解", "備悉",
+    "監督分發紀錄", "協調部門資源",
+    "確保物料適用", "配合校方",
+]
+
+
+def _postprocess_roles(result: dict) -> dict:
+    """Demote roles where LLM assigned r=true but acts are mostly weak/generic.
+
+    Rules:
+      1. If acts is empty but r=true → set r=false
+      2. If ≥ 2/3 acts match weak patterns → set r=false
+      3. If ALL pts match weak patterns → set r=false
+      4. supplier: r=false unless grant_info.type in (applicable, resource)
+         or tags contain procurement keywords
+    """
+    roles = result.get("roles", {})
+    if not roles:
+        return result
+
+    grant_type = result.get("grant_info", {}).get("type", "none")
+    tags_str = " ".join(result.get("tags", []))
+    has_procurement = grant_type in ("applicable", "resource") or any(
+        kw in tags_str for kw in ["採購", "招標", "供應", "投標", "合約"]
+    )
+
+    for rname, rdata in roles.items():
+        if not isinstance(rdata, dict) or not rdata.get("r"):
+            continue
+
+        acts = rdata.get("acts", [])
+        pts = rdata.get("pts", [])
+
+        # Rule 1: r=true but no acts at all
+        if not acts:
+            rdata["r"] = False
+            rdata["pts"] = []
+            continue
+
+        # Rule 2: ≥ 2/3 acts are weak/generic → demote
+        weak_count = sum(
+            1 for act in acts
+            if any(wp in act for wp in _WEAK_ACT_PATTERNS)
+        )
+        if len(acts) > 0 and weak_count / len(acts) >= 0.67:
+            rdata["r"] = False
+            rdata["pts"] = []
+            rdata["acts"] = []
+            continue
+
+        # Rule 3: all pts are weak
+        if pts and all(
+            any(wp in pt for wp in _WEAK_PTS_PATTERNS) for pt in pts
+        ):
+            rdata["r"] = False
+            rdata["pts"] = []
+            rdata["acts"] = []
+            continue
+
+        # Rule 4: supplier special rule
+        if rname == "supplier" and not has_procurement:
+            rdata["r"] = False
+            rdata["pts"] = []
+            rdata["acts"] = []
+
+    result["roles"] = roles
+    return result
 
 
 # =============================================================================
