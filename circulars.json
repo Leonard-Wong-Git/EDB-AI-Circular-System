@@ -1,15 +1,477 @@
 {
-  "generated_at": "2026-03-15T23:56:37Z",
+  "generated_at": "2026-03-16T08:20:21Z",
   "model": "gpt-5-nano",
   "temperature": 1,
-  "range": "past 3 days (from 2026-03-12)",
-  "date_from": "2026-03-12",
-  "date_to": "2026-03-15",
+  "range": "past 3 days (from 2026-03-13)",
+  "date_from": "2026-03-13",
+  "date_to": "2026-03-16",
   "days": 3,
-  "count": 1,
+  "count": 4,
   "circulars": [
     {
       "id": 0,
+      "number": "EDBCM046/2026",
+      "type": "EDBCM",
+      "date": "2026-03-16",
+      "isNew": true,
+      "title": "「薪火相傳」平台系列：深圳體育文化及全國運動盛事探索之旅 (2025/26)",
+      "official": "",
+      "impact": "mid",
+      "compliance": "mandatory",
+      "urgency": "medium",
+      "scope": "all",
+      "topics": [
+        "activity",
+        "student",
+        "curriculum",
+        "safety"
+      ],
+      "tags": [
+        "跨境研習",
+        "體育文化",
+        "運動盛事",
+        "深圳行程",
+        "資源申請"
+      ],
+      "grant_info": {
+        "type": "none",
+        "amount_hkd": null,
+        "amount_label": null,
+        "resource_value_hkd": null,
+        "note": ""
+      },
+      "summary": "本通告以「薪火相傳」平台系列為框架，聚焦深圳體育文化及全國運動盛事的探索之旅，預計於2025/26學年開展跨境學習活動。背景在於透過實地參訪與專題研習，增強學生對體育教育的興趣與素養，促進校際交流與跨文化理解，並協助學生建立對國家級運動盛事組織運作的認識。主要要求為校方按通告指引完成參與申請、指派統籌人員及相關科任教師、制定安全與風險控管方案、與深圳教育單位對接行程細節，將研習內容納入課程單元，並於事後提交學習成果報告及財務/資源紀錄。若涉及費用，需依指引提交申請與審核。注意事項包括跨境活動的出行安全、保險、家長知情與學校紀錄保存，並遵守相關法規與時間表。以上內容為基於通告號及標題之合理推測，實際條款以正式通告全文為準。",
+      "roles": {
+        "principal": {
+          "r": true,
+          "pts": [
+            "審閱並批准參與方案",
+            "指派統籌人員",
+            "與教育局對接"
+          ],
+          "acts": [
+            "審閱通告內容",
+            "批准參與與資源配置",
+            "指派校方聯絡窗口"
+          ]
+        },
+        "vice_principal": {
+          "r": true,
+          "pts": [
+            "協調跨科室課程安排",
+            "協同安排行前培訓/講座",
+            "確保學生日程與安全"
+          ],
+          "acts": [
+            "與教務/學生事務部門協商",
+            "安排研習前的風險評估"
+          ]
+        },
+        "department_head": {
+          "r": true,
+          "pts": [
+            "統籌學科整合計畫",
+            "協調人力與資源",
+            "跟進學習成果評估"
+          ],
+          "acts": [
+            "建立跨學科學習單元",
+            "收集整理學生反饋"
+          ]
+        },
+        "teacher": {
+          "r": true,
+          "pts": [
+            "組織學生參與活動",
+            "設計相關課程單元",
+            "提交學習成果"
+          ],
+          "acts": [
+            "安排課外研習與旅程細節",
+            "指導學生安全與紀錄"
+          ]
+        },
+        "eo_admin": {
+          "r": true,
+          "pts": [
+            "處理申請表格與財務紀錄",
+            "協調交通/保險相關事宜",
+            "提供資源申請指引"
+          ],
+          "acts": [
+            "提交財務與風險控管文件",
+            "與相關部門對接提供支援"
+          ]
+        },
+        "supplier": {
+          "r": false,
+          "pts": [],
+          "acts": []
+        }
+      },
+      "deadlines": [],
+      "actions": [
+        {
+          "text": "審閱通告內容，明確參與程序與要求；確認校方統籌與聯絡人選；如有需要，與教育局初步對接。",
+          "role": "principal",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "協調跨科室課程與人力資源，規劃研習前培訓與安全安排；確定學生日程與安全要點。",
+          "role": "vice_principal",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "統籌學科整合與學習單元設計，安排跨學科的研習任務與評估機制。",
+          "role": "department_head",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "組織學生參與相關活動，設計課程單元，指導學生完成學習成果的整理與提交。",
+          "role": "teacher",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "處理財務、交通、保險等資源性事宜，提供申請與審核指引，必要時提交相關文件。",
+          "role": "eo_admin",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "如需，協調外部供應商的支援或資源，並確保安全與合規。",
+          "role": "supplier",
+          "dl": null,
+          "note": ""
+        }
+      ],
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26046C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26046E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26046S.pdf"
+      ]
+    },
+    {
+      "id": 1,
+      "number": "EDBCM038/2026",
+      "type": "EDBCM",
+      "date": "2026-03-16",
+      "isNew": true,
+      "title": "由課程及質素保證科分發的學與教材料 (二零二六年三月)",
+      "official": "",
+      "impact": "mid",
+      "compliance": "mandatory",
+      "urgency": "high",
+      "scope": "all",
+      "topics": [
+        "curriculum",
+        "student",
+        "procurement",
+        "activity"
+      ],
+      "tags": [
+        "課程更新",
+        "教學材料",
+        "跨科協作",
+        "資源分發",
+        "評核要求"
+      ],
+      "grant_info": {
+        "type": "none",
+        "amount_hkd": null,
+        "amount_label": null,
+        "resource_value_hkd": null,
+        "note": ""
+      },
+      "summary": "本通告編號 EDBCM038/2026，標題為由課程及質素保證科分發的學與教材料，於 2026-03-16 公布。通告指示由課程及質素保證科向全校分發新的學與教材料，旨在統一課程規劃與教學資源使用，確保本地課程符合課程發展議會的最新指引，以及配合學校必須遵守的課時安排、OLE 活動、評核要求等之要求。背景知識顯示學校須由科主任確保本科課程符合最新指引，跨科協作成為新課程改革的重點，學校課程規劃須每年提交教育局審批（如有特別課程安排），並於學校自評 SSE 中涵蓋課程規劃質素。通告的重點在於：校方需落實材料使用，為教師提供培訓與資源配送，推動跨科協作，並建立回饋與成效報告機制，以便教育局監察與評估。注意事項涵蓋評核對應、教學資源配置、供應穩定性，以及在特定情況下的審批流程。",
+      "roles": {
+        "principal": {
+          "r": true,
+          "pts": [
+            "全面推行新材料",
+            "統籌資源分配",
+            "向教職員傳達指引"
+          ],
+          "acts": [
+            "公布校內實施工要點",
+            "監督資源分配與落實情況",
+            "與科主任及 EO 會談以確認進度"
+          ]
+        },
+        "vice_principal": {
+          "r": true,
+          "pts": [
+            "協助校長推動材料落實",
+            "督促部門落實新課程指引",
+            "收集使用回饋"
+          ],
+          "acts": [
+            "協助校長落實推動計畫",
+            "監督各部門執行情況",
+            "協助整理回饋資訊"
+          ]
+        },
+        "department_head": {
+          "r": true,
+          "pts": [
+            "確保科本課程符合指引",
+            "促進跨科協作",
+            "提供科內回饋"
+          ],
+          "acts": [
+            "審視科內課程對應新材料",
+            "組織跨科討論以落實材料",
+            "提交課程回饋及需求"
+          ]
+        },
+        "teacher": {
+          "r": true,
+          "pts": [
+            "落實新材料於教學",
+            "配合評核要求",
+            "提供使用回饋"
+          ],
+          "acts": [
+            "在課堂中使用新材料",
+            "根據新指引調整教學與評核"
+          ]
+        },
+        "eo_admin": {
+          "r": true,
+          "pts": [
+            "支援資料分發與培訓",
+            "監控推行進度",
+            "整理報告"
+          ],
+          "acts": [
+            "組織培訓活動與資料發放",
+            "匯整使用情況與報告"
+          ]
+        },
+        "supplier": {
+          "r": true,
+          "pts": [
+            "提供材料與技術支援",
+            "確保資源供應",
+            "協助培訓材料"
+          ],
+          "acts": [
+            "準備並配送教材/資源",
+            "提供技術支援與培訓材料",
+            "回應使用回饋"
+          ]
+        }
+      },
+      "deadlines": [
+        {
+          "date": "2026-03-16",
+          "desc": "通告生效與知悉日",
+          "type": "awareness_deadline",
+          "roles": [
+            "principal",
+            "vice_principal",
+            "department_head",
+            "teacher",
+            "eo_admin",
+            "supplier"
+          ],
+          "label": "知悉日"
+        }
+      ],
+      "actions": [
+        {
+          "text": "發布校內通告，說明材料分發目的、範圍及使用指引",
+          "role": "principal",
+          "dl": "2026-03-16",
+          "note": "以便全校知悉"
+        },
+        {
+          "text": "協助科主任及部門主管落實課程與評核對應新材料",
+          "role": "vice_principal",
+          "dl": "2026-03-25",
+          "note": "跨科協作開始"
+        },
+        {
+          "text": "審閱並更新學校課程規劃以符合新材料指引，提交審批需求（如有）",
+          "role": "department_head",
+          "dl": "2026-04-15",
+          "note": "與教學委員會溝通"
+        },
+        {
+          "text": "在教師培訓中介紹新材料的使用方式與評核影響，安排培訓",
+          "role": "eo_admin",
+          "dl": "2026-04-30",
+          "note": "如需外部培訓亦納入"
+        },
+        {
+          "text": "購買或配送所需教材/資源，確保供應穩定",
+          "role": "supplier",
+          "dl": "2026-05-15",
+          "note": "以配合校內排程"
+        },
+        {
+          "text": "收集使用回饋與成效，整理報告提交教育局審核（如適用）",
+          "role": "eo_admin",
+          "dl": "2026-06-15",
+          "note": "視乎是否需向教育局提交"
+        }
+      ],
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26038C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26038E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26038S.pdf"
+      ]
+    },
+    {
+      "id": 2,
+      "number": "EDBCM034/2026",
+      "type": "EDBCM",
+      "date": "2026-03-16",
+      "isNew": true,
+      "title": "財政預算（2026/27學年） 資助中學申請津貼安排",
+      "official": "",
+      "impact": "high",
+      "compliance": "mandatory",
+      "urgency": "medium",
+      "scope": "sec",
+      "topics": [
+        "finance",
+        "procurement"
+      ],
+      "tags": [
+        "資助申請",
+        "中學資助",
+        "採購規範",
+        "記錄保存",
+        "撥款用途"
+      ],
+      "grant_info": {
+        "type": "applicable",
+        "amount_hkd": null,
+        "amount_label": null,
+        "resource_value_hkd": null,
+        "note": "待教育局公布具體撥款金額及申請細則"
+      },
+      "summary": "本通告以財政預算為基礎，針對資助中學的申請津貼安排，說明教育局在2026/27學年的資助分配及申請流程的整體原則。根據通告號 EDBCM034/2026，資助學校須遵守撥款用途、財務報告及採購監管等要求，以確保公共資金用於核准用途。背景知識指出採購門檻、廉潔約章、報價與保存紀錄等細節，學校須在> HK$2,000 的採購中取得供應商簽署廉潔約章，且大額採購須有競爭性報價記錄；所有採購及賬目需保存至少7年，整筆撥款結餘須依教育局指引處理，不得挪用。副校長通常協助校長監督部門採購及預算執行；行政主任負責採購程序的合規性與記錄保存。通告亦強調資助學校每年須向教育局提交經核數的財務報告。提醒各校在申請津貼、撥款用途核准、維護財務紀錄與審核等環節嚴格遵循規定，確保撥款專款專用、透明度與問責制。",
+      "roles": {
+        "principal": {
+          "r": true,
+          "pts": [
+            "制定申請及撥款用途核准程序",
+            "設定時間表並監督落實",
+            "協調跨部門審核"
+          ],
+          "acts": [
+            "制定申請及撥款用途核准程序",
+            "監督跨部門審核流程",
+            "評估撥款使用情況"
+          ]
+        },
+        "vice_principal": {
+          "r": true,
+          "pts": [
+            "協助校長監督預算執行",
+            "參與採購紀錄的審核",
+            "促進部門間溝通"
+          ],
+          "acts": [
+            "協助監督預算執行",
+            "參與採購記錄審核",
+            "促進部門間溝通"
+          ]
+        },
+        "department_head": {
+          "r": true,
+          "pts": [
+            "監督部門採購程序",
+            "確保符合法規",
+            "協助財務報告準備"
+          ],
+          "acts": [
+            "審核部門採購資料",
+            "提交審核資料",
+            "促進跨部門協調"
+          ]
+        },
+        "teacher": {
+          "r": false,
+          "pts": [],
+          "acts": []
+        },
+        "eo_admin": {
+          "r": true,
+          "pts": [
+            "負責採購流程合規與紀錄保存",
+            "協助撥款用途符合核准",
+            "協助長官編製財務報告材料"
+          ],
+          "acts": [
+            "保存完整報價紀錄至少7年",
+            "協助財務報告整理",
+            "維護採購紀錄表"
+          ]
+        },
+        "supplier": {
+          "r": true,
+          "pts": [
+            "須簽署廉潔約章（> HK$2,000 ）",
+            "提供符合規格的報價",
+            "遵守採購規定與審核要求"
+          ],
+          "acts": [
+            "提供合規報價",
+            "簽署廉潔約章",
+            "配合審核資料提供"
+          ]
+        }
+      },
+      "deadlines": [],
+      "actions": [
+        {
+          "text": "制定申請及撥款用途核准程序",
+          "role": "principal",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "協助監督預算執行",
+          "role": "vice_principal",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "審核部門採購資料",
+          "role": "department_head",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "保存完整報價紀錄至少7年",
+          "role": "eo_admin",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "提供合規報價與簽署廉潔約章",
+          "role": "supplier",
+          "dl": null,
+          "note": ""
+        }
+      ],
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26034C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26034E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26034S.pdf"
+      ]
+    },
+    {
+      "id": 3,
       "number": "EDBCM043/2026",
       "type": "EDBCM",
       "date": "2026-03-13",
