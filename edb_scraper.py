@@ -259,31 +259,10 @@ grant_info：
   none               — 無資助，amount_hkd / amount_label / resource_value_hkd 填 null
 
 roles（每角色分析）：
-  r    — 該角色是否有「直接職責」（true/false）
-  pts  — 重點事項，最多 3 項中文短句（r=true 才填；必須為該角色獨有職責，非泛泛「知悉」）
-  acts — 具體行動，最多 3 項（r=true 才填；r=false 則為空數組 []）
+  r    — 此通告是否與該角色相關（true/false）
+  pts  — 重點事項，最多 3 項中文短句
+  acts — 具體行動，最多 3 項（如無需行動則為空數組）
   角色清單：principal, vice_principal, department_head, teacher, eo_admin, supplier
-
-  ⭐ r=true 條件（符合至少一項）：
-    1. 通告明確點名要求該角色採取行動或作出決定
-    2. 該角色需提交文件、申請、報告、或出席指定活動
-    3. 該角色的日常工作範疇受到直接影響（如課程調整影響教師，採購流程影響 eo_admin）
-
-  ⛔ r=false 的情況（符合任一項則設為 false）：
-    1. 該角色只是被動「知悉」，無需採取任何具體行動
-    2. 職責僅為「協助上司執行」，無獨立責任
-    3. 通告內容完全不涉及該角色的工作範疇
-    4. supplier：僅適用於採購/招標/資源供應類通告；一般政策/課程/行政通告一律 false
-
-  角色職責邊界（只在範疇內才標 true）：
-    principal      — 全校決策、審批預算、對外簽署、收取校長信、政策執行責任
-    vice_principal — 課程統籌、教師人事協調、跨部門執行（≠ 只是「協助校長」）
-    department_head— 科務決策、課程調整、科內資源管理、科目評核改動
-    teacher        — 課堂執行、學生直接指導、個人培訓登記、教學改動、個人申請
-    eo_admin       — 行政申請、採購、文書記錄、預算記錄、校內通告發布
-    supplier       — 投標、供應合約、EDB 採購計劃的直接供應商
-
-  ⚠️ 每條通告預期只有 2-4 個角色為 true（全部 true 是罕見例外，只適用於全校必須共同參與的大型計劃）
 
 deadlines（截止日期）：
   apply_deadline      — 申請撥款/服務的截止

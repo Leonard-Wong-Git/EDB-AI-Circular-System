@@ -1,15 +1,17 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v1.1.1** (2026-03-15) ← **當前版本** 🎉
+1. Version: **v1.1.2** (2026-03-16) ← **當前版本** 🎉
 2. Core commands / features:
-   - `edb-dashboard.html` — 正式版單頁 Dashboard（~2,800 行，v1.1.1 ✅；含 8 項功能 + D8/D9/F4 修復）
-   - `edb_scraper.py` — 後端爬蟲 + LLM 分析管線（PyMuPDF 引擎 ✅ **school-year 首次成功**）
+   - `edb-dashboard.html` — 正式版單頁 Dashboard（~2,800 行，v1.1.2 ✅；含 8 項功能 + D8/D9/F4/Issue4 修復）
+   - `edb_scraper.py` — 後端爬蟲 + LLM 分析管線（PyMuPDF 引擎 ✅ + K1 知識注入框架）
    - `circulars.json` — school-year 全量 EDB 通告 + gpt-5-nano LLM 分析（GitHub Pages 已部署 ✅）
    - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具
    - `requirements.txt` — Python 依賴清單（PyMuPDF 替換 pdfplumber）
-3. Regression baseline: school-year workflow 全綠 1h25m；days-3 workflow 33s；D8/D9/F4/H5/H6 驗收 ✅
-4. Release / merge status: **v1.1.1 已推送至 GitHub** ✅；GitHub Pages school-year 數據已部署 ✅
+   - `dev/knowledge/role_facts.json` — K1 基線知識庫（6 主題 × 7 角色，人工整理版）
+   - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 獨立項目接口合約規格
+3. Regression baseline: school-year workflow 全綠 1h25m；days-3 workflow 33s；D8/D9/F4/H5/H6/Issue4 驗收 ✅
+4. Release / merge status: **v1.1.2 已推送至 GitHub** ✅（Issue4 修復 + K1 injection）；GitHub Pages school-year 數據已部署 ✅
 5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/（school-year 數據已上線 ✅）
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2 （ASP.NET WebForms）
@@ -77,13 +79,13 @@ cp -r "<PROJECT_PATH>-snapshot-v0.x.x" "<PROJECT_PATH>-restored"
 2. ✅ ~~v0.2.1-frontend 13 項 UI 修訂~~ **已完成（2026-03-10）**
 3. ✅ ~~建立 `edb_scraper.py` 後端管線框架~~ **已完成（2026-03-10）**
 4. ✅ ~~診斷 EDB POST 表單字段錯誤~~ **已修正（2026-03-10）**
-5. ✅ ~~`_parse_list()` 修正為真實 EDB HTML 結構~~ **已完成（2026-03-10）**
-6. ✅ ~~Dry-run 測試通過~~ **14 條通告 + PDF 提取 + 38.4KB circulars.json ✅ 已完成（2026-03-10）**
-7. ✅ ~~完整 LLM 執行~~ **14 條通告 LLM 分析成功（2026-03-10）**
-8. ✅ ~~GitHub 推送 v0.3.0-backend~~ **已完成（2026-03-10）**
-9. **[下一步 ⭐]** 在瀏覽器開啟 `edb-dashboard.html`，確認真實 `circulars.json` 正確顯示
-10. **[下一步]** 整合調整：根據真實數據微調 Dashboard 顯示（如有需要）
-11. v1.0.0-release：整合測試通過後正式發布，驗收標準見需求文件第八節
+5. ✅ ~~pdfplumber→PyMuPDF 遷移~~ **已完成（2026-03-15）；school-year 全綠**
+6. ✅ ~~Issue 4：Dashboard 官方摘要空白~~ **UI fallback 已修復（2026-03-16 v1.1.2）**
+7. ✅ ~~K1 知識注入基線框架~~ **已完成（2026-03-16）；role_facts.json + 注入函數 + 接口規格**
+8. **[下一步 ⭐]** 確認 GitHub Pages v1.1.2 官方摘要 fallback 顯示效果
+9. **[下一步]** R1 全角色職責精確度（角色相關性分析優化）
+10. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目，通過 role_facts.json 接口交付）
+11. **[選做]** LLM 引擎切換機制
 
 ## v0.2.0-frontend Key Decisions（用戶已確認 2026-03-10）
 - 所有設定存 localStorage（角色/主題/佈局/色調/字體/狀態/收藏）
@@ -156,36 +158,36 @@ If the session's changes affect specifications, runbooks, regression thresholds,
 If the session's fix involves adding a new rule, first check whether the existing definition should be integrated or outdated wording retired — avoid stacking without consolidating.
 
 ## Last Session Record
-1. UTC date: 2026-03-14
-2. Session ID: Claude_20260315_1400（D8/D9/F4 修復 + PyMuPDF 遷移 + school-year 首次成功）
+1. UTC date: 2026-03-16
+2. Session ID: Claude_20260316_0850（Issue 4 修復 + K1 知識注入框架）
 3. Completed:
-   - ✅ **D8 月曆高影響篩選修復**：`isAttention()` → `d.impact!=='high'`
-   - ✅ **D9 月曆截止日篩選修復**：加 `if(S.calFilter!=='deadline')` guard
-   - ✅ **F4 書籤 badge 初始載入**：`renderAll()` 新增 `updateBmBadge()` 調用
-   - ✅ **H5/H6 確認已實作**：程式碼審查通過
-   - ✅ **pdfplumber→PyMuPDF 完全遷移**：移除所有 pdfminer 依賴，消除 107K+ 行 DEBUG 洪流
-   - ✅ **school-year workflow 首次成功**：1h 25m 4s，全綠，GitHub Pages 部署完成
-   - ✅ **版本標籤 v1.1.0→v1.1.1**
+   - ✅ **Issue 4 前端修復**：card-summary fallback（official || summary前150字）；detail panel 條件隱藏空 official
+   - ✅ **Issue 4 後端修復**：Phase 3 緩存還原 `official` 欄位（防止重跑丟失）
+   - ✅ **版本標籤 v1.1.1→v1.1.2**（VM workspace + Mac git repo 同步）
+   - ✅ **K1 知識注入**：`_detect_topics_early()` + `_load_knowledge_context()` + `_build_prompt()` 更新；4 測試案例通過
+   - ✅ **baseline `role_facts.json`**：6 主題 × 7 角色，人工整理版
+   - ✅ **K1 接口規格** `K1_KNOWLEDGE_INTERFACE_SPEC.md`：獨立項目可憑此交付（EDB side only consumes JSON）
+   - ✅ **git push `7c6bd46`**：Issue 4 + K1 injection 推送至 GitHub
 4. Pending：
-   - K1 知識庫參考文件框架
    - R1 全角色職責精確度
    - LLM 引擎切換機制
-   - 觀察 school-year 數據在 Dashboard 的顯示效果
+   - 確認 GitHub Pages v1.1.2 Issue 4 修復效果
+   - K1 第二階段（另立項目：PDF 提取真實 EDB 知識）
 5. Next priorities (max 3):
-   - K1/R1 知識框架實作
-   - 觀察 school-year 數據在 Dashboard 的顯示效果
-   - 考慮 days-3 排程是否需要調整
-6. Risks / blockers: school-year 耗時 1h25m + API 費用可觀（日常用 days-3）；VM ≠ git repo 路徑需注意
+   - 確認 GitHub Pages v1.1.2 顯示（Issue 4 官方摘要 fallback 驗證）
+   - R1 全角色職責精確度分析
+   - K1 PDF 提取項目（另立）
+6. Risks / blockers: `official` 根本原因（GH Actions PyMuPDF 提取失敗）未解；UI fallback 已緩解，K1 PDF 項目完成後根本修復
 7. Files materially changed:
-   - `edb-dashboard.html`（D8/D9/F4 修復 + v1.1.1）
-   - `edb_scraper.py`（PyMuPDF 替換 pdfplumber/pdfminer）
-   - `requirements.txt`（pdfplumber→PyMuPDF）
-   - `dev/ACCEPTANCE_CHECKLIST.md`（D8/D9/F4/H5/H6 ✅）
+   - `edb-dashboard.html`（Issue 4 UI 修復 + v1.1.2）
+   - `edb_scraper.py`（Phase 3 緩存修復 + K1 注入函數 3 個）
+   - `dev/knowledge/role_facts.json`（新建）
+   - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md`（新建）
    - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
-8. Validation summary: HTML OK；Python syntax OK；school-year workflow 全綠 ✅；pdfminer 引用 = 0
-9. Git commits in RE06:
-   - D8/D9/F4 前端修復 commit
-   - `184b867` — PyMuPDF 遷移 + requirements.txt 更新
+8. Validation summary: Python syntax OK；K1 4 測試案例全通過；git push `7c6bd46` 成功
+9. Git commits in RE07:
+   - `7c6bd46` — feat: K1 knowledge injection in _build_prompt()
+   - （Issue 4 + 版本標籤另有 commit）
 
 ## Previous Session Record (RE05)
 1. UTC date: 2026-03-14

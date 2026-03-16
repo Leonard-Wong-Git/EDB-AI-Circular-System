@@ -1,5 +1,97 @@
 # Session Log
 
+## 2026-03-16 R1 (續)
+
+1. Agent & Session ID: Claude_20260316_0850 (R1 continued)
+2. Task summary: R1 全角色職責精確度 — SYSTEM_PROMPT roles 判斷準則改進
+3. Layer classification: Product / System Layer（LLM prompt 優化）
+4. Source triage: 過度標記問題 = LLM prompt 設計問題（缺乏 r=false 的明確排除準則）
+5. Files read: `circulars.json`（role 分佈分析）、`edb_scraper.py` SYSTEM_PROMPT roles 部分
+6. Files changed: `edb_scraper.py`（SYSTEM_PROMPT roles 節改寫）
+7. Completed:
+   - ✅ **現狀分析**：principal 97%、teacher/VP/dept_head 各 ~96%、supplier 53%（105 條通告）
+   - ✅ **R1 根本原因**：SYSTEM_PROMPT roles.r 定義不精確，缺乏排除標準
+   - ✅ **SYSTEM_PROMPT 改寫**：r 定義 → 「直接職責」；⭐ r=true 三條件；⛔ r=false 四排除；六角色邊界；校準提示（預期 2-4 roles）
+   - ✅ **commit `a2a0d38`**；⏳ push 待 Mac Terminal 執行
+8. Validation / QC: Python syntax OK；SYSTEM_PROMPT roles 節完整；預期效果待下次 workflow 驗證
+9. Pending: Mac push + days-3 workflow 驗證 R1 效果
+
+### Problem -> Root Cause -> Fix -> Verification (R1)
+
+**R1: 角色相關性過度標記（97%/96% → 預期 40-60%）**
+1. Problem: 105 條通告中 principal/teacher/VP/dept_head 各 ~96-97% 標為 true；角色篩選幾乎無效
+2. Root Cause: roles.r 定義為「是否相關」（模糊）而非「是否有直接職責」（精確）；無排除標準 → LLM 預設 inclusive
+3. Fix: r=true 三條件（明確點名/需提交文件/工作範疇受直接影響）+ r=false 四排除規則（純知悉/協助上司/範疇不符/supplier 限制）+ 角色職責邊界 + 校準提示
+4. Verification: Python syntax OK；commit `a2a0d38`；實際效果待 days-3 workflow 驗證
+5. Regression: 下次 workflow 後檢查 role distribution（預期 teacher ~40-60%，supplier ~20-30%）
+
+---
+
+## 2026-03-16
+
+1. Agent & Session ID: Claude_20260316_0850
+2. Task summary: Issue 4 修復（官方摘要空白）+ K1 知識注入框架 + K1 接口規格文件
+3. Layer classification: Product / System Layer（前端 UI 修復 + 後端 LLM 管線增強）
+4. Source triage: Issue 4 = 後端緩存問題（Phase 3 未還原 `official`）+ GH Actions PDF 提取失效；K1 = 新功能增強
+5. Files read:
+   - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
+   - `edb-dashboard.html`（VM workspace）
+   - `edb_scraper.py`（Mac git repo）
+6. Files changed:
+   - `edb-dashboard.html`（Issue 4 UI 修復 + 版本標籤 v1.1.1→v1.1.2；VM workspace + Mac git repo 同步）
+   - `edb_scraper.py`（Issue 4 Phase 3 緩存修復 + K1 注入函數 + `_build_prompt()` 更新）
+   - `dev/knowledge/role_facts.json`（新建：基線知識庫，6 個主題 × 7 個角色）
+   - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md`（新建：K1 獨立項目接口合約）
+   - `Claude-edb-Project-V3/dev/K1_KNOWLEDGE_INTERFACE_SPEC.md`（複製副本供 K1 項目參考）
+7. Completed:
+   - ✅ **Issue 4 UI 修復（前端）**：card-summary fallback `d.official || (d.summary||'').substring(0,150)`；detail panel 條件顯示 官方摘要
+   - ✅ **Issue 4 後端緩存修復**：Phase 3 restore `official` from existing JSON cache
+   - ✅ **版本標籤 v1.1.1→v1.1.2**（VM workspace + Mac git repo）
+   - ✅ **K1 知識注入框架**：`_detect_topics_early()`、`_load_knowledge_context()`、`_build_prompt()` 更新；4 測試案例全通過
+   - ✅ **baseline `role_facts.json`** 建立（finance/hr/curriculum/activity/student/it/general × 7 角色）
+   - ✅ **K1 接口規格文件** `K1_KNOWLEDGE_INTERFACE_SPEC.md` 建立（獨立項目可憑此交付）
+   - ✅ **K1 規格複製** 至 `Claude-edb-Project-V3/dev/`（供 K1 項目開發者閱讀）
+   - ✅ **git push**：Issue 4 + K1 injection 已推送至 GitHub（`7c6bd46`）
+8. Validation / QC:
+   - Python 語法驗證：OK（`_detect_topics_early`、`_load_knowledge_context` 函數正確）
+   - K1 注入功能測試：4 測試案例全通過（finance/it、hr、activity/student、general fallback）
+   - git push 成功：commit `7c6bd46` 已推送
+9. Pending:
+   - R1 全角色職責精確度
+   - LLM 引擎切換機制
+   - 觀察 v1.1.2 在 GitHub Pages 顯示效果（Issue 4 修復驗證）
+10. Next priorities:
+    - 確認 GitHub Pages v1.1.2 部署（Issue 4 官方摘要 fallback 是否生效）
+    - R1 全角色職責精確度分析
+    - K1 第二階段：PDF 提取真實 EDB 知識內容（另立項目）
+11. Risks / blockers:
+    - `official` 仍對 105/108 通告為空（PDF 提取在 GH Actions 環境失敗）；UI fallback 已緩解，根本原因待 K1 PDF 提取項目解決
+    - K1 `role_facts.json` 目前為人工整理的基線資料，待 K1 項目 PDF 提取完成後替換
+
+### Problem -> Root Cause -> Fix -> Verification
+
+**Issue 4: 官方摘要（official）空白**
+1. Problem: 105/108 真實通告在 Dashboard 的 官方摘要 欄位顯示空白
+2. Root Cause（多重）：
+   - GH Actions 環境 PyMuPDF subprocess 提取 PDF 返回空字串
+   - Phase 3 緩存還原 LLM keys 但未還原 `official` 欄位
+   - `pdf_text` 不保存在輸出 JSON，無法從緩存還原
+   - 列表頁無 `detail_url`，`enrich_detail()` 無法運行
+3. Fix（分層）：
+   - 前端：card-summary fallback → 顯示 LLM summary 前 150 字；detail panel 條件隱藏空 official
+   - 後端：Phase 3 restore `official` from existing cache（確保重跑不丟失）
+4. Verification: HTML/Python 語法 OK；git push 成功
+5. Regression: 根本原因（GH Actions PDF 提取失敗）留待 K1 項目解決
+
+**K1 知識注入框架**
+1. Problem: LLM 缺乏 EDB 學校運作背景知識，分析精準度有限
+2. Solution: 在 `_build_prompt()` 前端注入 600 字符預算的角色相關知識事實
+3. Implementation: 關鍵字匹配（`_detect_topics_early`）→ 按主題查找（`_load_knowledge_context`）→ 注入 prompt
+4. Architecture: K1 作為獨立項目，通過 `role_facts.json` 文件接口交付，EDB 項目只消費 JSON
+5. Verification: 4 測試案例全通過（finance/it 採購門檻、hr CPD、activity 安全、general fallback）
+
+---
+
 ## 2026-03-15
 
 1. Agent & Session ID: Claude_20260315_1400
