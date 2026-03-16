@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-16T15:25:23Z",
+  "generated_at": "2026-03-16T19:13:51Z",
   "model": "gpt-5-nano",
   "temperature": 1,
   "range": "school-year (from 2025-09-01)",
@@ -5977,12 +5977,21 @@
       "isNew": false,
       "title": "資助學校教員及校長延任",
       "official": "",
-      "impact": "low",
-      "compliance": "informational",
+      "impact": "mid",
+      "compliance": "recommended",
       "urgency": "low",
-      "scope": "both_sec_pri",
-      "topics": [],
-      "tags": [],
+      "scope": "all",
+      "topics": [
+        "hr",
+        "finance"
+      ],
+      "tags": [
+        "人事延任",
+        "資助學校",
+        "預算影響",
+        "校長決策",
+        "合約延長"
+      ],
       "grant_info": {
         "type": "none",
         "amount_hkd": null,
@@ -5990,17 +5999,33 @@
         "resource_value_hkd": null,
         "note": ""
       },
-      "summary": "",
+      "summary": "背景：隨著香港教育體制中資助學校人手變動與退休年齡相關政策的調整，EDB 將就教員及校長的延任安排發出指引。通告標題顯示本措施旨在穩定核心教學力量、緩解師資短缺，並確保延任流程符合財務紀錄、採購及廉潔約章等合規要求。由於延任涉及薪酬、任期、生效日期、課務安排及年度財務報告等多方面事宜，學校需由校長牽頭、副校長協調人事與課務、部門主管參與評估，以免影響科目教學與資源配置。各校需要在審批延任時，遵守大額採購與預算審核的要求，記錄保存至少7年，並保持LSG撥款用途的清晰對應。此通告同時提醒行政主任在程序中維持合規性與透明度，若涉及合約或薪酬變動，須依現行財務與審核流程辦理，向教育局提交所需報告與統計數據。",
       "roles": {
         "principal": {
-          "r": false,
-          "pts": [],
-          "acts": []
+          "r": true,
+          "pts": [
+            "審批延任方案及預算影響",
+            "發布校內通告與合約安排",
+            "向教育局提交延任統計/報告"
+          ],
+          "acts": [
+            "審核延任條件與預算安排",
+            "簽署或核准延任合約",
+            "指派相關人事與課務調整責任人"
+          ]
         },
         "vice_principal": {
-          "r": false,
-          "pts": [],
-          "acts": []
+          "r": true,
+          "pts": [
+            "協調跨部門人事與課務安排",
+            "跟進延任程序的時間表",
+            "協助審核延任申請材料"
+          ],
+          "acts": [
+            "協調科務與人事資源",
+            "檢視科內課務及負荷變動",
+            "整理與提出延任計畫草案"
+          ]
         },
         "department_head": {
           "r": false,
@@ -6008,9 +6033,17 @@
           "acts": []
         },
         "teacher": {
-          "r": false,
-          "pts": [],
-          "acts": []
+          "r": true,
+          "pts": [
+            "提交延任申請及相關證明",
+            "遵守延任相關條款與合約",
+            "參與延任期間的培訓與課務調整"
+          ],
+          "acts": [
+            "提交延任申請及所需文件",
+            "簽署延任合約（如適用）",
+            "配合課務調整與評核變動"
+          ]
         },
         "eo_admin": {
           "r": false,
@@ -6024,7 +6057,26 @@
         }
       },
       "deadlines": [],
-      "actions": [],
+      "actions": [
+        {
+          "text": "審批延任方案及相關財務安排，正式批准延任期限",
+          "role": "principal",
+          "dl": null,
+          "note": "如涉及預算需提交予教育局審核"
+        },
+        {
+          "text": "協調跨部門人事與課務調整，落實延任時間表與任教安排",
+          "role": "vice_principal",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "提交延任申請及相關證明，簽署延任合約（如適用）",
+          "role": "teacher",
+          "dl": null,
+          "note": ""
+        }
+      ],
       "diff": null,
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25222C.pdf",
@@ -11925,25 +11977,44 @@
       "isNew": false,
       "title": "語文教育及研究常務委員會（語常會） 學生語文大使計劃",
       "official": "",
-      "impact": "low",
-      "compliance": "informational",
-      "urgency": "low",
-      "scope": "both_sec_pri",
-      "topics": [],
-      "tags": [],
+      "impact": "mid",
+      "compliance": "recommended",
+      "urgency": "medium",
+      "scope": "all",
+      "topics": [
+        "curriculum",
+        "student",
+        "activity",
+        "hr"
+      ],
+      "tags": [
+        "語文教育",
+        "學生大使",
+        "校園推廣",
+        "資源支援",
+        "課程發展"
+      ],
       "grant_info": {
-        "type": "none",
+        "type": "resource",
         "amount_hkd": null,
         "amount_label": null,
         "resource_value_hkd": null,
-        "note": ""
+        "note": "基於通告內容僅作合理推斷，實際資助及資源詳情以官方公告為準"
       },
-      "summary": "",
+      "summary": "本通告以「語文教育及研究常務委員會（語常會）」名義推出「學生語文大使計劃」，推動由學生主導的語文推廣活動，旨在提升學生語言運用能力、跨文化交流與領導力，並帶動校本語文科的課程與跨科合作。基於標題所示之學校層面實施，此計劃預期在全校範圍內推動，需校長層面決策與資源支持、教師執行教學層面的培訓與課堂實踐，以及行政部門的日常管理與資料記錄。校長需批准計劃方案、指派協調人，教師負責選拔與培訓語文大使並在課堂與課外活動中推廣語言教育，行政部門則負責培訓日程安排、資源與財務記錄、以及成效報告整理。計劃實施需遵守學生保護、欺凌防控及相關教育局指引，確保參與學生之身心安全與個人資料保護，並與語常會及教育局保持溝通往來。由於現有資訊不足以確定具體撥款或資源細節，推斷存在政府提供的培訓或資源資助機制，實際資助數額以官方公告為準，學校需根據自身情況調整實施細節與評估機制。全校教職員需在知悉、申請/分配資源、以及成效報告等方面遵循既定時限與流程，確保計劃有序推進並達到預期教育目標。",
       "roles": {
         "principal": {
-          "r": false,
-          "pts": [],
-          "acts": []
+          "r": true,
+          "pts": [
+            "負責校內決策與資源分配",
+            "簽署正式計畫通告並任命協調人",
+            "監督整體計畫成效與對外溝通"
+          ],
+          "acts": [
+            "批准計畫方案並簽署正式通告",
+            "指派協調人並與語常會及教職員溝通",
+            "監督進度與成效評估"
+          ]
         },
         "vice_principal": {
           "r": false,
@@ -11956,14 +12027,30 @@
           "acts": []
         },
         "teacher": {
-          "r": false,
-          "pts": [],
-          "acts": []
+          "r": true,
+          "pts": [
+            "選拔與培訓語文大使",
+            "在課堂與課外推廣語言活動",
+            "記錄與回報學生表現與成果"
+          ],
+          "acts": [
+            "安排選拔與培訓課程",
+            "監督課堂推廣活動",
+            "提交學生表現與成效報告"
+          ]
         },
         "eo_admin": {
-          "r": false,
-          "pts": [],
-          "acts": []
+          "r": true,
+          "pts": [
+            "行政日程編排與資料記錄",
+            "經費與物資申請、發放與追蹤",
+            "協助整理計畫成效報告與資料庫更新"
+          ],
+          "acts": [
+            "安排培訓會議與場地",
+            "準備材料與宣傳物料",
+            "整理計畫成效資料"
+          ]
         },
         "supplier": {
           "r": false,
@@ -11971,8 +12058,60 @@
           "acts": []
         }
       },
-      "deadlines": [],
-      "actions": [],
+      "deadlines": [
+        {
+          "date": "2025-11-30",
+          "desc": "知悉/啟動，於校務系統更新",
+          "type": "awareness_deadline",
+          "roles": [
+            "principal",
+            "teacher",
+            "eo_admin"
+          ],
+          "label": "知悉/啟動"
+        },
+        {
+          "date": "2025-12-15",
+          "desc": "資源申請與培訓日程安排完成",
+          "type": "apply_deadline",
+          "roles": [
+            "principal",
+            "eo_admin"
+          ],
+          "label": "資源申請"
+        },
+        {
+          "date": "2026-01-31",
+          "desc": "提交計畫成效與報告",
+          "type": "submission_deadline",
+          "roles": [
+            "principal",
+            "teacher",
+            "eo_admin"
+          ],
+          "label": "提交報告"
+        }
+      ],
+      "actions": [
+        {
+          "text": "批准並公佈本計劃方案及任命校內協調人",
+          "role": "principal",
+          "dl": "2025-10-20",
+          "note": ""
+        },
+        {
+          "text": "選拔與培訓語文大使及安排課堂推廣活動",
+          "role": "teacher",
+          "dl": "2025-11-15",
+          "note": ""
+        },
+        {
+          "text": "編制培訓日程、管理參與學生名單及計劃成效資料",
+          "role": "eo_admin",
+          "dl": "2025-11-30",
+          "note": ""
+        }
+      ],
       "diff": null,
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25180C.pdf",
