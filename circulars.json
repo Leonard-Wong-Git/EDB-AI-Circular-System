@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-03-16T23:56:08Z",
+  "generated_at": "2026-03-17T08:01:08Z",
   "model": "gpt-5-nano",
   "temperature": 1,
-  "range": "past 3 days (from 2026-03-13)",
-  "date_from": "2026-03-13",
-  "date_to": "2026-03-16",
+  "range": "past 3 days (from 2026-03-14)",
+  "date_from": "2026-03-14",
+  "date_to": "2026-03-17",
   "days": 3,
-  "count": 4,
+  "count": 3,
   "circulars": [
     {
       "id": 0,
@@ -468,122 +468,6 @@
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26034C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26034E.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26034S.pdf"
-      ]
-    },
-    {
-      "id": 3,
-      "number": "EDBCM043/2026",
-      "type": "EDBCM",
-      "date": "2026-03-13",
-      "isNew": true,
-      "title": "「星耀中華：時代棟樑的風範與精神」專題展覽",
-      "official": "",
-      "impact": "mid",
-      "compliance": "recommended",
-      "urgency": "medium",
-      "scope": "both_sec_pri",
-      "topics": [
-        "curriculum",
-        "activity",
-        "student"
-      ],
-      "tags": [
-        "愛國教育",
-        "展覽",
-        "學校參訪",
-        "課程連結",
-        "學習資源"
-      ],
-      "grant_info": {
-        "type": "resource",
-        "amount_hkd": null,
-        "amount_label": null,
-        "resource_value_hkd": null,
-        "note": "提供展覽資源、導賞、講座及相關學習活動等支援"
-      },
-      "summary": "本通告通知各小學及中學（包括特殊學校）有關「星耀中華：時代棟樑的風範與精神」專題展覽的情況。展覽由愛國教育支援中心於 2026 年 3 月 13 日起展出，內容聚焦十二位國家時代棟樑的人生事蹟與民族精神，涵蓋文化、科學、軍事、藝術、建築、體育等領域，並提供學與教資源、展品資料、導賞、講座及學習活動。學校可選擇在工作日（星期一至五，公眾假期除外）預約參訪，需提前安排師生分組以便輪流參與講座與展覽。展覽內容與相關科目或跨學習領域的課程重點對接，如小學人文科、中學中國歷史、歷史科、初中公民、經濟與社會科及高中公民與社會發展科、價值觀教育及國家安全教育等。另可在參訪當日同時申請參觀愛國教育支援中心內的「抗日戰爭勝利80周年專題展覽」，豐富愛國主義教育的學習經歷。申請預約請使用愛國教育支援中心網頁 https://www.hkpec.hk/article/1009，學校需於參訪前至少三星期提交表格，中心將聯絡負責教師以確認預約與相關安排。如有需要，請致電 2770 0071 聯絡中心。教育局長（江紹卓代行）於 2026 年 3 月 13 日發布此通告。 ",
-      "roles": {
-        "principal": {
-          "r": true,
-          "pts": [
-            "主導參訪申請及日程協調",
-            "確保資源分配與聯絡中心的協作",
-            "監督學校參訪流程與安全安排"
-          ],
-          "acts": [
-            "提交參訪預約申請",
-            "安排分組與日程",
-            "監督整體參訪執行"
-          ]
-        },
-        "vice_principal": {
-          "r": false,
-          "pts": [],
-          "acts": []
-        },
-        "department_head": {
-          "r": false,
-          "pts": [],
-          "acts": []
-        },
-        "teacher": {
-          "r": true,
-          "pts": [
-            "協助參訪的學科連結與資料整合",
-            "準備與展覽相關的教學資源與活動",
-            "協助學生在參訪日的學習安排"
-          ],
-          "acts": [
-            "協助分組參訪與學科資源對接",
-            "整理課前後學習資源與連結",
-            "參與講座與學習活動的協助工作"
-          ]
-        },
-        "eo_admin": {
-          "r": true,
-          "pts": [
-            "協調預約資料與中心聯絡",
-            "整理校內行政安排與日程溝通",
-            "監察參訪日程進展與回饋"
-          ],
-          "acts": [
-            "整理預約表單與通知相關人員",
-            "聯絡中心確認具體安排",
-            "追蹤當日參訪落實情況"
-          ]
-        },
-        "supplier": {
-          "r": false,
-          "pts": [],
-          "acts": []
-        }
-      },
-      "deadlines": [],
-      "actions": [
-        {
-          "text": "主動提交愛國教育支援中心的參訪預約申請並初步確定參訪日程",
-          "role": "principal",
-          "dl": null,
-          "note": "需遵循中心提供的預約流程"
-        },
-        {
-          "text": "協助行政事務與資料整理，確認預約資訊與負責教師",
-          "role": "eo_admin",
-          "dl": null,
-          "note": ""
-        },
-        {
-          "text": "協助學科教學連結、學生分組與參訪當日的學習活動安排",
-          "role": "teacher",
-          "dl": null,
-          "note": ""
-        }
-      ],
-      "diff": null,
-      "pdf_urls": [
-        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26043C.pdf",
-        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26043E.pdf",
-        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26043S.pdf"
       ]
     }
   ]
