@@ -1,17 +1,17 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v1.1.2** (2026-03-16) ← **當前版本** 🎉
+1. Version: **v2.0.0** (2026-03-16) ← **當前版本（待 push）**
 2. Core commands / features:
-   - `edb-dashboard.html` — 正式版單頁 Dashboard（~2,800 行，v1.1.2 ✅；含 8 項功能 + D8/D9/F4/Issue4 修復）
-   - `edb_scraper.py` — 後端爬蟲 + LLM 分析管線（PyMuPDF 引擎 ✅ + K1 知識注入框架）
+   - `edb-dashboard.html` — v2.0.0 全面改版 Dashboard（~2,766 行；37 項改進，含版本管理/主題/圖標/詳情面板/日曆/搜尋/篩選/手機適配/統計/分享等）
+   - `edb_scraper.py` — 後端爬蟲 + LLM 分析管線（PyMuPDF 引擎 + K1 知識注入 + R1-v2 角色精確度：few-shot + postprocess filter）
    - `circulars.json` — school-year 全量 EDB 通告 + gpt-5-nano LLM 分析（GitHub Pages 已部署 ✅）
    - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具
    - `requirements.txt` — Python 依賴清單（PyMuPDF 替換 pdfplumber）
    - `dev/knowledge/role_facts.json` — K1 基線知識庫（6 主題 × 7 角色，人工整理版）
    - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 獨立項目接口合約規格
-3. Regression baseline: school-year workflow 全綠 1h25m；days-3 workflow 33s；D8/D9/F4/H5/H6/Issue4 驗收 ✅
-4. Release / merge status: **v1.1.2 已推送至 GitHub** ✅（Issue4 修復 + K1 injection）；GitHub Pages school-year 數據已部署 ✅
+3. Regression baseline: school-year workflow 全綠 1h25m；days-3 workflow 33s；v2.0.0 HTML 驗證 OK（14/14 checks）；R1-v2 postprocess simulation supplier 49%→21%
+4. Release / merge status: **v2.0.0 + R1-v2 已推送至 GitHub** ✅（`7151ed7` + `dbd997e`）；GitHub Pages v2.0.0 已部署 ✅；days-3 workflow 8m9s 成功
 5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/（school-year 數據已上線 ✅）
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2 （ASP.NET WebForms）
@@ -82,10 +82,13 @@ cp -r "<PROJECT_PATH>-snapshot-v0.x.x" "<PROJECT_PATH>-restored"
 5. ✅ ~~pdfplumber→PyMuPDF 遷移~~ **已完成（2026-03-15）；school-year 全綠**
 6. ✅ ~~Issue 4：Dashboard 官方摘要空白~~ **UI fallback 已修復（2026-03-16 v1.1.2）**
 7. ✅ ~~K1 知識注入基線框架~~ **已完成（2026-03-16）；role_facts.json + 注入函數 + 接口規格**
-8. **[下一步 ⭐]** 確認 GitHub Pages v1.1.2 官方摘要 fallback 顯示效果
-9. **[下一步]** R1 全角色職責精確度（角色相關性分析優化）
-10. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目，通過 role_facts.json 接口交付）
-11. **[選做]** LLM 引擎切換機制
+8. ✅ ~~R1 全角色職責精確度~~ **R1-v2 已完成（2026-03-16）；few-shot + postprocess filter + commit `dbd997e`**
+9. ✅ ~~v2.0.0 Dashboard 37 項改版~~ **已完成（2026-03-16）；commit `7151ed7`，14/14 驗證通過**
+10. ✅ ~~Mac push v2.0.0 + R1-v2~~ **已推送 + workflow 成功（2026-03-16）**
+11. **[下一步 ⭐]** GitHub Pages v2.0.0 視覺驗證 + school-year workflow re-run（R1-v2 效果驗證）
+12. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目，通過 role_facts.json 接口交付）
+13. **[選做]** LLM 引擎切換機制
+14. **[選做]** 後端 #35/#36：上年度爬蟲分析 + 年末預算預測（HTML 已預留 placeholder）
 
 ## v0.2.0-frontend Key Decisions（用戶已確認 2026-03-10）
 - 所有設定存 localStorage（角色/主題/佈局/色調/字體/狀態/收藏）
@@ -158,36 +161,30 @@ If the session's changes affect specifications, runbooks, regression thresholds,
 If the session's fix involves adding a new rule, first check whether the existing definition should be integrated or outdated wording retired — avoid stacking without consolidating.
 
 ## Last Session Record
-1. UTC date: 2026-03-16
-2. Session ID: Claude_20260316_0850（Issue 4 修復 + K1 知識注入框架）
+1. UTC date: 2026-03-17
+2. Session ID: Claude_20260317_0800（AGENTS.md v2 升級 + CODEBASE_CONTEXT.md 生成）
 3. Completed:
-   - ✅ **Issue 4 前端修復**：card-summary fallback（official || summary前150字）；detail panel 條件隱藏空 official
-   - ✅ **Issue 4 後端修復**：Phase 3 緩存還原 `official` 欄位（防止重跑丟失）
-   - ✅ **版本標籤 v1.1.1→v1.1.2**（VM workspace + Mac git repo 同步）
-   - ✅ **K1 知識注入**：`_detect_topics_early()` + `_load_knowledge_context()` + `_build_prompt()` 更新；4 測試案例通過
-   - ✅ **baseline `role_facts.json`**：6 主題 × 7 角色，人工整理版
-   - ✅ **K1 接口規格** `K1_KNOWLEDGE_INTERFACE_SPEC.md`：獨立項目可憑此交付（EDB side only consumes JSON）
-   - ✅ **git push `7c6bd46`**：Issue 4 + K1 injection 推送至 GitHub
+   - ✅ **AGENTS.md v2 升級**：整合 INIT.md 7 項新增（§0a Note / §0b API Safety / §1 CODEBASE_CONTEXT / §2 優先級 / §3d Test Plan / §4 Close 擴充 / §10 Active trigger）；兩個 repo 同步（622 行）
+   - ✅ **dev/CODEBASE_CONTEXT.md 首次生成**：177 行，7 section，3 External Services（全部有 Doc-reviewed + Test-verified），8 Key Decisions
+   - ✅ **Root Safety Check + 備份**：INSTALL_ROOT_OK + INSTALL_WRITE_OK；`dev/init_backup/20260317_081952_UTC/`
 4. Pending：
-   - R1 全角色職責精確度
+   - school-year workflow re-run 進行中（R1-v2 效果驗證）
+   - GitHub Pages v2.0.0 視覺驗證
+   - Mac push 本次治理文件更新
+   - README.md / CHANGELOG.md 內容過時（非阻塞）
+   - K1 第二階段（另立項目）
    - LLM 引擎切換機制
-   - 確認 GitHub Pages v1.1.2 Issue 4 修復效果
-   - K1 第二階段（另立項目：PDF 提取真實 EDB 知識）
 5. Next priorities (max 3):
-   - 確認 GitHub Pages v1.1.2 顯示（Issue 4 官方摘要 fallback 驗證）
-   - R1 全角色職責精確度分析
+   - school-year workflow 結果 + R1-v2 角色分佈驗證
+   - GitHub Pages v2.0.0 視覺驗證
    - K1 PDF 提取項目（另立）
-6. Risks / blockers: `official` 根本原因（GH Actions PyMuPDF 提取失敗）未解；UI fallback 已緩解，K1 PDF 項目完成後根本修復
+6. Risks / blockers: school-year re-run 進行中，結果未知；README.md/CHANGELOG.md 過時但非阻塞
 7. Files materially changed:
-   - `edb-dashboard.html`（Issue 4 UI 修復 + v1.1.2）
-   - `edb_scraper.py`（Phase 3 緩存修復 + K1 注入函數 3 個）
-   - `dev/knowledge/role_facts.json`（新建）
-   - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md`（新建）
+   - `AGENTS.md`（兩個 repo，395→622 行）
+   - `dev/CODEBASE_CONTEXT.md`（新建，177 行）
    - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
-8. Validation summary: Python syntax OK；K1 4 測試案例全通過；git push `7c6bd46` 成功
-9. Git commits in RE07:
-   - `7c6bd46` — feat: K1 knowledge injection in _build_prompt()
-   - （Issue 4 + 版本標籤另有 commit）
+8. Validation summary: AGENTS.md 兩個 repo 完全一致；CODEBASE_CONTEXT.md 7 section 完整；備份快照完整
+9. Git commits: 待 Mac push
 
 ## Previous Session Record (RE05)
 1. UTC date: 2026-03-14

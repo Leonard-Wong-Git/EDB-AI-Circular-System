@@ -1,5 +1,163 @@
 # Session Log
 
+## 2026-03-17 AGENTS.md v2 升級 + CODEBASE_CONTEXT.md
+
+1. Agent & Session ID: Claude_20260317_0800
+2. Task summary: INIT.md 治理框架升級（AGENTS.md 整合 7 項新增內容）+ dev/CODEBASE_CONTEXT.md 首次生成
+3. Layer classification: Development Governance Layer（治理框架升級 + 項目上下文文檔化）
+4. Source triage: 用戶上傳新版 INIT.md → 與現有 AGENTS.md 差異分析 → 純增強整合
+5. Files read: AGENTS.md（兩個 repo）、INIT.md（上傳）、README.md、CHANGELOG.md、requirements.txt、.gitignore、update-circulars.yml、SESSION_HANDOFF.md、SESSION_LOG.md
+6. Files changed:
+   - `AGENTS.md`（兩個 repo：395→622 行，整合 7 項新增內容）
+   - `dev/CODEBASE_CONTEXT.md`（新建：177 行，7 個 section + 3 External Services + 8 Key Decisions）
+7. Completed:
+   - ✅ **INIT.md 差異分析**：逐節比對 §0–§12，確認 INIT.md 為現有 AGENTS.md 的嚴格超集（無衝突、無刪除）
+   - ✅ **Root Safety Check §5a**：兩個 repo 路徑確認、風險檢查、dry-run plan、INSTALL_ROOT_OK + INSTALL_WRITE_OK 雙重確認
+   - ✅ **備份快照**：`dev/init_backup/20260317_081952_UTC/`（兩個 repo）
+   - ✅ **AGENTS.md 整合**（7 項新增）：§0a CODEBASE_CONTEXT Note、§0b External API Code Safety、§1 CODEBASE_CONTEXT 讀取+自動生成、§2 優先級更新、§3d Test Plan Design、§4 Session Close 擴充+handoff 開頭、§10 Active trigger rule
+   - ✅ **CLAUDE.md / GEMINI.md**：已有正確 @import，skip
+   - ✅ **dev/CODEBASE_CONTEXT.md 首次生成**：掃描 7 個源文件，填入 Stack / Directory Map / Key Entry Points / Build & Run / External Services（3 API，全部有 Doc-reviewed + Test-verified）/ Key Decisions（8 項）/ AI Maintenance Log
+8. Validation / QC:
+   - AGENTS.md：兩個 repo 622 行，完全一致（diff confirmed）
+   - CODEBASE_CONTEXT.md：177 行，7 section 全部存在；3 External Services 各含完整 10 欄位
+   - 備份快照完整（5 files per repo）
+   - CLAUDE.md / GEMINI.md：已有 @import（skip confirmed）
+9. Pending:
+   - school-year workflow re-run 進行中（R1-v2 效果驗證）
+   - GitHub Pages v2.0.0 視覺驗證
+   - README.md 和 CHANGELOG.md 內容過時（仍顯示 v0.1.0-mockup）— 非阻塞，可下次更新
+   - Mac Terminal push 本次 session 的治理文件更新
+10. Next priorities:
+    - school-year workflow 完成後檢查 R1-v2 角色分佈
+    - GitHub Pages v2.0.0 視覺驗證
+    - K1 PDF 提取項目（另立）
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow §1 startup: dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md.
+
+EDB Circular AI Analysis System — Session Handoff
+
+Current state:
+- v2.0.0 Dashboard DEPLOYED on GitHub Pages (commit 7151ed7)
+- R1-v2 role accuracy (few-shot + postprocess) PUSHED (commit dbd997e)
+- AGENTS.md upgraded to v2 (622 lines, 7 new sections from INIT.md) in BOTH repos
+- dev/CODEBASE_CONTEXT.md generated (177 lines, 3 External Services, 8 Key Decisions)
+- school-year workflow RE-RUNNING (R1-v2 new prompt + postprocess applied to all circulars)
+- Result of school-year re-run NOT YET CHECKED
+
+Immediate actions needed:
+1. Check school-year workflow result — if success, git pull on Mac then verify circulars.json role distribution
+2. Expected improvement: teacher ~40-60% (was 96%), supplier ~20-30% (was 49%)
+3. Open GitHub Pages and visually verify v2.0.0 Dashboard with updated data
+4. If R1-v2 results unsatisfactory, adjust _WEAK_ACT_PATTERNS or few-shot examples in edb_scraper.py
+5. Push governance file updates from Mac Terminal:
+   git stash && git pull --rebase origin main && git stash pop && git add AGENTS.md dev/CODEBASE_CONTEXT.md dev/SESSION_HANDOFF.md dev/SESSION_LOG.md && git commit -m "chore: AGENTS.md v2 upgrade + CODEBASE_CONTEXT.md" && git push origin main
+
+Key files changed this session:
+- AGENTS.md (both repos, 395→622 lines, 7 new governance sections)
+- dev/CODEBASE_CONTEXT.md (new, 177 lines)
+- dev/SESSION_HANDOFF.md, dev/SESSION_LOG.md
+
+Known risks:
+- R1-v2 internal role reduction depends on LLM prompt response (school-year re-run in progress)
+- README.md and CHANGELOG.md are outdated (still show v0.1.0-mockup) — non-blocking
+- official field still mostly empty (UI fallback in place)
+- Node.js 20 deprecation warning in workflow (cosmetic, deadline June 2026)
+
+Validation status: AGENTS.md identical in both repos (622 lines); CODEBASE_CONTEXT.md 7 sections complete; backup snapshots created
+First action: Check school-year workflow result, then verify role distribution
+```
+
+---
+
+## 2026-03-16 v2.0.0 + R1-v2
+
+1. Agent & Session ID: Claude_20260316_1600
+2. Task summary: R1-v2 角色精確度（few-shot + postprocess filter）+ v2.0.0 Dashboard 37 項全面改版 + CI 修復
+3. Layer classification: Product / System Layer（前端全面改版 + 後端 LLM prompt 優化 + CI 修復）
+4. Source triage: R1 過度標記 = prompt 設計 + LLM 行為偏差；Dashboard 改版 = 用戶需求
+5. Files read: `edb-dashboard.html`、`edb_scraper.py`、`circulars.json`、`.github/workflows/update-circulars.yml`
+6. Files changed:
+   - `edb-dashboard.html`（v2.0.0 全面改版，2766 行）
+   - `edb_scraper.py`（R1-v2：SYSTEM_PROMPT few-shot 3 組 + `_postprocess_roles()` 4 規則）
+   - `.github/workflows/update-circulars.yml`（fetch+reset 修復 circulars.json 衝突）
+   - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ **R1-v2 few-shot**：SYSTEM_PROMPT 加入 3 組角色標記參考範例（差餉→2 roles、員工交流→2 roles、熱帶氣旋→2 roles）
+   - ✅ **R1-v2 postprocess**：`_postprocess_roles()` 函數，4 規則（空acts→false、≥2/3弱acts→false、全弱pts→false、supplier限採購）
+   - ✅ **R1-v2 commit** `dbd997e`；postprocess simulation: supplier 49%→21%
+   - ✅ **v2.0.0 Dashboard 37 項改版**：版本集中管理（`const VERSION`）、預設淺色主題、簡化圖標（✅+📌 only）、AI 免責聲明、詳情面板重構（3 tab：總結/角色及資源/比較）、PDF 連結置頂、日曆 EDBC 號+標題、ICS 匯出、EDB 官方學校類型篩選、type filter 標籤改善、分享按鈕（Web Share API + clipboard）、手機/平板修復、統計 placeholder、供應商分析視角、移除 REF_CIRCULARS、Leonard Wong footer link
+   - ✅ **v2.0.0 commit** `7151ed7`；14/14 key checks 通過；v1.1.2 殘留 = 0
+   - ✅ **CI 修復**：workflow circulars.json 衝突 → fetch+reset 方案（commit `bec0a81`）
+   - ✅ **school-year workflow** 成功跑完（108 circulars）— 但用舊 R1 prompt
+8. Validation / QC:
+   - HTML 驗證：14/14 checks 通過；2766 行；v1.1.2 remnants = 0
+   - R1-v2 postprocess simulation：supplier 49%→21%（有效）
+   - CI workflow 修復後成功：school-year 108 circulars
+   - Python syntax OK
+9. Pending:
+   - ✅ Mac push 成功；days-3 workflow 8m9s 成功；GitHub Pages v2.0.0 已部署
+   - school-year workflow re-run（驗證 R1-v2 新 prompt + postprocess 效果）
+   - GitHub Pages v2.0.0 視覺驗證（目視確認）
+10. Next priorities:
+    - GitHub Pages v2.0.0 視覺驗證 + school-year re-run
+    - K1 PDF 提取項目（另立）
+    - 後端 #35/#36 上年度分析 + 預算預測
+
+### Problem -> Root Cause -> Fix -> Verification (R1-v2)
+
+**R1-v2: prompt-only 方案不足，需 few-shot + postprocess**
+1. Problem: R1 prompt-only 改寫後，school-year workflow 結果仍 96%+ 角色 true
+2. Root Cause: gpt-5-nano 行為偏向 inclusive，僅靠排除準則不足以覆蓋全部情況
+3. Fix: (1) few-shot 範例 3 組（展示正確的 2-role 標記）(2) `_postprocess_roles()` 後處理 4 規則
+4. Verification: postprocess simulation supplier 49%→21%；內部角色效果待 school-year re-run（新 prompt + postprocess 同時生效）
+5. Regression: 下次 school-year 後檢查全角色分佈
+
+**v2.0.0 Dashboard 37 項改版**
+1. Problem: v1.1.2 Dashboard 有多處 UX 問題（圖標繁雜、詳情面板結構差、日曆缺 EDBC 號、無分享功能等 37 項）
+2. Fix: 用戶提供 37 項清單，全部一次過完成
+3. Verification: 14/14 key checks；HTML parse OK；2766 行；v1.1.2 殘留 = 0
+4. Regression: GitHub Pages 部署後視覺驗證
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+EDB Circular AI Analysis System — Session Handoff
+
+Current state:
+- v2.0.0 Dashboard (37-item overhaul) PUSHED and DEPLOYED on GitHub Pages (commit 7151ed7)
+- R1-v2 role accuracy (few-shot + postprocess) PUSHED (commit dbd997e)
+- CI workflow fix (fetch+reset) on remote (commit bec0a81)
+- days-3 workflow ran successfully (8m9s) after push — but this was NOT school-year scope
+- circulars.json has school-year data (108 circulars) from PREVIOUS run with OLD R1 prompt
+- R1-v2 new prompt + postprocess NOT YET applied to school-year data
+
+Immediate actions needed:
+1. Trigger school-year workflow to apply R1-v2 (new prompt + postprocess to all 108 circulars)
+2. After workflow: check role distribution improvement (expect teacher ~40-60%, supplier ~20-30%)
+3. Open GitHub Pages and visually verify v2.0.0 Dashboard renders correctly with real data
+4. If R1-v2 results unsatisfactory, consider adjusting _WEAK_ACT_PATTERNS or few-shot examples
+
+Key files changed this session:
+- edb-dashboard.html (v2.0.0, 2766 lines, 37 items)
+- edb_scraper.py (R1-v2: few-shot + _postprocess_roles())
+- .github/workflows/update-circulars.yml (fetch+reset fix)
+- dev/SESSION_HANDOFF.md, dev/SESSION_LOG.md
+
+Known risks:
+- R1-v2 internal role reduction depends on LLM prompt response (postprocess alone mainly catches supplier + weak-act patterns)
+- official field still mostly empty (UI fallback in place, root cause = GH Actions PDF extraction)
+- HEAD.lock may reappear if VM git operations fail mid-way (rm -f before operations)
+- Node.js 20 deprecation warning in workflow (cosmetic, no functional impact)
+
+Validation status: HTML 14/14 OK; R1-v2 postprocess simulation OK; CI workflow fixed and green
+First action: Push commits from Mac Terminal, then trigger school-year workflow
+```
+
+---
+
 ## 2026-03-16 R1 (續)
 
 1. Agent & Session ID: Claude_20260316_0850 (R1 continued)
