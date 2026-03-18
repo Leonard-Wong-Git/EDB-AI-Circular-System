@@ -1,15 +1,147 @@
 {
-  "generated_at": "2026-03-18T00:00:23Z",
+  "generated_at": "2026-03-18T08:00:47Z",
   "model": "gpt-5-nano",
   "temperature": 1,
   "range": "past 3 days (from 2026-03-15)",
   "date_from": "2026-03-15",
   "date_to": "2026-03-18",
   "days": 3,
-  "count": 3,
+  "count": 4,
   "circulars": [
     {
       "id": 0,
+      "number": "EDBCM009/2026",
+      "type": "EDBCM",
+      "date": "2026-03-18",
+      "isNew": true,
+      "title": "賦能課程領導‧掌握教育趨勢 校本支援服務 (2026/27)",
+      "official": "",
+      "impact": "mid",
+      "compliance": "recommended",
+      "urgency": "low",
+      "scope": "all",
+      "topics": [
+        "curriculum",
+        "student",
+        "hr",
+        "activity",
+        "exam"
+      ],
+      "tags": [
+        "課程領導",
+        "校本支援",
+        "跨科規劃",
+        "課程發展",
+        "專業發展"
+      ],
+      "grant_info": {
+        "type": "resource",
+        "amount_hkd": null,
+        "amount_label": "待定",
+        "resource_value_hkd": null,
+        "note": "教育局提供培訓與支援資源，詳情以通告為準"
+      },
+      "summary": "本通告以 EDBCM009/2026 的標題「賦能課程領導‧掌握教育趨勢 校本支援服務 (2026/27)」為依據，推動以校本支援服務為平台，提升校長、課程統籌及科主任等學校領導層在課程領導與教育趨勢掌握方面的能力。背景知識顯示，課程發展須遵循課程發展議會指引，學校需每年提交課程規劃以取得教育局審批；跨科協作已成為新課程改革的核心，課程評核與全方位學習（OLE）亦需整合至日常教學與評估機制中。通告預期透過校本支援服務提供培訓、諮詢與示範性做法，協助校方建立更完善的課程規劃、跨科協作與評核改動的實施框架，並促使教師在日常教學中落實新課程要求與評核素養。注意事項方面，學校需按年度程序更新課程規劃、落實 SSE 與 SBA 要求、妥善分配資源與留存相關文件，以確保與教育局的審批與評估機制順利銜接。總體而言，通告強調系統性提升學校課程領導力與教學實踐，鼓勵各層級積極參與培訓與跨部門協作，形成以證據為本的課程改進循環。",
+      "roles": {
+        "principal": {
+          "r": true,
+          "pts": [
+            "批准參與培訓方案及資源配置",
+            "簽署年度課程規劃審批文件",
+            "監督校本支援服務推進情況"
+          ],
+          "acts": [
+            "批准參與培訓方案及資源配置",
+            "簽署審批文件以確保課程遵循新指引",
+            "監督整體進展與資源分配狀態"
+          ]
+        },
+        "vice_principal": {
+          "r": true,
+          "pts": [
+            "課程統籌與跨部門協作",
+            "協調師資培訓日程",
+            "推動跨科規劃落實"
+          ],
+          "acts": [
+            "制定跨科協作計畫與時間表",
+            "協調教師參與培訓及教學調整",
+            "協助審視課程評核與品質提升"
+          ]
+        },
+        "department_head": {
+          "r": true,
+          "pts": [
+            "科務決策與課程調整",
+            "科目評核改動與資源配置",
+            "確保科內符合最新指引"
+          ],
+          "acts": [
+            "落實科內課程調整並提交審核",
+            "監察本科教學與評核成效",
+            "提供科內資源需求清單"
+          ]
+        },
+        "teacher": {
+          "r": true,
+          "pts": [
+            "參與培訓並在班級落實新做法",
+            "反饋教學改進與SBA/SSE需求",
+            "記錄個人培訓進展"
+          ],
+          "acts": [
+            "參與培訓日程並在教學中實踐新策略",
+            "提交教學改進報告/日誌",
+            "協助學生參與全方位學習活動"
+          ]
+        },
+        "eo_admin": {
+          "r": false,
+          "pts": [],
+          "acts": []
+        },
+        "supplier": {
+          "r": false,
+          "pts": [],
+          "acts": []
+        }
+      },
+      "deadlines": [],
+      "actions": [
+        {
+          "text": "由校長於 2026-04-01 前批准參與校本支援服務並確定資源配置",
+          "role": "principal",
+          "dl": "2026-04-01",
+          "note": "初步審批與資源分配進度安排"
+        },
+        {
+          "text": "副校長於 2026-04-15 前制定跨科協作計畫、日程及工作小組安排",
+          "role": "vice_principal",
+          "dl": "2026-04-15",
+          "note": "跨部門協作落實階段"
+        },
+        {
+          "text": "科主任於 2026-05-01 前提出科目調整與評核改動方案，並提交審核",
+          "role": "department_head",
+          "dl": "2026-05-01",
+          "note": "科內資源需求清單"
+        },
+        {
+          "text": "教師於 2026-06-15 前完成培訓參與與教學實踐計畫的記錄與初步成效報告",
+          "role": "teacher",
+          "dl": "2026-06-15",
+          "note": "SSE/SBA 相關培訓整合"
+        }
+      ],
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26009C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26009E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26009S.pdf"
+      ]
+    },
+    {
+      "id": 1,
       "number": "EDBCM046/2026",
       "type": "EDBCM",
       "date": "2026-03-16",
@@ -156,7 +288,7 @@
       ]
     },
     {
-      "id": 1,
+      "id": 2,
       "number": "EDBCM038/2026",
       "type": "EDBCM",
       "date": "2026-03-16",
@@ -328,7 +460,7 @@
       ]
     },
     {
-      "id": 2,
+      "id": 3,
       "number": "EDBCM034/2026",
       "type": "EDBCM",
       "date": "2026-03-16",
