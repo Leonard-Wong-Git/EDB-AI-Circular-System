@@ -1,15 +1,169 @@
 {
-  "generated_at": "2026-03-20T07:37:15Z",
+  "generated_at": "2026-03-20T11:01:45Z",
   "model": "gpt-5-nano",
   "temperature": 1,
   "range": "past 3 days (from 2026-03-17)",
   "date_from": "2026-03-17",
   "date_to": "2026-03-20",
   "days": 3,
-  "count": 1,
+  "count": 2,
   "circulars": [
     {
       "id": 0,
+      "number": "EDBCM029/2026",
+      "type": "EDBCM",
+      "date": "2026-03-20",
+      "isNew": true,
+      "title": "「全民國家安全教育日」2026",
+      "official": "",
+      "impact": "high",
+      "compliance": "mandatory",
+      "urgency": "medium",
+      "scope": "all",
+      "topics": [
+        "curriculum",
+        "safety",
+        "activity",
+        "student",
+        "hr"
+      ],
+      "tags": [
+        "國安教育日",
+        "校園安全",
+        "學生保護",
+        "跨部門協作",
+        "課堂教學"
+      ],
+      "grant_info": {
+        "type": "none",
+        "amount_hkd": null,
+        "amount_label": null,
+        "resource_value_hkd": null,
+        "note": ""
+      },
+      "summary": "本通告就全民國家安全教育日於學校的推行提供指引，要求全校在指定日期前後組織與國家安全教育相關的教學與宣導活動，並結合現有的學生保護政策、融合教育及科務管理機制。背景參考教育局規範：校長須有書面學生保護政策並每年向教職員宣講；SEN 學生須依IEP提供支援；科主任協助識別學習困難並轉介輔導；教師需在課堂觀察學生身心健康，異常情況及時向輔導主任報告。通告要求校方以校本教學與跨部門協作落實主題，並鼓勵以多元形式推廣，如講座、案例研討、宣傳材料及學生參與活動。活動須遵守現有安全與保護原則，確保不影響學術評核，並照顧 SEN 學生與多元需要。活動結束後，校方須整理紀錄、評估成效，並在需要時提交教育局報告或統計數據。",
+      "roles": {
+        "principal": {
+          "r": true,
+          "pts": [
+            "主導推動國家安全教育日活動的整體規劃與資源分配",
+            "審核及批准相關教學內容與課程調整",
+            "對外簽署宣導公告/報告（如需要）"
+          ],
+          "acts": [
+            "批准活動計畫與預算",
+            "指派跨部門協調人員",
+            "發布校內通知與家長通告"
+          ]
+        },
+        "vice_principal": {
+          "r": true,
+          "pts": [
+            "課程統籌與跨部門協調國家安全教育日的教學安排",
+            "協助教師及部門人事安排以支持活動",
+            "監督課堂教學與學習成果的落實"
+          ],
+          "acts": [
+            "主持跨部門會議並跟進進度",
+            "協助科目調整與教學資源配置",
+            "向家長及校方發布有關活動資訊"
+          ]
+        },
+        "department_head": {
+          "r": true,
+          "pts": [
+            "協調科內資源以支援主題教學",
+            "更新科目評核與課程內容以契合活動",
+            "識別並轉介需要支援的學生或情緒行為問題"
+          ],
+          "acts": [
+            "制定科目調整方案",
+            "提供教學資源與指引",
+            "向教師傳達科務決策與進度"
+          ]
+        },
+        "teacher": {
+          "r": true,
+          "pts": [
+            "在課堂落實國家安全教育日主題與活動",
+            "觀察學生身心健康並在異常情況下向輔導主任報告",
+            "記錄教學活動與學生參與情況"
+          ],
+          "acts": [
+            "實施教學活動與案例研討",
+            "填寫教學日誌與紀錄",
+            "與輔導室合作提供學生支援"
+          ]
+        },
+        "eo_admin": {
+          "r": true,
+          "pts": [
+            "發布校內通知與活動日程",
+            "整理資源需求與預算記錄",
+            "更新校內通告系統與資料庫"
+          ],
+          "acts": [
+            "發布與更新通告",
+            "整理資金使用紀錄與報告",
+            "提交必要文件或報告至相關部門"
+          ]
+        },
+        "supplier": {
+          "r": false,
+          "pts": [],
+          "acts": []
+        }
+      },
+      "deadlines": [
+        {
+          "date": "2026-04-15",
+          "desc": "全民國家安全教育日活動日程執行與實施",
+          "type": "awareness_deadline",
+          "roles": [
+            "principal",
+            "vice_principal",
+            "department_head",
+            "teacher",
+            "eo_admin"
+          ],
+          "label": "全民國家安全教育日"
+        }
+      ],
+      "actions": [
+        {
+          "text": "批准並發布校本國家安全教育日活動計畫與預算分配",
+          "role": "principal",
+          "dl": "2026-04-01",
+          "note": "需列入校常工作清單"
+        },
+        {
+          "text": "跨部門協調，落實課程與教學活動",
+          "role": "vice_principal",
+          "dl": "2026-04-07",
+          "note": "以教研會及部門會議完成"
+        },
+        {
+          "text": "在課堂融入主題並觀察學生身心健康",
+          "role": "teacher",
+          "dl": "2026-04-15",
+          "note": "完成教案與紀錄"
+        },
+        {
+          "text": "發布校內通知與整理資源、提交報告",
+          "role": "eo_admin",
+          "dl": "2026-04-15",
+          "note": "更新家長通知與校務紀錄"
+        }
+      ],
+      "diff": null,
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26029C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26029E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26029S.pdf"
+      ]
+    },
+    {
+      "id": 1,
       "number": "EDBCM009/2026",
       "type": "EDBCM",
       "date": "2026-03-18",
