@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDB 通告智能分析系統 v2.0.0</title>
+<title>EDB 通告智能分析系統 v2.1.0</title>
 <style>
 /* ============================================================
    PALETTES (accent colours only — theme-independent)
@@ -776,6 +776,66 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
 @media(min-width:768px) and (max-width:1023px){
   .cards-grid{grid-template-columns:repeat(2,1fr)!important;}
 }
+
+/* ============================================================
+   HOME TAB (v2.1.0)
+   ============================================================ */
+.home-section{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:16px;margin-bottom:16px;
+}
+.home-section-title{
+  font-size:14px;font-weight:700;margin-bottom:12px;
+  display:flex;align-items:center;gap:8px;
+}
+.home-latest-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+@media(max-width:767px){.home-latest-grid{grid-template-columns:1fr;}}
+
+/* Search results overlay (v2.1.0) */
+.search-results-panel{
+  position:absolute;top:calc(100% + 4px);left:0;right:0;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;box-shadow:0 8px 32px var(--shadow);
+  z-index:200;display:none;overflow:hidden;max-height:500px;overflow-y:auto;
+}
+.search-results-panel.open{display:block;}
+.search-results-header{
+  padding:10px 14px;border-bottom:1px solid var(--border);
+  font-size:12px;font-weight:700;color:var(--text-muted);
+  display:flex;justify-content:space-between;align-items:center;
+  position:sticky;top:0;background:var(--surface);z-index:1;
+}
+.search-result-item{
+  padding:10px 14px;cursor:pointer;font-size:13px;display:flex;
+  align-items:center;gap:10px;border-bottom:1px solid var(--border);transition:background .1s;
+}
+.search-result-item:last-child{border-bottom:none;}
+.search-result-item:hover{background:var(--surface2);}
+
+/* Detail panel PDF section (v2.1.0) */
+.dp-pdf-section{
+  padding:10px 18px;border-bottom:1px solid var(--border);
+  flex-shrink:0;background:var(--surface2);
+}
+.dp-pdf-section .pdf-links{margin-top:4px;}
+
+/* AI disclaimer (v2.1.0) */
+.ai-disclaimer{
+  font-size:11px;color:var(--text-muted);margin-top:10px;padding:8px 12px;
+  background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);
+  border-radius:8px;line-height:1.6;
+}
+
+/* Supplier chart placeholder (v2.1.0) */
+.supplier-chart-placeholder{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:20px;margin-bottom:16px;min-height:200px;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;
+}
+.supplier-ref-box{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:12px;font-size:12px;margin-bottom:14px;line-height:1.7;
+}
 </style>
 </head>
 <body>
@@ -822,7 +882,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
   </div>
   <div class="dev-grid">
     <div class="dev-card">
-      <div class="dev-card-title">🤖 LLM 設定</div>
+      <div class="dev-card-title">🤖 AI 模型設定</div>
       <div class="dev-row">
         <span>模型</span>
         <select class="apply-sel" id="devModel" onchange="devSetModel(this.value)">
@@ -855,7 +915,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
     </div>
     <div class="dev-card">
       <div class="dev-card-title">ℹ️ 版本資訊</div>
-      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v2.0.0</span></div>
+      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v2.1.0</span></div>
       <div class="dev-row"><span>Build Date</span><span>2026-03-16</span></div>
       <div class="dev-row"><span>知識庫更新</span><span>2026-03-09 20:48 UTC</span></div>
       <div class="dev-row"><span>資料筆數</span><span id="devCount">—</span></div>
@@ -890,9 +950,9 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
      HEADER
      ============================================================ -->
 <header class="header">
-  <div class="brand" onclick="switchTab('overview',document.getElementById('tabOverview'))" style="cursor:pointer;" title="返回首頁">
+  <div class="brand" onclick="switchTab('home',document.getElementById('tabHome'))" style="cursor:pointer;" title="返回首頁">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="13" x2="12" y2="17"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
-    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v2.0.0</span></span>
+    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v2.1.0</span></span>
   </div>
 
   <select class="role-select" id="roleSelect" onchange="setRole(this.value)">
@@ -907,8 +967,8 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
 
   <div class="search-wrap">
     <span class="search-ico">🔍</span>
-    <input class="search-input" id="searchInput" placeholder="搜尋通告號、標題…" oninput="onSearch(this.value)" onfocus="showSugg()" onblur="setTimeout(hideSugg,200)">
-    <div class="search-sugg" id="searchSugg"></div>
+    <input class="search-input" id="searchInput" placeholder="搜尋通告號、標題…" oninput="onSearchInput(this.value)" onfocus="showSearchResults()" onblur="setTimeout(hideSearchResults,250)">
+    <div class="search-results-panel" id="searchResultsPanel"></div>
   </div>
 
   <div class="hdr-actions">
@@ -982,7 +1042,8 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
      TABS
      ============================================================ -->
 <nav class="tabs">
-  <button class="tab-btn active" id="tabOverview" onclick="switchTab('overview',this)" data-zh="📊 通告總覽" data-en="📊 Circulars">📊 通告總覽</button>
+  <button class="tab-btn active" id="tabHome" onclick="switchTab('home',this)" data-zh="🏠 首頁" data-en="🏠 Home">🏠 首頁</button>
+  <button class="tab-btn" id="tabOverview" onclick="switchTab('overview',this)" data-zh="📊 通告總覽" data-en="📊 Circulars">📊 通告總覽</button>
   <button class="tab-btn" id="tabCalendar" onclick="switchTab('calendar',this)" data-zh="📅 月曆" data-en="📅 Calendar">📅 月曆</button>
   <button class="tab-btn" id="tabResources" onclick="switchTab('resources',this)" data-zh="💰 資源申請" data-en="💰 Resources">💰 資源申請</button>
   <button class="tab-btn" id="tabBookmarks" onclick="switchTab('bookmarks',this)" data-zh="⭐ 收藏" data-en="⭐ Saved">⭐ 收藏 <span id="bmTabBadge" style="display:none;font-size:10px;background:var(--orange);color:white;border-radius:8px;padding:0 5px;margin-left:2px"></span></button>
@@ -995,21 +1056,39 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
      ============================================================ -->
 <main class="main">
 
+
+  <!-- ======== TAB: HOME ======== -->
+  <div class="tab-panel active" id="panel-home">
+    <!-- Latest circulars -->
+    <div class="home-section">
+      <div class="home-section-title">📋 最新通告</div>
+      <div class="home-latest-grid" id="homeLatestGrid"></div>
+    </div>
+
+    <!-- Needs attention -->
+    <div class="home-section" id="homeAttentionSection" style="display:none">
+      <div class="home-section-title" style="color:var(--red)">
+        🔴 需關注通告
+        <span class="attention-count" id="homeAttentionCount">0</span>
+      </div>
+      <div class="home-latest-grid" id="homeAttentionGrid"></div>
+    </div>
+
+    <!-- Upcoming deadlines -->
+    <div class="home-section">
+      <div class="home-section-title">⏰ 即將截止</div>
+      <div class="dl-bar" id="homeDlBar" style="border:none;padding:0;margin:0">
+        <span class="dl-bar-lbl">截止：</span>
+      </div>
+    </div>
+  </div>
+
   <!-- ======== TAB: OVERVIEW ======== -->
-  <div class="tab-panel active" id="panel-overview">
+  <div class="tab-panel" id="panel-overview">
 
     <!-- Deadline bar -->
     <div class="dl-bar" id="dlBar">
       <span class="dl-bar-lbl">⏰ 截止：</span>
-    </div>
-
-    <!-- Needs attention -->
-    <div class="attention-section" id="attentionSection" style="display:none">
-      <div class="attention-header">
-        🔴 需關注通告
-        <span class="attention-count" id="attentionCount">0</span>
-      </div>
-      <div class="cards-grid" id="attentionGrid"></div>
     </div>
 
     <!-- View toolbar -->
@@ -1137,6 +1216,17 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
   <!-- ======== TAB: SUPPLIER ======== -->
   <div class="tab-panel" id="panel-supplier">
     <div class="supplier-stats" id="supplierStats"></div>
+    <div class="supplier-ref-box">
+      ⚠️ <strong>重要參考文件：</strong><br>
+      ・<a href="https://cpd.icac.hk/UPloadImages/InfoFile/cate_43/2016/7c35cf84-74b1-4af5-bfba-b1cb3e53b24f.pdf" target="_blank" rel="noopener">廉政公署《學校防貪指引》(School Corruption Prevention Guide)</a> — 採購程序、利益衝突申報、報價要求<br>
+      ・<a href="https://www.edb.gov.hk/tc/sch-admin/fin-management/index.html" target="_blank" rel="noopener">教育局《學校財務管理》</a> — 整筆撥款指引、採購門檻、核數要求<br>
+      ・<a href="https://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-printed-materials/index.html" target="_blank" rel="noopener">教育局《資助學校資助則例》</a> — 補充資料及財務守則
+    </div>
+    <div class="supplier-chart-placeholder" id="supplierChart">
+      <div style="font-size:28px">📊</div>
+      <div style="font-size:13px;color:var(--text-muted);text-align:center">供應商統計圖表<br><span style="font-size:11px">（按通告類型、金額分佈、截止日分析）</span></div>
+      <div id="supplierChartContent" style="width:100%"></div>
+    </div>
     <div class="view-toolbar">
       <b>供應商相關通告</b>
       <div style="font-size:12px;color:var(--text-muted)">只顯示與供應商高度相關的通告</div>
@@ -1240,13 +1330,13 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
         <div class="setting-row">
           <div class="setting-info">
             <div class="setting-lbl">開發者工具</div>
-            <div class="setting-desc">LLM 設定、資料來源、使用指南</div>
+            <div class="setting-desc">AI 模型設定、資料來源、使用指南</div>
           </div>
           <button class="btn" onclick="openDevPage()">開啟</button>
         </div>
         <div class="setting-row">
           <div class="setting-info"><div class="setting-lbl">版本</div></div>
-          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v2.0.0</span>
+          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v2.1.0</span>
         </div>
       </div>
 
@@ -1258,7 +1348,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
           <div>
             <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">📊 通告總覽</div>
             <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
-              顯示所有 EDB 通告的卡片或列表視圖。紅色頂欄 = 高影響必須行動。點擊任意通告開啟右側詳情面板（含 LLM 摘要、行動清單、截止日、角色分配、版本比較五個子頁）。支援多維篩選（類型、學校類別、主題、影響級別、行動類型）及全文搜尋。
+              顯示所有 EDB 通告的卡片或列表視圖。紅色頂欄 = 高影響必須行動。點擊任意通告開啟右側詳情面板（含 AI 摘要、行動清單、截止日、角色分配、版本比較五個子頁）。支援多維篩選（類型、學校類別、主題、影響級別、行動類型）及全文搜尋。
             </div>
           </div>
 
@@ -1286,14 +1376,14 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
           <div>
             <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">⭐ 收藏 &amp; 📌 常備</div>
             <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
-              ⭐ 一般收藏：標記常用通告，顯示於「收藏」頁。📌 常備參考：標記長期適用的政策通告（如整筆撥款指引），置頂於「收藏」頁首，方便隨時查閱。三個常備參考通告已預設釘選。
+              ⭐ 一般收藏：標記常用通告，顯示於「收藏」頁。📌 常備參考：標記長期適用的政策通告（如整筆撥款指引），置頂於「收藏」頁首，方便隨時查閱。按 📌 釘選長期適用的通告。
             </div>
           </div>
 
           <div>
             <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">🔄 自動更新</div>
             <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
-              數據由 GitHub Actions 自動更新：每日 HKT 07:00、13:00、17:00 各執行一次增量抓取（最近3天）。每次抓取後透過 OpenAI gpt-5-nano 進行 LLM 分析。管理員可在 GitHub Actions 頁面手動觸發完整抓取（本學年 / 最近14天 / 30天 / 365天）。
+              數據由 GitHub Actions 自動更新：每日 HKT 07:00、13:00、17:00 各執行一次增量抓取（最近3天）。每次抓取後透過 OpenAI gpt-5-nano 進行 AI 分析。管理員可在 GitHub Actions 頁面手動觸發完整抓取（本學年 / 最近14天 / 30天 / 365天）。
             </div>
           </div>
 
@@ -1342,13 +1432,17 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
       <button class="close-btn" onclick="closeDetail()">✕</button>
     </div>
   </div>
+  <div class="dp-pdf-section">
+    <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">📄 PDF 原文件</div>
+    <div class="pdf-links" id="dpPdfLinks"></div>
+  </div>
   <div class="dp-tabs">
-    <button class="d-tab active" onclick="switchDTab('summary',this)">📝 總結</button>
+    <button class="d-tab active" onclick="switchDTab('analysis',this)">📝 AI 分析</button>
     <button class="d-tab" onclick="switchDTab('resources',this)">👥 角色及資源</button>
     <button class="d-tab" onclick="switchDTab('diff',this)">🔄 比較</button>
   </div>
   <div class="dp-body">
-    <div class="d-content active" id="dtc-summary"></div>
+    <div class="d-content active" id="dtc-analysis"></div>
     <div class="d-content" id="dtc-resources"></div>
     <div class="d-content" id="dtc-diff"></div>
   </div>
@@ -1359,14 +1453,14 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
      ============================================================ -->
 <footer class="site-footer">
   <div>⚠️ <strong>免責聲明：</strong>本系統資料來源於<a href="https://www.edb.gov.hk" target="_blank" rel="noopener">香港特別行政區政府教育局（EDB）</a>官方網站，僅供參考及輔助管理用途，一切以教育局官方公告為準。本系統並非教育局官方產品。</div>
-  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v2.0.0 &nbsp;|&nbsp; &copy; 2026</div>
+  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v2.1.0 &nbsp;|&nbsp; &copy; 2026</div>
 </footer>
 
 <script>
 /* ============================================================
    VERSION
    ============================================================ */
-const VERSION = 'v2.0.0';
+const VERSION = 'v2.1.0';
 
 /* ============================================================
    MOCK DATA
@@ -1513,7 +1607,8 @@ let S = {
   bookmarks:{}, pinned:{}, statuses:{}, applyStatuses:{}, applyDates:{},
   sortField:'date', sortAsc:false,
   currentDetailId:null, devClickCount:0,
-  multiSelect:false, selected:{}
+  multiSelect:false, selected:{},
+  _homeFilter:null
 };
 
 /* ============================================================
@@ -1647,6 +1742,8 @@ function switchTab(name,btn){
   if(btn) btn.classList.add('active');
   const panel=document.getElementById('panel-'+name);
   if(panel) panel.classList.add('active');
+  if(name==='home') renderHome();
+  if(name==='overview'){ resetOverviewFilters(); renderOverview(); }
   if(name==='calendar') renderCalendar();
   if(name==='resources') renderResources();
   if(name==='bookmarks') renderBookmarks();
@@ -1781,7 +1878,7 @@ function renderStatsBar(){
         <span class="stat-chip-icon">📋</span><div class="stat-chip-body"><div class="stat-chip-val">${thisMonth.length}</div><div class="stat-chip-lbl">本月通告 ›</div></div></div>
       <div class="stat-chip sc-red link" onclick="filterByAttention()" title="查看需關注通告">
         <span class="stat-chip-icon">🔴</span><div class="stat-chip-body"><div class="stat-chip-val">${needAttn.length}</div><div class="stat-chip-lbl">需關注 ›</div></div></div>
-      <div class="stat-chip sc-yellow link" onclick="switchTab('overview',document.getElementById('tabOverview'));setTimeout(()=>document.getElementById('dlBar').scrollIntoView({behavior:'smooth'}),50)" title="查看即將截止項目">
+      <div class="stat-chip sc-yellow link" onclick="filterByExpiring()" title="查看即將截止項目">
         <span class="stat-chip-icon">⏰</span><div class="stat-chip-body"><div class="stat-chip-val">${expiring.length}</div><div class="stat-chip-lbl">即將截止 ›</div></div></div>
       <div class="stat-chip sc-green link" onclick="switchTab('bookmarks',document.getElementById('tabBookmarks'))" title="查看已收藏">
         <span class="stat-chip-icon">⭐</span><div class="stat-chip-body"><div class="stat-chip-val">${saved}</div><div class="stat-chip-lbl">已收藏 ›</div></div></div>
@@ -1791,25 +1888,42 @@ function renderStatsBar(){
 function fmtAmt(n){ if(n>=1000000) return (n/1000000).toFixed(1)+'M'; if(n>=1000) return (n/1000).toFixed(0)+'K'; return n; }
 function filterThisMonth(){
   const now=new Date();
-  const yr=now.getFullYear(), mo=String(now.getMonth()+1).padStart(2,'0');
-  S.searchQ=''; document.getElementById('searchInput').value='';
-  // Switch to overview
-  switchTab('overview',document.getElementById('tabOverview'));
-  // We'll filter by showing only this month — use a special year filter approach
-  showToast(`顯示 ${yr}年${now.getMonth()+1}月 通告`);
-  // Temporarily override filteredData to show this month only via search
-  S.searchQ=`${yr}-${mo}`; document.getElementById('searchInput').value=S.searchQ;
-  renderOverview();
+  const yr=now.getFullYear(), mo=now.getMonth();
+  // Toggle: if already on overview with thisMonth filter, clear it
+  if(S._homeFilter==='thisMonth'){
+    S._homeFilter=null;
+    switchTab('home',document.getElementById('tabHome'));
+    showToast('已返回首頁');
+    return;
+  }
+  S._homeFilter='thisMonth';
+  // Switch to overview and show only this month
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tabOverview').classList.add('active');
+  document.getElementById('panel-overview').classList.add('active');
+  // Filter: show only circulars from this month
+  const fd=DATA.filter(d=>{const dt=new Date(d.date);return dt.getFullYear()===yr&&dt.getMonth()===mo;})
+    .sort((a,b)=>b.date.localeCompare(a.date));
+  renderFilteredCards(fd, `${yr}年${mo+1}月通告`);
+  showToast(`顯示 ${yr}年${mo+1}月 通告（${fd.length} 條）`);
 }
 function filterByAttention(){
-  switchTab('overview',document.getElementById('tabOverview'));
-  // Set impact filter to high
-  S.filterImpact='high'; S.filterAction='mandatory';
-  document.querySelectorAll('#fImpact .f-chip').forEach(b=>{ b.classList.remove('on'); if(b.dataset.v==='high') b.classList.add('on'); });
-  document.querySelectorAll('#fAction .f-chip').forEach(b=>{ b.classList.remove('on'); if(b.dataset.v==='mandatory') b.classList.add('on'); });
-  if(!S.filterBarOpen) toggleFilterBar();
-  renderOverview();
-  showToast('篩選：需關注通告（高影響 + 必須執行）');
+  if(S._homeFilter==='attention'){
+    S._homeFilter=null;
+    switchTab('home',document.getElementById('tabHome'));
+    showToast('已返回首頁');
+    return;
+  }
+  S._homeFilter='attention';
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tabOverview').classList.add('active');
+  document.getElementById('panel-overview').classList.add('active');
+  const fd=DATA.filter(d=>d.impact==='high'&&d.compliance==='mandatory')
+    .sort((a,b)=>b.date.localeCompare(a.date));
+  renderFilteredCards(fd, '需關注通告（高影響 + 必須執行）');
+  showToast('篩選：需關注通告（' + fd.length + ' 條）');
 }
 
 /* ============================================================
@@ -1875,12 +1989,107 @@ function buildCard(d, inAttention=false){
   </div>`;
 }
 
+
+/* ============================================================
+   HOME TAB (v2.1.0)
+   ============================================================ */
+function renderHome(){
+  S._homeFilter=null;
+  // Latest circulars (most recent 6)
+  const latest=[...DATA].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,6);
+  const grid=document.getElementById('homeLatestGrid');
+  grid.innerHTML=latest.length?latest.map(d=>buildCard(d)).join(''):'<div class="empty-state" style="grid-column:1/-1"><div class="es-icon">📋</div><div class="es-text">暫無通告</div></div>';
+
+  // Attention items (high+mandatory with upcoming deadlines)
+  const now=new Date(); now.setHours(0,0,0,0);
+  const attn=DATA.filter(d=>d.impact==='high'&&d.compliance==='mandatory')
+    .sort((a,b)=>b.date.localeCompare(a.date)).slice(0,4);
+  const attnSec=document.getElementById('homeAttentionSection');
+  const attnGrid=document.getElementById('homeAttentionGrid');
+  const attnCount=document.getElementById('homeAttentionCount');
+  if(attn.length>0){
+    attnSec.style.display='';
+    attnCount.textContent=attn.length;
+    attnGrid.innerHTML=attn.map(d=>buildCard(d,true)).join('');
+  } else {
+    attnSec.style.display='none';
+  }
+
+  // Deadline bar for home
+  const homeDlBar=document.getElementById('homeDlBar');
+  if(homeDlBar){
+    const upcoming=DATA
+      .flatMap(d=>(d.deadlines||[]).map(dl=>({...dl,circId:d.id,circNum:d.number,circTitle:d.title})))
+      .filter(dl=>{const days=daysUntil(dl.date);return days>=0&&days<=30;})
+      .sort((a,b)=>a.date.localeCompare(b.date))
+      .slice(0,8);
+    let dhtml='<span class="dl-bar-lbl">截止：</span>';
+    if(!upcoming.length) dhtml+='<span style="font-size:12px;color:var(--text-muted)">近30天無截止項目</span>';
+    else upcoming.forEach(dl=>{
+      const days=daysUntil(dl.date);
+      const cls=days<=3?'urgent':days<=S.alertDays?'soon':days<=14?'warn':'';
+      dhtml+=`<div class="dl-chip" onclick="openDetail(${dl.circId})">
+        <span class="dl-days${cls?' '+cls:''}">${days===0?'今天':days+'天'}</span>
+        <span>${dl.circNum}：${dl.label||dl.desc.slice(0,12)}</span>
+      </div>`;
+    });
+    homeDlBar.innerHTML=dhtml;
+  }
+}
+
+function renderFilteredCards(fd, label){
+  const grid=document.getElementById('circularGrid');
+  const count=document.getElementById('resultCount');
+  grid.innerHTML=fd.length?fd.map(d=>buildCard(d)).join(''):`<div class="empty-state" style="grid-column:1/-1"><div class="es-icon">🔍</div><div class="es-text">沒有符合條件的通告</div></div>`;
+  count.textContent=label+` — 共 ${fd.length} 條`;
+  renderListView(fd);
+  renderDlBar();
+}
+
+function resetOverviewFilters(){
+  S._homeFilter=null;
+  S.searchQ=''; document.getElementById('searchInput').value='';
+  S.filterType='all'; S.filterSchool='all'; S.filterTopic='all'; S.filterImpact='all'; S.filterAction='all';
+  // reset filter chips UI
+  ['fType','fSchool','fTopic','fImpact','fAction'].forEach(gid=>{
+    const grp=document.getElementById(gid);
+    if(grp) grp.querySelectorAll('.f-chip').forEach(b=>{
+      b.classList.remove('on','on-red','on-yellow','on-green');
+      if(b.dataset.v==='all') b.classList.add('on');
+    });
+  });
+  if(S.filterBarOpen) toggleFilterBar();
+}
+
+/* ============================================================
+   SEARCH — INDEPENDENT RESULTS (v2.1.0)
+   ============================================================ */
+function onSearchInput(q){
+  S.searchQ=q.trim();
+  if(S.searchQ) showSearchResults(); else hideSearchResults();
+}
+function showSearchResults(){
+  if(!S.searchQ){hideSearchResults();return;}
+  const panel=document.getElementById('searchResultsPanel');
+  const q=S.searchQ.toLowerCase();
+  const matches=DATA.filter(d=>d.number.toLowerCase().includes(q)||d.title.toLowerCase().includes(q)||(d.official||'').toLowerCase().includes(q)).slice(0,12);
+  panel.innerHTML=`<div class="search-results-header"><span>搜尋結果：${matches.length} 條</span><span style="cursor:pointer" onclick="hideSearchResults();document.getElementById('searchInput').value='';S.searchQ=''">✕ 關閉</span></div>`+
+    matches.map(d=>`<div class="search-result-item" onmousedown="openDetail(${d.id});hideSearchResults()">
+      <span class="lt-num" style="min-width:110px">${d.number}</span>
+      <span style="flex:1;font-size:12px">${d.title}</span>
+      ${impactBadge(d.impact)}
+    </div>`).join('');
+  if(!matches.length) panel.innerHTML+=`<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">沒有符合「${S.searchQ}」的通告</div>`;
+  panel.classList.add('open');
+}
+function hideSearchResults(){document.getElementById('searchResultsPanel').classList.remove('open');}
+
 /* ============================================================
    OVERVIEW
    ============================================================ */
 function renderOverview(){
+  // Always show ALL circulars sorted newest first when entering overview
   const fd=filteredData();
-  // sort
   fd.sort((a,b)=>{
     let va,vb;
     if(S.sortField==='date'){ va=a.date; vb=b.date; }
@@ -1890,24 +2099,10 @@ function renderOverview(){
     return S.sortAsc?(va>vb?1:-1):(va<vb?1:-1);
   });
 
-  // Attention section
-  const attn=fd.filter(d=>d.impact==='high'&&d.compliance==='mandatory');
-  const attnSec=document.getElementById('attentionSection');
-  const attnGrid=document.getElementById('attentionGrid');
-  const attnCount=document.getElementById('attentionCount');
-  if(attn.length>0){
-    attnSec.style.display='';
-    attnCount.textContent=attn.length;
-    attnGrid.innerHTML=attn.map(d=>buildCard(d,true)).join('');
-  } else {
-    attnSec.style.display='none';
-  }
-
-  // Card grid
+  // Card grid — show ALL
   const grid=document.getElementById('circularGrid');
   const count=document.getElementById('resultCount');
-  const non_attn=fd.filter(d=>!(d.impact==='high'&&d.compliance==='mandatory'));
-  grid.innerHTML=non_attn.length?non_attn.map(d=>buildCard(d)).join(''):`<div class="empty-state" style="grid-column:1/-1"><div class="es-icon">🔍</div><div class="es-text">沒有符合條件的通告</div></div>`;
+  grid.innerHTML=fd.length?fd.map(d=>buildCard(d)).join(''):`<div class="empty-state" style="grid-column:1/-1"><div class="es-icon">🔍</div><div class="es-text">沒有符合條件的通告</div></div>`;
   count.textContent=`共 ${fd.length} 條通告`;
 
   // List view
@@ -2014,9 +2209,10 @@ function renderCalendar(){
       } else {
         cls = isAttn ? 'ev-red' : 'ev-blue';
       }
+      const shortNum = ev.num.replace(/\/(\d{4})$/, '').replace(/^EDB/, 'EDBC').replace('CM','').replace('CL','L');
       const shortTitle = ev.type==='dl'
-        ? `⏰ ${ev.num}`
-        : `${ev.num.match(/\d+/)?ev.num.match(/\d+/)[0]:ev.num} ${ev.title.substring(0,12)}`;
+        ? `⏰ ${shortNum}`
+        : `${shortNum} ${ev.title.substring(0,10)}`;
       evHtml+=`<div class="cal-ev ${cls}" onclick="event.stopPropagation();openDetail(${ev.id})" title="${ev.title}">${shortTitle}</div>`;
     });
     if(evs.length>2) evHtml+=`<div class="cal-ev ev-more">+${evs.length-2}</div>`;
@@ -2166,6 +2362,23 @@ function renderSupplier(){
     grid.parentElement.insertBefore(note, grid);
   }
   grid.innerHTML=supData.length?supData.map(d=>buildCard(d)).join(''):`<div class="empty-state"><div class="es-icon">🏢</div><div class="es-text">目前沒有與供應商相關的通告</div></div>`;
+
+  // Build simple chart content
+  const chartEl=document.getElementById('supplierChartContent');
+  if(chartEl&&supData.length){
+    const typeCount={};
+    supData.forEach(d=>{(d.topics||[]).forEach(t=>{typeCount[t]=(typeCount[t]||0)+1;});});
+    const maxBar=Math.max(...Object.values(typeCount),1);
+    const topicLabels={curriculum:'課程',student:'學生支援',finance:'財務資助',hr:'人事管理',it:'資訊科技',activity:'學校活動',exam:'評估考試'};
+    chartEl.innerHTML=`<div style="margin-top:12px"><div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px">按主題分佈</div>`+
+      Object.entries(typeCount).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span style="font-size:11px;min-width:60px;color:var(--text-muted)">${topicLabels[k]||k}</span>
+        <div style="flex:1;height:18px;background:var(--surface2);border-radius:4px;overflow:hidden">
+          <div style="height:100%;width:${(v/maxBar*100).toFixed(0)}%;background:var(--accent);border-radius:4px;transition:width .3s"></div>
+        </div>
+        <span style="font-size:11px;font-weight:600;min-width:20px">${v}</span>
+      </div>`).join('')+'</div>';
+  }
 }
 
 /* ============================================================
@@ -2267,23 +2480,25 @@ function dpTogglePin(){
 /* ============================================================
    SEARCH
    ============================================================ */
-function onSearch(q){
-  S.searchQ=q.trim();
-  renderOverview();
-  if(S.searchQ) showSugg(); else hideSugg();
+function filterByExpiring(){
+  if(S._homeFilter==='expiring'){
+    S._homeFilter=null;
+    switchTab('home',document.getElementById('tabHome'));
+    showToast('已返回首頁');
+    return;
+  }
+  S._homeFilter='expiring';
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tabOverview').classList.add('active');
+  document.getElementById('panel-overview').classList.add('active');
+  const fd=DATA.filter(d=>{const s=getSoonestDeadline(d);if(!s)return false;const days=daysUntil(s);return days>=0&&days<=S.alertDays;})
+    .sort((a,b)=>{const da=getSoonestDeadline(a)||'9999';const db=getSoonestDeadline(b)||'9999';return da.localeCompare(db);});
+  renderFilteredCards(fd, '即將截止通告');
+  showToast('篩選：即將截止（' + fd.length + ' 條）');
 }
-function showSugg(){
-  if(!S.searchQ){ hideSugg(); return; }
-  const sugg=document.getElementById('searchSugg');
-  const matches=DATA.filter(d=>d.number.toLowerCase().includes(S.searchQ.toLowerCase())||d.title.toLowerCase().includes(S.searchQ.toLowerCase())).slice(0,8);
-  sugg.innerHTML=matches.map(d=>`<div class="sugg-item" onclick="openDetail(${d.id});hideSugg()">
-    <span class="sugg-num">${d.number}</span>
-    <span style="flex:1;font-size:12px">${d.title}</span>
-    ${impactBadge(d.impact)}
-  </div>`).join('');
-  sugg.classList.toggle('open',matches.length>0);
-}
-function hideSugg(){ document.getElementById('searchSugg').classList.remove('open'); }
+
+/* old search functions removed — replaced by onSearchInput/showSearchResults/hideSearchResults in v2.1.0 */
 
 /* ============================================================
    DETAIL PANEL — PDF LINKS HELPER
@@ -2336,10 +2551,13 @@ function openDetail(id){
   document.getElementById('dpNum').textContent=d.number;
   document.getElementById('dpTitle').textContent=d.title;
   document.getElementById('dpBadges').innerHTML=`${impactBadge(d.impact)} ${complianceBadge(d.compliance)} ${d.isNew?'<span class="badge b-green">NEW</span>':''}`;
-  document.getElementById('dpBookmarkBtn').classList.toggle('on',!!S.bookmarks[id]);
+  const dpBmBtn=document.getElementById('dpBookmarkBtn'); if(dpBmBtn) dpBmBtn.classList.toggle('on',!!S.bookmarks[id]);
   document.getElementById('dpPinBtn').classList.toggle('on',!!S.pinned[id]);
 
-  // Summary tab
+  // PDF links at top of panel
+  document.getElementById('dpPdfLinks').innerHTML=buildPdfLinks(d);
+
+  // AI Analysis tab (combined: summary + actions + deadlines)
   const g=d.grant_info;
   let grantHtml='';
   if(g&&g.type!=='none'){
@@ -2353,18 +2571,10 @@ function openDetail(id){
       </div>
     </div>`;
   }
-  document.getElementById('dtc-summary').innerHTML=`
-    ${grantHtml}
-    <div class="sec-lbl">AI 摘要</div>
-    <div class="summary-text">${(d.summary||'').split('\n\n').map(p=>`<p>${p}</p>`).join('')}</div>
-    <div style="font-size:11px;color:var(--text-muted);margin-top:8px;padding:8px;background:rgba(59,130,246,.05);border-radius:6px">💡 AI 分析僅供參考，一切以原文為準。</div>
-    ${d.official ? `<div class="sec-lbl">官方摘要</div><div class="info-block">${d.official}</div>` : ''}
-    <div class="sec-lbl">PDF 原文件</div>
-    <div class="pdf-links">${buildPdfLinks(d)}</div>`;
 
-  // Actions tab
+  // Build actions HTML
   const rn={principal:'👔 校長',vice_principal:'🏫 副校長',department_head:'📚 科主任',teacher:'🧑‍🏫 教師',eo_admin:'📋 行政主任',supplier:'🏢 供應商'};
-  document.getElementById('dtc-actions').innerHTML=`<div class="action-list">${(d.actions||[]).map((a,i)=>{
+  let actionsHtml=(d.actions||[]).length?`<div class="sec-lbl">📋 行動清單</div><div class="action-list">${(d.actions||[]).map((a,i)=>{
     const days=a.dl?daysUntil(a.dl):null;
     const dlCls=days!==null?(days<0?'a-dl-ok':days<=3?'a-dl-urgent':days<=S.alertDays?'a-dl-soon':'a-dl-ok'):'a-dl-ok';
     const isCurrentRole=a.role===S.role;
@@ -2379,12 +2589,12 @@ function openDetail(id){
         ${a.note?`<span style="font-style:italic;color:var(--text-muted)">${a.note}</span>`:''}
       </div>
     </div>`;
-  }).join('')}</div>`;
+  }).join('')}</div>`:'';
 
-  // Deadlines tab
-  const dlRows=(d.deadlines||[]).map(dl=>{
+  // Build deadlines HTML
+  let dlHtml=(d.deadlines||[]).length?`<div class="sec-lbl">⏰ 截止日期</div><table class="dl-table"><thead><tr><th>日期</th><th>事項</th><th>類型</th><th>負責角色</th></tr></thead><tbody>${(d.deadlines||[]).map(dl=>{
     const days=daysUntil(dl.date);
-    const dateCls=days<0?'dl-date-exp':days<=3?'dl-date-urgent':days<=S.alertDays?'':''
+    const dateCls=days<0?'dl-date-exp':days<=3?'dl-date-urgent':'';
     const cdCls=dlCountdownClass(days);
     return `<tr>
       <td class="${dateCls}">${dl.date}<span class="dl-countdown ${cdCls}">${dlCountdownText(days)}</span></td>
@@ -2392,8 +2602,16 @@ function openDetail(id){
       <td><span class="type-chip">${dl.type==='apply_deadline'?'申請截止':dl.type==='submission_deadline'?'提交截止':'知悉日期'}</span></td>
       <td>${(dl.roles||[]).map(r=>rn[r]||r).join('、')}</td>
     </tr>`;
-  }).join('');
-  document.getElementById('dtc-deadlines').innerHTML=`<table class="dl-table"><thead><tr><th>日期</th><th>事項</th><th>類型</th><th>負責角色</th></tr></thead><tbody>${dlRows||'<tr><td colspan="4" style="color:var(--text-muted);text-align:center;padding:20px">暫無截止日期</td></tr>'}</tbody></table>`;
+  }).join('')}</tbody></table>`:'';
+
+  document.getElementById('dtc-analysis').innerHTML=`
+    ${grantHtml}
+    <div class="sec-lbl">📝 AI 分析摘要</div>
+    <div class="summary-text">${(d.summary||'').split('\n\n').map(p=>`<p>${p}</p>`).join('')}</div>
+    ${d.official ? `<div class="sec-lbl">官方摘要</div><div class="info-block">${d.official}</div>` : ''}
+    <div class="ai-disclaimer">⚠️ 以上 AI 分析由人工智能生成，可能存在錯誤。一切以<a href="https://www.edb.gov.hk/tc/circular/index.html" target="_blank">教育局官方通告原文</a>為準。</div>
+    ${actionsHtml}
+    ${dlHtml}`;
 
   // Resources/Roles tab
   const roleOrder=['principal','vice_principal','department_head','teacher','eo_admin','supplier'];
@@ -2431,7 +2649,7 @@ function openDetail(id){
   // open panel
   document.getElementById('detailPanel').classList.add('open');
   document.getElementById('overlay').classList.add('open');
-  switchDTab('summary', document.querySelector('.d-tab'));
+  switchDTab('analysis', document.querySelector('.d-tab'));
   renderOverview();
 }
 
@@ -2473,7 +2691,67 @@ function printDetail(){
     .footer{margin-top:28px;padding-top:10px;border-top:1px solid #e2e8f0;
             font-size:8.5pt;color:#94a3b8;display:flex;justify-content:space-between;}
     @media print{body{margin:0;}button{display:none;} .no-print{display:none;}}
-  </style></head><body>
+  
+/* ============================================================
+   HOME TAB (v2.1.0)
+   ============================================================ */
+.home-section{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:16px;margin-bottom:16px;
+}
+.home-section-title{
+  font-size:14px;font-weight:700;margin-bottom:12px;
+  display:flex;align-items:center;gap:8px;
+}
+.home-latest-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+@media(max-width:767px){.home-latest-grid{grid-template-columns:1fr;}}
+
+/* Search results overlay (v2.1.0) */
+.search-results-panel{
+  position:absolute;top:calc(100% + 4px);left:0;right:0;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;box-shadow:0 8px 32px var(--shadow);
+  z-index:200;display:none;overflow:hidden;max-height:500px;overflow-y:auto;
+}
+.search-results-panel.open{display:block;}
+.search-results-header{
+  padding:10px 14px;border-bottom:1px solid var(--border);
+  font-size:12px;font-weight:700;color:var(--text-muted);
+  display:flex;justify-content:space-between;align-items:center;
+  position:sticky;top:0;background:var(--surface);z-index:1;
+}
+.search-result-item{
+  padding:10px 14px;cursor:pointer;font-size:13px;display:flex;
+  align-items:center;gap:10px;border-bottom:1px solid var(--border);transition:background .1s;
+}
+.search-result-item:last-child{border-bottom:none;}
+.search-result-item:hover{background:var(--surface2);}
+
+/* Detail panel PDF section (v2.1.0) */
+.dp-pdf-section{
+  padding:10px 18px;border-bottom:1px solid var(--border);
+  flex-shrink:0;background:var(--surface2);
+}
+.dp-pdf-section .pdf-links{margin-top:4px;}
+
+/* AI disclaimer (v2.1.0) */
+.ai-disclaimer{
+  font-size:11px;color:var(--text-muted);margin-top:10px;padding:8px 12px;
+  background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);
+  border-radius:8px;line-height:1.6;
+}
+
+/* Supplier chart placeholder (v2.1.0) */
+.supplier-chart-placeholder{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:20px;margin-bottom:16px;min-height:200px;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;
+}
+.supplier-ref-box{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:12px;font-size:12px;margin-bottom:14px;line-height:1.7;
+}
+</style></head><body>
   <h1>${d.number}　${d.title}</h1>
   <div class="meta">
     <span>📅 發出日期：<strong>${d.date}</strong></span>
@@ -2727,7 +3005,10 @@ async function loadData(){
    ============================================================ */
 function renderAll(){
   renderStatsBar();
-  renderOverview();
+  // render the active panel
+  const activeTab=document.querySelector('.tab-btn.active');
+  if(activeTab&&activeTab.id==='tabHome') renderHome();
+  else renderOverview();
   applySettingsUI();
 }
 

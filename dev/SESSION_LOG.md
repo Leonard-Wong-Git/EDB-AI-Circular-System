@@ -1,391 +1,206 @@
 # Session Log
 
-## 2026-03-17 AGENTS.md v2 升級 + CODEBASE_CONTEXT.md
+## 2026-03-17
 
-1. Agent & Session ID: Claude_20260317_0800
-2. Task summary: INIT.md 治理框架升級（AGENTS.md 整合 7 項新增內容）+ dev/CODEBASE_CONTEXT.md 首次生成
-3. Layer classification: Development Governance Layer（治理框架升級 + 項目上下文文檔化）
-4. Source triage: 用戶上傳新版 INIT.md → 與現有 AGENTS.md 差異分析 → 純增強整合
-5. Files read: AGENTS.md（兩個 repo）、INIT.md（上傳）、README.md、CHANGELOG.md、requirements.txt、.gitignore、update-circulars.yml、SESSION_HANDOFF.md、SESSION_LOG.md
-6. Files changed:
-   - `AGENTS.md`（兩個 repo：395→622 行，整合 7 項新增內容）
-   - `dev/CODEBASE_CONTEXT.md`（新建：177 行，7 個 section + 3 External Services + 8 Key Decisions）
-7. Completed:
-   - ✅ **INIT.md 差異分析**：逐節比對 §0–§12，確認 INIT.md 為現有 AGENTS.md 的嚴格超集（無衝突、無刪除）
-   - ✅ **Root Safety Check §5a**：兩個 repo 路徑確認、風險檢查、dry-run plan、INSTALL_ROOT_OK + INSTALL_WRITE_OK 雙重確認
-   - ✅ **備份快照**：`dev/init_backup/20260317_081952_UTC/`（兩個 repo）
-   - ✅ **AGENTS.md 整合**（7 項新增）：§0a CODEBASE_CONTEXT Note、§0b External API Code Safety、§1 CODEBASE_CONTEXT 讀取+自動生成、§2 優先級更新、§3d Test Plan Design、§4 Session Close 擴充+handoff 開頭、§10 Active trigger rule
-   - ✅ **CLAUDE.md / GEMINI.md**：已有正確 @import，skip
-   - ✅ **dev/CODEBASE_CONTEXT.md 首次生成**：掃描 7 個源文件，填入 Stack / Directory Map / Key Entry Points / Build & Run / External Services（3 API，全部有 Doc-reviewed + Test-verified）/ Key Decisions（8 項）/ AI Maintenance Log
-8. Validation / QC:
-   - AGENTS.md：兩個 repo 622 行，完全一致（diff confirmed）
-   - CODEBASE_CONTEXT.md：177 行，7 section 全部存在；3 External Services 各含完整 10 欄位
-   - 備份快照完整（5 files per repo）
-   - CLAUDE.md / GEMINI.md：已有 @import（skip confirmed）
-9. Pending:
-   - school-year workflow re-run 進行中（R1-v2 效果驗證）
-   - GitHub Pages v2.0.0 視覺驗證
-   - README.md 和 CHANGELOG.md 內容過時（仍顯示 v0.1.0-mockup）— 非阻塞，可下次更新
-   - Mac Terminal push 本次 session 的治理文件更新
-10. Next priorities:
-    - school-year workflow 完成後檢查 R1-v2 角色分佈
-    - GitHub Pages v2.0.0 視覺驗證
-    - K1 PDF 提取項目（另立）
-
-### Next Session Handoff Prompt (Verbatim)
-
-```text
-Read AGENTS.md first (governance SSOT), then follow §1 startup: dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md.
-
-EDB Circular AI Analysis System — Session Handoff
-
-Current state:
-- v2.0.0 Dashboard DEPLOYED on GitHub Pages (commit 7151ed7)
-- R1-v2 role accuracy (few-shot + postprocess) PUSHED (commit dbd997e)
-- AGENTS.md upgraded to v2 (622 lines, 7 new sections from INIT.md) in BOTH repos
-- dev/CODEBASE_CONTEXT.md generated (177 lines, 3 External Services, 8 Key Decisions)
-- school-year workflow RE-RUNNING (R1-v2 new prompt + postprocess applied to all circulars)
-- Result of school-year re-run NOT YET CHECKED
-
-Immediate actions needed:
-1. Check school-year workflow result — if success, git pull on Mac then verify circulars.json role distribution
-2. Expected improvement: teacher ~40-60% (was 96%), supplier ~20-30% (was 49%)
-3. Open GitHub Pages and visually verify v2.0.0 Dashboard with updated data
-4. If R1-v2 results unsatisfactory, adjust _WEAK_ACT_PATTERNS or few-shot examples in edb_scraper.py
-5. Push governance file updates from Mac Terminal:
-   git stash && git pull --rebase origin main && git stash pop && git add AGENTS.md dev/CODEBASE_CONTEXT.md dev/SESSION_HANDOFF.md dev/SESSION_LOG.md && git commit -m "chore: AGENTS.md v2 upgrade + CODEBASE_CONTEXT.md" && git push origin main
-
-Key files changed this session:
-- AGENTS.md (both repos, 395→622 lines, 7 new governance sections)
-- dev/CODEBASE_CONTEXT.md (new, 177 lines)
-- dev/SESSION_HANDOFF.md, dev/SESSION_LOG.md
-
-Known risks:
-- R1-v2 internal role reduction depends on LLM prompt response (school-year re-run in progress)
-- README.md and CHANGELOG.md are outdated (still show v0.1.0-mockup) — non-blocking
-- official field still mostly empty (UI fallback in place)
-- Node.js 20 deprecation warning in workflow (cosmetic, deadline June 2026)
-
-Validation status: AGENTS.md identical in both repos (622 lines); CODEBASE_CONTEXT.md 7 sections complete; backup snapshots created
-First action: Check school-year workflow result, then verify role distribution
-```
-
----
-
-## 2026-03-16 v2.0.0 + R1-v2
-
-1. Agent & Session ID: Claude_20260316_1600
-2. Task summary: R1-v2 角色精確度（few-shot + postprocess filter）+ v2.0.0 Dashboard 37 項全面改版 + CI 修復
-3. Layer classification: Product / System Layer（前端全面改版 + 後端 LLM prompt 優化 + CI 修復）
-4. Source triage: R1 過度標記 = prompt 設計 + LLM 行為偏差；Dashboard 改版 = 用戶需求
-5. Files read: `edb-dashboard.html`、`edb_scraper.py`、`circulars.json`、`.github/workflows/update-circulars.yml`
-6. Files changed:
-   - `edb-dashboard.html`（v2.0.0 全面改版，2766 行）
-   - `edb_scraper.py`（R1-v2：SYSTEM_PROMPT few-shot 3 組 + `_postprocess_roles()` 4 規則）
-   - `.github/workflows/update-circulars.yml`（fetch+reset 修復 circulars.json 衝突）
-   - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
-7. Completed:
-   - ✅ **R1-v2 few-shot**：SYSTEM_PROMPT 加入 3 組角色標記參考範例（差餉→2 roles、員工交流→2 roles、熱帶氣旋→2 roles）
-   - ✅ **R1-v2 postprocess**：`_postprocess_roles()` 函數，4 規則（空acts→false、≥2/3弱acts→false、全弱pts→false、supplier限採購）
-   - ✅ **R1-v2 commit** `dbd997e`；postprocess simulation: supplier 49%→21%
-   - ✅ **v2.0.0 Dashboard 37 項改版**：版本集中管理（`const VERSION`）、預設淺色主題、簡化圖標（✅+📌 only）、AI 免責聲明、詳情面板重構（3 tab：總結/角色及資源/比較）、PDF 連結置頂、日曆 EDBC 號+標題、ICS 匯出、EDB 官方學校類型篩選、type filter 標籤改善、分享按鈕（Web Share API + clipboard）、手機/平板修復、統計 placeholder、供應商分析視角、移除 REF_CIRCULARS、Leonard Wong footer link
-   - ✅ **v2.0.0 commit** `7151ed7`；14/14 key checks 通過；v1.1.2 殘留 = 0
-   - ✅ **CI 修復**：workflow circulars.json 衝突 → fetch+reset 方案（commit `bec0a81`）
-   - ✅ **school-year workflow** 成功跑完（108 circulars）— 但用舊 R1 prompt
-8. Validation / QC:
-   - HTML 驗證：14/14 checks 通過；2766 行；v1.1.2 remnants = 0
-   - R1-v2 postprocess simulation：supplier 49%→21%（有效）
-   - CI workflow 修復後成功：school-year 108 circulars
-   - Python syntax OK
-9. Pending:
-   - ✅ Mac push 成功；days-3 workflow 8m9s 成功；GitHub Pages v2.0.0 已部署
-   - school-year workflow re-run（驗證 R1-v2 新 prompt + postprocess 效果）
-   - GitHub Pages v2.0.0 視覺驗證（目視確認）
-10. Next priorities:
-    - GitHub Pages v2.0.0 視覺驗證 + school-year re-run
-    - K1 PDF 提取項目（另立）
-    - 後端 #35/#36 上年度分析 + 預算預測
-
-### Problem -> Root Cause -> Fix -> Verification (R1-v2)
-
-**R1-v2: prompt-only 方案不足，需 few-shot + postprocess**
-1. Problem: R1 prompt-only 改寫後，school-year workflow 結果仍 96%+ 角色 true
-2. Root Cause: gpt-5-nano 行為偏向 inclusive，僅靠排除準則不足以覆蓋全部情況
-3. Fix: (1) few-shot 範例 3 組（展示正確的 2-role 標記）(2) `_postprocess_roles()` 後處理 4 規則
-4. Verification: postprocess simulation supplier 49%→21%；內部角色效果待 school-year re-run（新 prompt + postprocess 同時生效）
-5. Regression: 下次 school-year 後檢查全角色分佈
-
-**v2.0.0 Dashboard 37 項改版**
-1. Problem: v1.1.2 Dashboard 有多處 UX 問題（圖標繁雜、詳情面板結構差、日曆缺 EDBC 號、無分享功能等 37 項）
-2. Fix: 用戶提供 37 項清單，全部一次過完成
-3. Verification: 14/14 key checks；HTML parse OK；2766 行；v1.1.2 殘留 = 0
-4. Regression: GitHub Pages 部署後視覺驗證
-
-### Next Session Handoff Prompt (Verbatim)
-
-```text
-EDB Circular AI Analysis System — Session Handoff
-
-Current state:
-- v2.0.0 Dashboard (37-item overhaul) PUSHED and DEPLOYED on GitHub Pages (commit 7151ed7)
-- R1-v2 role accuracy (few-shot + postprocess) PUSHED (commit dbd997e)
-- CI workflow fix (fetch+reset) on remote (commit bec0a81)
-- days-3 workflow ran successfully (8m9s) after push — but this was NOT school-year scope
-- circulars.json has school-year data (108 circulars) from PREVIOUS run with OLD R1 prompt
-- R1-v2 new prompt + postprocess NOT YET applied to school-year data
-
-Immediate actions needed:
-1. Trigger school-year workflow to apply R1-v2 (new prompt + postprocess to all 108 circulars)
-2. After workflow: check role distribution improvement (expect teacher ~40-60%, supplier ~20-30%)
-3. Open GitHub Pages and visually verify v2.0.0 Dashboard renders correctly with real data
-4. If R1-v2 results unsatisfactory, consider adjusting _WEAK_ACT_PATTERNS or few-shot examples
-
-Key files changed this session:
-- edb-dashboard.html (v2.0.0, 2766 lines, 37 items)
-- edb_scraper.py (R1-v2: few-shot + _postprocess_roles())
-- .github/workflows/update-circulars.yml (fetch+reset fix)
-- dev/SESSION_HANDOFF.md, dev/SESSION_LOG.md
-
-Known risks:
-- R1-v2 internal role reduction depends on LLM prompt response (postprocess alone mainly catches supplier + weak-act patterns)
-- official field still mostly empty (UI fallback in place, root cause = GH Actions PDF extraction)
-- HEAD.lock may reappear if VM git operations fail mid-way (rm -f before operations)
-- Node.js 20 deprecation warning in workflow (cosmetic, no functional impact)
-
-Validation status: HTML 14/14 OK; R1-v2 postprocess simulation OK; CI workflow fixed and green
-First action: Push commits from Mac Terminal, then trigger school-year workflow
-```
-
----
-
-## 2026-03-16 R1 (續)
-
-1. Agent & Session ID: Claude_20260316_0850 (R1 continued)
-2. Task summary: R1 全角色職責精確度 — SYSTEM_PROMPT roles 判斷準則改進
-3. Layer classification: Product / System Layer（LLM prompt 優化）
-4. Source triage: 過度標記問題 = LLM prompt 設計問題（缺乏 r=false 的明確排除準則）
-5. Files read: `circulars.json`（role 分佈分析）、`edb_scraper.py` SYSTEM_PROMPT roles 部分
-6. Files changed: `edb_scraper.py`（SYSTEM_PROMPT roles 節改寫）
-7. Completed:
-   - ✅ **現狀分析**：principal 97%、teacher/VP/dept_head 各 ~96%、supplier 53%（105 條通告）
-   - ✅ **R1 根本原因**：SYSTEM_PROMPT roles.r 定義不精確，缺乏排除標準
-   - ✅ **SYSTEM_PROMPT 改寫**：r 定義 → 「直接職責」；⭐ r=true 三條件；⛔ r=false 四排除；六角色邊界；校準提示（預期 2-4 roles）
-   - ✅ **commit `a2a0d38`**；⏳ push 待 Mac Terminal 執行
-8. Validation / QC: Python syntax OK；SYSTEM_PROMPT roles 節完整；預期效果待下次 workflow 驗證
-9. Pending: Mac push + days-3 workflow 驗證 R1 效果
-
-### Problem -> Root Cause -> Fix -> Verification (R1)
-
-**R1: 角色相關性過度標記（97%/96% → 預期 40-60%）**
-1. Problem: 105 條通告中 principal/teacher/VP/dept_head 各 ~96-97% 標為 true；角色篩選幾乎無效
-2. Root Cause: roles.r 定義為「是否相關」（模糊）而非「是否有直接職責」（精確）；無排除標準 → LLM 預設 inclusive
-3. Fix: r=true 三條件（明確點名/需提交文件/工作範疇受直接影響）+ r=false 四排除規則（純知悉/協助上司/範疇不符/supplier 限制）+ 角色職責邊界 + 校準提示
-4. Verification: Python syntax OK；commit `a2a0d38`；實際效果待 days-3 workflow 驗證
-5. Regression: 下次 workflow 後檢查 role distribution（預期 teacher ~40-60%，supplier ~20-30%）
-
----
-
-## 2026-03-16
-
-1. Agent & Session ID: Claude_20260316_0850
-2. Task summary: Issue 4 修復（官方摘要空白）+ K1 知識注入框架 + K1 接口規格文件
-3. Layer classification: Product / System Layer（前端 UI 修復 + 後端 LLM 管線增強）
-4. Source triage: Issue 4 = 後端緩存問題（Phase 3 未還原 `official`）+ GH Actions PDF 提取失效；K1 = 新功能增強
+1. Agent & Session ID: Codex_20260317_1956
+2. Task summary: 治理啟動流程執行 + `dev/CODEBASE_CONTEXT.md` 初始建立
+3. Layer classification: Development Governance Layer（session startup / context persistence）
+4. Source triage: 非產品 bug；屬 documentation/state completeness issue，根因是 `CODEBASE_CONTEXT.md` 尚未建立
 5. Files read:
-   - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
-   - `edb-dashboard.html`（VM workspace）
-   - `edb_scraper.py`（Mac git repo）
+   - `AGENTS.md`（以用戶提供內容為治理 SSOT）
+   - `dev/SESSION_HANDOFF.md`
+   - `dev/SESSION_LOG.md`
+   - `README.md`
+   - `requirements.txt`
+   - `edb_scraper.py`
+   - `fetch_knowledge.py`
+   - `dev/v0.2.0-FRONTEND-SPEC.md`
+   - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md`
 6. Files changed:
-   - `edb-dashboard.html`（Issue 4 UI 修復 + 版本標籤 v1.1.1→v1.1.2；VM workspace + Mac git repo 同步）
-   - `edb_scraper.py`（Issue 4 Phase 3 緩存修復 + K1 注入函數 + `_build_prompt()` 更新）
-   - `dev/knowledge/role_facts.json`（新建：基線知識庫，6 個主題 × 7 個角色）
-   - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md`（新建：K1 獨立項目接口合約）
-   - `Claude-edb-Project-V3/dev/K1_KNOWLEDGE_INTERFACE_SPEC.md`（複製副本供 K1 項目參考）
+   - `dev/CODEBASE_CONTEXT.md`（新建）
+   - `dev/SESSION_HANDOFF.md`（Mandatory Start Checklist + Last Session Record 更新）
+   - `dev/SESSION_LOG.md`（本條目新增）
 7. Completed:
-   - ✅ **Issue 4 UI 修復（前端）**：card-summary fallback `d.official || (d.summary||'').substring(0,150)`；detail panel 條件顯示 官方摘要
-   - ✅ **Issue 4 後端緩存修復**：Phase 3 restore `official` from existing JSON cache
-   - ✅ **版本標籤 v1.1.1→v1.1.2**（VM workspace + Mac git repo）
-   - ✅ **K1 知識注入框架**：`_detect_topics_early()`、`_load_knowledge_context()`、`_build_prompt()` 更新；4 測試案例全通過
-   - ✅ **baseline `role_facts.json`** 建立（finance/hr/curriculum/activity/student/it/general × 7 角色）
-   - ✅ **K1 接口規格文件** `K1_KNOWLEDGE_INTERFACE_SPEC.md` 建立（獨立項目可憑此交付）
-   - ✅ **K1 規格複製** 至 `Claude-edb-Project-V3/dev/`（供 K1 項目開發者閱讀）
-   - ✅ **git push**：Issue 4 + K1 injection 已推送至 GitHub（`7c6bd46`）
+   - 依 `AGENTS.md` §1 啟動順序讀取 handoff/log，定位最新 `Next Session Handoff Prompt (Verbatim)`
+   - 顯示 1 個 Boot Visual Cue（Style B）
+   - 掃描現有文件與程式入口，建立 `dev/CODEBASE_CONTEXT.md`
+   - 記錄 Stack、Directory Map、Key Entry Points、Build & Run、External Services、Key Decisions、AI Maintenance Log
+   - 將 `dev/CODEBASE_CONTEXT.md` 納入 `SESSION_HANDOFF.md` 的 Mandatory Start Checklist
 8. Validation / QC:
-   - Python 語法驗證：OK（`_detect_topics_early`、`_load_knowledge_context` 函數正確）
-   - K1 注入功能測試：4 測試案例全通過（finance/it、hr、activity/student、general fallback）
-   - git push 成功：commit `7c6bd46` 已推送
-9. Pending:
-   - R1 全角色職責精確度
-   - LLM 引擎切換機制
-   - 觀察 v1.1.2 在 GitHub Pages 顯示效果（Issue 4 修復驗證）
+   - `test -f dev/CODEBASE_CONTEXT.md` → exists ✅
+   - `rg -n "^## " dev/CODEBASE_CONTEXT.md` → 7 個主要章節存在 ✅
+   - `rg -n "CODEBASE_CONTEXT" dev/SESSION_HANDOFF.md dev/SESSION_LOG.md` → handoff/log 已同步更新 ✅
+   - 產品程式碼未修改；未執行產品層 build/test（本 session 僅治理文件建立）
+9. Risks / blockers:
+   - `External Services` 中的 API 細節目前以 repo 既有證據整理，尚未重新對齊官方文件
+   - 若後續要改寫 OpenAI/EDB API 呼叫邏輯，仍需依 `AGENTS.md` 0b 先完成官方文件校準
 10. Next priorities:
-    - 確認 GitHub Pages v1.1.2 部署（Issue 4 官方摘要 fallback 是否生效）
-    - R1 全角色職責精確度分析
-    - K1 第二階段：PDF 提取真實 EDB 知識內容（另立項目）
-11. Risks / blockers:
-    - `official` 仍對 105/108 通告為空（PDF 提取在 GH Actions 環境失敗）；UI fallback 已緩解，根本原因待 K1 PDF 提取項目解決
-    - K1 `role_facts.json` 目前為人工整理的基線資料，待 K1 項目 PDF 提取完成後替換
+   - 用 `dev/CODEBASE_CONTEXT.md` 作為穩定基線，恢復產品層工作
+   - 決定下一個產品任務：K1/R1 知識框架或次要 UI 待辦
+   - 若涉及外部 API 變更，先補官方文件對齊與 External Services 欄位更新
 
 ### Problem -> Root Cause -> Fix -> Verification
-
-**Issue 4: 官方摘要（official）空白**
-1. Problem: 105/108 真實通告在 Dashboard 的 官方摘要 欄位顯示空白
-2. Root Cause（多重）：
-   - GH Actions 環境 PyMuPDF subprocess 提取 PDF 返回空字串
-   - Phase 3 緩存還原 LLM keys 但未還原 `official` 欄位
-   - `pdf_text` 不保存在輸出 JSON，無法從緩存還原
-   - 列表頁無 `detail_url`，`enrich_detail()` 無法運行
-3. Fix（分層）：
-   - 前端：card-summary fallback → 顯示 LLM summary 前 150 字；detail panel 條件隱藏空 official
-   - 後端：Phase 3 restore `official` from existing cache（確保重跑不丟失）
-4. Verification: HTML/Python 語法 OK；git push 成功
-5. Regression: 根本原因（GH Actions PDF 提取失敗）留待 K1 項目解決
-
-**K1 知識注入框架**
-1. Problem: LLM 缺乏 EDB 學校運作背景知識，分析精準度有限
-2. Solution: 在 `_build_prompt()` 前端注入 600 字符預算的角色相關知識事實
-3. Implementation: 關鍵字匹配（`_detect_topics_early`）→ 按主題查找（`_load_knowledge_context`）→ 注入 prompt
-4. Architecture: K1 作為獨立項目，通過 `role_facts.json` 文件接口交付，EDB 項目只消費 JSON
-5. Verification: 4 測試案例全通過（finance/it 採購門檻、hr CPD、activity 安全、general fallback）
-
----
-
-## 2026-03-15
-
-1. Agent & Session ID: Claude_20260315_1400
-2. Task summary: 次要 UI 修復（D8/D9/F4/H5/H6）+ pdfplumber→PyMuPDF 遷移 + school-year workflow 首次成功
-3. Layer classification: Product / System Layer（前端修復 + 後端 PDF 引擎替換）
-4. Source triage: D8/D9 = 程式碼邏輯問題；F4 = 初始化遺漏；pdfminer = 外部依賴行為問題
-5. Files read:
-   - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
-   - `dev/v0.2.0-FRONTEND-SPEC.md`（月曆/設定規格）
-   - `dev/ACCEPTANCE_CHECKLIST.md`（D8/D9/F4/H5/H6 定義）
-   - `edb-dashboard.html`（月曆/書籤/設定程式碼）
-   - `edb_scraper.py`（PDF 提取 + pdfminer 抑制邏輯）
-   - `.github/workflows/update-circulars.yml`
-6. Files changed:
-   - `edb-dashboard.html`（D8/D9 月曆篩選修復 + F4 badge 初始化 + 版本標籤 v1.1.0→v1.1.1）
-   - `edb_scraper.py`（pdfplumber/pdfminer 完全替換為 PyMuPDF/fitz）
-   - `requirements.txt`（pdfplumber→PyMuPDF）
-   - `dev/ACCEPTANCE_CHECKLIST.md`（D8/D9/F4/H5/H6 標記 ✅）
-7. Completed:
-   - ✅ **D8 月曆高影響篩選**：`isAttention(d)`（high+mandatory）改為 `d.impact!=='high'`，與按鈕標示語義一致
-   - ✅ **D9 月曆截止日篩選**：`calFilter==='deadline'` 時跳過通告發布日事件，只顯示 deadline 類型
-   - ✅ **F4 書籤 Tab badge**：`renderAll()` 新增 `updateBmBadge()` 調用，初始載入後 badge 正確顯示
-   - ✅ **H5 截止天數切換**：程式碼審查確認已完整實作（`setAlertDays` + `applySettingsUI`）
-   - ✅ **H6 已跟進顯示切換**：程式碼審查確認已完整實作（`toggleShowDone` + `filteredData`）
-   - ✅ **pdfplumber→PyMuPDF 遷移**：完全移除 pdfminer 依賴，消除 107K+ 行 DEBUG 洪流
-   - ✅ **school-year workflow 首次成功**：1h 25m 4s，全步驟綠色，GitHub Pages 已部署
-8. Validation / QC:
-   - HTML 語法驗證：OK（2800 行）
-   - Python 語法驗證：OK（1085 行）
-   - Inline worker script 語法驗證：OK
-   - GitHub Actions school-year workflow：全綠 ✅（1h 25m 4s）
-   - pdfminer 引用檢查：0（僅 1 處註釋）
-   - GitHub Pages 部署：✅
-9. Pending:
-   - K1 知識庫參考文件框架
-   - R1 全角色職責精確度
-   - LLM 引擎切換機制
-10. Next priorities:
-    - K1/R1 知識框架實作
-    - 觀察 school-year 數據在 Dashboard 的顯示效果
-    - 考慮 days-3 排程是否需要調整（school-year 已成功）
-11. Risks / blockers:
-    - school-year 耗時 1h25m + OpenAI API 費用可觀（僅適合偶爾全量重建，日常用 days-3）
-    - VM workspace 路徑 ≠ git repo 路徑（必須用 mount 或手動複製同步）
-12. Notes: 本 session 發現並確認 VM workspace (`Claude-edb-Project-V3`) 和 git repo (`EDB-Circular-AI-analysis-system`) 是不同資料夾。日後 VM 修改後端文件需先 mount git repo 再複製。
-
-### Problem -> Root Cause -> Fix -> Verification
-
-**Issue 1: D8/D9 月曆篩選邏輯**
-1. Problem: D8 高影響篩選過於嚴格（只顯示 high+mandatory）；D9 截止日篩選仍顯示所有通告發布日
-2. Root Cause: D8 使用 `isAttention()` 而非 `impact==='high'`；D9 無 guard 阻止發布日事件加入 evMap
-3. Fix: D8 改用 `d.impact!=='high'`；D9 加 `if(S.calFilter!=='deadline')` guard
-4. Verification: HTML parser OK；grep 確認程式碼正確
-5. Regression: ACCEPTANCE_CHECKLIST.md D8/D9 標記 ✅
-
-**Issue 2: F4 書籤 Tab badge 初始載入不顯示**
-1. Problem: 頁面載入後如有 localStorage 書籤記錄，Tab badge 不顯示數字
-2. Root Cause: `renderAll()` 未調用 `updateBmBadge()`
-3. Fix: `renderAll()` 末尾新增 `updateBmBadge()` 調用
-4. Verification: grep 確認調用存在
-5. Regression: ACCEPTANCE_CHECKLIST.md F4 標記 ✅
-
-**Issue 3: pdfminer DEBUG 洪流（107K+ 行，school-year 模式）**
-1. Problem: GitHub Actions 日誌被 pdfminer.psparser/pdfinterp DEBUG 輸出淹沒（107,600+ 行），步驟被截斷
-2. Root Cause: pdfminer 的 C 擴展（psparser/pdfinterp）直接寫入 fd 2（stderr），繞過 Python logging 控制。`fork()` 後子程序繼承父程序的 file descriptor，無論 `logging.disable()`、`logging.setLevel()`、`sys.stderr = devnull` 都無法攔截 C 層直接 I/O
-3. **❌ 已失敗的方案（本 session 實測）：**
-   - `logging.disable(CRITICAL)` in child → 無效（C 擴展不走 Python logging）
-   - `sys.stderr = open(os.devnull, 'w')` in child → 無效（只影響 Python 層，不影響 fd 2）
-   - `os.dup2(os.open(os.devnull, os.O_WRONLY), 2)` in child → 無效（fork 後 fd 2 已被繼承）
-   - `subprocess.Popen` + `stderr=subprocess.DEVNULL` → 無效（pdfminer 仍在子程序內部產生洪流）
-   - 三層防禦（module-level + handler filter + subprocess）→ 無效
-4. **✅ 成功方案：完全移除 pdfplumber/pdfminer，替換為 PyMuPDF（fitz）**
-   - PyMuPDF 使用 MuPDF C 庫，無 DEBUG 洪流問題
-   - 速度更快（MuPDF vs pdfminer）
-   - 保留 subprocess.Popen + SIGKILL timeout 作為安全網
-   - requirements.txt：`pdfplumber>=0.10.0` → `PyMuPDF>=1.24.0`
-5. Verification: school-year workflow 全綠，1h 25m 4s，零 pdfminer 輸出
-6. **Regression / rule update：**
-   - ⭐ **新規則：不要對有問題的依賴疊補丁，直接替換為已知可行的方案**
-   - Known Risk #6（pdfminer 卡死）→ 已解決，降級為 historical record
-   - `edb_scraper.py` PDF 引擎：pdfplumber/pdfminer → PyMuPDF/fitz（永久替換）
-
-**Issue 4: VM workspace ≠ git repo**
-1. Problem: VM 對 `edb_scraper.py` 的修改未到達 GitHub（3 次 push 嘗試全部失敗）
-2. Root Cause: VM mount `Claude-edb-Project-V3` 和 git repo `EDB-Circular-AI-analysis-system` 是不同的 Mac 資料夾
-3. Fix: 使用 `request_cowork_directory` mount git repo 路徑，直接 `cp` 文件過去
-4. Verification: `git status` 顯示 modified，commit + push 成功（`184b867`）
-5. **Regression / rule update：**
-   - ⭐ **新規則：修改後端文件（edb_scraper.py / requirements.txt 等）時，必須先 mount git repo 資料夾再寫入**
-   - RE06 的「VM 路徑 ≠ Mac git repo 路徑」規則已擴展
+1. Problem: 新 session 缺少 `dev/CODEBASE_CONTEXT.md`，穩定專案事實只能分散在 README、程式碼與 session 文件中
+2. Root Cause: 初始安裝流程不建立此檔，且後續 session 尚未補建
+3. Fix: 掃描既有文件與入口檔，建立 `dev/CODEBASE_CONTEXT.md` 並把它納入 startup checklist
+4. Verification: `CODEBASE_CONTEXT.md` 已建立且含必需章節；SESSION_HANDOFF / SESSION_LOG 已同步引用 ✅
+5. Regression / rule update: 無新增長期規則；僅落實既有 `AGENTS.md` §1 要求
 
 ### Consolidation / Retirement Record
-1. Duplicate / drift found: pdfminer 相關的 3 層抑制程式碼 + SESSION_HANDOFF Known Risk #6 的舊方案描述
-2. Single source of truth chosen: PyMuPDF 為唯一 PDF 引擎
-3. What was merged: 所有 pdfminer 補丁代碼合併為單一方案（PyMuPDF 替換）
-4. What was retired / superseded: pdfplumber, pdfminer, signal.SIGALRM, multiprocessing.Process+SIGTERM, multiprocessing.Process+SIGKILL, logging.disable, handler filter, 三層防禦
-5. Why consolidation was needed: 6 次補丁嘗試均失敗，根本原因是 C 擴展層 I/O 無法被 Python 攔截；替換依賴是唯一正確方案
+1. Duplicate / drift found: 專案穩定事實分散於 README、SESSION_HANDOFF、程式碼註解
+2. Single source of truth chosen: `dev/CODEBASE_CONTEXT.md` 作為穩定技術事實集中位置
+3. What was merged: Stack、入口檔、Build & Run、External Services、Key Decisions 摘要整合進新檔
+4. What was retired / superseded: 無；原始來源保留，改由 `CODEBASE_CONTEXT.md` 提供聚合視圖
+5. Why consolidation was needed: 降低新 session 重建上下文成本，符合 sustainable session governance 目的
+
+### Next Session Handoff Prompt (Verbatim)
+```text
+Read `AGENTS.md` first as the governance SSOT, then follow the startup sequence in §1 exactly: `dev/SESSION_HANDOFF.md` → `dev/SESSION_LOG.md` → `dev/CODEBASE_CONTEXT.md` (now present) → `dev/PROJECT_MASTER_SPEC.md` if it exists.
+
+Current objective:
+Resume product-layer work for the EDB Circular AI Analysis System from the new stable governance baseline established on 2026-03-17.
+
+Current progress state:
+- `dev/CODEBASE_CONTEXT.md` was created in session `Codex_20260317_1956` and now centralizes stack, directory map, entry points, build/run commands, external services, and key decisions.
+- `dev/SESSION_HANDOFF.md` startup checklist now explicitly includes reading `dev/CODEBASE_CONTEXT.md`.
+- No product code was changed in this session; product behavior remains as recorded in prior handoff/log entries.
+
+Pending tasks in priority order:
+1. Choose and resume the next product task, with strongest candidates being K1/R1 knowledge-framework work or the secondary UI backlog (`D8/D9`, `F4`, `H5`, `H6`).
+2. If the next task changes external API-calling code, align with official docs first and update the relevant `External Services` block in `dev/CODEBASE_CONTEXT.md` before coding.
+3. Keep `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, and `dev/SESSION_LOG.md` synchronized whenever stable facts or session state change.
+
+Key files changed in this session:
+- `dev/CODEBASE_CONTEXT.md`
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- The `External Services` section is currently a repo-evidence baseline, not a substitute for official API verification.
+- This session performed governance/documentation work only; no fresh product-level runtime verification was run.
+- Existing product risks and operational cautions still live in `dev/SESSION_HANDOFF.md`.
+
+Validation status:
+- Startup-governance read sequence completed.
+- `dev/CODEBASE_CONTEXT.md` exists and contains the required major sections.
+- Handoff/log were updated to reference the new baseline.
+
+First concrete next action:
+After reading the startup files, inspect `dev/SESSION_HANDOFF.md` open priorities and select the next product task to execute, starting with either K1/R1 knowledge work or the secondary UI backlog.
+```
+
+---
+
+## 2026-03-14 (RE06)
+
+1. Agent & Session ID: Claude_20260314_RE06
+2. Task summary: PDF timeout 修復 — proc.kill() (SIGKILL) + pdfminer DEBUG log 抑制
+3. Layer classification: Product / System Layer（後端管線修復）
+4. Source triage: 問題來源 = Known Risk #6 in SESSION_HANDOFF（pdfminer C 擴展卡死）；屬 code logic issue（SIGTERM 無法打斷 C 擴展）
+5. Files read:
+   - `dev/SESSION_HANDOFF.md`（當前狀態 + Known Risk #6）
+   - `dev/SESSION_LOG.md`（RE05 失敗記錄）
+   - `dev/v0.2.0-FRONTEND-SPEC.md`（架構確認）
+   - `edb_scraper.py`（lines 560–610 PDF extractor + lines 785–810 logging setup）
+6. Files changed:
+   - `edb_scraper.py`（3 處修改，詳見下方）
+   - `dev/SESSION_HANDOFF.md`（Known Risk #6 更新 + Last Session Record 更新）
+   - `dev/SESSION_LOG.md`（本次記錄新增）
+7. Changes detail:
+   - **Fix A** — `extract_pdf_text()` line ~598：`proc.terminate()` → `proc.kill()` (SIGKILL)
+     * 原因：SIGTERM 被 pdfminer C 擴展（psparser/pdfinterp）忽略；SIGKILL 由 OS 直接強殺，C 擴展無法攔截
+   - **Fix B** — `extract_pdf_text()` line ~599：`proc.join()` → `proc.join(2)` 加 2 秒 timeout 安全邊際
+   - **Fix C** — `_pdf_extract_worker()` 新增 pdfminer logging 抑制（子程序內）：
+     * 所有 pdfminer sub-logger 設定 `ERROR` 級別，阻止 107K+ 行 DEBUG flood
+   - **Fix D** — `run_pipeline()` 新增 pdfminer logging 抑制（main process）：
+     * 與 Fix C 相同，雙重保護（子程序繼承 + 主程序獨立設定）
+8. Validation / QC:
+   - `python3 -c "import ast; ast.parse(open('edb_scraper.py').read())"` → Syntax OK ✅
+   - grep 確認 `proc.kill` 存在於 line 598 ✅
+   - grep 確認 pdfminer setLevel 存在於 lines 568–571（worker）+ 806–809（main）✅
+   - **GitHub Actions `days-3` workflow 實測：33 秒完成** ✅（修復前卡死 30–60+ 分鐘）
+   - **GitHub Pages 已更新** ✅
+9. Additional completed (session close):
+   - ✅ 版本標籤 v0.2.0 → v1.1.0（edb-dashboard.html 5 處，commit 1b50c62）
+   - ✅ GitHub Pages 確認顯示 v1.1.0
+   - ✅ 版本標籤同步規則寫入 SESSION_HANDOFF.md Session Close 保障
+10. Next priorities:
+    - K1/R1 知識框架實作
+    - 次要 UI（D8/D9, F4, H5, H6）
+    - school-year workflow 觀察
+11. Risks / blockers: 主要風險已解決；school-year 模式尚未實測
+12. Root Cause / Fix record (Regression entries):
+    - **[RE06-A] PDF timeout:**
+      * Problem: pdfminer C 擴展在特定 EDB PDF 進入無限解析迴圈，卡死 30–60+ 分鐘
+      * Root Cause: SIGTERM 只在 Python bytecode 間處理，C 擴展層不受影響
+      * Fix: proc.kill() SIGKILL + pdfminer log 抑制
+      * Verification: days-3 workflow 33 秒完成 ✅
+    - **[RE06-B] 版本標籤未同步:**
+      * Problem: v1.1.0 功能已上線但 HTML 版本標籤仍顯示 v0.2.0，用戶誤判系統未更新
+      * Root Cause: 功能開發 commit 未包含版本標籤更新；VM session 路徑 ≠ Mac git repo 路徑
+      * Fix: Mac Terminal sed 直接修改 5 處標籤（commit 1b50c62）
+      * Rule added: 版本標籤同步規則（SESSION_HANDOFF.md Session Close 保障 ⭐）
+      * Verification: GitHub Pages 標題顯示 v1.1.0 ✅
 
 ### Next Session Handoff Prompt (Verbatim)
 
 ```text
+Next Session Handoff Prompt — v15（RE06 Session Close 後最新版本 ✅）
+將以下全文貼入新 session 的第一條訊息
+
 項目：EDB Circular AI Analysis System
 GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git
 GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/
+
 你是此項目的 AI 開發助手，請先讀取以下文件（按順序）：
 1. dev/SESSION_HANDOFF.md — 當前狀態 + 所有已知風險 + Session Close 保障規則
-2. dev/SESSION_LOG.md — 完整歷史記錄
+2. dev/SESSION_LOG.md — 完整歷史記錄（含 RE06 成功/失敗教訓）
 3. dev/v0.2.0-FRONTEND-SPEC.md — 前端規格 SSOT
 
-當前系統狀態（2026-03-15 全部正常）✅
-* GitHub Pages：v1.1.1 已上線，school-year 數據已部署
-* GitHub Actions school-year workflow：1h 25m 完成（首次成功 ✅）
-* GitHub Actions days-3 workflow：33 秒完成（穩定）
-* edb_scraper.py：PyMuPDF (fitz) 替換 pdfplumber/pdfminer（零 DEBUG 洪流 ✅）
-* edb-dashboard.html：~2800 行，版本標籤 v1.1.1
-* D8/D9/F4/H5/H6 次要 UI 修復全部完成 ✅
+項目概況
+* 單頁 HTML Dashboard（edb-dashboard.html，2796 行）— 顯示 EDB 教育局通告 + AI 分析
+* Python 爬蟲（edb_scraper.py）— 爬取 EDB 網站 + 用 gpt-5-nano LLM 分析
+* GitHub Actions 自動排程（每日 3 次）抓取新通告 → 更新 circulars.json → 部署 GitHub Pages
+* 當前版本：v1.1.0（版本標籤已正確顯示，GitHub Pages 已上線）✅
 
-待辦（按優先級）
-1. K1 知識庫參考文件框架
-2. R1 全角色職責精確度
-3. LLM 引擎切換機制
-4. 觀察 school-year 數據在 Dashboard 的顯示效果
+當前系統狀態（RE06 後全部正常）✅
+* GitHub Pages：v1.1.0 已上線，8 項主功能全部可用
+* GitHub Actions days-3 workflow：33 秒完成（PDF timeout 已修復）
+* edb_scraper.py：SIGKILL timeout + pdfminer log 抑制，穩定運作
+* edb-dashboard.html：2796 行，版本標籤 v1.1.0
 
-⭐ 重要規則
-* 版本標籤同步：每次功能 push 後在 Mac Terminal 執行 sed 更新 5 處版本標籤
-* VM ≠ git repo：修改後端文件時必須先 mount git repo 再寫入
-  - VM workspace: Claude-edb-Project-V3（前端文件在此）
-  - Git repo: EDB-Circular-AI-analysis-system（後端文件必須寫到這裏）
-  - Mount 方法：request_cowork_directory 掛載 git repo 路徑
-* gpt-5-nano：temperature=1 / max_completion_tokens=16000 / role="developer"
-* Git push：git push https://Leonard-Wong-Git@github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git main
-* Workflow 觸發：手動 GitHub Actions / 安全模式：days-3（33秒）/ school-year（1h25m）
-* Mac git repo 路徑：
-  /Users/leonard/Library/Application Support/Claude/local-agent-mode-sessions/f52b21f7-e7c9-49a3-80dc-00ab322afbcf/51c234d2-cb9f-4b55-bb07-b71de9e93c27/local_e454964f-74da-4734-9a60-bf4b4362ca65/outputs/EDB-Circular-AI-analysis-system
+次要待辦（主系統穩定後進行）
+* D8/D9 月曆篩選邏輯
+* F4 書籤 badge 計數
+* H5 天數選擇器
+* H6 已跟進切換
+* K1 知識庫參考文件框架
+* R1 全角色職責精確度
+* LLM 引擎切換機制
 
-建議第一個動作：開啟 GitHub Pages 檢視 school-year 數據顯示效果，討論 K1/R1。
+⭐ 重要規則（RE06 新增）— 版本標籤同步
+每次成功新增/更新功能並 push 後，必須在同一 commit 或立即下一個 commit 更新
+edb-dashboard.html 的 5 處版本標籤。在 Mac Terminal（項目目錄內）執行：
+  sed -i '' 's/EDB 通告智能分析系統 vX\.X\.X/EDB 通告智能分析系統 vY.Y.Y/g' edb-dashboard.html
+  sed -i '' 's/vX\.X\.X-frontend/vY.Y.Y/g' edb-dashboard.html （如適用）
+  sed -i '' 's/ vX\.X\.X<\/span>/ vY.Y.Y<\/span>/g' edb-dashboard.html
+（VM 編輯路徑 ≠ Mac git repo 路徑，必須直接在 Mac Terminal 用 sed 執行）
+
+gpt-5-nano 必遵守規則
+* temperature=1（固定，否則 400 Bad Request）
+* max_completion_tokens=16000（非 max_tokens）
+* role="developer"（非 "system"）
+
+Git 操作注意
+* Mac git repo 路徑：find ~/Library -maxdepth 12 -name "edb-dashboard.html" 2>/dev/null
+* Push：git push https://Leonard-Wong-Git@github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git main
+* GitHub Actions 會自動 commit circulars.json，push 前先 git pull --rebase
+* Workflow 觸發：手動到 GitHub Actions 點 Run workflow（無 push 觸發）
+* 安全模式：days-3（33 秒，穩定）；school-year 模式尚未完整實測
+
+建議第一個動作
+確認 https://leonard-wong-git.github.io/EDB-AI-Circular-System/ 顯示 v1.1.0，
+然後討論下一步：K1/R1 知識框架，或次要 UI 功能（D8/D9, F4, H5, H6）。
 ```
 
 ---
