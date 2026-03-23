@@ -1,16 +1,17 @@
 # 📋 EDB 通告智能分析系統
 ### EDB Circular AI Analysis System
 
-> **版本 / Version:** v0.1.0-mockup — 2026-03-09
-> **狀態 / Status:** 🟡 Mockup 階段（正式開發中）
+> **版本 / Version:** v2.1.0 — 2026-03-22
+> **狀態 / Status:** 🟢 正式版，線上運行中
+> **Demo:** https://leonard-wong-git.github.io/EDB-AI-Circular-System/
 
 ---
 
 ## 📖 項目簡介
 
-本系統旨在自動抓取香港教育局（EDB）通告，利用 OpenAI gpt-5-nano 模型進行智能分析，並以互動式 Dashboard 呈現，幫助學校行政人員、教師及供應商快速掌握通告要點、截止日期及行動方案。
+本系統自動抓取香港教育局（EDB）通告，利用 OpenAI gpt-5-nano 模型進行 AI 分析，並以互動式 Dashboard 呈現。幫助學校行政人員、教師及供應商快速掌握通告要點、截止日期及行動方案。
 
-This system automatically scrapes Hong Kong Education Bureau (EDB) circulars, performs AI analysis using OpenAI's gpt-5-nano model, and presents results in an interactive dashboard — helping school administrators, teachers, and vendors quickly grasp key points, deadlines, and action items.
+This system automatically scrapes Hong Kong Education Bureau (EDB) circulars, performs AI analysis using OpenAI gpt-5-nano, and presents results in an interactive dashboard — helping school administrators, teachers, and vendors quickly grasp key points, deadlines, and action items.
 
 ---
 
@@ -18,14 +19,17 @@ This system automatically scrapes Hong Kong Education Bureau (EDB) circulars, pe
 
 | 功能 | 狀態 | 說明 |
 |------|------|------|
-| 🤖 LLM 智能分析 | ✅ 規劃完成 | gpt-5-nano 多角色分析，400-600字摘要 |
-| 📊 Dashboard 總覽 | 🟡 Mockup | 統計卡片、截止倒數、篩選列表 |
-| 👥 六角色分析 | 🟡 Mockup | 校長/副校長/科主任/教師/行政/供應商 |
-| 📅 月曆視圖 | 🟡 Mockup | 藍/紅點標記發佈與截止日期 |
-| 🏢 供應商分頁 | 🟡 Mockup | 供應商相關通告篩選 |
-| 🔄 版本比較 | 🟡 Mockup | 通告更新差異分析 |
-| 🐍 後端爬蟲 | ⏳ 待開發 | ASP.NET WebForms POST 抓取 |
-| 📄 PDF 解析 | ⏳ 待開發 | pdfplumber 全文提取 |
+| 🏠 首頁 | ✅ v2.1.0 | 最新通告、需關注項、即將截止一覽 |
+| 📊 通告總覽 | ✅ 正式版 | 統計卡片、篩選、搜尋、卡片/列表切換 |
+| 🤖 AI 智能分析 | ✅ 正式版 | gpt-5-nano 多角色分析，含摘要/行動/截止 |
+| 👥 六角色視圖 | ✅ 正式版 | 校長/副校長/科主任/教師/行政/供應商 |
+| 📅 月曆視圖 | ✅ 正式版 | EDBC 格式通告、截止日期標記 |
+| 💰 資源申請 | ✅ 正式版 | 可申請撥款追蹤 |
+| ⭐ 收藏 / 📌 釘選 | ✅ 正式版 | 一般收藏 vs 常備參考通告 |
+| 🏢 供應商分頁 | ✅ 正式版 | 供應商相關通告、法規參考 |
+| 🔄 版本比較 | ✅ 正式版 | 通告更新差異分析 |
+| 🐍 後端爬蟲 | ✅ 正式版 | ASP.NET WebForms POST 抓取 + PyMuPDF |
+| ⚙️ GitHub Actions CI | ✅ 正式版 | 每天 3 次自動更新 + 手動 school-year |
 
 ---
 
@@ -37,17 +41,22 @@ EDB 網站 (ASP.NET WebForms)
     ▼
 edb_scraper.py              ← Python 後端管線
     ├── HTML 抓取（位置式解析）
-    ├── PDF 下載（pdfplumber）
-    ├── LLM 分析（gpt-5-nano, json_schema）
-    └── circulars.json 輸出
+    ├── PDF 下載 + 解析（PyMuPDF）
+    ├── AI 分析（gpt-5-nano, json_schema）
+    └── circulars.json 輸出（增量 merge）
          │
          ▼
-edb-dashboard.html          ← 單頁前端應用
+edb-dashboard.html          ← 單頁前端應用 (v2.1.0)
+    ├── 🏠 首頁
     ├── 📊 通告總覽
     ├── 📅 月曆視圖
+    ├── 💰 資源申請
+    ├── ⭐ 收藏
     ├── 🏢 供應商分頁
-    ├── ⚙️ 設定頁
-    └── 詳情面板（5個內部分頁）
+    └── ⚙️ 設定頁
+         │
+         ▼
+GitHub Actions → GitHub Pages (自動部署)
 ```
 
 ---
@@ -59,65 +68,58 @@ EDB-AI-Circular-System/
 ├── README.md                       ← 本文件
 ├── CHANGELOG.md                    ← 版本變更記錄
 ├── AGENTS.md                       ← AI Agent 治理規則（核心）
-├── CLAUDE.md                       ← Claude Code 自動讀取橋接
-├── GEMINI.md                       ← Gemini CLI 自動讀取橋接
+├── CLAUDE.md                       ← Claude 自動讀取橋接
+├── GEMINI.md                       ← Gemini 自動讀取橋接
 │
-├── edb-dashboard-mockup.html       ← ✅ v0.1.0 互動式 UI Mockup
-├── edb-dashboard.html              ← ⏳ 正式版前端（待開發）
-├── edb_scraper.py                  ← ⏳ 後端爬蟲管線（待開發）
-├── start.sh                        ← ⏳ 一鍵啟動腳本（待開發）
+├── edb-dashboard.html              ← ✅ v2.1.0 正式版前端（3,047 行）
+├── edb-dashboard-mockup.html       ← 舊版 v0.1.0 Mockup（已歸檔）
+├── index.html                      ← GitHub Pages 入口重定向
+├── edb_scraper.py                  ← ✅ 後端爬蟲管線（增量 merge）
+├── fetch_knowledge.py              ← EDB/ICAC 知識庫抓取工具
+├── requirements.txt                ← Python 依賴
+├── circulars.json                  ← AI 分析輸出（納入版控，Pages 所需）
 │
-├── circulars.json                  ← 爬蟲輸出（運行後生成，不納入版控）
+├── .github/workflows/
+│   └── update-circulars.yml        ← CI：每天 3 次 days-3 + 手動 school-year
 │
 └── dev/
-    ├── SESSION_HANDOFF.md          ← AI Agent 會話接力文件
+    ├── SESSION_HANDOFF.md          ← AI Agent 會話接力
     ├── SESSION_LOG.md              ← AI Agent 會話記錄
-    └── PROJECT_MASTER_SPEC.md      ← ⏳ 完整技術規格（待建立）
+    ├── CODEBASE_CONTEXT.md         ← 項目技術上下文
+    ├── ACCEPTANCE_CHECKLIST.md     ← 驗收清單（80+ 項）
+    ├── GIT_PUSH_MANUAL.md          ← Git push 操作手冊
+    ├── K1_KNOWLEDGE_INTERFACE_SPEC.md ← K1 知識庫接口合約
+    ├── v0.2.0-FRONTEND-SPEC.md     ← 前端規格 SSOT
+    └── knowledge/
+        └── role_facts.json         ← K1 基線知識庫（6 主題 × 7 角色）
 ```
 
 ---
 
 ## 🚀 快速開始
 
-### 前置要求
+### 線上 Demo
+
+直接訪問：https://leonard-wong-git.github.io/EDB-AI-Circular-System/
+
+### 本地運行
 
 ```bash
-# Python 3.9+
-python3 --version
+# 安裝依賴
+pip install requests beautifulsoup4 PyMuPDF openai
 
-# 建立虛擬環境
-cd ~/Downloads/EDB-AI-Circular-System
-python3 -m venv venv
-source venv/bin/activate
-
-# 安裝依賴（待開發完成後更新）
-pip install requests beautifulsoup4 pdfplumber openai
-```
-
-### 設定 API Key
-
-```bash
+# 設定 API Key
 export OPENAI_API_KEY="sk-..."
-```
 
-### 執行爬蟲（後端）
+# 抓取最近 3 天通告（增量，快速）
+python3 edb_scraper.py --days 3 --output ./circulars.json -v
 
-```bash
-# 完整執行（抓取 + PDF + LLM 分析）
-python3 edb_scraper.py --days 30 --output ./circulars.json -v
+# 抓取整個學年通告（完整，約 1.5 小時）
+python3 edb_scraper.py --school-year --output ./circulars.json -v
 
-# 快速測試（跳過 LLM）
-python3 edb_scraper.py --days 90 --skip-llm --output ./circulars.json
-
-# 僅重跑 LLM 分析
-python3 edb_scraper.py --llm-only --output ./circulars.json
-```
-
-### 啟動 Dashboard（前端）
-
-```bash
+# 啟動本地 Dashboard
 python3 -m http.server 8080
-# 開啟瀏覽器：http://localhost:8080/edb-dashboard.html
+# 開啟：http://localhost:8080/edb-dashboard.html
 ```
 
 > ⚠️ `circulars.json` 必須與 `edb-dashboard.html` 在同一目錄
@@ -128,25 +130,26 @@ python3 -m http.server 8080
 
 | 參數 | 預設值 | 說明 |
 |------|--------|------|
-| `--days N` | 90 | 抓取最近 N 天 |
-| `--from / --to` | 無 | 自訂日期範圍（YYYY-MM-DD） |
+| `--days N` | 90 | 抓取最近 N 天（增量 merge） |
+| `--school-year` | — | 抓取本學年（9月1日至今） |
+| `--from / --to` | — | 自訂日期範圍（YYYY-MM-DD） |
 | `--output / -o` | `./edb_data/circulars.json` | 輸出路徑 |
-| `--data-dir` | `./edb_data` | PDF 存放目錄 |
-| `--llm-only` | false | 僅重跑 LLM（必須搭配 `--output`） |
-| `--skip-llm` | false | 跳過 LLM 分析 |
+| `--llm-only` | false | 僅重跑 AI 分析（需已有快取） |
+| `--skip-llm` | false | 跳過 AI 分析 |
 | `--verbose / -v` | false | 詳細日誌 |
 
 ---
 
-## 🤖 LLM 規格
+## 🤖 AI 分析規格
 
 | 項目 | 規格 |
 |------|------|
 | 模型 | `gpt-5-nano`（固定） |
 | Temperature | `1`（固定，其他值會報 400 錯誤） |
-| Context Window | 400K tokens |
+| Role | `developer`（推理模型，非 `system`） |
+| max_completion_tokens | `16000`（最少，推理 token 消耗大） |
 | Structured Output | `json_schema`（非 `json_object`） |
-| 費用估算（40條） | ~$0.60–1.10 USD |
+| Context Window | 400K tokens |
 
 ---
 
@@ -163,68 +166,35 @@ python3 -m http.server 8080
 
 ---
 
-## ⚠️ 已知禁止做法
+## ⚠️ 已知限制
 
-| ❌ 錯誤做法 | ✅ 正確做法 |
-|------------|------------|
-| EDB 網站用 GET 帶參數 | 必須用 POST + ViewState |
-| CSS Class 選擇器解析 HTML | 位置式解析（`td[0]`, `td[1]`...） |
-| gpt-5-nano 設 temperature ≠ 1 | 固定使用 temperature = 1 |
-| `--llm-only` 不帶 `--output` | 必須加 `--output ./circulars.json` |
-| Structured Output 用 `json_object` | 必須用 `json_schema` |
-
----
-
-## 📊 成本估算
-
-| 操作 | 時間 | 費用 |
-|------|------|------|
-| 抓取 HTML | ~5 秒 | 免費 |
-| 下載 PDF（40條） | ~2 分鐘 | 免費 |
-| LLM 分析（40條） | ~15-20 分鐘 | ~$0.50–1.00 USD |
-| 版本比較 | ~1-2 分鐘 | ~$0.05–0.10 USD |
-| **總計** | **~20 分鐘** | **~$0.60–1.10 USD** |
+| 項目 | 說明 |
+|------|------|
+| EDB 網站須 POST | GET 無效；必須帶 ViewState |
+| gpt-5-nano temperature | 固定為 1，不可更改 |
+| AI 分析準確性 | AI 生成，可能存在錯誤，以 EDB 官方原文為準 |
+| 供應商圖表 | 目前為佔位符，待 scraper 新增統計字段 |
 
 ---
 
-## 🗺️ Roadmap
+## 🗺️ 版本歷史
 
-### v0.1.0-mockup ✅（當前版本）
-- [x] 項目治理框架（AGENTS.md）
-- [x] 需求文件解析
-- [x] 互動式 UI Mockup（edb-dashboard-mockup.html）
-  - [x] 4 主分頁（總覽/月曆/供應商/設定）
-  - [x] 詳情面板（5 個內部分頁）
-  - [x] 深色/淺色主題
-  - [x] 搜尋建議
+詳見 [CHANGELOG.md](./CHANGELOG.md)
 
-### v0.2.0-frontend（下一里程碑）
-- [ ] 正式版 `edb-dashboard.html`（功能完整，接 circulars.json）
-- [ ] 角色篩選實作
-- [ ] Excel / PDF 匯出功能
-- [ ] localStorage 偏好設定保存
-
-### v0.3.0-backend
-- [ ] `edb_scraper.py` 後端管線
-- [ ] ASP.NET WebForms POST 抓取
-- [ ] pdfplumber PDF 解析
-- [ ] gpt-5-nano LLM 分析整合
-
-### v1.0.0-release
-- [ ] 前後端完整聯調
-- [ ] 驗收標準全部通過（需求文件第八節）
-- [ ] `start.sh` 一鍵啟動
-- [ ] 文件完善
+- **v2.1.0** (2026-03-22) — 首頁分離、搜尋獨立、AI 改名、EDBC 月曆、scraper merge 修復
+- **v2.0.0** (2026-03-16) — 全面改版 Dashboard（37 項改進）
+- **v1.1.0** (2026-03-14) — 後端管線正式版（PyMuPDF + K1 + R1-v2）
+- **v0.1.0** (2026-03-09) — Mockup 階段
 
 ---
 
 ## 🤝 AI Agent 協作
 
-本項目採用 **Sustainable Session Governance** 模式，支援多 AI Agent 跨 session 協作：
+本項目採用 **Sustainable Session Governance** 模式：
 
-- **新 session 啟動：** 告知 Agent `Follow AGENTS.md`
-- **讀取順序：** `dev/SESSION_HANDOFF.md` → `dev/SESSION_LOG.md` → `dev/PROJECT_MASTER_SPEC.md`
-- **支援 Agent：** Claude (via CLAUDE.md), Gemini (via GEMINI.md), Codex (via AGENTS.md)
+- **新 session 啟動：** 告知 Agent `Read AGENTS.md first, then follow §1 startup sequence`
+- **讀取順序：** `dev/SESSION_HANDOFF.md` → `dev/SESSION_LOG.md` → `dev/CODEBASE_CONTEXT.md`
+- **主要 workspace：** `Claude-edb-Project-V3`（開發）→ `EDB-Circular-AI-analysis-system`（git push）
 
 詳見 [AGENTS.md](./AGENTS.md)
 
@@ -238,5 +208,6 @@ Private project — Leonard Wong (leonard.ai.wong@gmail.com)
 
 ## 🔗 相關連結
 
-- EDB 通告來源：https://applications.edb.gov.hk/circular/circular.aspx?langno=2
-- OpenAI API：https://platform.openai.com/docs
+- **Live Demo:** https://leonard-wong-git.github.io/EDB-AI-Circular-System/
+- **EDB 通告來源:** https://applications.edb.gov.hk/circular/circular.aspx?langno=2
+- **OpenAI API:** https://platform.openai.com/docs

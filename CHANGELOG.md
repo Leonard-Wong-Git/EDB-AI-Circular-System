@@ -7,9 +7,103 @@
 
 ## [Unreleased]
 
-### Planned — v1.1.0
+### Planned — v2.2.0
+- 供應商圖表真實數據字段（scraper 新增統計欄位）
+- AI 引擎切換機制
 - Mobile 優化（A6 批次）
-- 自訂域名設定（CNAME）
+- K1 第二階段：PDF 提取真實 EDB 知識
+
+---
+
+## [v2.1.0] — 2026-03-22
+
+### 里程碑：Dashboard 首頁分離 + 搜尋獨立 + AI 重構 + Scraper Merge 修復 ✅
+
+#### Added
+- **🏠 首頁 tab**（新增第一個 tab）：最新 6 條通告 + 需關注項 + 即將截止一覽
+- **搜尋結果獨立 panel**：搜尋不再篩選通告總覽，改為 dropdown overlay 顯示結果
+- **供應商法規參考連結**：廉政公署學校防貪指引、EDB 學校財務管理、資助學校資助則例
+- **供應商圖表佔位**：supplierChartContent（待 scraper 新增數據字段後啟用）
+
+#### Changed
+- **Stats buttons toggle 行為**：本月通告/需關注/即將截止 再按一次返回首頁（S._homeFilter 狀態）
+- **通告總覽重置**：每次切換至通告總覽 tab 自動 resetOverviewFilters()，顯示全部通告
+- **LLM → AI 全面改名**：所有用戶可見文字 LLM 改為 AI
+- **詳情面板重構**：PDF 連結置頂（dp-pdf-section），AI 分析/角色/比較三分頁
+- **月曆 EDBC 格式**：通告標題由數字改為 EDBC046 格式
+- **系統說明精簡**：精簡為 7 行一句式描述
+- **edb_scraper.py PHASE 4 Merge 修復**：days-3 模式改為 load 現有 circulars.json 後 merge，不再覆蓋全量數據
+
+#### Fixed
+- 移除預設釘選通告（「三個常備參考通告已預設釘選」→「按 📌 釘選長期適用的通告」）
+- dpBookmarkBtn null-check（避免 JavaScript 錯誤）
+- brand div 多餘引號 HTML 瑕疵
+
+#### Technical
+- edb-dashboard.html：2,766 → 3,047 行
+- 24/24 structural QC checks 通過；Node.js JS syntax check 通過
+- Scraper merge：days-3 run 記錄 `new/updated/kept` 統計；date_from/date_to 反映實際數據範圍
+- GitHub Pages v2.1.0 已部署（commit `5b45df0`）
+
+---
+
+## [v2.0.0] — 2026-03-16
+
+### 里程碑：Dashboard 全面改版（37 項改進）+ 後端 R1-v2 角色精確度 ✅
+
+#### Added / Changed（節錄）
+- 版本管理系統（VERSION 常數、版本號連按 5 次）
+- 4 色調 × 深淺主題系統重構
+- 通告號格式改為 EDBCM029/2026
+- PDF 連結 buildPdfLinks() helper
+- K1 知識注入 + R1-v2 角色精確度（few-shot + postprocess filter）
+- school-year workflow 支援（GitHub Actions）
+- circulars.json 涵蓋整個學年
+
+---
+
+## [v1.1.1] — 2026-03-14
+
+### 里程碑：PDF timeout 徹底修復 + 版本標籤同步 ✅
+
+#### Fixed
+- `edb_scraper.py`：`proc.terminate()` (SIGTERM) → `proc.kill()` (SIGKILL)
+  - SIGTERM 被 pdfminer C 擴展忽略（RE01–RE05 五次嘗試均失敗）
+  - SIGKILL 由 OS kernel 直接強殺，C 擴展無法攔截
+  - GitHub Actions workflow 由卡死 30–60+ 分鐘 → **33 秒完成** ✅
+- `edb_scraper.py`：`proc.join()` → `proc.join(2)` 加 2 秒回收安全邊際
+- `edb_scraper.py`：pdfminer 所有 sub-logger 設定 ERROR 級別（雙重：worker 子程序 + main process）
+  - 修復前：107,000+ 行 DEBUG flood 導致 Actions runner 日誌爆炸
+- `edb-dashboard.html`：版本標籤 v0.2.0 → v1.1.0（5 處全部同步）
+
+#### Verified
+- GitHub Actions `days-3` workflow 實測：33 秒完成 ✅
+- GitHub Pages 顯示 v1.1.0 ✅
+- Python `ast.parse` 語法驗證通過 ✅
+
+#### Process Rule Added
+- 每次功能 push 後必須同步更新 edb-dashboard.html 的 5 處版本標籤（見 SESSION_HANDOFF.md）
+
+---
+
+## [v1.1.0] — 2026-03-11
+
+### 里程碑：8 項 Dashboard 新功能上線 ✅
+
+#### Added
+- **F1 排序持久化**：排序狀態存入 localStorage，重開頁面保留上次排序
+- **F2 時段自動主題**：07:00–18:00 自動淺色；其餘時段深色；每 60 秒重評
+- **C1 狀態互通**：多處狀態按鈕即時同步（`syncStatusBtns`）；書籤 badge 即時更新
+- **C2 資源狀態有意義**：資源申請狀態（申請中/已申請/已截止）驅動 row 背景色
+- **B5 CSV 增強**：匯出新增「行動數」+「AI 摘要前 200 字」欄位
+- **B6 格式化列印**：新視窗開啟結構化 HTML 報告，含列印/關閉按鈕
+- **B7 .ics 日曆匯出**：iCalendar 格式，含所有截止日期；工具列新增 📅 日曆按鈕
+- **B8 多選批量匯出**：浮動批量操作列；卡片選中框；工具列新增 ☑️ 多選按鈕
+
+#### Verified
+- HTML 語法驗證通過（html.parser，標籤平衡）✅
+- 11 個新函數 grep 確認存在 ✅
+- edb-dashboard.html：2,453 → 2,796 行 ✅
 
 ---
 

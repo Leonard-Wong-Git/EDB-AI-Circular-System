@@ -73,11 +73,11 @@ git checkout v2.1.0-dashboard
 ## Open Priorities
 1. ✅ ~~v2.0.0 Dashboard 37 項改版~~ **已完成（2026-03-16）**
 2. ✅ ~~v2.1.0 Dashboard 14 項修復~~ **已完成（2026-03-22）；24/24 QC 通過；GitHub Pages 已部署**
-3. **[下一步 ⭐]** 觸發 school-year workflow → 載入全量通告（目前 circulars.json 僅 1 條，因 days-3 覆蓋了 school-year 數據）
-4. **[重要]** 修復 edb_scraper.py：`days-3` 模式應 merge 舊數據，而非覆蓋 `circulars.json`
+3. ✅ ~~觸發 school-year workflow~~ **用戶已手動觸發（2026-03-22/23）**
+4. ✅ ~~修復 edb_scraper.py days-3 merge~~ **已完成（2026-03-23）；PHASE 4 merge + sort**
 5. **[重要]** 修復 SESSION_HANDOFF.md 被 rebase 覆蓋問題：下次 push 前先 `cp` 最新版本到 git repo 再 push
-6. **[選做]** README.md / CHANGELOG.md 更新（仍顯示 v0.1.0-mockup）
-7. **[選做]** 供應商統計新數據字段（scraper 修改，目前圖表為 placeholder）
+6. ✅ ~~README.md / CHANGELOG.md 更新~~ **已完成（2026-03-23）；v2.1.0 正式版**
+7. **[下一步 ⭐]** 供應商統計新數據字段（scraper 修改，目前圖表為 placeholder）
 8. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
 9. **[選做]** LLM 引擎切換機制
 
@@ -110,10 +110,7 @@ git checkout v2.1.0-dashboard
    - `"system"` role → 必須用 `"developer"` role（推理模型）
    - `max_completion_tokens` 最少 16000
 2. EDB 網站需 POST + ViewState（GET 無效），解析用位置式（非 CSS class）
-3. **⚠️ days-3 覆蓋問題（2026-03-22 確認）：**
-   - `days-3` 模式直接覆蓋 circulars.json，school-year 全量數據會被後續 days-3 覆蓋
-   - 影響：GitHub Pages 通告總覽只顯示最近幾天數據
-   - 修復方向：scraper days-3 模式應載入現有數據後 merge，而非重寫整個 JSON
+3. ✅ ~~days-3 覆蓋問題~~ **已修復（2026-03-23）：** PHASE 4 現在 load existing JSON → merge raw → sort by date desc → save
 4. **⚠️ git rebase 治理文件覆蓋風險（2026-03-22 確認）：**
    - GitHub Actions 定時 commit 導致遠端常領先本地
    - `git pull --rebase` 可能覆蓋 SESSION_HANDOFF.md / SESSION_LOG.md
@@ -134,35 +131,35 @@ git checkout v2.1.0-dashboard
 3. school-year 最後成功：1h 23m（16 hours ago as of 2026-03-22）
 
 ## Consolidation Watchlist
-1. SESSION_HANDOFF.md 被 rebase 覆蓋：下次 session 開始需確認版本
-2. days-3 覆蓋 school-year 數據：需 scraper 修復
+1. SESSION_HANDOFF.md 被 rebase 覆蓋：下次 session 開始需確認版本（push 前先 cp）
+2. ✅ ~~days-3 覆蓋 school-year 數據~~ 已修復（2026-03-23 PHASE 4 merge）
 
 ## Update Rule
 This file and `dev/SESSION_LOG.md` must be updated at the end of every session.
 
 ## Last Session Record
-1. UTC date: 2026-03-22
-2. Session ID: Claude_20260322_1520（v2.1.0 Dashboard 14 項修復 + GitHub Pages 部署）
+1. UTC date: 2026-03-23
+2. Session ID: Claude_20260323_0000（scraper merge fix + docs update）
 3. Completed:
-   - ✅ v2.1.0 Dashboard 14 項修復（edb-dashboard.html 2766→3047 行）
-   - ✅ 24/24 structural QC checks 通過；JS syntax 通過
-   - ✅ GitHub Pages v2.1.0 已部署（commit `5b45df0`）
-   - ✅ 目視驗證：🏠 首頁 tab、通告總覽、v2.1.0 標題確認
-   - ✅ 診斷 circulars.json 只有 1 條原因（days-3 覆蓋 school-year）
-   - ✅ SESSION_HANDOFF.md 被 rebase 覆蓋後重新修復
+   - ✅ edb_scraper.py PHASE 4 merge fix（days-3 不再覆蓋 school-year 數據）
+   - ✅ README.md 完整重寫（v0.1.0-mockup → v2.1.0 正式版）
+   - ✅ CHANGELOG.md 新增 v2.1.0 完整條目
+   - ✅ CODEBASE_CONTEXT.md 更新（v2.1.0, Key Decision #9 merge fix）
+   - ✅ 所有文件同步至 EDB-Circular-AI-analysis-system git repo
 4. Pending：
-   - school-year workflow 手動觸發（恢復全量通告）
-   - scraper days-3 merge 修復
-   - README.md / CHANGELOG.md 更新
-   - 供應商圖表數據字段（scraper）
+   - 供應商統計新數據字段（scraper 修改）
+   - K1 第二階段（長期）
 5. Next priorities (max 3):
-   - 手動觸發 school-year workflow → 恢復全量通告
-   - 修復 scraper days-3 merge 問題
-   - README.md / CHANGELOG.md 更新
-6. Risks / blockers: days-3 覆蓋問題；git rebase 治理文件風險
+   - Mac Terminal: git push 新的 scraper + docs
+   - 確認 school-year workflow 已恢復全量通告
+   - 供應商圖表數據字段（scraper）
+6. Risks / blockers: git rebase 治理文件覆蓋風險（push 前 cp）
 7. Files materially changed:
-   - `edb-dashboard.html`（兩個 workspace，v2.0.0→v2.1.0）
-   - `dev/SESSION_HANDOFF.md`（更新）
-   - `dev/SESSION_LOG.md`（更新）
-8. Validation summary: 24/24 QC ✅；GitHub Pages v2.1.0 ✅；1 circular = days-3 覆蓋問題（已知）
-9. Git commits: `5b45df0` feat: v2.1.0 dashboard — 14 fixes（已 push ✅）
+   - `edb_scraper.py`（PHASE 4 merge fix）
+   - `README.md`（v2.1.0 完整重寫）
+   - `CHANGELOG.md`（v2.1.0 條目）
+   - `dev/CODEBASE_CONTEXT.md`（v2.1.0 更新）
+   - `dev/SESSION_HANDOFF.md`（本次更新）
+   - `dev/SESSION_LOG.md`（本次更新）
+8. Validation summary: ast.parse PASS ✅；merge simulation PASS ✅；docs QC manual review PASS ✅
+9. Git commits: 待 push（見 Mac Terminal push 指引）

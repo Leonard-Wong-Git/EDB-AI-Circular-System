@@ -259,45 +259,10 @@ grant_info：
   none               — 無資助，amount_hkd / amount_label / resource_value_hkd 填 null
 
 roles（每角色分析）：
-  r    — 該角色是否有「直接職責」（true/false）
-  pts  — 重點事項，最多 3 項中文短句（r=true 才填；必須為該角色獨有職責，非泛泛「知悉」）
-  acts — 具體行動，最多 3 項（r=true 才填；r=false 則為空數組 []）
+  r    — 此通告是否與該角色相關（true/false）
+  pts  — 重點事項，最多 3 項中文短句
+  acts — 具體行動，最多 3 項（如無需行動則為空數組）
   角色清單：principal, vice_principal, department_head, teacher, eo_admin, supplier
-
-  ⭐ r=true 條件（符合至少一項）：
-    1. 通告明確點名要求該角色採取行動或作出決定
-    2. 該角色需提交文件、申請、報告、或出席指定活動
-    3. 該角色的日常工作範疇受到直接影響（如課程調整影響教師，採購流程影響 eo_admin）
-
-  ⛔ r=false 的情況（符合任一項則設為 false）：
-    1. 該角色只是被動「知悉」，無需採取任何具體行動
-    2. 職責僅為「協助上司執行」，無獨立責任
-    3. 通告內容完全不涉及該角色的工作範疇
-    4. supplier：僅適用於採購/招標/資源供應類通告；一般政策/課程/行政通告一律 false
-
-  角色職責邊界（只在範疇內才標 true）：
-    principal      — 全校決策、審批預算、對外簽署、收取校長信、政策執行責任
-    vice_principal — 課程統籌、教師人事協調、跨部門執行（≠ 只是「協助校長」）
-    department_head— 科務決策、課程調整、科內資源管理、科目評核改動
-    teacher        — 課堂執行、學生直接指導、個人培訓登記、教學改動、個人申請
-    eo_admin       — 行政申請、採購、文書記錄、預算記錄、校內通告發布
-    supplier       — 投標、供應合約、EDB 採購計劃的直接供應商
-
-  ⚠️ 每條通告預期只有 2-4 個角色為 true（全部 true 是罕見例外，只適用於全校必須共同參與的大型計劃）
-
-  ━━━ 角色標記參考範例 ━━━
-
-  範例 A —「申請發還差餉及地租的年終安排」
-  ✅ principal (審批)、eo_admin (提交申請)
-  ❌ vice_principal (無獨立職責)、department_head (非科務)、teacher (非教學相關)、supplier (非採購)
-
-  範例 B —「員工交流計劃：教師借調 / 自願調任 / 跨職系調配」
-  ✅ principal (審批推薦)、teacher (個人申請)
-  ❌ vice_principal (無獨立職責)、department_head (非科務決策)、eo_admin (非行政申請)、supplier (無關)
-
-  範例 C —「派發有關熱帶氣旋安排的宣傳物品」
-  ✅ principal (決定分發)、eo_admin (物料管理分發)
-  ❌ vice_principal (無獨立職責)、department_head (非科務)、teacher (非教學改動)、supplier (非採購通告)
 
 deadlines（截止日期）：
   apply_deadline      — 申請撥款/服務的截止
@@ -673,19 +638,12 @@ class LLMAnalyzer:
             )
             raw = resp.choices[0].message.content
             result = json.loads(raw)
-            # R1 post-processing: tighten role relevance
-            result = _postprocess_roles(result)
             if self.verbose:
-                role_count = sum(
-                    1 for d in result.get("roles", {}).values()
-                    if isinstance(d, dict) and d.get("r")
-                )
                 self.log.debug(
                     f"  ← impact={result.get('impact')} "
                     f"compliance={result.get('compliance')} "
                     f"deadlines={len(result.get('deadlines', []))} "
-                    f"actions={len(result.get('actions', []))} "
-                    f"roles={role_count}/6"
+                    f"actions={len(result.get('actions', []))}"
                 )
             return result
         except json.JSONDecodeError as exc:
@@ -710,172 +668,7 @@ class LLMAnalyzer:
             lines += ["【通告全文（PDF 提取）】", circ["pdf_text"]]
         elif not circ.get("official"):
             lines.append("（注意：未能提取通告全文，請根據標題及通告號作合理推斷）")
-
-        # K1 Knowledge injection — load role/topic facts from role_facts.json
-        knowledge = _load_knowledge_context(
-            _detect_topics_early(
-                circ.get("title", ""),
-                circ.get("official", "") + " " + circ.get("pdf_text", ""),
-            )
-        )
-        if knowledge:
-            lines += ["", knowledge]
-
         return "\n".join(lines)
-
-
-# =============================================================================
-# K1 KNOWLEDGE INJECTION
-# Reads dev/knowledge/role_facts.json and injects relevant facts into LLM prompt.
-# To upgrade knowledge quality: replace role_facts.json — no code change needed.
-# Interface spec: dev/K1_KNOWLEDGE_INTERFACE_SPEC.md
-# =============================================================================
-
-def _detect_topics_early(title: str, text: str) -> list:
-    """Keyword-based topic detection from circular title + text (pre-LLM).
-    Returns list of matching topic IDs from role_facts.json.
-    Falls back to ['general'] if no match.
-    """
-    combined = (title + " " + text).lower()
-    matches = []
-    topic_keywords = {
-        "finance":    ["採購", "財務", "津貼", "撥款", "資助", "金額", "申請款項", "財政", "費用", "預算", "整筆"],
-        "hr":         ["教師", "教職員", "人力", "cpd", "培訓", "聘任", "晉升", "薪酬", "員工", "專業發展", "持續進修"],
-        "curriculum": ["課程", "科目", "評估", "學習", "教學", "考試", "評核", "課時", "stem", "通識", "公民"],
-        "activity":   ["活動", "考察", "旅行", "比賽", "遠足", "境外", "海外", "外出", "表演", "展覽"],
-        "student":    ["學生", "意外", "安全", "健康", "sen", "特殊教育", "融合", "欺凌", "輔導", "精神健康"],
-        "it":         ["資訊科技", "電腦", "網絡", "設備", "it", "軟件", "硬件", "數碼", "人工智能"],
-    }
-    for topic_id, keywords in topic_keywords.items():
-        if any(kw in combined for kw in keywords):
-            matches.append(topic_id)
-    return matches if matches else ["general"]
-
-
-def _load_knowledge_context(topics: list, budget: int = 600) -> str:
-    """Load and format knowledge snippets for the given topics.
-    Reads from dev/knowledge/role_facts.json (K1 interface slot).
-    Returns a formatted string ≤ budget chars, or '' if file missing/empty.
-    """
-    facts_path = Path(__file__).parent / "dev" / "knowledge" / "role_facts.json"
-    if not facts_path.exists():
-        return ""
-    try:
-        with open(facts_path, encoding="utf-8") as f:
-            db = json.load(f)
-    except Exception:
-        return ""
-
-    seen: set = set()
-    bullets: list = []
-    char_count = 0
-    header = "【背景知識參考】\n"
-
-    for topic_id in topics:
-        topic_data = db.get(topic_id, {})
-        if not topic_data:
-            continue
-        label = topic_data.get("_label", topic_id)
-        # Collect all_roles first, then role-specific (flattened; no role filter pre-LLM)
-        for key in ["all_roles"] + [k for k in topic_data if not k.startswith("_") and k != "all_roles"]:
-            for fact in topic_data.get(key, []):
-                if fact in seen:
-                    continue
-                seen.add(fact)
-                line = f"[{label}] {fact}"
-                if char_count + len(line) + 1 > budget:
-                    return header + "\n".join(f"- {b}" for b in bullets)
-                bullets.append(line)
-                char_count += len(line) + 1
-
-    if not bullets:
-        return ""
-    return header + "\n".join(f"- {b}" for b in bullets)
-
-
-# ── R1 Post-processing: tighten role relevance ──────────────────────────────
-
-# Generic phrases that indicate passive awareness, not direct responsibility.
-_WEAK_ACT_PATTERNS = [
-    "知悉", "了解", "留意", "注意", "配合", "遵守", "按指示",
-    "協助校長", "協助上司", "一般了解", "一般配合",
-    "提交所需證明", "遵守時限", "按時完成",
-    "協助資料核對", "協助資料整理", "協助分發",
-    "轉發通知", "轉發通告", "傳閱",
-    "存檔", "備案", "歸檔",
-    "提交回饋報告", "整理月度報告",
-    "協調IT", "協調媒體",
-]
-
-# Patterns in pts that suggest passive awareness, not active responsibility.
-_WEAK_PTS_PATTERNS = [
-    "一般知悉", "被動", "純粹了解", "備悉",
-    "監督分發紀錄", "協調部門資源",
-    "確保物料適用", "配合校方",
-]
-
-
-def _postprocess_roles(result: dict) -> dict:
-    """Demote roles where LLM assigned r=true but acts are mostly weak/generic.
-
-    Rules:
-      1. If acts is empty but r=true → set r=false
-      2. If ≥ 2/3 acts match weak patterns → set r=false
-      3. If ALL pts match weak patterns → set r=false
-      4. supplier: r=false unless grant_info.type in (applicable, resource)
-         or tags contain procurement keywords
-    """
-    roles = result.get("roles", {})
-    if not roles:
-        return result
-
-    grant_type = result.get("grant_info", {}).get("type", "none")
-    tags_str = " ".join(result.get("tags", []))
-    has_procurement = grant_type in ("applicable", "resource") or any(
-        kw in tags_str for kw in ["採購", "招標", "供應", "投標", "合約"]
-    )
-
-    for rname, rdata in roles.items():
-        if not isinstance(rdata, dict) or not rdata.get("r"):
-            continue
-
-        acts = rdata.get("acts", [])
-        pts = rdata.get("pts", [])
-
-        # Rule 1: r=true but no acts at all
-        if not acts:
-            rdata["r"] = False
-            rdata["pts"] = []
-            continue
-
-        # Rule 2: ≥ 2/3 acts are weak/generic → demote
-        weak_count = sum(
-            1 for act in acts
-            if any(wp in act for wp in _WEAK_ACT_PATTERNS)
-        )
-        if len(acts) > 0 and weak_count / len(acts) >= 0.67:
-            rdata["r"] = False
-            rdata["pts"] = []
-            rdata["acts"] = []
-            continue
-
-        # Rule 3: all pts are weak
-        if pts and all(
-            any(wp in pt for wp in _WEAK_PTS_PATTERNS) for pt in pts
-        ):
-            rdata["r"] = False
-            rdata["pts"] = []
-            rdata["acts"] = []
-            continue
-
-        # Rule 4: supplier special rule
-        if rname == "supplier" and not has_procurement:
-            rdata["r"] = False
-            rdata["pts"] = []
-            rdata["acts"] = []
-
-    result["roles"] = roles
-    return result
 
 
 # =============================================================================
@@ -1124,12 +917,6 @@ def run_pipeline(args) -> int:
                 for key in _empty_analysis():
                     if key not in circ:
                         circ[key] = existing[num].get(key)
-                # Restore official text from cache: prevents subsequent runs from
-                # clearing an already-populated official field when PDF re-extraction
-                # fails (e.g. GitHub Actions env differences).
-                if not circ.get("official") and existing[num].get("official"):
-                    circ["official"] = existing[num]["official"]
-                    log.debug(f"  {num}: official restored from cache")
                 continue
 
             if not circ.get("pdf_text") and not circ.get("official"):
@@ -1147,12 +934,33 @@ def run_pipeline(args) -> int:
                 time.sleep(0.3)
 
     # =========================================================================
-    # PHASE 4 — SAVE
+    # PHASE 4 — MERGE + SAVE
+    # Merge this run's results into the existing dataset so that incremental
+    # (days-3) runs do NOT overwrite school-year full data.
+    # New/updated records take priority; existing records not in this run are kept.
     # =========================================================================
-    log.info("━━━ Phase 4: SAVE ━━━")
+    log.info("━━━ Phase 4: MERGE + SAVE ━━━")
+
+    # Merge: start with existing, then overlay with this run's fresh results
+    merged: dict[str, dict] = dict(existing)
+    for circ in raw:
+        num = circ.get("number", "")
+        if num:
+            merged[num] = circ  # new/updated overwrites existing entry
+
+    # Sort merged results by date descending (newest first)
+    merged_sorted = sorted(merged.values(),
+                           key=lambda c: c.get("date", "1970-01-01"),
+                           reverse=True)
+
+    new_count     = sum(1 for c in raw if c.get("number") and c["number"] not in existing)
+    updated_count = sum(1 for c in raw if c.get("number") and c["number"] in existing)
+    kept_count    = len(merged) - len(raw)
+    log.info(f"  Merge result: {new_count} new + {updated_count} updated + {kept_count} kept "
+             f"= {len(merged)} total")
 
     output_list = []
-    for idx, circ in enumerate(raw):
+    for idx, circ in enumerate(merged_sorted):
         # Merge defaults for any missing fields
         defaults = _empty_analysis()
         for key, val in defaults.items():
@@ -1190,13 +998,18 @@ def run_pipeline(args) -> int:
         }
         output_list.append(record)
 
+    # Compute actual date range across all merged circulars
+    all_dates = [c["date"] for c in output_list if c.get("date") and c["date"] != "1970-01-01"]
+    actual_date_from = min(all_dates) if all_dates else date_from_iso
+    actual_date_to   = max(all_dates) if all_dates else datetime.now().strftime("%Y-%m-%d")
+
     output = {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "model":        args.model if not args.dry_run else "dry-run",
         "temperature":  LLM_TEMPERATURE,
         "range":        range_label,
-        "date_from":    date_from_iso,
-        "date_to":      datetime.now().strftime("%Y-%m-%d"),
+        "date_from":    actual_date_from,    # earliest date in merged dataset
+        "date_to":      actual_date_to,      # latest date in merged dataset
         "days":         args.days,           # kept for backward-compat
         "count":        len(output_list),
         "circulars":    output_list,

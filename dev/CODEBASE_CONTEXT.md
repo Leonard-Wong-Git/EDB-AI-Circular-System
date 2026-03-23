@@ -27,17 +27,17 @@ EDB-Circular-AI-analysis-system/
 ├── AGENTS.md                       # Governance SSOT
 ├── CLAUDE.md                       # Claude bridge (@AGENTS.md)
 ├── GEMINI.md                       # Gemini bridge (@./AGENTS.md)
-├── README.md                       # Project overview (outdated — still says v0.1.0-mockup)
-├── CHANGELOG.md                    # Version history (up to v1.0.1-hosting)
+├── README.md                       # Project overview (v2.1.0; updated 2026-03-23)
+├── CHANGELOG.md                    # Version history (up to v2.1.0)
 ├── .gitignore                      # Standard exclusions
 │
-├── edb-dashboard.html              # ★ v2.0.0 production Dashboard (2766 lines)
+├── edb-dashboard.html              # ★ v2.1.0 production Dashboard (3,047 lines)
 ├── edb-dashboard-mockup.html       # Legacy v0.1.0 mockup (archived)
 ├── index.html                      # GitHub Pages redirect → edb-dashboard.html
-├── edb_scraper.py                  # ★ Backend pipeline (scrape + LLM + R1-v2 postprocess)
+├── edb_scraper.py                  # ★ Backend pipeline (scrape + AI + R1-v2 postprocess; PHASE 4 merge fix)
 ├── fetch_knowledge.py              # EDB/ICAC knowledge fetcher
 ├── requirements.txt                # Python deps (requests, bs4, PyMuPDF, openai, lxml)
-├── circulars.json                  # ★ LLM analysis output (school-year, 108 circulars)
+├── circulars.json                  # ★ AI analysis output (incremental merge; school-year full data)
 │
 ├── .edb_cache/                     # PDF cache (not versioned)
 ├── .github/workflows/
@@ -164,9 +164,10 @@ python3 -m http.server 8080
 | 3 | gpt-5-nano fixed constraints | 2026-03-10 | temperature=1 mandatory; developer role; max_completion_tokens≥16000; json_schema (not json_object) |
 | 4 | K1 knowledge injection via role_facts.json | 2026-03-16 | Decoupled from PDF extraction project; interface contract in K1_KNOWLEDGE_INTERFACE_SPEC.md |
 | 5 | R1-v2 three-layer role accuracy | 2026-03-16 | Prompt criteria + few-shot examples + _postprocess_roles() — LLM over-assigns roles without all three |
-| 6 | v2.0.0 dashboard as single HTML file | 2026-03-16 | No framework; all CSS/JS inline; 2766 lines; centralized VERSION constant |
+| 6 | Dashboard as single HTML file | 2026-03-16 | No framework; all CSS/JS inline; v2.1.0 = 3,047 lines; centralized VERSION constant |
 | 7 | CI conflict strategy: fetch+reset | 2026-03-16 | Workflow saves fresh JSON to /tmp, resets to remote, copies back — avoids rebase conflicts with local pushes |
 | 8 | Frontend spec SSOT in v0.2.0-FRONTEND-SPEC.md | 2026-03-10 | All frontend feature decisions documented here; user confirmed |
+| 9 | Scraper PHASE 4 merge (not overwrite) | 2026-03-23 | days-3 mode was overwriting entire circulars.json; PHASE 4 now loads existing JSON, merges raw results in, sorts by date desc — prevents school-year data loss |
 
 ---
 
@@ -175,3 +176,4 @@ python3 -m http.server 8080
 | Date | Session ID | Action |
 |------|-----------|--------|
 | 2026-03-17 | Claude_20260317_0800 | Initial CODEBASE_CONTEXT.md generation. Scanned: README.md, CHANGELOG.md, requirements.txt, .gitignore, .github/workflows/update-circulars.yml, dev/SESSION_HANDOFF.md, dev/SESSION_LOG.md. Consolidated External Services from SESSION_LOG + Known Risks. |
+| 2026-03-23 | Claude_20260323_0000 | v2.1.0 update: dashboard 2766→3,047 lines, README rewritten, CHANGELOG updated, Key Decision #9 (PHASE 4 merge fix). |

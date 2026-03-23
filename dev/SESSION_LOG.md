@@ -1,5 +1,62 @@
 # Session Log
 
+## 2026-03-23 Scraper Merge Fix + Docs Update (v2.1.0)
+
+1. Agent & Session ID: Claude_20260323_0000
+2. Task summary: 修復 edb_scraper.py days-3 覆蓋問題（PHASE 4 merge）；README.md + CHANGELOG.md 更新至 v2.1.0；CODEBASE_CONTEXT.md 同步更新；所有文件同步至 git repo
+3. Layer classification: Product / System Layer（後端 scraper fix + 文檔更新）
+4. Files changed:
+   - `edb_scraper.py`（PHASE 4 merge fix：load existing → merge raw → sort desc → save）
+   - `README.md`（完整重寫：v0.1.0-mockup → v2.1.0 正式版，含新架構圖、功能表）
+   - `CHANGELOG.md`（新增 v2.1.0 完整條目，更新 Unreleased → v2.2.0）
+   - `dev/CODEBASE_CONTEXT.md`（dashboard 2766→3047 lines，Key Decision #9，AI Maintenance Log）
+   - `dev/SESSION_HANDOFF.md`（Open Priorities 更新，Known Risks #3 已修復）
+   - `dev/SESSION_LOG.md`（本次更新）
+5. Completed:
+   - ✅ edb_scraper.py PHASE 4 merge fix — `merged = dict(existing); merged[num] = circ` — days-3 現在保留所有舊通告
+   - ✅ ast.parse 語法驗證 PASS；merge simulation 測試 PASS（OLD=1, NEW=3 → total=3 merge correct）
+   - ✅ README.md 完整重寫（v2.1.0 功能表、架構圖、CLI 參數、AI 規格、六角色說明）
+   - ✅ CHANGELOG.md v2.1.0 條目（Added/Changed/Fixed 完整記錄）
+   - ✅ CODEBASE_CONTEXT.md 更新（Key Decision #9 scraper merge fix，directory map 更新）
+   - ✅ 所有文件同步至 EDB-Circular-AI-analysis-system（git repo）
+6. Root cause / fix (PHASE 4 overwrite bug):
+   - Problem: PHASE 4 iterated only over `raw` (current run's results) → wrote only current-run data to JSON
+   - Root cause: `existing` dict was loaded for PDF text reuse only, not included in final output
+   - Fix: `merged = dict(existing)` then update with `raw` entries; sort by date desc; log new/updated/kept counts
+   - Verification: ast.parse PASS; simulation OLD=1+NEW=3 → 3 total (merge correct, not append)
+7. QC summary: PASS ✅
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow §1 startup: dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md.
+
+Current state: v2.1.0 fully complete. Scraper days-3 merge fix applied. README/CHANGELOG/CODEBASE_CONTEXT all updated. Files synced to git repo — awaiting Mac Terminal push.
+
+Pending tasks (priority order):
+1. Mac Terminal: git push the updated files (edb_scraper.py, README.md, CHANGELOG.md, dev/CODEBASE_CONTEXT.md, dev/SESSION_HANDOFF.md, dev/SESSION_LOG.md). Use: cd to git repo path, cp updated files from Downloads/Claude-edb-Project-V3 first (governance files), then git pull --rebase origin main && git push origin main.
+2. Confirm school-year workflow ran successfully (check GitHub Actions) and circulars.json now has full data.
+3. Next feature: Supplier chart data fields (scraper modification — currently placeholder in dashboard).
+4. K1 Phase 2 (separate project, long-term).
+
+Key files changed this session:
+- edb_scraper.py (PHASE 4 merge fix — days-3 now merges existing data instead of overwriting)
+- README.md (complete rewrite to v2.1.0)
+- CHANGELOG.md (v2.1.0 entry added)
+- dev/CODEBASE_CONTEXT.md (v2.1.0, Key Decision #9)
+
+Known risks:
+- git pull --rebase may overwrite governance files — always cp from Claude-edb-Project-V3 to git repo BEFORE git pull --rebase
+- Supplier chart still placeholder (needs scraper changes)
+- Mac git repo path: /Users/leonard/Library/Application Support/Claude/local-agent-mode-sessions/f52b21f7-e7c9-49a3-80dc-00ab322afbcf/51c234d2-cb9f-4b55-bb07-b71de9e93c27/local_e454964f-74da-4734-9a60-bf4b4362ca65/outputs/EDB-Circular-AI-analysis-system
+
+Validation: ast.parse PASS; merge simulation PASS; docs QC PASS.
+Primary workspace: Claude-edb-Project-V3 (Downloads folder).
+First action: Run Mac Terminal push commands (see GIT_PUSH_MANUAL.md or commands below).
+```
+
+---
+
 ## 2026-03-22 v2.1.0 Dashboard 14 項修復 + GitHub Pages 部署
 
 1. Agent & Session ID: Claude_20260322_1520
