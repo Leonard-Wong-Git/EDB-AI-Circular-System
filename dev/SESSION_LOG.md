@@ -1,5 +1,61 @@
 # Session Log
 
+## 2026-03-22 v2.1.0 Dashboard 14 項修復 + GitHub Pages 部署
+
+1. Agent & Session ID: Claude_20260322_1520
+2. Task summary: v2.1.0 Dashboard overhaul — 14 項問題修復，含首頁分離、搜尋獨立化、AI 改名、EDBC 月曆等；GitHub Pages 部署；circulars.json 覆蓋問題診斷
+3. Layer classification: Product / System Layer（前端功能修復 + 部署驗證）
+4. Files changed:
+   - `edb-dashboard.html`（兩個 workspace：2766→3047 行，v2.0.0→v2.1.0）
+   - `dev/SESSION_HANDOFF.md`（更新）、`dev/SESSION_LOG.md`（更新）
+5. Completed:
+   - ✅ 14 項修復：🏠 首頁 tab、stats toggle、通告總覽重置、搜尋 dropdown、LLM→AI、PDF 置頂、dtc-analysis 合併、EDBC 月曆、移除預設釘選、系統說明精簡、供應商圖表+法規參考
+   - ✅ 24/24 structural QC checks + JS syntax check (Node.js) 全通過
+   - ✅ GitHub Pages v2.1.0 部署成功（commit `5b45df0`）
+   - ✅ 目視驗證：🏠 首頁、📊 通告總覽、v2.1.0 標題均正常顯示
+   - ✅ 問題診斷：circulars.json 只有 1 條通告 = days-3 排程覆蓋了 school-year 全量數據
+   - ✅ SESSION_HANDOFF.md rebase 覆蓋後重新修復（v1.1.0 Codex 版本 → v2.1.0）
+6. Known issues diagnosed this session:
+   - **days-3 覆蓋問題**：`edb_scraper.py` days-3 模式直接重寫 circulars.json，不 merge 現有數據
+     * 影響：school-year 全量數據被後續 days-3 定時排程覆蓋，只剩最近幾天
+     * 修復方向：days-3 模式應先 load 現有 JSON，再 merge 新通告，再 save
+   - **git rebase 治理文件覆蓋**：GitHub Actions 定時 commit 導致遠端常領先，pull --rebase 時可能覆蓋 SESSION_HANDOFF.md
+     * 緩解：push 前手動 cp 最新治理文件到 git repo
+7. QC summary: 24/24 PASS ✅
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow §1 startup: dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md.
+
+Current state: v2.1.0 Dashboard fully deployed on GitHub Pages (commit 5b45df0). 24/24 QC checks passed. Two known issues diagnosed but not yet fixed.
+
+Pending tasks (priority order):
+1. Trigger school-year workflow manually on GitHub Actions (to restore full circular data — currently only 1 circular due to days-3 overwrite)
+2. Fix edb_scraper.py: days-3 mode must MERGE into existing circulars.json instead of overwriting it
+3. Fix SESSION_HANDOFF.md rebase overwrite: before each push, manually cp governance files from Claude-edb-Project-V3 to git repo, THEN git pull --rebase, THEN push
+4. README.md / CHANGELOG.md update (still showing v0.1.0-mockup)
+5. Supplier chart new data fields (scraper modification)
+6. K1 Phase 2 (separate project)
+
+Key files changed last session:
+- edb-dashboard.html (2766→3047 lines, v2.0.0→v2.1.0) — in both Claude-edb-Project-V3 and EDB-Circular-AI-analysis-system
+- dev/SESSION_HANDOFF.md, dev/SESSION_LOG.md
+
+Known risks:
+- circulars.json only has 1 circular (days-3 overwrite issue — needs scraper fix)
+- git pull --rebase may overwrite governance files (SESSION_HANDOFF.md, SESSION_LOG.md)
+- Supplier chart is placeholder (needs scraper changes)
+- README.md/CHANGELOG.md outdated (non-blocking)
+- Mac git repo path: /Users/leonard/Library/Application Support/Claude/local-agent-mode-sessions/f52b21f7-e7c9-49a3-80dc-00ab322afbcf/51c234d2-cb9f-4b55-bb07-b71de9e93c27/local_e454964f-74da-4734-9a60-bf4b4362ca65/outputs/EDB-Circular-AI-analysis-system
+
+Primary workspace: Claude-edb-Project-V3 (confirmed by user)
+Validation: 24/24 QC checks passed; GitHub Pages v2.1.0 live.
+First action: Go to GitHub Actions and manually trigger school-year workflow to restore full circular data.
+```
+
+---
+
 ## 2026-03-17
 
 1. Agent & Session ID: Codex_20260317_1956
