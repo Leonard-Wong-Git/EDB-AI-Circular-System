@@ -276,6 +276,13 @@ a{color:var(--accent);text-decoration:none;}
 .status-btn:hover{border-color:var(--accent);color:var(--accent);}
 .status-btn.st-read{border-color:var(--accent);color:var(--accent);background:rgba(59,130,246,.1);}
 .status-btn.st-done{border-color:var(--green);color:var(--green);background:rgba(34,197,94,.1);}
+.bm-btn{
+  background:transparent;border:1px solid var(--border);
+  border-radius:6px;padding:3px 7px;font-size:12px;cursor:pointer;
+  transition:all .15s;color:var(--text-muted);
+}
+.bm-btn:hover{border-color:#f59e0b;color:#f59e0b;}
+.bm-btn.on{border-color:#f59e0b;color:#f59e0b;background:rgba(245,158,11,.12);}
 .bookmark-btn{
   background:transparent;border:1px solid var(--border);
   border-radius:6px;padding:3px 7px;font-size:13px;cursor:pointer;
@@ -1785,8 +1792,15 @@ function filteredData(){
     if(S.filterTopic!=='all'&&!(d.topics||[]).includes(S.filterTopic)) return false;
     if(S.filterSchool!=='all'){
       const sc=d.scope||'';
-      if(S.filterSchool==='pri'&&!sc.includes('pri')&&sc!=='both_sec_pri') return false;
-      if(S.filterSchool==='sec'&&!sc.includes('sec')&&sc!=='both_sec_pri') return false;
+      const fv=S.filterSchool;
+      // scope values from scraper: 'pri','sec','both_sec_pri','spe','kgn','all'
+      // chip values are granular; map back to data scope
+      if(sc!=='all'){
+        if(['pri-gov','pri-sub','pri-dss','pri'].includes(fv)&&sc!=='pri'&&sc!=='both_sec_pri') return false;
+        else if(['sec-gov','sec-sub','sec'].includes(fv)&&sc!=='sec'&&sc!=='both_sec_pri') return false;
+        else if(fv==='spe'&&sc!=='spe') return false;
+        else if(fv==='kgn'&&sc!=='kgn') return false;
+      }
     }
     const st=S.statuses[d.id]||'unread';
     if(!S.showDone&&st==='done') return false;
@@ -1981,7 +1995,7 @@ function buildCard(d, inAttention=false){
           ${dlBadge} ${grantChip(d.grant_info)}
         </div>
         <div class="card-actions-row" onclick="event.stopPropagation()">
-          <button class="status-btn${st==='read'?' st-read':''}" onclick="toggleSeen(${d.id},this)" data-sid="${d.id}" title="標記為已收看">${st==='read'?'✅':'☐'}</button>
+          <button class="bm-btn${bm?' on':''}" onclick="toggleBookmark(${d.id},this)" title="收藏通告">${bm?'⭐':'☆'}</button>
           <button class="pin-btn${pn?' on':''}" onclick="togglePinned(${d.id},this)" title="釘選至收藏">📌</button>
         </div>
       </div>
