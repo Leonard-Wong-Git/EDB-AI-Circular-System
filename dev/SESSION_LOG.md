@@ -1,5 +1,51 @@
 # Session Log
 
+## 2026-03-25 CI Fix: days-3 Zero-Circular Fatal Error
+
+1. Agent & Session ID: Claude_20260325_1709
+2. Task summary: 修復 GitHub Actions CI 在週末 days-3 run 中因 0 條通告而 fatal error (exit code 1) 的問題
+3. Layer classification: Product / System Layer（scraper CI fix）
+4. Files changed:
+   - `edb_scraper.py`（days-3 zero-circular no longer fatal）
+5. Completed:
+   - ✅ 診斷 CI failure #60：POST→302→GET 200（37201 bytes），但 0 circulars parsed → exit code 1
+   - ✅ 根本原因：21-24 March 包含週末，EDB 無新通告；0 條是正確結果但被當 fatal error
+   - ✅ 修復：`days-N` 模式 0 條 → `log.warning` + 繼續執行保留舊數據；`school-year` / 自訂日期才 fatal
+   - ✅ ast.parse PASS；同步至 git repo
+6. Push status: 提供正確 push 指令；用戶確認中
+7. QC summary: PASS ✅
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow §1 startup: dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md.
+
+Current state: v2.1.0 + 3 bug fixes applied (school filter mapping, card bookmark button ⭐, days-3 CI zero-circular fix). All files synced to git repo. Push may still be pending — user to confirm.
+
+Pending tasks (priority order):
+1. Confirm git push succeeded for: edb-dashboard.html + edb_scraper.py. Correct repo:
+   cd "/Users/leonard/Library/Application Support/Claude/local-agent-mode-sessions/f52b21f7-e7c9-49a3-80dc-00ab322afbcf/51c234d2-cb9f-4b55-bb07-b71de9e93c27/local_e454964f-74da-4734-9a60-bf4b4362ca65/outputs/EDB-Circular-AI-analysis-system"
+2. Continue dashboard bug fixes — user has more bugs to report.
+3. Confirm school-year workflow completed and circulars.json has full data.
+4. Supplier chart data fields (scraper modification — placeholder in dashboard).
+5. K1 Phase 2 (long-term).
+
+Key files changed across last 2 sessions:
+- edb-dashboard.html (school filter fix + ⭐ bm-btn bookmark button; 3,061 lines)
+- edb_scraper.py (PHASE 4 merge fix + days-3 zero-circular CI fix)
+
+Known risks:
+- git pull --rebase may overwrite governance files — always cp from Claude-edb-Project-V3/dev/ BEFORE git pull --rebase
+- Mac git repo path has spaces — must quote in Terminal
+- Correct repo: EDB-AI-Circular-System (NOT edb-knowledge)
+
+Validation: JS syntax PASS; ast.parse PASS; CI fix logic verified.
+Primary workspace: Claude-edb-Project-V3 (Downloads folder).
+First action: Ask if push succeeded; then ask user to list remaining bugs.
+```
+
+---
+
 ## 2026-03-24 Bug Fixes: School Filter + Card Bookmark Button
 
 1. Agent & Session ID: Claude_20260324_1011

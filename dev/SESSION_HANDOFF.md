@@ -138,25 +138,26 @@ git checkout v2.1.0-dashboard
 This file and `dev/SESSION_LOG.md` must be updated at the end of every session.
 
 ## Last Session Record
-1. UTC date: 2026-03-24
-2. Session ID: Claude_20260324_1011（Dashboard bug fixes）
+1. UTC date: 2026-03-25
+2. Session ID: Claude_20260325_1709（CI fix: days-3 zero-circular）
 3. Completed:
-   - ✅ Bug 1 修復：學校篩選無效 — filteredData() 新增 granular chip→scope mapping
-   - ✅ Bug 2 修復：卡片 ✅ 按鈕改為 ⭐ bookmark (bm-btn)，正確加入「已收藏」
-   - ✅ JS syntax check PASS；文件同步至 git repo
+   - ✅ Bug 1 修復（前 session）：學校篩選無效 — filteredData() granular mapping
+   - ✅ Bug 2 修復（前 session）：卡片 ⭐ bm-btn 替換 ✅ status-btn
+   - ✅ CI fix：days-3 zero-circular 不再 fatal；school-year 仍保留 fatal check
+   - ✅ ast.parse PASS；所有文件同步至 git repo
 4. Pending：
-   - 確認 git push 成功（用戶在錯誤 repo，已提供正確路徑）
-   - 確認 school-year workflow 完成，circulars.json 有全量數據
-   - 繼續修復其他 bugs
-   - 供應商統計新數據字段（scraper）
-5. Next priorities (max 3):
-   - 確認 push 成功 + school-year workflow 數據
-   - 繼續 dashboard bug fixes
+   - 確認 git push 成功（edb-dashboard.html + edb_scraper.py）
+   - 確認 school-year workflow 有全量通告數據
+   - 繼續修復 dashboard bugs
    - 供應商圖表數據字段（scraper）
-6. Risks / blockers: git repo 路徑有空格需引號；push 前 cp governance files
+5. Next priorities (max 3):
+   - 確認 push + CI 正常
+   - 繼續 dashboard bug fixes
+   - 供應商圖表數據字段
+6. Risks / blockers: git repo 路徑有空格需引號；push 前先 cp governance files
 7. Files materially changed:
-   - `edb-dashboard.html`（3,047→3,061 lines；school filter fix + bm-btn）
-   - `dev/SESSION_HANDOFF.md`（本次更新）
-   - `dev/SESSION_LOG.md`（本次更新）
-8. Validation summary: JS syntax PASS ✅
-9. Git commits: 待確認（正確 repo: EDB-AI-Circular-System）
+   - `edb-dashboard.html`（3,061 lines；school filter + bm-btn）
+   - `edb_scraper.py`（PHASE 4 merge + days-3 CI fix）
+   - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
+8. Validation summary: JS syntax PASS ✅；ast.parse PASS ✅
+9. Git commits: 待確認 push（正確 repo: EDB-AI-Circular-System）
