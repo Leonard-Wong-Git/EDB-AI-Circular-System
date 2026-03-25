@@ -860,9 +860,14 @@ def run_pipeline(args) -> int:
         log.info(f"━━━ Phase 1: SCRAPE  ({range_label}) ━━━")
         raw = scraper.get_circular_list(days=args.days, date_from=date_from_str)
         if not raw:
-            log.error("No circulars found. Check network access to edb.gov.hk")
-            log.error("Tip: Run from Mac Terminal (not the Claude VM)")
-            return 1
+            # school-year / custom date range: 0 results is unexpected → fatal
+            if getattr(args, 'school_year', False) or date_from_str:
+                log.error("No circulars found. Check network access to edb.gov.hk")
+                log.error("Tip: Run from Mac Terminal (not the Claude VM)")
+                return 1
+            # days-N mode: 0 results is valid (weekend / public holiday)
+            log.warning("No new circulars in date range (weekend/holiday?). Keeping existing data.")
+            # fall through to PHASE 4 with raw=[] — merge fix will preserve existing data
 
         log.info(f"━━━ Phase 1b: ENRICH DETAIL PAGES ({len(raw)} circulars) ━━━")
         for idx, circ in enumerate(raw):

@@ -138,28 +138,25 @@ git checkout v2.1.0-dashboard
 This file and `dev/SESSION_LOG.md` must be updated at the end of every session.
 
 ## Last Session Record
-1. UTC date: 2026-03-23
-2. Session ID: Claude_20260323_0000（scraper merge fix + docs update）
+1. UTC date: 2026-03-24
+2. Session ID: Claude_20260324_1011（Dashboard bug fixes）
 3. Completed:
-   - ✅ edb_scraper.py PHASE 4 merge fix（days-3 不再覆蓋 school-year 數據）
-   - ✅ README.md 完整重寫（v0.1.0-mockup → v2.1.0 正式版）
-   - ✅ CHANGELOG.md 新增 v2.1.0 完整條目
-   - ✅ CODEBASE_CONTEXT.md 更新（v2.1.0, Key Decision #9 merge fix）
-   - ✅ 所有文件同步至 EDB-Circular-AI-analysis-system git repo
+   - ✅ Bug 1 修復：學校篩選無效 — filteredData() 新增 granular chip→scope mapping
+   - ✅ Bug 2 修復：卡片 ✅ 按鈕改為 ⭐ bookmark (bm-btn)，正確加入「已收藏」
+   - ✅ JS syntax check PASS；文件同步至 git repo
 4. Pending：
-   - 供應商統計新數據字段（scraper 修改）
-   - K1 第二階段（長期）
+   - 確認 git push 成功（用戶在錯誤 repo，已提供正確路徑）
+   - 確認 school-year workflow 完成，circulars.json 有全量數據
+   - 繼續修復其他 bugs
+   - 供應商統計新數據字段（scraper）
 5. Next priorities (max 3):
-   - Mac Terminal: git push 新的 scraper + docs
-   - 確認 school-year workflow 已恢復全量通告
+   - 確認 push 成功 + school-year workflow 數據
+   - 繼續 dashboard bug fixes
    - 供應商圖表數據字段（scraper）
-6. Risks / blockers: git rebase 治理文件覆蓋風險（push 前 cp）
+6. Risks / blockers: git repo 路徑有空格需引號；push 前 cp governance files
 7. Files materially changed:
-   - `edb_scraper.py`（PHASE 4 merge fix）
-   - `README.md`（v2.1.0 完整重寫）
-   - `CHANGELOG.md`（v2.1.0 條目）
-   - `dev/CODEBASE_CONTEXT.md`（v2.1.0 更新）
+   - `edb-dashboard.html`（3,047→3,061 lines；school filter fix + bm-btn）
    - `dev/SESSION_HANDOFF.md`（本次更新）
    - `dev/SESSION_LOG.md`（本次更新）
-8. Validation summary: ast.parse PASS ✅；merge simulation PASS ✅；docs QC manual review PASS ✅
-9. Git commits: 待 push（見 Mac Terminal push 指引）
+8. Validation summary: JS syntax PASS ✅
+9. Git commits: 待確認（正確 repo: EDB-AI-Circular-System）

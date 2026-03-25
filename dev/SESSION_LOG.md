@@ -1,5 +1,50 @@
 # Session Log
 
+## 2026-03-24 Bug Fixes: School Filter + Card Bookmark Button
+
+1. Agent & Session ID: Claude_20260324_1011
+2. Task summary: 修復兩個 Dashboard bugs：篩選學校類型無效 + 卡片 ✅ 按鈕不能加入「已收藏」
+3. Layer classification: Product / System Layer（前端 bug fix）
+4. Files changed:
+   - `edb-dashboard.html`（school filter mapping fix + bm-btn bookmark button）
+5. Completed:
+   - ✅ Bug 1 — 學校篩選無效：`filteredData()` 只處理 `'pri'`/`'sec'`，chip 傳入 `'pri-sub'`/`'sec-gov'` 等不匹配 → 新增 granular mapping
+   - ✅ Bug 2 — 卡片 ✅ 按鈕不加入收藏：改為 ⭐/☆ `bm-btn`，調用 `toggleBookmark()`；新增 `.bm-btn` CSS；避免 `syncStatusBtns` 干擾
+   - ✅ JS syntax check PASS
+   - ✅ 文件已同步至 EDB-Circular-AI-analysis-system git repo
+6. Push status: 用戶在錯誤 repo（edb-knowledge），提供正確路徑指引；push 待完成
+7. QC summary: JS syntax PASS ✅
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow §1 startup: dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md.
+
+Current state: v2.1.0 + 2 bug fixes (school filter + bookmark button). edb-dashboard.html updated (3,061 lines). Synced to git repo — push may be pending (user had wrong repo in Terminal).
+
+Pending tasks (priority order):
+1. Confirm git push completed for edb-dashboard.html fix. Correct repo path:
+   cd "/Users/leonard/Library/Application Support/Claude/local-agent-mode-sessions/f52b21f7-e7c9-49a3-80dc-00ab322afbcf/51c234d2-cb9f-4b55-bb07-b71de9e93c27/local_e454964f-74da-4734-9a60-bf4b4362ca65/outputs/EDB-Circular-AI-analysis-system"
+2. Confirm school-year workflow completed and circulars.json has full data.
+3. Continue bug fixes — user has more bugs to report.
+4. Supplier chart data fields (scraper modification).
+5. K1 Phase 2 (long-term).
+
+Key files changed this session:
+- edb-dashboard.html (school filter mapping fix + ⭐ bm-btn bookmark button replacing ✅ status-btn in card)
+
+Known risks:
+- git pull --rebase may overwrite governance files — always cp from Claude-edb-Project-V3/dev/ to git repo BEFORE git pull --rebase
+- Mac git repo path has spaces — must quote in Terminal
+- Correct repo: EDB-AI-Circular-System (NOT edb-knowledge)
+
+Validation: JS syntax PASS; filter logic manually verified; bm-btn CSS added.
+Primary workspace: Claude-edb-Project-V3 (Downloads folder).
+First action: Ask user if push succeeded; if not, provide correct cd command again.
+```
+
+---
+
 ## 2026-03-23 Scraper Merge Fix + Docs Update (v2.1.0)
 
 1. Agent & Session ID: Claude_20260323_0000
