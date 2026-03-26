@@ -1,17 +1,17 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v2.1.0** (2026-03-22) ← **當前版本，GitHub Pages 已部署** ✅
+1. Version: **v3.0.0** (2026-03-26) ← **當前版本，待推送至 GitHub Pages**
 2. Core commands / features:
-   - `edb-dashboard.html` — v2.1.0 Dashboard（3,047 行；14 項修復/改進）
+   - `edb-dashboard.html` — v3.0.0 Dashboard（3,061 行；列表視圖 bug 修復 + 版本升級）
    - `edb_scraper.py` — 後端爬蟲 + AI 分析管線（PyMuPDF 引擎 + K1 知識注入 + R1-v2）
    - `circulars.json` — EDB 通告 + gpt-5-nano AI 分析（GitHub Pages 已部署 ✅）
    - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具
    - `requirements.txt` — Python 依賴清單（PyMuPDF 替換 pdfplumber）
    - `dev/knowledge/role_facts.json` — K1 基線知識庫
    - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 接口合約規格
-3. Regression baseline: v2.1.0 HTML 驗證 24/24 checks 通過；JS syntax check 通過；school-year workflow 全綠 1h25m；days-3 workflow 33s
-4. Release / merge status: **v2.1.0 commit `5b45df0` 已推送** ✅；GitHub Pages v2.1.0 已部署 ✅
+3. Regression baseline: v3.0.0 JS syntax check PASS；列表視圖 bug 修復已驗證；前版本 v2.1.0 HTML 24/24 checks 通過
+4. Release / merge status: **v3.0.0 待推送**；v2.1.0 commit `88a74b7` 已推送 ✅；GitHub Pages v2.1.0 已部署 ✅
 5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -71,15 +71,12 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. ✅ ~~v2.0.0 Dashboard 37 項改版~~ **已完成（2026-03-16）**
-2. ✅ ~~v2.1.0 Dashboard 14 項修復~~ **已完成（2026-03-22）；24/24 QC 通過；GitHub Pages 已部署**
-3. ✅ ~~觸發 school-year workflow~~ **用戶已手動觸發（2026-03-22/23）**
-4. ✅ ~~修復 edb_scraper.py days-3 merge~~ **已完成（2026-03-23）；PHASE 4 merge + sort**
-5. **[重要]** 修復 SESSION_HANDOFF.md 被 rebase 覆蓋問題：下次 push 前先 `cp` 最新版本到 git repo 再 push
-6. ✅ ~~README.md / CHANGELOG.md 更新~~ **已完成（2026-03-23）；v2.1.0 正式版**
-7. **[下一步 ⭐]** 供應商統計新數據字段（scraper 修改，目前圖表為 placeholder）
-8. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
-9. **[選做]** LLM 引擎切換機制
+1. **[下一步 ⭐]** 推送 v3.0.0 至 git repo + GitHub Pages（edb-dashboard.html 已修復）
+2. **[重要]** push 前先 `cp` governance files（SESSION_HANDOFF.md / SESSION_LOG.md）到 git repo，防止 rebase 覆蓋
+3. **[繼續]** 用戶還有更多 dashboard bugs 待報告 — 下次 session 繼續收集並修復
+4. **[下一步]** 供應商統計新數據字段（scraper 修改，目前圖表為 placeholder）
+5. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
+6. **[選做]** LLM 引擎切換機制
 
 ## v2.1.0 Key Changes（2026-03-22）
 - 新增 🏠 首頁 tab（panel-home），首頁與通告總覽正式分離
@@ -137,27 +134,45 @@ git checkout v2.1.0-dashboard
 ## Update Rule
 This file and `dev/SESSION_LOG.md` must be updated at the end of every session.
 
+### ⚡ Version Bump Rule (Mandatory — Key Decision #10, 2026-03-26)
+Every session that modifies `edb-dashboard.html` or `edb_scraper.py` **must** increment the version before closing.
+
+Increment scheme:
+- **Patch** `v3.0.x` — bug fixes, minor tweaks, copy changes
+- **Minor** `v3.x.0` — new features, significant UI additions or layout changes
+- **Major** `vx.0.0` — complete redesign (user-initiated only)
+
+6 locations to update in `edb-dashboard.html`:
+1. `<title>` tag
+2. `id="brandVersion"` span
+3. `id="devVersion"` span
+4. `id="versionLabel"` span
+5. Footer text (`EDB 通告智能分析系統 vX.X.X`)
+6. `const VERSION = 'vX.X.X';`
+
+Do not close a session with code changes without completing the version bump.
+
 ## Last Session Record
-1. UTC date: 2026-03-25
-2. Session ID: Claude_20260325_1709（CI fix: days-3 zero-circular）
+1. UTC date: 2026-03-26
+2. Session ID: Claude_20260326_1100（列表視圖 bug + v3.0.0 版本升級）
 3. Completed:
-   - ✅ Bug 1 修復（前 session）：學校篩選無效 — filteredData() granular mapping
-   - ✅ Bug 2 修復（前 session）：卡片 ⭐ bm-btn 替換 ✅ status-btn
-   - ✅ CI fix：days-3 zero-circular 不再 fatal；school-year 仍保留 fatal check
-   - ✅ ast.parse PASS；所有文件同步至 git repo
+   - ✅ INIT.md 執行：AGENTS.md 合併 5 項更新（§1 new session 定義、§3 PERSIST 擴展、§4 Open Priorities regeneration、§5 item 7 措辭、§10 Known Risks 位置）
+   - ✅ 確認 v2.1.0 push 成功（commit 88a74b7，origin/main 同步）
+   - ✅ Bug fix：列表視圖空白（setView('list') 中 list.style.display='' → 'block'）
+   - ✅ 版本升級：v2.1.0 → v3.0.0（6 處 user-visible 字串 + VERSION 常數）
+   - ✅ JS syntax PASS
 4. Pending：
-   - 確認 git push 成功（edb-dashboard.html + edb_scraper.py）
-   - 確認 school-year workflow 有全量通告數據
-   - 繼續修復 dashboard bugs
+   - 推送 v3.0.0 至 git repo
+   - 用戶更多 dashboard bugs 待報告
    - 供應商圖表數據字段（scraper）
 5. Next priorities (max 3):
-   - 確認 push + CI 正常
-   - 繼續 dashboard bug fixes
+   - 推送 v3.0.0 + 繼續 dashboard bug fixes
    - 供應商圖表數據字段
+   - K1 Phase 2（長期）
 6. Risks / blockers: git repo 路徑有空格需引號；push 前先 cp governance files
 7. Files materially changed:
-   - `edb-dashboard.html`（3,061 lines；school filter + bm-btn）
-   - `edb_scraper.py`（PHASE 4 merge + days-3 CI fix）
+   - `edb-dashboard.html`（列表視圖 bug fix + v3.0.0 版本升級）
+   - `AGENTS.md`（INIT.md 合併 5 項更新）
    - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
-8. Validation summary: JS syntax PASS ✅；ast.parse PASS ✅
-9. Git commits: 待確認 push（正確 repo: EDB-AI-Circular-System）
+8. Validation summary: JS syntax PASS ✅；setView fix 邏輯驗證 ✅
+9. Git commits: v3.0.0 待推送至 EDB-AI-Circular-System

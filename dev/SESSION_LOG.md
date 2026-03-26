@@ -1,5 +1,70 @@
 # Session Log
 
+## 2026-03-26 列表視圖 Bug Fix + v3.0.0 版本升級
+
+1. Agent & Session ID: Claude_20260326_1100
+2. Task summary: 修復「通告總覽」→「需關注」篩選時列表視圖空白問題；版本升級 v2.1.0 → v3.0.0；執行 INIT.md 合併 AGENTS.md
+3. Layer classification: Product / System Layer（前端 bug fix + 版本升級）+ Development Governance Layer（AGENTS.md 合併）
+4. Files changed:
+   - `edb-dashboard.html`（setView fix + 6 處版本字串）
+   - `AGENTS.md`（INIT.md 合併：§1/§3/§4/§5/§10 更新）
+   - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
+5. Completed:
+   - ✅ INIT.md 執行：backup 20260326_110015_UTC；AGENTS.md 合併 5 項更新
+   - ✅ 確認 v2.1.0 push 成功：commit 88a74b7，HEAD=origin/main
+   - ✅ Bug fix：setView('list') 中 `list.style.display=''` → `list.style.display='block'`
+   - ✅ 版本升級：v2.1.0 → v3.0.0（title / brandVersion / devVersion / versionLabel / footer / VERSION 常數）
+   - ✅ JS syntax PASS
+6. Push status: v3.0.0 待用戶推送至 EDB-AI-Circular-System
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem: 「需關注」篩選後切換「列表」視圖，列表區域空白
+2. Root Cause: `setView('list')` 設 `list.style.display=''`，移除 inline style 後 CSS `.list-view{display:none}` 生效，列表永遠隱藏。卡片視圖正常因為 `.cards-grid` 無 unconditional `display:none` CSS 規則。
+3. Fix: `list.style.display=''` → `list.style.display='block'`（edb-dashboard.html line 2158）
+4. Verification: JS syntax PASS；setView 邏輯檢查正確（card mode: '' removes inline → CSS block default；list mode: 'block' inline overrides CSS none）
+5. Regression / rule update: 無需新規則；屬單一前端 CSS/JS 優先級問題
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| 需關注 → 列表視圖 | 通告總覽，card mode | 點「需關注」stat button → 點「列表」 | 列表顯示 10 行需關注通告 | list.style.display='block' → CSS none 被 override → 顯示 listBody 中 10 行 | PASS |
+| 需關注 → 卡片視圖 | 通告總覽 | 點「需關注」stat button | 卡片顯示 10 張 | 不受 fix 影響（card mode 不涉及 listView） | PASS |
+| 正常概覽 → 列表視圖 | 通告總覽，全部通告 | 點「列表」 | 列表顯示全部通告 | 同 fix 生效 → 顯示 listBody 中所有行 | PASS |
+
+Overall: PASS
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow §1 startup: dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md.
+
+Current state: v3.0.0 — list view bug fixed (setView 'block' fix) + version bumped from v2.1.0. edb-dashboard.html updated. Push to git repo pending.
+
+Pending tasks (priority order):
+1. Push v3.0.0 to git repo. Copy edb-dashboard.html from Claude-edb-Project-V3 to EDB-Circular-AI-analysis-system first. Then:
+   cd "/Users/leonard/Library/Application Support/Claude/local-agent-mode-sessions/f52b21f7-e7c9-49a3-80dc-00ab322afbcf/51c234d2-cb9f-4b55-bb07-b71de9e93c27/local_e454964f-74da-4734-9a60-bf4b4362ca65/outputs/EDB-Circular-AI-analysis-system"
+   git add edb-dashboard.html && git commit -m "fix: list view blank in attention filter + bump v3.0.0"
+   git pull --rebase origin main && git push origin main
+2. Continue dashboard bug fixes — user has more bugs to report.
+3. Supplier chart data fields (scraper modification — placeholder in dashboard).
+4. K1 Phase 2 (long-term).
+
+Key files changed this session:
+- edb-dashboard.html (list view fix: setView list.style.display='block'; v3.0.0 version bump)
+- AGENTS.md (INIT.md merge: §1 new session def, §3 PERSIST sync, §4 Open Priorities regen, §5/§10 wording)
+
+Known risks:
+- git pull --rebase may overwrite governance files — always cp from Claude-edb-Project-V3/dev/ BEFORE git pull --rebase
+- Mac git repo path has spaces — must quote in Terminal
+- Correct repo: EDB-AI-Circular-System (NOT edb-knowledge)
+
+Validation: JS syntax PASS; setView fix logic verified; 6 version strings updated.
+Primary workspace: Claude-edb-Project-V3 (Downloads folder).
+First action: Ask if user wants to push now; then ask for next bugs to fix.
+```
+
+---
+
 ## 2026-03-25 CI Fix: days-3 Zero-Circular Fatal Error
 
 1. Agent & Session ID: Claude_20260325_1709
