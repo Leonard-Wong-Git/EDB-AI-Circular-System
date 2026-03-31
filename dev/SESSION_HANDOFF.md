@@ -1,17 +1,17 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v3.0.0** (2026-03-26) ← **當前版本，待推送至 GitHub Pages**
+1. Version: **v3.0.1** (2026-03-31) ← **當前版本，待推送至 GitHub Pages**
 2. Core commands / features:
-   - `edb-dashboard.html` — v3.0.0 Dashboard（3,061 行；列表視圖 bug 修復 + 版本升級）
+   - `edb-dashboard.html` — v3.0.1 Dashboard（3,061 行；設定佈局修復 + 篩選導航修復 + UX 整合）
    - `edb_scraper.py` — 後端爬蟲 + AI 分析管線（PyMuPDF 引擎 + K1 知識注入 + R1-v2）
    - `circulars.json` — EDB 通告 + gpt-5-nano AI 分析（GitHub Pages 已部署 ✅）
    - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具
    - `requirements.txt` — Python 依賴清單（PyMuPDF 替換 pdfplumber）
    - `dev/knowledge/role_facts.json` — K1 基線知識庫
    - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 接口合約規格
-3. Regression baseline: v3.0.0 JS syntax check PASS；列表視圖 bug 修復已驗證；前版本 v2.1.0 HTML 24/24 checks 通過
-4. Release / merge status: **v3.0.0 待推送**；v2.1.0 commit `88a74b7` 已推送 ✅；GitHub Pages v2.1.0 已部署 ✅
+3. Regression baseline: v3.0.1 JS syntax PASS；3 bugs 修復已驗證；v3.0.0 已部署 ✅
+4. Release / merge status: **v3.0.1 待推送**；v3.0.0 commit `3f54cc2` 已部署 ✅
 5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -71,9 +71,9 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 推送 v3.0.0 至 git repo + GitHub Pages（edb-dashboard.html 已修復）
-2. **[重要]** push 前先 `cp` governance files（SESSION_HANDOFF.md / SESSION_LOG.md）到 git repo，防止 rebase 覆蓋
-3. **[繼續]** 用戶還有更多 dashboard bugs 待報告 — 下次 session 繼續收集並修復
+1. **[下一步 ⭐]** 推送 v3.0.1 至 git repo + GitHub Pages（cp + commit + push）
+2. **[重要]** push 前先 `cp` governance files（SESSION_HANDOFF.md / SESSION_LOG.md / CODEBASE_CONTEXT.md）到 git repo，防止 rebase 覆蓋
+3. **[繼續]** 用戶可能還有更多 dashboard bugs — 繼續收集並修復（每次修復遵守 Version Bump Rule）
 4. **[下一步]** 供應商統計新數據字段（scraper 修改，目前圖表為 placeholder）
 5. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
 6. **[選做]** LLM 引擎切換機制
@@ -154,25 +154,22 @@ Do not close a session with code changes without completing the version bump.
 
 ## Last Session Record
 1. UTC date: 2026-03-26
-2. Session ID: Claude_20260326_1100（列表視圖 bug + v3.0.0 版本升級）
+2. Session ID: Claude_20260326_1225（INIT.md Root Safety Check + Version Bump Rule 補充）
 3. Completed:
-   - ✅ INIT.md 執行：AGENTS.md 合併 5 項更新（§1 new session 定義、§3 PERSIST 擴展、§4 Open Priorities regeneration、§5 item 7 措辭、§10 Known Risks 位置）
-   - ✅ 確認 v2.1.0 push 成功（commit 88a74b7，origin/main 同步）
-   - ✅ Bug fix：列表視圖空白（setView('list') 中 list.style.display='' → 'block'）
-   - ✅ 版本升級：v2.1.0 → v3.0.0（6 處 user-visible 字串 + VERSION 常數）
-   - ✅ JS syntax PASS
+   - ✅ INIT (1).md ROOT SAFETY CHECK 執行（Claude-edb-knowledge）：pwd==git root ✅；風險檢查 ✅；dry-run：全部 merge/skip（already installed）
+   - ⛔ INSTALL ABORTED：用戶提供 Mac 路徑（/Users/leonard/Downloads/Claude-edb-knowledge），未提供 sandbox 路徑；§5a 硬規則觸發；無文件寫入
+   - ✅ SESSION_HANDOFF.md Version Bump Rule 已就位（用戶操作）
 4. Pending：
-   - 推送 v3.0.0 至 git repo
+   - 推送 v3.0.0 至 git repo（從上一 session 延續）
    - 用戶更多 dashboard bugs 待報告
    - 供應商圖表數據字段（scraper）
 5. Next priorities (max 3):
    - 推送 v3.0.0 + 繼續 dashboard bug fixes
    - 供應商圖表數據字段
    - K1 Phase 2（長期）
-6. Risks / blockers: git repo 路徑有空格需引號；push 前先 cp governance files
+6. Risks / blockers: git repo 路徑有空格需引號；push 前先 cp governance files；Version Bump Rule 每次修改 edb-dashboard.html 必須執行
 7. Files materially changed:
-   - `edb-dashboard.html`（列表視圖 bug fix + v3.0.0 版本升級）
-   - `AGENTS.md`（INIT.md 合併 5 項更新）
-   - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
-8. Validation summary: JS syntax PASS ✅；setView fix 邏輯驗證 ✅
-9. Git commits: v3.0.0 待推送至 EDB-AI-Circular-System
+   - `dev/SESSION_HANDOFF.md`（Version Bump Rule 新增 — 用戶操作）
+   - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`（本 closeout）
+8. Validation summary: 無代碼變更；ROOT SAFETY CHECK 流程正確；無 INSTALL 寫入
+9. Git commits: v3.0.0 仍待推送至 EDB-AI-Circular-System

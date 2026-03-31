@@ -168,6 +168,7 @@ python3 -m http.server 8080
 | 7 | CI conflict strategy: fetch+reset | 2026-03-16 | Workflow saves fresh JSON to /tmp, resets to remote, copies back — avoids rebase conflicts with local pushes |
 | 8 | Frontend spec SSOT in v0.2.0-FRONTEND-SPEC.md | 2026-03-10 | All frontend feature decisions documented here; user confirmed |
 | 9 | Scraper PHASE 4 merge (not overwrite) | 2026-03-23 | days-3 mode was overwriting entire circulars.json; PHASE 4 now loads existing JSON, merges raw results in, sorts by date desc — prevents school-year data loss |
+| 10 | Auto version bump on every code change | 2026-03-26 | Every session that modifies edb-dashboard.html or edb_scraper.py must increment the version before closing. Scheme: **patch** (v3.0.x) for bug fixes / minor tweaks; **minor** (v3.x.0) for new features or significant UI changes; **major** (vx.0.0) for complete redesigns (user-initiated only). Version must be updated in all 6 locations: `<title>`, `brandVersion` span, `devVersion` span, `versionLabel` span, footer text, `const VERSION`. |
 
 ---
 
@@ -177,3 +178,4 @@ python3 -m http.server 8080
 |------|-----------|--------|
 | 2026-03-17 | Claude_20260317_0800 | Initial CODEBASE_CONTEXT.md generation. Scanned: README.md, CHANGELOG.md, requirements.txt, .gitignore, .github/workflows/update-circulars.yml, dev/SESSION_HANDOFF.md, dev/SESSION_LOG.md. Consolidated External Services from SESSION_LOG + Known Risks. |
 | 2026-03-23 | Claude_20260323_0000 | v2.1.0 update: dashboard 2766→3,047 lines, README rewritten, CHANGELOG updated, Key Decision #9 (PHASE 4 merge fix). |
+| 2026-03-26 | Claude_20260326_1100 | v3.0.0 update: list view bug fix (setView block), version bump v2.1.0→v3.0.0, Key Decision #10 (auto version bump rule), AGENTS.md INIT.md merge (5 sections updated). |

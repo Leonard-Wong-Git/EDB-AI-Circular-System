@@ -1,5 +1,122 @@
 # Session Log
 
+## 2026-03-31 Settings/Filter UX Fix + v3.0.1
+
+1. Agent & Session ID: Claude_20260331_0000
+2. Task summary: 修復設定佈局無效果、篩選無導航、篩選/設定混亂三個問題；版本升級 v3.0.0 → v3.0.1
+3. Layer classification: Product / System Layer（前端 bug fix + UX 改善）
+4. Files changed: `edb-dashboard.html`（3 bugs + version bump）
+5. Completed:
+   - ✅ Bug 1：`setLayout()` 加入 `switchTab('overview',...,true)` + `showToast`
+   - ✅ Bug 2：`switchTab` 加 `noReset` 參數；`setFilter()` 自動導航至 overview
+   - ✅ Bug 3 UX：篩選 ⚙️→⊟；header 加 ⚙️設定按鈕；`toggleSettingsPanel()`；移除 settings tab
+   - ✅ v3.0.0 → v3.0.1（6 處）；JS syntax PASS
+6. Push status: 待用戶推送
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Bug 1 — 設定佈局無效：layout CSS 只影響 `.cards-grid`；在設定 tab 看不到 → Fix: `setLayout()` switchTab(overview, noReset=true) + toast
+2. Bug 2 — 篩選無效：`setFilter()` 只 renderOverview 不導航；switchTab 重置篩選 → Fix: noReset 參數 + setFilter 自動跳 overview
+3. Bug 3 — UX 混亂：兩個⚙️ → Fix: 篩選改⊟；設定移至 header button；tab strip 移除 settings
+
+### Test Scenarios
+| Scenario | Expected | Result |
+|---|---|---|
+| 設定頁改佈局 | toast + 跳 overview 顯示新佈局 | PASS |
+| 篩選後在首頁 | 自動跳 overview 顯示篩選結果 | PASS |
+| 手動點通告總覽 tab | 重置篩選（原設計保留）| PASS |
+| 點⚙️設定按鈕 | 開啟設定面板 | PASS |
+| 點⊟篩選按鈕 | 開啟篩選 bar | PASS |
+
+Overall: PASS
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow §1 startup: dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md.
+
+Current state: v3.0.1 — 3 UX/bug fixes (layout setting nav, filter auto-navigate, ⚙️ settings to header). edb-dashboard.html updated. Push pending.
+
+Pending tasks (priority order):
+1. Push v3.0.1 to git repo. Copy from Claude-edb-Project-V3 to EDB-Circular-AI-analysis-system:
+   cp "/Users/leonard/Downloads/Claude-edb-Project-V3/edb-dashboard.html" "<GIT_REPO>/edb-dashboard.html"
+   Also cp SESSION_HANDOFF.md, SESSION_LOG.md, CODEBASE_CONTEXT.md to dev/
+   git add . && git commit -m "fix: settings layout nav, filter navigate, UX consolidation + v3.0.1"
+   git pull --rebase origin main && git push origin main
+2. Continue dashboard bug fixes — user may have more bugs.
+3. Supplier chart data fields (scraper modification).
+4. K1 Phase 2 (long-term).
+
+Key files changed: edb-dashboard.html (setLayout+toast, switchTab noReset, setFilter navigate, toggleSettingsPanel, ⊟ filter icon, ⚙️ settings btn, tabSettings removed, v3.0.1)
+Known risks: git rebase overwrites governance files — always cp dev/ files first; path has spaces — quote in Terminal.
+Validation: JS syntax PASS; 5 test scenarios PASS.
+First action: Provide push commands; ask for next bugs.
+```
+
+---
+
+## 2026-03-26 INIT.md Root Safety Check (Claude-edb-knowledge) + Version Bump Rule 補充
+
+1. Agent & Session ID: Claude_20260326_1225
+2. Task summary: 用戶上傳 INIT (1).md；對 Claude-edb-knowledge 執行 ROOT SAFETY CHECK；因路徑格式不符（用戶提供 Mac 路徑 vs 要求的 sandbox 內部路徑）INSTALL ABORTED；未寫入任何文件。SESSION_HANDOFF.md（Claude-edb-Project-V3）新增 Version Bump Rule（用戶操作）。
+3. Layer classification: Development Governance Layer（INIT.md bootstrap attempt）
+4. Source triage: INIT.md 內容與已安裝版本相同；兩個項目 governance files 均已完整安裝
+5. Files read: INIT (1).md（上傳）、dev/SESSION_HANDOFF.md（兩個項目）、dev/SESSION_LOG.md（Claude-edb-Project-V3）
+6. Files changed:
+   - `dev/SESSION_HANDOFF.md`（Claude-edb-Project-V3）— 新增 Version Bump Rule（用戶操作，非 AI 寫入）
+   - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`（本 closeout 更新）
+7. Completed:
+   - ✅ ROOT SAFETY CHECK 完成（Claude-edb-knowledge）：pwd==git root ✅ 無衝突；風險檢查 ✅
+   - ✅ Dry-run plan 輸出：5 個文件均為 merge/skip（no-op，已安裝）
+   - ✅ SESSION_HANDOFF.md Version Bump Rule 已確認存在
+   - ⛔ INSTALL ABORTED：用戶 4 次提供 Mac 路徑（/Users/leonard/Downloads/Claude-edb-knowledge），未提供 sandbox 內部路徑（/sessions/relaxed-lucid-archimedes/mnt/Claude-edb-knowledge）；§5a 硬規則：不匹配 → 不寫入
+8. Validation / QC: 無代碼變更；ROOT SAFETY CHECK 流程驗證正確
+9. Pending:
+   - Claude-edb-knowledge INIT 重試（若用戶需要）— 注意：所有文件已安裝，重試為 no-op
+   - 推送 v3.0.0（從上一 session 延續）
+   - Dashboard bug fixes（用戶待報告）
+10. Next priorities: 推送 v3.0.0 → dashboard bugs → supplier chart data
+11. Risks / blockers: INIT re-run for Claude-edb-knowledge 需要 sandbox 內部路徑確認；或用戶直接跳過（files 已安裝）
+12. Notes: INIT (1).md 內容與現有 INIT.md 相同版本。Claude-edb-knowledge 所有 governance files 已完整安裝（AGENTS.md / CLAUDE.md / GEMINI.md / dev/SESSION_HANDOFF.md / dev/SESSION_LOG.md / dev/CODEBASE_CONTEXT.md）。
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem: INIT ROOT SAFETY CHECK 無法完成 — 用戶提供 Mac 路徑無法通過精確匹配
+2. Root Cause: Sandbox 環境將用戶 Mac 路徑 `/Users/leonard/Downloads/Claude-edb-knowledge` 掛載為內部路徑 `/sessions/relaxed-lucid-archimedes/mnt/Claude-edb-knowledge`；ROOT SAFETY CHECK 要求精確確認內部路徑；用戶不了解此差異
+3. Fix: N/A（本 session 未執行）— 下次若需重試 INIT，需明確說明用戶應輸入 sandbox 路徑，或提供替代確認機制
+4. Verification: 安全規則已正確觸發（ABORTED）；無不當寫入
+5. Regression / rule update: 無需新規則（屬 UX 問題；既有 §5a 規則正確運作）
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow §1 startup: dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md.
+
+Current state: v3.0.0 (edb-dashboard.html — list view fix + version bump). Push to git repo still pending. No changes to Claude-edb-knowledge this session (INIT aborted due to path mismatch; all governance files already installed there).
+
+SESSION_HANDOFF.md now includes Version Bump Rule (mandatory for every session that modifies edb-dashboard.html or edb_scraper.py).
+
+Pending tasks (priority order):
+1. Push v3.0.0 to git repo. Copy edb-dashboard.html from Claude-edb-Project-V3 to EDB-Circular-AI-analysis-system, then:
+   cd "/Users/leonard/Library/Application Support/Claude/local-agent-mode-sessions/f52b21f7-e7c9-49a3-80dc-00ab322afbcf/51c234d2-cb9f-4b55-bb07-b71de9e93c27/local_e454964f-74da-4734-9a60-bf4b4362ca65/outputs/EDB-Circular-AI-analysis-system"
+   git add edb-dashboard.html && git commit -m "fix: list view blank in attention filter + bump v3.0.0"
+   git pull --rebase origin main && git push origin main
+2. Continue dashboard bug fixes — user has more bugs to report.
+3. Supplier chart data fields (scraper modification).
+4. K1 Phase 2 (long-term — separate project).
+
+Key files changed last two sessions:
+- edb-dashboard.html (list view fix + v3.0.0 version bump) — Claude-edb-Project-V3
+- AGENTS.md (INIT.md merge: §1/§3/§4/§5/§10) — Claude-edb-Project-V3
+- dev/SESSION_HANDOFF.md (Version Bump Rule added) — Claude-edb-Project-V3
+
+Known risks:
+- git pull --rebase may overwrite governance files — always cp from Claude-edb-Project-V3/dev/ BEFORE git pull --rebase
+- Mac git repo path has spaces — must quote in Terminal
+- Version Bump Rule: every session modifying edb-dashboard.html must bump version before close (see SESSION_HANDOFF.md Update Rule section)
+
+Validation: v3.0.0 JS syntax PASS. Push pending user action in Mac Terminal.
+First action: Ask if user wants to push v3.0.0 now, or jump to new bug fixes.
+```
+
 ## 2026-03-26 列表視圖 Bug Fix + v3.0.0 版本升級
 
 1. Agent & Session ID: Claude_20260326_1100

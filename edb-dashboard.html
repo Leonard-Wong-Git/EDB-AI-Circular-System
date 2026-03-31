@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDB 通告智能分析系統 v3.0.0</title>
+<title>EDB 通告智能分析系統 v3.0.1</title>
 <style>
 /* ============================================================
    PALETTES (accent colours only — theme-independent)
@@ -922,7 +922,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
     </div>
     <div class="dev-card">
       <div class="dev-card-title">ℹ️ 版本資訊</div>
-      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v3.0.0</span></div>
+      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v3.0.1</span></div>
       <div class="dev-row"><span>Build Date</span><span>2026-03-16</span></div>
       <div class="dev-row"><span>知識庫更新</span><span>2026-03-09 20:48 UTC</span></div>
       <div class="dev-row"><span>資料筆數</span><span id="devCount">—</span></div>
@@ -959,7 +959,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
 <header class="header">
   <div class="brand" onclick="switchTab('home',document.getElementById('tabHome'))" style="cursor:pointer;" title="返回首頁">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="13" x2="12" y2="17"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
-    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v3.0.0</span></span>
+    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v3.0.1</span></span>
   </div>
 
   <select class="role-select" id="roleSelect" onchange="setRole(this.value)">
@@ -979,7 +979,8 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
   </div>
 
   <div class="hdr-actions">
-    <button class="btn btn-icon" id="filterToggleBtn" onclick="toggleFilterBar()" title="篩選">⚙️ <span>篩選</span></button>
+    <button class="btn btn-icon" id="filterToggleBtn" onclick="toggleFilterBar()" title="篩選通告">⊟ <span>篩選</span></button>
+    <button class="btn btn-icon" id="settingsBtn" onclick="toggleSettingsPanel()" title="設定">⚙️</button>
     <button class="btn btn-icon" onclick="toggleLang()" id="langBtn" title="語言">中/EN</button>
     <button class="btn btn-icon" onclick="cycleTheme()" id="themeBtn" title="切換主題（D）">🌙</button>
     <button class="btn btn-icon" onclick="showScModal()" title="快捷鍵">⌨️</button>
@@ -1055,7 +1056,6 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
   <button class="tab-btn" id="tabResources" onclick="switchTab('resources',this)" data-zh="💰 資源申請" data-en="💰 Resources">💰 資源申請</button>
   <button class="tab-btn" id="tabBookmarks" onclick="switchTab('bookmarks',this)" data-zh="⭐ 收藏" data-en="⭐ Saved">⭐ 收藏 <span id="bmTabBadge" style="display:none;font-size:10px;background:var(--orange);color:white;border-radius:8px;padding:0 5px;margin-left:2px"></span></button>
   <button class="tab-btn" id="tabSupplier" onclick="switchTab('supplier',this)" data-zh="🏢 供應商" data-en="🏢 Supplier">🏢 供應商</button>
-  <button class="tab-btn" id="tabSettings" onclick="switchTab('settings',this)" data-zh="⚙️ 設定" data-en="⚙️ Settings">⚙️ 設定</button>
 </nav>
 
 <!-- ============================================================
@@ -1343,7 +1343,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
         </div>
         <div class="setting-row">
           <div class="setting-info"><div class="setting-lbl">版本</div></div>
-          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v3.0.0</span>
+          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v3.0.1</span>
         </div>
       </div>
 
@@ -1460,14 +1460,14 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
      ============================================================ -->
 <footer class="site-footer">
   <div>⚠️ <strong>免責聲明：</strong>本系統資料來源於<a href="https://www.edb.gov.hk" target="_blank" rel="noopener">香港特別行政區政府教育局（EDB）</a>官方網站，僅供參考及輔助管理用途，一切以教育局官方公告為準。本系統並非教育局官方產品。</div>
-  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v3.0.0 &nbsp;|&nbsp; &copy; 2026</div>
+  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v3.0.1 &nbsp;|&nbsp; &copy; 2026</div>
 </footer>
 
 <script>
 /* ============================================================
    VERSION
    ============================================================ */
-const VERSION = 'v3.0.0';
+const VERSION = 'v3.0.1';
 
 /* ============================================================
    MOCK DATA
@@ -1701,7 +1701,11 @@ function applyLayout(){
   document.documentElement.setAttribute('data-layout',S.layout);
   ['standard','wide','compact'].forEach(x=> document.getElementById('opt-'+x)?.classList.toggle('active',x===S.layout));
 }
-function setLayout(l){ S.layout=l; lsSet('edb_layout',l); applyLayout(); }
+function setLayout(l){
+  S.layout=l; lsSet('edb_layout',l); applyLayout();
+  switchTab('overview', document.getElementById('tabOverview'), true);
+  showToast('佈局已更新：'+(l==='wide'?'寬屏 3列':l==='compact'?'精簡 1列':'標準 2列'));
+}
 function applyFontSize(){
   document.body.style.fontSize=S.fontSize+'px';
   const r=document.getElementById('fontRange'); if(r) r.value=S.fontSize;
@@ -1743,14 +1747,14 @@ function updateSupplierTab(){
 /* ============================================================
    TABS
    ============================================================ */
-function switchTab(name,btn){
+function switchTab(name,btn,noReset){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   if(btn) btn.classList.add('active');
   const panel=document.getElementById('panel-'+name);
   if(panel) panel.classList.add('active');
   if(name==='home') renderHome();
-  if(name==='overview'){ resetOverviewFilters(); renderOverview(); }
+  if(name==='overview'){ if(!noReset) resetOverviewFilters(); renderOverview(); }
   if(name==='calendar') renderCalendar();
   if(name==='resources') renderResources();
   if(name==='bookmarks') renderBookmarks();
@@ -1766,13 +1770,26 @@ function toggleFilterBar(){
   fb.classList.toggle('open',S.filterBarOpen);
   document.getElementById('filterToggleBtn').classList.toggle('btn-active',S.filterBarOpen);
 }
+function toggleSettingsPanel(){
+  const panel=document.getElementById('panel-settings');
+  const isActive=panel.classList.contains('active');
+  if(isActive){
+    switchTab('home',document.getElementById('tabHome'));
+    document.getElementById('settingsBtn').classList.remove('btn-active');
+  } else {
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    panel.classList.add('active');
+    document.getElementById('settingsBtn').classList.add('btn-active');
+  }
+}
 function setFilter(dim,val,btn){
   const map={type:'filterType',school:'filterSchool',topic:'filterTopic',impact:'filterImpact',action:'filterAction'};
   S[map[dim]]=val;
   const grp=btn.parentElement;
   grp.querySelectorAll('.f-chip').forEach(b=>{ b.classList.remove('on','on-red','on-yellow','on-green'); });
   btn.classList.add('on');
-  renderOverview();
+  switchTab('overview', document.getElementById('tabOverview'), true);
 }
 function setCalFilter(val,btn){
   S.calFilter=val;
