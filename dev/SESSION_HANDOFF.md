@@ -1,7 +1,7 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v3.0.1** (2026-03-31) ← **當前版本，待推送至 GitHub Pages**
+1. Version: **v3.0.2** (2026-04-02) ← **當前版本；workspace 已確認；待推送至 git repo**
 2. Core commands / features:
    - `edb-dashboard.html` — v3.0.1 Dashboard（3,061 行；設定佈局修復 + 篩選導航修復 + UX 整合）
    - `edb_scraper.py` — 後端爬蟲 + AI 分析管線（PyMuPDF 引擎 + K1 知識注入 + R1-v2）
@@ -71,9 +71,9 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 推送 v3.0.1 至 git repo + GitHub Pages（cp + commit + push）
-2. **[重要]** push 前先 `cp` governance files（SESSION_HANDOFF.md / SESSION_LOG.md / CODEBASE_CONTEXT.md）到 git repo，防止 rebase 覆蓋
-3. **[繼續]** 用戶可能還有更多 dashboard bugs — 繼續收集並修復（每次修復遵守 Version Bump Rule）
+1. **[下一步 ⭐]** cp governance files + edb-dashboard.html → git repo → commit + push v3.0.2（含 acts 亂碼修復）
+2. **[重要]** push 後觸發 GitHub Pages workflow：`gh workflow run update-circulars.yml --repo Leonard-Wong-Git/EDB-AI-Circular-System` 並 Cmd+Shift+R 確認 v3.0.2 上線
+3. **[繼續]** 繼續收集並修復 dashboard bugs（每次修復遵守 Version Bump Rule）
 4. **[下一步]** 供應商統計新數據字段（scraper 修改，目前圖表為 placeholder）
 5. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
 6. **[選做]** LLM 引擎切換機制
@@ -153,23 +153,23 @@ Increment scheme:
 Do not close a session with code changes without completing the version bump.
 
 ## Last Session Record
-1. UTC date: 2026-03-26
-2. Session ID: Claude_20260326_1225（INIT.md Root Safety Check + Version Bump Rule 補充）
+1. UTC date: 2026-04-02
+2. Session ID: Claude_20260402_0000
 3. Completed:
-   - ✅ INIT (1).md ROOT SAFETY CHECK 執行（Claude-edb-knowledge）：pwd==git root ✅；風險檢查 ✅；dry-run：全部 merge/skip（already installed）
-   - ⛔ INSTALL ABORTED：用戶提供 Mac 路徑（/Users/leonard/Downloads/Claude-edb-knowledge），未提供 sandbox 路徑；§5a 硬規則觸發；無文件寫入
-   - ✅ SESSION_HANDOFF.md Version Bump Rule 已就位（用戶操作）
-4. Pending：
-   - 推送 v3.0.0 至 git repo（從上一 session 延續）
-   - 用戶更多 dashboard bugs 待報告
-   - 供應商圖表數據字段（scraper）
+   - ✅ 修復「角色及資源」tab 行動清單顯示 JSON 亂碼（新增 `actText()` helper）
+   - ✅ v3.0.1 → v3.0.2（6 處）
+   - ✅ JS syntax PASS；4/4 unit tests PASS
+4. Pending:
+   - cp files → commit → push v3.0.2 到 git repo
+   - 確認 GitHub Pages 顯示 v3.0.2
 5. Next priorities (max 3):
-   - 推送 v3.0.0 + 繼續 dashboard bug fixes
-   - 供應商圖表數據字段
-   - K1 Phase 2（長期）
-6. Risks / blockers: git repo 路徑有空格需引號；push 前先 cp governance files；Version Bump Rule 每次修改 edb-dashboard.html 必須執行
+   - Push v3.0.2 到 git repo 並確認 GitHub Pages 部署
+   - 繼續 dashboard bug fixes（待用戶報告）
+   - 供應商圖表數據字段（scraper）
+6. Risks / blockers: push 前先 cp governance files 防 rebase 覆蓋
 7. Files materially changed:
-   - `dev/SESSION_HANDOFF.md`（Version Bump Rule 新增 — 用戶操作）
-   - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`（本 closeout）
-8. Validation summary: 無代碼變更；ROOT SAFETY CHECK 流程正確；無 INSTALL 寫入
-9. Git commits: v3.0.0 仍待推送至 EDB-AI-Circular-System
+   - `edb-dashboard.html`（actText helper + render fix + v3.0.2）
+   - `dev/SESSION_HANDOFF.md`（版本 + Open Priorities + Last Session 更新）
+   - `dev/SESSION_LOG.md`（新增 2026-04-02 session entry）
+8. Validation summary: JS syntax PASS；4 unit tests PASS
+9. Git commits: 待用戶在 Mac Terminal 推送

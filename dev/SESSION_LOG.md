@@ -1,5 +1,77 @@
 # Session Log
 
+## 2026-04-02 acts JSON Rendering Bug Fix + v3.0.2
+
+1. Agent & Session ID: Claude_20260402_0000
+2. Task summary: 修復「角色及資源」tab 行動清單顯示原始 JSON 亂碼問題；新增 `actText()` helper 函數；版本升級 v3.0.1 → v3.0.2
+3. Layer classification: Product / System Layer（前端 bug fix）
+4. Files changed: `edb-dashboard.html`（1 helper + 1 render fix + version bump）
+5. Completed:
+   - ✅ Root cause: `acts` 陣列在新版 circulars.json 中儲存為 JSON 字串形式（`{"text":"...","role":"...","dl":"...","note":"..."}`），舊渲染碼 `${a}` 直接輸出原始字串
+   - ✅ Fix: 新增 `actText(a)` helper（支援 plain string / object / JSON string 三種格式）
+   - ✅ 修改 line 2661：`${a}` → `${actText(a)}`
+   - ✅ v3.0.1 → v3.0.2（6 處）
+6. Push status: 待用戶推送
+
+### Problem -> Root Cause -> Fix -> Verification
+- **Problem**: 角色及資源 tab 行動清單顯示 `{"text":"...","role":"..."}` 原始 JSON
+- **Root Cause**: 新版 GitHub Actions scraper 輸出的 `roles.[role].acts` 陣列改為儲存 JSON 字串物件，而非純文字字串；舊渲染碼直接 `${a}` 無法解析
+- **Fix**: 新增 `actText(a)` helper 安全提取文字（支援 3 種格式：純字串/物件/JSON字串）
+- **Verification**: 4/4 unit tests PASS；JS syntax check PASS
+
+### Test Scenarios
+| Scenario | Expected | Actual | Result |
+|---|---|---|---|
+| `acts` = plain string（舊格式） | 顯示文字 | 顯示文字 | PASS |
+| `acts` = object（直接物件） | 顯示 `.text` | 顯示 `.text` | PASS |
+| `acts` = JSON 字串（新格式，bug 來源） | 顯示 `.text` | 顯示 `.text` | PASS |
+| `acts` = 空值/null（邊界） | 空字串 | 空字串 | PASS |
+
+Overall: PASS
+
+---
+
+## 2026-04-01 Context Resume + Session Close (no code changes)
+
+1. Agent & Session ID: Claude_20260401_0000
+2. Task summary: Session resumed after context compaction. Confirmed v3.0.1 is in workspace. Provided GitHub Actions workflow trigger commands. No code changes. User closed session.
+3. Layer classification: Development Governance Layer（session governance only）
+4. Files changed: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`（closeout only）
+5. Completed:
+   - ✅ Confirmed `const VERSION = 'v3.0.1'` in edb-dashboard.html
+   - ✅ Provided `gh workflow run` command for GitHub Pages trigger
+   - ✅ Session closeout documentation
+6. No code changes this session.
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow §1 startup: dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md.
+
+Current state: v3.0.1 — 3 UX/bug fixes (layout setting nav, filter auto-navigate, ⚙️ settings to header). Code is complete in Claude-edb-Project-V3 workspace.
+
+Pending tasks (priority order):
+1. Confirm GitHub Pages shows v3.0.1 (hard-refresh Cmd+Shift+R). If not, trigger workflow:
+   gh workflow run update-circulars.yml --repo Leonard-Wong-Git/EDB-AI-Circular-System
+2. Copy governance files to git repo and push v3.0.1 (if not already live):
+   cp "<Claude-edb-Project-V3>/edb-dashboard.html" "<GIT_REPO>/edb-dashboard.html"
+   cp "<Claude-edb-Project-V3>/dev/SESSION_HANDOFF.md" "<GIT_REPO>/dev/SESSION_HANDOFF.md"
+   cp "<Claude-edb-Project-V3>/dev/SESSION_LOG.md" "<GIT_REPO>/dev/SESSION_LOG.md"
+   cp "<Claude-edb-Project-V3>/dev/CODEBASE_CONTEXT.md" "<GIT_REPO>/dev/CODEBASE_CONTEXT.md"
+   git add . && git commit -m "chore: session close — v3.0.1 governance sync"
+   git pull --rebase origin main && git push origin main
+3. Continue dashboard bug fixes — await user bug reports (each fix must follow Version Bump Rule).
+4. Supplier chart data fields (scraper modification).
+5. K1 Phase 2 (long-term).
+
+Key files: edb-dashboard.html (v3.0.1, Claude-edb-Project-V3 workspace)
+Known risks: git rebase overwrites governance files — always cp dev/ files before push; path has spaces — quote in Terminal.
+Validation: v3.0.1 confirmed in workspace. GitHub Pages deployment status unconfirmed — verify first.
+First action: Check GitHub Pages version; ask user for next bugs.
+```
+
+---
+
 ## 2026-03-31 Settings/Filter UX Fix + v3.0.1
 
 1. Agent & Session ID: Claude_20260331_0000
