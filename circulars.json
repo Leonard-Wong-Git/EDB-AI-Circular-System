@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-02T10:28:00Z",
+  "generated_at": "2026-04-02T11:34:43Z",
   "model": "gpt-5-nano",
   "temperature": 1,
-  "range": "school-year (from 2025-09-01)",
+  "range": "past 3 days (from 2026-03-30)",
   "date_from": "2025-09-01",
   "date_to": "2026-04-01",
-  "days": 30,
+  "days": 3,
   "count": 115,
   "circulars": [
     {
