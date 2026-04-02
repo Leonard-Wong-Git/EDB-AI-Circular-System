@@ -1,12 +1,12 @@
 #!/bin/bash
-# deploy.sh — EDB Dashboard one-command push
-# Usage: bash deploy.sh
-# Or make executable: chmod +x deploy.sh && ./deploy.sh
+# EDB Dashboard — 一鍵推送
+# 用法：bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 
-cd "$(dirname "$0")"
-echo "📦 Pulling latest from remote..."
+cd ~/Documents/EDB-AI-Circular-System || { echo "❌ 找不到 repo，請先 clone"; exit 1; }
+echo "📦 同步遠端..."
 git pull --rebase origin main
-echo "🚀 Pushing to GitHub..."
+echo "🚀 推送至 GitHub..."
 git push origin main
-echo "✅ Done! GitHub Pages will update in ~1 min."
-echo "   Hard refresh: Cmd+Shift+R at https://leonard-wong-git.github.io/EDB-AI-Circular-System/"
+echo "✅ 完成！約1分鐘後生效"
+echo "   請按 Cmd+Shift+R 強制刷新"
+echo "   https://leonard-wong-git.github.io/EDB-AI-Circular-System/"
