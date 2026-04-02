@@ -172,6 +172,21 @@ python3 -m http.server 8080
 
 ---
 
+## Path Map (VM Session)
+
+| Role | VM Path |
+|------|---------|
+| Workspace (frontend SSOT) | `/sessions/.../mnt/Claude-edb-Project-V3` |
+| Git Repo (deploy target) | `/sessions/.../mnt/EDB-Circular-AI-analysis-system` |
+
+**Deployment flow:** Claude copies workspace → git repo → commits automatically. User runs ONE push command:
+```bash
+cd "/Users/leonard/Library/Application Support/Claude/local-agent-mode-sessions/f52b21f7-e7c9-49a3-80dc-00ab322afbcf/51c234d2-cb9f-4b55-bb07-b71de9e93c27/local_e454964f-74da-4734-9a60-bf4b4362ca65/outputs/EDB-Circular-AI-analysis-system"
+git pull --rebase origin main && git push origin main
+```
+
+---
+
 ## AI Maintenance Log
 
 | Date | Session ID | Action |
