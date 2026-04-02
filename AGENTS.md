@@ -2,6 +2,10 @@
 (If an AGENTS.md already exists in this project's directory, the original content must be preserved and integrated/merged — retaining the strengths of each while coordinating them to complement rather than conflict with one another)
 
 <INSTRUCTIONS>
+<!-- MANDATORY STARTUP — read every session: §0 §1 §2 -->
+<!-- MANDATORY WORKFLOW — execute every task/closeout: §3 §4 -->
+<!-- CONDITIONAL — apply when triggered: §0b §2b §2c §3b §3c §3d §4a §5 §6 §7 §8 §8b §9 -->
+<!-- REFERENCE — consult when needed: §10 §11 §12 -->
 
 ## 0) Purpose
 This project adopts a "sustainable session governance" model. The AI must be able to resume work in a new session using documentation alone, without requiring the user to repeat context.
@@ -117,7 +121,7 @@ If `dev/CODEBASE_CONTEXT.md` does not exist, the AI must generate it during the 
 4. Record all source files scanned in the `AI Maintenance Log` section
 5. Never modify the source files during this scan — read only
 
-After reading `dev/SESSION_LOG.md`, the AI must locate the latest `### Next Session Handoff Prompt (Verbatim)` block (if present) and use that block as startup execution seed context for PLAN.
+After reading `dev/SESSION_LOG.md`, the AI must locate the latest `### Next Session Handoff Prompt (Verbatim)` block — defined as the last occurring such heading in the entire file — and use that block as startup execution seed context for PLAN. Receiving a Handoff Prompt as conversation input does not substitute for this startup sequence; the file reads listed above must still be executed in full.
 
 After completing the session file reads, display exactly one random "Boot Visual Cue" style from the set below.
 Selection rule: randomize across styles; if the previous style is known, prefer a different style instead of repeating.
@@ -237,6 +241,7 @@ Every task must follow this workflow and clearly label each phase in the respons
    - Update `dev/SESSION_HANDOFF.md` and `dev/SESSION_LOG.md`
    - Apply the same cross-document sync conditions as §4 closeout: if tech stack, directory structure, build commands, external services, or Key Decisions changed in this task — update `dev/CODEBASE_CONTEXT.md` now, do not defer to closeout
    - If `dev/PROJECT_MASTER_SPEC.md` exists and carries status for the completed work — update it in the same pass
+   - **DOC_SYNC Matrix Scan (mandatory visible output)**: Before completing PERSIST, output a `### DOC_SYNC Matrix Scan` block in the response. If no files were created or modified during CHANGE: output `### DOC_SYNC Matrix Scan — SKIP (no file changes this task)`. If `dev/DOC_SYNC_CHECKLIST.md` exists: query the registry and list every matched row with columns `Change Category | Required Doc Updates | Status` (Status = `✓ Done`, `N/A`, or `⚠ Skipped (reason)`); update all required docs. If no row matches the current change: add the missing row to the registry first (anti-pattern guard), then list it with Status `✓ Row added`. If the registry does not exist: output `### DOC_SYNC Matrix Scan — SKIP (registry not present)`. Absence of this block in the response = scan was skipped; user may immediately request the agent to complete it.
 
 ---
 
@@ -276,7 +281,7 @@ Whenever a task involves a merge, release, deploy, publish, GA, or hotfix comple
 
 1. Independent Review Pass
    - Conduct an independent review (may be performed by a second agent, a review mode, or a structured self-check checklist)
-   - Must cover: correctness, consistency, regression risk, documentation sync, toolchain compatibility
+   - Must cover: correctness, consistency, regression risk, documentation sync (verify all `dev/DOC_SYNC_CHECKLIST.md` entries affected by this release's changes are updated), toolchain compatibility
 
 2. Machine Verification
    - Run the project's applicable build / type-check / lint / tests / regression / consistency checks
@@ -365,12 +370,14 @@ Supplementary rules:
 3. After closeout is complete, the response must include a copy-paste-ready "Next Session Handoff Prompt" for the next agent
 4. The "Next Session Handoff Prompt" must be generated from the project's actual current state; fixed or hardcoded handoff sentences are prohibited
 5. The "Next Session Handoff Prompt" must include at minimum:
-   - Opening line: instruct the receiving AI to read `AGENTS.md` first (governance SSOT), then follow the §1 startup sequence (`dev/SESSION_HANDOFF.md` → `dev/SESSION_LOG.md` → `dev/CODEBASE_CONTEXT.md` if exists) — this ensures cross-tool handoffs work even when the receiving tool does not auto-load `AGENTS.md`
+   - Opening line: use this verbatim template — do not paraphrase or omit any file — paste as two consecutive lines to ensure cross-tool handoffs work even when the receiving tool does not auto-load `AGENTS.md`:
+     `Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:`
+     `dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)`
    - Current objective and progress state
    - Pending tasks in priority order
    - Key files changed in this session
    - Known risks / blockers / cautions
-   - Validation status and the first concrete next action
+   - Validation status and the first concrete action after completing the full §1 startup sequence, labeled `Post-startup first action:` — this is executed only after §1 is complete, not before
 6. After closeout is complete, the response must be formatted in exactly three sections in this order:
    - Section 1: `SESSION CLOSEOUT SUMMARY`
    - Section 2: `NEXT SESSION HANDOFF PROMPT (COPY/PASTE)`
@@ -436,6 +443,41 @@ Closeout Visual Cue - Style C
 
 ---
 
+## 4a) Session Log Maintenance (Conditional — auto-triggered at closeout)
+
+Before writing the new session entry to `dev/SESSION_LOG.md` during closeout, check the following trigger conditions:
+
+**Trigger (either condition):**
+1. `dev/SESSION_LOG.md` exceeds 800 lines
+2. The oldest session entry in `dev/SESSION_LOG.md` is dated more than 30 days ago
+
+**If neither condition is met:** proceed with writing the new session entry normally.
+
+**If triggered, perform archiving before writing the new entry:**
+
+1. Create `dev/archive/` directory if it does not exist
+2. Identify entries to archive:
+   - Line-count trigger: archive oldest entries until `dev/SESSION_LOG.md` ≤ 350 lines; always retain the 2 most recent session entries regardless of size
+   - Date trigger: archive all entries older than 30 days; always retain the 2 most recent session entries regardless of date
+3. Determine the archive filename by year and quarter of the archived entries:
+   - Format: `dev/archive/SESSION_LOG_YYYY_QN.md` (e.g., `SESSION_LOG_2026_Q1.md` for Jan–Mar 2026)
+   - If archived entries span multiple quarters, create one file per quarter
+   - If the target archive file already exists, append to it (do not overwrite)
+4. Move the identified entries from `dev/SESSION_LOG.md` into the archive file(s)
+5. Add or update an archive pointer comment immediately after the file header in `dev/SESSION_LOG.md`:
+   `<!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->`
+6. Proceed with writing the new session entry to the now-trimmed `dev/SESSION_LOG.md`
+
+**First-run auto-transition:**
+If `dev/SESSION_LOG.md` has no archive pointer and either trigger condition is met, apply the same steps above. Existing large files are trimmed automatically on the first closeout after upgrading — no manual migration needed.
+
+**Hard rules:**
+1. Never delete session entries — only move to archive
+2. `dev/archive/` files are not part of the §1 mandatory read list; do not read them at startup unless the user explicitly requests historical lookup
+3. The most recent session entry's `### Next Session Handoff Prompt (Verbatim)` block must remain in `dev/SESSION_LOG.md`
+
+---
+
 ## 5) File Safety Governance (Strict)
 The AI is prohibited from executing high-risk destructive operations, including but not limited to:
 
@@ -477,7 +519,7 @@ Before any bootstrap/setup task that creates or modifies multiple governance fil
    - `INSTALL_WRITE_OK`
 9. After `INSTALL_WRITE_OK` and before first write, create a lightweight backup snapshot:
    - Directory: `<PROJECT_ROOT>/dev/init_backup/<YYYYMMDD_HHMMSS_UTC>/`
-   - Copy only existing target files (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, if present)
+   - Copy only existing target files (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `dev/DOC_SYNC_CHECKLIST.md`, if present)
    - Preserve relative paths under `<PROJECT_ROOT>`
    - Use native filesystem copy operations (cross-platform), no git required
 10. If high-risk markers are detected, default action is abort and ask user to specify a safer subdirectory explicitly
@@ -508,7 +550,7 @@ Normal external network service APIs / Web SDKs required for project feature dev
 2. Do not perform unrelated refactoring
 3. Do not revert the user's existing modifications
 4. If unexpected changes not caused by the AI are discovered, stop and confirm with the user first
-5. If behavior, processes, interfaces, acceptance criteria, runbooks, release conditions, or related matters change, the corresponding documentation and regression must be updated in the same changeset
+5. If behavior, processes, interfaces, acceptance criteria, runbooks, release conditions, or related matters change, the corresponding documentation (see `dev/DOC_SYNC_CHECKLIST.md` if it exists) and regression must be updated in the same changeset
 6. If the current fix would make the project's rules more complex, first assess whether consolidation can reduce overall complexity
 
 ---
@@ -517,7 +559,7 @@ Normal external network service APIs / Web SDKs required for project feature dev
 Whenever a bug, process issue, incident root cause, or recurring error is fixed, the following must also be done:
 
 1. Add / update a regression case
-2. Update acceptance docs / runbook / spec (depending on impact scope)
+2. Query `dev/DOC_SYNC_CHECKLIST.md` (if it exists) for doc impact scope; update all listed entries for this change category
 3. Record in `dev/SESSION_LOG.md`:
    - Problem
    - Root Cause
