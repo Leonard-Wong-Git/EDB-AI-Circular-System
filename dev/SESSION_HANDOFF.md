@@ -1,7 +1,7 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v3.0.2** (2026-04-02) ← **當前版本；workspace 已確認；待推送至 git repo**
+1. Version: **v3.0.3** (2026-04-02) ← **當前版本；已 commit 至 git repo；待 push 至 GitHub**
 2. Core commands / features:
    - `edb-dashboard.html` — v3.0.1 Dashboard（3,061 行；設定佈局修復 + 篩選導航修復 + UX 整合）
    - `edb_scraper.py` — 後端爬蟲 + AI 分析管線（PyMuPDF 引擎 + K1 知識注入 + R1-v2）
@@ -71,8 +71,8 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** cp governance files + edb-dashboard.html → git repo → commit + push v3.0.2（含 acts 亂碼修復）
-2. **[重要]** push 後觸發 GitHub Pages workflow：`gh workflow run update-circulars.yml --repo Leonard-Wong-Git/EDB-AI-Circular-System` 並 Cmd+Shift+R 確認 v3.0.2 上線
+1. **[下一步 ⭐]** 執行 `bash ~/Downloads/Claude-edb-Project-V3/deploy.sh` → push v3.0.3 → Cmd+Shift+R 確認上線
+2. **[已建立]** git repo 已掛載 VM，Claude 今後自動 commit；用戶只需 push
 3. **[繼續]** 繼續收集並修復 dashboard bugs（每次修復遵守 Version Bump Rule）
 4. **[下一步]** 供應商統計新數據字段（scraper 修改，目前圖表為 placeholder）
 5. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）

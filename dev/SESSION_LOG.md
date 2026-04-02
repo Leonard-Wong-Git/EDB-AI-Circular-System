@@ -1,6 +1,28 @@
 # Session Log
 
-## 2026-04-02 acts JSON Rendering Bug Fix + v3.0.2
+## 2026-04-02 截止日期類型標籤斷行修正 + v3.0.3
+
+1. Agent & Session ID: Claude_20260402_0100
+2. Task summary: 修正截止日期表格「類型」欄位斷行；同批次處理 v3.0.2 部署問題（git repo 直接存取）；建立繁體中文 commit 規範
+3. Layer classification: Product / System Layer（前端 CSS bug fix）
+4. Files changed: `edb-dashboard.html`（`.type-chip` CSS + v3.0.3）
+5. Completed:
+   - ✅ `.type-chip` 加入 `white-space:nowrap; display:inline-block`
+   - ✅ v3.0.2 → v3.0.3（6 處）
+   - ✅ JS syntax PASS；直接 commit 至 git repo
+   - ✅ Git repo 已掛載至 VM（未來無需手動 cp）
+   - ✅ 繁體中文 commit message 規範啟用
+6. Push status: 待用戶執行 `bash ~/Downloads/Claude-edb-Project-V3/deploy.sh`
+
+### Problem -> Root Cause -> Fix -> Verification
+- **Problem**: 截止日期表格「類型」欄（知悉日期／申請截止）在窄欄時換行顯示
+- **Root Cause**: `.type-chip` CSS 無 `white-space:nowrap`，badge 在有限欄寬下自動換行
+- **Fix**: 新增 `white-space:nowrap; display:inline-block` 至 `.type-chip`
+- **Verification**: JS syntax PASS；grep 確認 CSS 已更新
+
+---
+
+## 2026-04-02 行動清單 JSON 亂碼修正 + v3.0.2
 
 1. Agent & Session ID: Claude_20260402_0000
 2. Task summary: 修復「角色及資源」tab 行動清單顯示原始 JSON 亂碼問題；新增 `actText()` helper 函數；版本升級 v3.0.1 → v3.0.2
