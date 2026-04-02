@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDB 通告智能分析系統 v3.0.3</title>
+<title>EDB 通告智能分析系統 v3.0.4</title>
 <style>
 /* ============================================================
    PALETTES (accent colours only — theme-independent)
@@ -429,6 +429,11 @@ a{color:var(--accent);text-decoration:none;}
   padding:3px 8px;border-radius:6px;font-size:11px;cursor:pointer;
 }
 .apply-note{font-size:10px;color:var(--text-muted);margin-top:3px;}
+.apply-ext{margin-top:4px;padding:5px 7px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;min-width:170px;}
+.apply-ext-row{display:flex;align-items:center;gap:4px;margin-bottom:3px;font-size:10px;}
+.apply-ext-row:last-child{margin-bottom:0;}
+.apply-ext-lbl{color:var(--text-muted);white-space:nowrap;min-width:52px;}
+.apply-date-inp,.apply-note-inp{flex:1;font-size:10px;padding:2px 4px;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--text);min-width:0;}
 .grant-type{
   display:inline-flex;align-items:center;gap:4px;
   font-size:11px;padding:2px 8px;border-radius:8px;font-weight:600;
@@ -923,7 +928,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
     </div>
     <div class="dev-card">
       <div class="dev-card-title">ℹ️ 版本資訊</div>
-      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v3.0.3</span></div>
+      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v3.0.4</span></div>
       <div class="dev-row"><span>Build Date</span><span>2026-03-16</span></div>
       <div class="dev-row"><span>知識庫更新</span><span>2026-03-09 20:48 UTC</span></div>
       <div class="dev-row"><span>資料筆數</span><span id="devCount">—</span></div>
@@ -960,7 +965,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
 <header class="header">
   <div class="brand" onclick="switchTab('home',document.getElementById('tabHome'))" style="cursor:pointer;" title="返回首頁">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="13" x2="12" y2="17"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
-    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v3.0.3</span></span>
+    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v3.0.4</span></span>
   </div>
 
   <select class="role-select" id="roleSelect" onchange="setRole(this.value)">
@@ -1344,7 +1349,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
         </div>
         <div class="setting-row">
           <div class="setting-info"><div class="setting-lbl">版本</div></div>
-          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v3.0.3</span>
+          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v3.0.4</span>
         </div>
       </div>
 
@@ -1461,14 +1466,14 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
      ============================================================ -->
 <footer class="site-footer">
   <div>⚠️ <strong>免責聲明：</strong>本系統資料來源於<a href="https://www.edb.gov.hk" target="_blank" rel="noopener">香港特別行政區政府教育局（EDB）</a>官方網站，僅供參考及輔助管理用途，一切以教育局官方公告為準。本系統並非教育局官方產品。</div>
-  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v3.0.3 &nbsp;|&nbsp; &copy; 2026</div>
+  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v3.0.4 &nbsp;|&nbsp; &copy; 2026</div>
 </footer>
 
 <script>
 /* ============================================================
    VERSION
    ============================================================ */
-const VERSION = 'v3.0.3';
+const VERSION = 'v3.0.4';
 
 /* ============================================================
    MOCK DATA
@@ -1612,7 +1617,7 @@ let S = {
   filterType:'all', filterSchool:'all',
   filterTopic:'all', filterImpact:'all', filterAction:'all',
   searchQ:'', filterBarOpen:false,
-  bookmarks:{}, pinned:{}, statuses:{}, applyStatuses:{}, applyDates:{},
+  bookmarks:{}, pinned:{}, statuses:{}, applyStatuses:{}, applyDates:{}, applyNotes:{},
   sortField:'date', sortAsc:false,
   currentDetailId:null, devClickCount:0,
   multiSelect:false, selected:{},
@@ -1667,6 +1672,7 @@ function lsLoad(){
   S.statuses   = lsGet('edb_statuses',{});
   S.applyStatuses = lsGet('edb_apply_statuses',{});
   S.applyDates    = lsGet('edb_apply_dates',{});
+  S.applyNotes    = lsGet('edb_apply_notes',{});
   S.sortField  = lsGet('edb_sort_field','date');
   S.sortAsc    = lsGet('edb_sort_asc', false);
 }
@@ -2243,8 +2249,9 @@ function renderCalendar(){
         cls = isAttn ? 'ev-red' : 'ev-blue';
       }
       const shortNum = ev.num.replace(/\/(\d{4})$/, '').replace(/^EDB/, 'EDBC').replace('CM','').replace('CL','L');
+      const dlLabel = ev.type==='dl' ? ev.title.replace(/^⏰\s*/,'').substring(0,4) : '';
       const shortTitle = ev.type==='dl'
-        ? `⏰ ${shortNum}`
+        ? `⏰ ${shortNum} ${dlLabel}`
         : `${shortNum} ${ev.title.substring(0,10)}`;
       evHtml+=`<div class="cal-ev ${cls}" onclick="event.stopPropagation();openDetail(${ev.id})" title="${ev.title}">${shortTitle}</div>`;
     });
@@ -2321,10 +2328,22 @@ function renderResources(){
     const soonestDl=d.deadlines.find(dl=>dl.type==='apply_deadline');
     const aSt=S.applyStatuses[d.id]||'pending';
     const aDate=S.applyDates?.[d.id]||'';
+    const aNote=S.applyNotes?.[d.id]||'';
     const days=soonestDl?daysUntil(soonestDl.date):null;
     const dlHtml=soonestDl?`<span class="${days!==null&&days<=3?'dl-urgent':days!==null&&days<=S.alertDays?'dl-soon':'dl-ok'}">${soonestDl.date}${days!==null?` (${days<0?'過期':days+'天'})`:''}`:''
     const rowCls=aSt==='applying'?'res-applying':aSt==='applied'?'res-applied':aSt==='closed'?'res-closed':aSt==='na'?'res-na':'';
-    const stNote=aSt==='applied'&&aDate?`<div class="apply-note">✅ 已於 ${aDate} 提交</div>`:aSt==='applying'?`<div class="apply-note">🔄 進行中</div>`:'';
+    const isoDate=toISODate(aDate);
+    let extHtml='';
+    if(aSt==='applied'){
+      extHtml=`<div class="apply-ext" id="apply-ext-${d.id}">
+        <div class="apply-ext-row"><span class="apply-ext-lbl">📅 提交日期</span><input type="date" class="apply-date-inp" value="${isoDate}" onchange="setApplyDate(${d.id},this.value)" onclick="event.stopPropagation()"></div>
+        <div class="apply-ext-row"><span class="apply-ext-lbl">📝 備註</span><input type="text" class="apply-note-inp" placeholder="參考號/備註" value="${aNote.replace(/"/g,'&quot;')}" oninput="setApplyNote(${d.id},this.value)" onclick="event.stopPropagation()"></div>
+      </div>`;
+    } else if(aSt==='applying'){
+      extHtml=`<div class="apply-ext" id="apply-ext-${d.id}">
+        <div class="apply-ext-row"><span class="apply-ext-lbl">📝 進度備註</span><input type="text" class="apply-note-inp" placeholder="負責人/進度" value="${aNote.replace(/"/g,'&quot;')}" oninput="setApplyNote(${d.id},this.value)" onclick="event.stopPropagation()"></div>
+      </div>`;
+    }
     return `<tr class="${rowCls}" onclick="openDetail(${d.id})">
       <td><span class="lt-num">${d.number}</span></td>
       <td>${d.title}</td>
@@ -2344,7 +2363,7 @@ function renderResources(){
           <option value="closed" ${aSt==='closed'?'selected':''}>🔒 已截止</option>
           <option value="na" ${aSt==='na'?'selected':''}>— 不適用</option>
         </select>
-        ${stNote}
+        ${extHtml}
       </td>
     </tr>`;
   }).join('');
@@ -2458,35 +2477,55 @@ function togglePinned(id,btn){
   if(S.currentDetailId===id) document.getElementById('dpPinBtn')?.classList.toggle('on',S.pinned[id]);
   renderStatsBar(); updateBmBadge();
 }
+function toISODate(d){
+  if(!d) return '';
+  if(/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+  const p=d.split('/');
+  if(p.length===3) return `${p[2]}-${String(p[1]).padStart(2,'0')}-${String(p[0]).padStart(2,'0')}`;
+  return '';
+}
+function setApplyDate(id,isoDate){
+  if(!S.applyDates) S.applyDates={};
+  S.applyDates[id]=isoDate;
+  lsSet('edb_apply_dates',S.applyDates);
+}
+function setApplyNote(id,note){
+  if(!S.applyNotes) S.applyNotes={};
+  S.applyNotes[id]=note;
+  lsSet('edb_apply_notes',S.applyNotes);
+}
 function setApplyStatus(id,val){
   S.applyStatuses[id]=val; lsSet('edb_apply_statuses',S.applyStatuses);
-  // record date when marked as applied
-  if(val==='applied'){
+  // auto-record today as ISO date when first marked applied (only if no date yet)
+  if(val==='applied' && !S.applyDates?.[id]){
     if(!S.applyDates) S.applyDates={};
-    S.applyDates[id]=new Date().toLocaleDateString('zh-HK');
+    S.applyDates[id]=new Date().toISOString().slice(0,10);
     lsSet('edb_apply_dates',S.applyDates);
   }
-  // update row class + note live (avoid full re-render)
+  // update row class + ext form live (avoid full re-render)
   const sel=document.querySelector(`.apply-sel[data-rid="${id}"]`);
   if(sel){
     const row=sel.closest('tr');
     if(row){
-      row.className=['res-applying','res-applied','res-closed','res-na'].join(' ').split(' ').reduce((r,c)=>{r.classList.remove(c);return r;},row).className;
       ['res-applying','res-applied','res-closed','res-na'].forEach(c=>row.classList.remove(c));
       if(val==='applying') row.classList.add('res-applying');
       else if(val==='applied') row.classList.add('res-applied');
       else if(val==='closed') row.classList.add('res-closed');
       else if(val==='na') row.classList.add('res-na');
-      // update note
-      let note=sel.nextElementSibling;
-      if(note&&note.classList.contains('apply-note')) note.remove();
+      // update ext form
+      let ext=document.getElementById('apply-ext-'+id);
+      if(ext) ext.remove();
+      const aNote=S.applyNotes?.[id]||'';
+      const isoDate=toISODate(S.applyDates?.[id]||'');
       if(val==='applied'){
-        const n=document.createElement('div'); n.className='apply-note';
-        n.textContent='✅ 已於 '+S.applyDates[id]+' 提交';
-        sel.after(n);
+        const div=document.createElement('div'); div.className='apply-ext'; div.id='apply-ext-'+id;
+        div.innerHTML=`<div class="apply-ext-row"><span class="apply-ext-lbl">📅 提交日期</span><input type="date" class="apply-date-inp" value="${isoDate}" onchange="setApplyDate(${id},this.value)" onclick="event.stopPropagation()"></div>`+
+          `<div class="apply-ext-row"><span class="apply-ext-lbl">📝 備註</span><input type="text" class="apply-note-inp" placeholder="參考號/備註" value="${aNote.replace(/"/g,'&quot;')}" oninput="setApplyNote(${id},this.value)" onclick="event.stopPropagation()"></div>`;
+        sel.after(div);
       } else if(val==='applying'){
-        const n=document.createElement('div'); n.className='apply-note';
-        n.textContent='🔄 進行中'; sel.after(n);
+        const div=document.createElement('div'); div.className='apply-ext'; div.id='apply-ext-'+id;
+        div.innerHTML=`<div class="apply-ext-row"><span class="apply-ext-lbl">📝 進度備註</span><input type="text" class="apply-note-inp" placeholder="負責人/進度" value="${aNote.replace(/"/g,'&quot;')}" oninput="setApplyNote(${id},this.value)" onclick="event.stopPropagation()"></div>`;
+        sel.after(div);
       }
     }
   }
