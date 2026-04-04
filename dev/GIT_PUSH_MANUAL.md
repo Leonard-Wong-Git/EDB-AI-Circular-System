@@ -2,6 +2,8 @@
 
 每次有新改動需要推送至 GitHub，按以下步驟在 Mac Terminal 執行。
 
+> 快速路徑：如只需發佈目前 workspace，可直接執行 `bash ~/Downloads/Claude-edb-Project-V3/deploy.sh`。此腳本會自動做 patch version bump、同步到 deploy repo、commit、pull --rebase、push。
+
 ---
 
 ## 前置：找到專案路徑

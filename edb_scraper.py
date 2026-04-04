@@ -110,6 +110,26 @@ _ROLE_OBJ = {
     "required": ["r", "pts", "acts"],
 }
 
+_SUPPLIER_ROLE_OBJ = {
+    "type": "object",
+    "additionalProperties": False,
+    "properties": {
+        "r":               {"type": "boolean"},
+        "pts":             {"type": "array", "items": {"type": "string"}},
+        "acts":            {"type": "array", "items": {"type": "string"}},
+        "is_tender":       {"type": "boolean"},
+        "procurement_cat": {"type": "string", "enum": ["IT", "Construction", "Furniture", "Services", "Training", "Stationery", "Other", "none"]},
+        "budget_estimate": {"anyOf": [{"type": "number"}, {"type": "null"}]},
+        "compliance_ref":  {"type": "array", "items": {"type": "string"}},
+        "eligibility":     {"type": "string"},
+        "contact_unit":    {"type": "string"},
+    },
+    "required": [
+        "r", "pts", "acts", "is_tender", "procurement_cat",
+        "budget_estimate", "compliance_ref", "eligibility", "contact_unit"
+    ],
+}
+
 CIRCULAR_SCHEMA = {
     "name":   "circular_analysis",
     "strict": True,
@@ -160,7 +180,7 @@ CIRCULAR_SCHEMA = {
                     "department_head": _ROLE_OBJ,
                     "teacher":         _ROLE_OBJ,
                     "eo_admin":        _ROLE_OBJ,
-                    "supplier":        _ROLE_OBJ,
+                    "supplier":        _SUPPLIER_ROLE_OBJ,
                 },
             },
             "deadlines": {
@@ -230,8 +250,13 @@ CIRCULAR_SCHEMA = {
 # =============================================================================
 
 SYSTEM_PROMPT = """你是一個香港教育局（EDB）通告分析專家，服務對象包括學校校長、副校長、科主任、教師、行政主任和供應商。
+你具備深厚的香港學校管理知識，並能將提供的「經審核知識庫 (Knowledge Base)」與通告內容進行語義對照分析。
 
 你的任務是閱讀 EDB 通告全文，提取結構化資訊，以 JSON 格式輸出分析結果。
+
+━━━ 知識對照分析 (Fact-Checking) ━━━
+1. 如提供的「經審核知識庫」含有與當前通告相關的規定（如採購門檻、CPD 時數、撥款用途、廉潔要求），請務必在對應角色的 pts (重點事項) 或 acts (行動) 中體現。
+2. 即使通告全文未提及具體金額門檻，若知識庫有相關一般準則，應在 supplier (供應商) 角色中提及。
 
 ━━━ 分析標準 ━━━
 
@@ -263,6 +288,7 @@ roles（每角色分析）：
   pts  — 重點事項，最多 3 項中文短句
   acts — 具體行動，最多 3 項（如無需行動則為空數組）
   角色清單：principal, vice_principal, department_head, teacher, eo_admin, supplier
+  (supplier 角色額外包含：is_tender, procurement_cat, budget_estimate, compliance_ref, eligibility, contact_unit)
 
 deadlines（截止日期）：
   apply_deadline      — 申請撥款/服務的截止
@@ -599,26 +625,133 @@ def extract_pdf_text(pdf_path: Path, max_pages: int = PDF_MAX_PAGES, timeout_sec
         return ""
 
 
+# =============================================================================
+# KNOWLEDGE ENGINE (v3.0.4)
+# =============================================================================
+
+class KnowledgeStore:
+    def __init__(self, client: "OpenAI", verbose: bool = False):
+        self.client  = client
+        self.verbose = verbose
+        self.log     = logging.getLogger("Knowledge")
+        self.data    = {}
+        self.facts   = []      # List of strings: "Fact content"
+        self.embeds  = []      # List of lists: [0.1, -0.2, ...]
+        self.threshold = 0.45  # Project spec threshold
+        self.cache_path = CACHE_DIR / ".knowledge_embeds.json"
+
+    def load(self, path_or_url: str):
+        self.log.info(f"Loading knowledge from: {path_or_url}")
+        try:
+            if path_or_url.startswith("http"):
+                resp = requests.get(path_or_url, timeout=30)
+                resp.raise_for_status()
+                self.data = resp.json()
+            else:
+                with open(path_or_url, encoding="utf-8") as f:
+                    self.data = json.load(f)
+            
+            # Flatten knowledge into facts
+            self.facts = []
+            for topic_id, topic_data in self.data.items():
+                if topic_id.startswith("_"): continue
+                for role_id, role_facts in topic_data.items():
+                    if role_id.startswith("_"): continue
+                    if isinstance(role_facts, list):
+                        self.facts.extend(role_facts)
+            
+            # Uniqify and remove too short ones
+            self.facts = sorted(list(set(f for f in self.facts if len(f) > 5)))
+            self.log.info(f"  Loaded {len(self.facts)} unique facts")
+            
+            self._ensure_embeddings()
+        except Exception as exc:
+            self.log.error(f"  Failed to load knowledge: {exc}")
+
+    def _ensure_embeddings(self):
+        """Load from cache or generate for new facts."""
+        cached = {}
+        if self.cache_path.exists():
+            try:
+                with open(self.cache_path, encoding="utf-8") as f:
+                    cached = json.load(f)
+            except: pass
+
+        self.embeds = []
+        to_gen = []
+        for f in self.facts:
+            if f in cached:
+                self.embeds.append(cached[f])
+            else:
+                to_gen.append(f)
+        
+        if to_gen:
+            self.log.info(f"  Generating embeddings for {len(to_gen)} new facts...")
+            # Batch process 100 at a time
+            for i in range(0, len(to_gen), 100):
+                batch = to_gen[i:i+100]
+                res = self.client.embeddings.create(model="text-embedding-3-small", input=batch)
+                for item in res.data:
+                    cached[to_gen[i + item.index]] = item.embedding
+                    # Match order
+            
+            # Update entire embeds list from refreshed cache
+            self.embeds = [cached[f] for f in self.facts]
+            
+            with open(self.cache_path, "w", encoding="utf-8") as f:
+                json.dump(cached, f, ensure_ascii=False)
+            self.log.info(f"  Knowledge embeddings cached: {self.cache_path}")
+
+    def find_relevant(self, text: str) -> list[str]:
+        """Find facts with cosine similarity >= 0.45."""
+        if not text or not self.embeds: return []
+        
+        try:
+            res = self.client.embeddings.create(model="text-embedding-3-small", input=text[:2000])
+            query_vec = res.data[0].embedding
+            
+            hits = []
+            for i, fact_vec in enumerate(self.embeds):
+                # Cosine similarity for normalized vectors = dot product
+                sim = sum(a*b for a,b in zip(query_vec, fact_vec))
+                if sim >= self.threshold:
+                    hits.append((sim, self.facts[i]))
+            
+            # Sort by similarity descending
+            hits.sort(key=lambda x: x[0], reverse=True)
+            results = [h[1] for h in hits[:15]] # Cap at 15 facts to avoid prompt bloat
+            if self.verbose and results:
+                self.log.debug(f"  Found {len(results)} facts (top sim={hits[0][0]:.3f})")
+            return results
+        except Exception as exc:
+            self.log.error(f"  Embedding / search failed: {exc}")
+            return []
+
+
 class LLMAnalyzer:
     """Wraps gpt-5-nano Structured Output analysis."""
 
-    def __init__(self, model: str = LLM_MODEL_DEFAULT, verbose: bool = False):
-        if not HAS_OPENAI:
-            raise RuntimeError("openai package not installed")
-        api_key = os.environ.get("OPENAI_API_KEY", "").strip()
-        if not api_key:
-            raise RuntimeError("OPENAI_API_KEY not set")
-        self.client  = OpenAI(api_key=api_key)
+    def __init__(self, client: "OpenAI", model: str = LLM_MODEL_DEFAULT, verbose: bool = False, knowledge_engine: KnowledgeStore = None):
+        self.client  = client
         self.model   = model
         self.verbose = verbose
         self.log     = logging.getLogger("LLM")
+        self.kn      = knowledge_engine
 
     def analyze(self, circ: dict) -> Optional[dict]:
         """
         Analyze one circular. Returns structured dict or None on error.
         Uses temperature=1 (FIXED) and json_schema response_format.
         """
-        prompt = self._build_prompt(circ)
+        # Semantic search for relevant knowledge
+        relevant_facts = []
+        if self.kn:
+            # Match circular title + official text
+            search_text = f"{circ.get('title', '')} {circ.get('official', '')}"
+            relevant_facts = self.kn.find_relevant(search_text)
+            circ["relevant_facts"] = relevant_facts  # Store for provenance
+
+        prompt = self._build_prompt(circ, relevant_facts)
 
         self.log.info(f"  → LLM ({self.model}, temp={LLM_TEMPERATURE})")
         try:
@@ -653,7 +786,7 @@ class LLMAnalyzer:
             self.log.error(f"  LLM API error: {exc}")
             return None
 
-    def _build_prompt(self, circ: dict) -> str:
+    def _build_prompt(self, circ: dict, facts: list[str] = None) -> str:
         """Build user prompt for LLM."""
         lines = [
             f"通告號：{circ.get('number', '?')}",
@@ -662,6 +795,9 @@ class LLMAnalyzer:
             f"通告類型：{circ.get('type', 'EDBCM')}",
             "",
         ]
+        if facts:
+            lines += ["【經審核知識庫 (相關事實對照)】", "\n".join(f"- {f}" for f in facts), ""]
+        
         if circ.get("official"):
             lines += ["【官方摘要 / 網頁文字】", circ["official"], ""]
         if circ.get("pdf_text"):
@@ -771,9 +907,16 @@ def _empty_analysis() -> dict:
             "resource_value_hkd": None,
             "note": "",
         },
-        "roles": {r: {"r": False, "pts": [], "acts": []}
-                  for r in ["principal", "vice_principal", "department_head",
-                             "teacher", "eo_admin", "supplier"]},
+        "roles": {
+            **{r: {"r": False, "pts": [], "acts": []}
+               for r in ["principal", "vice_principal", "department_head", "teacher", "eo_admin"]},
+            "supplier": {
+                "r": False, "pts": [], "acts": [],
+                "is_tender": False, "procurement_cat": "none",
+                "budget_estimate": None, "compliance_ref": [],
+                "eligibility": "", "contact_unit": ""
+            }
+        },
         "deadlines": [],
         "actions": [],
         "diff": None,
@@ -809,17 +952,32 @@ def run_pipeline(args) -> int:
             return 1
         scraper = EDBScraper(verbose=args.verbose)
 
-    # ── Init LLM ─────────────────────────────────────────────────────────────
+    # ── Init LLM & Knowledge ──────────────────────────────────────────────────
+    client = None
+    kn = None
     analyzer = None
     if not args.dry_run:
         if not HAS_OPENAI:
             log.error("openai package required (pip install openai)")
             return 1
-        if not os.environ.get("OPENAI_API_KEY"):
+        api_key = os.environ.get("OPENAI_API_KEY")
+        if not api_key:
             log.error("OPENAI_API_KEY not set. Export it before running.")
             return 1
+        
+        client = OpenAI(api_key=api_key)
+        
+        # Load knowledge base (prefer local if exists, else public URL)
+        kn_path = Path("dev/knowledge/knowledge.json")
+        kn_url = "https://leonard-wong-git.github.io/edb-knowledge/knowledge.json"
+        kn = KnowledgeStore(client, verbose=args.verbose)
+        if kn_path.exists():
+            kn.load(str(kn_path))
+        else:
+            kn.load(kn_url)
+            
         try:
-            analyzer = LLMAnalyzer(model=args.model, verbose=args.verbose)
+            analyzer = LLMAnalyzer(client, model=args.model, verbose=args.verbose, knowledge_engine=kn)
             log.info(f"LLM ready: {args.model}  temperature={LLM_TEMPERATURE} (fixed)")
         except RuntimeError as exc:
             log.error(str(exc))
@@ -1097,7 +1255,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v1.0.0")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.7")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

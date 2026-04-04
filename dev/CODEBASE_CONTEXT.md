@@ -13,10 +13,11 @@
 | Backend | Python 3.10+ (`edb_scraper.py`) | Single-file pipeline: scrape → PDF → LLM → JSON |
 | PDF extraction | PyMuPDF (fitz) >= 1.24.0 | Replaced pdfplumber/pdfminer (2026-03-15) |
 | LLM | OpenAI gpt-5-nano | temperature=1 fixed; `developer` role; `max_completion_tokens`=16000; `json_schema` structured output |
+| Embeddings | text-embedding-3-small | Used for semantic knowledge search (KnowledgeStore); 0.45 threshold |
 | CI/CD | GitHub Actions | `update-circulars.yml` — cron 3×/day (days-3) + manual (school-year) |
 | Hosting | GitHub Pages | Root deploy; `index.html` redirects to `edb-dashboard.html` |
 | Data | `circulars.json` | Tracked in git (required for Pages); output of `edb_scraper.py` |
-| Knowledge | `dev/knowledge/role_facts.json` | K1 baseline: 6 topics × 7 roles; injected into LLM prompt |
+| Knowledge | `dev/knowledge/knowledge.json` | Vetted knowledge from edb-knowledge repo; 107 facts in v1.2.2 |
 
 ---
 
@@ -95,6 +96,9 @@ python3 edb_scraper.py --school-year --output ./circulars.json -v
 # Serve dashboard
 python3 -m http.server 8080
 # Open: http://localhost:8080/edb-dashboard.html
+
+# Publish latest workspace to GitHub
+bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 ```
 
 ### CI (GitHub Actions)
@@ -168,7 +172,8 @@ python3 -m http.server 8080
 | 7 | CI conflict strategy: fetch+reset | 2026-03-16 | Workflow saves fresh JSON to /tmp, resets to remote, copies back — avoids rebase conflicts with local pushes |
 | 8 | Frontend spec SSOT in v0.2.0-FRONTEND-SPEC.md | 2026-03-10 | All frontend feature decisions documented here; user confirmed |
 | 9 | Scraper PHASE 4 merge (not overwrite) | 2026-03-23 | days-3 mode was overwriting entire circulars.json; PHASE 4 now loads existing JSON, merges raw results in, sorts by date desc — prevents school-year data loss |
-| 10 | Auto version bump on every code change | 2026-03-26 | Every session that modifies edb-dashboard.html or edb_scraper.py must increment the version before closing. Scheme: **patch** (v3.0.x) for bug fixes / minor tweaks; **minor** (v3.x.0) for new features or significant UI changes; **major** (vx.0.0) for complete redesigns (user-initiated only). Version must be updated in all 6 locations: `<title>`, `brandVersion` span, `devVersion` span, `versionLabel` span, footer text, `const VERSION`. |
+| 11 | Semantic Fact-Checking (0.45 Threshold) | 2026-04-03 | Replaced keyword matching with vector similarity against knowledge.json. Threshold set to 0.45 to prevent irrelevant fact injection. |
+| 12 | Enhanced Supplier Schema | 2026-04-04 | Added is_tender, procurement_cat, budget_estimate, and compliance_ref to CIRCULAR_SCHEMA for improved supplier statistics. |
 
 ---
 
@@ -181,8 +186,7 @@ python3 -m http.server 8080
 
 **Deployment flow:** Claude copies workspace → git repo → commits automatically. User runs ONE push command:
 ```bash
-cd "/Users/leonard/Library/Application Support/Claude/local-agent-mode-sessions/f52b21f7-e7c9-49a3-80dc-00ab322afbcf/51c234d2-cb9f-4b55-bb07-b71de9e93c27/local_e454964f-74da-4734-9a60-bf4b4362ca65/outputs/EDB-Circular-AI-analysis-system"
-git pull --rebase origin main && git push origin main
+bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 ```
 
 ---
@@ -194,3 +198,5 @@ git pull --rebase origin main && git push origin main
 | 2026-03-17 | Claude_20260317_0800 | Initial CODEBASE_CONTEXT.md generation. Scanned: README.md, CHANGELOG.md, requirements.txt, .gitignore, .github/workflows/update-circulars.yml, dev/SESSION_HANDOFF.md, dev/SESSION_LOG.md. Consolidated External Services from SESSION_LOG + Known Risks. |
 | 2026-03-23 | Claude_20260323_0000 | v2.1.0 update: dashboard 2766→3,047 lines, README rewritten, CHANGELOG updated, Key Decision #9 (PHASE 4 merge fix). |
 | 2026-03-26 | Claude_20260326_1100 | v3.0.0 update: list view bug fix (setView block), version bump v2.1.0→v3.0.0, Key Decision #10 (auto version bump rule), AGENTS.md INIT.md merge (5 sections updated). |
+| 2026-04-04 | ba64ba27-0c19-41b8-95fc-7dc27a068588 | v3.0.4 integration: KnowledgeStore integrated with semantic search (0.45 threshold), enhanced supplier schema in CIRCULAR_SCHEMA, dashboard UI update for procurement stats. |
+| 2026-04-04 | Codex_20260404_0004 | Added automated publish flow: `deploy.sh` now calls `dev/tools/publish_release.py` to patch-bump versions, sync workspace to deploy repo, commit, and push. |

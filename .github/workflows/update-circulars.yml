@@ -16,6 +16,17 @@ name: Update EDB Circulars
 # ============================================================
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'edb-dashboard.html'
+      - 'edb_scraper.py'
+      - 'README.md'
+      - 'index.html'
+      - 'requirements.txt'
+      - 'dev/**'
+      - '.github/workflows/update-circulars.yml'
   schedule:
     - cron: '0 23 * * *'   # HKT 07:00（UTC 23:00 前一天）
     - cron: '0 5 * * *'    # HKT 13:00（UTC 05:00）
@@ -62,11 +73,13 @@ jobs:
 
       # ── 3. 安裝依賴 ───────────────────────────────────────
       - name: Install dependencies
+        if: github.event_name != 'push'
         run: pip install -r requirements.txt
 
       # ── 4. 解析模式參數 ───────────────────────────────────
       - name: Resolve scrape arguments
         id: mode
+        if: github.event_name != 'push'
         run: |
           # 排程觸發（schedule）自動用 --days 3（增量，快速省費）
           # 手動觸發（workflow_dispatch）使用用戶選擇的模式
@@ -89,6 +102,7 @@ jobs:
 
       # ── 5. 執行 EDB 爬蟲 + LLM 分析 ──────────────────────
       - name: Run EDB scraper
+        if: github.event_name != 'push'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
@@ -100,21 +114,11 @@ jobs:
 
       # ── 6. Commit 更新後的 circulars.json ─────────────────
       - name: Commit updated circulars.json
+        if: github.event_name != 'push'
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          # 保存 workflow 新產生的 circulars.json
-          cp circulars.json /tmp/circulars_fresh.json
-
-          # 拉取最新 remote（避免與本機 push 衝突）
-          git fetch origin main
-          git reset --hard origin/main
-
-          # 用 workflow 新產生的版本覆蓋
-          cp /tmp/circulars_fresh.json circulars.json
           git add circulars.json
-
           # 只有在有實際變更時才 commit（避免空 commit）
           if git diff --staged --quiet; then
             echo "No changes to circulars.json — skipping commit"
@@ -122,6 +126,8 @@ jobs:
             TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
             COUNT=$(python3 -c "import json; d=json.load(open('circulars.json')); print(d.get('count',0))")
             git commit -m "chore: auto-update circulars.json [$TIMESTAMP] ($COUNT circulars)"
+            # Pull rebase 以防遠端在 workflow 執行期間有新 commit（例如本機 push）
+            git pull --rebase origin main
             git push
             echo "Committed and pushed: $COUNT circulars"
           fi

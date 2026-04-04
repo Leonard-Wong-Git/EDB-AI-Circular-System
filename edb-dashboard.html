@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDB 通告智能分析系統 v3.0.4</title>
+<title>EDB 通告智能分析系統 v3.0.7</title>
 <style>
 /* ============================================================
    PALETTES (accent colours only — theme-independent)
@@ -462,6 +462,15 @@ a{color:var(--accent);text-decoration:none;}
 }
 .sup-stat .sv{font-size:26px;font-weight:800;color:var(--accent);}
 .sup-stat .sl{font-size:11px;color:var(--text-muted);margin-top:3px;}
+.supplier-special-fields{
+  margin-top:10px;padding:10px;background:var(--surface);
+  border:1px solid var(--border);border-radius:8px;font-size:12px;
+}
+.ssf-row{display:flex;gap:8px;margin-bottom:6px;align-items:flex-start;}
+.ssf-row:last-child{margin-bottom:0;}
+.ssf-lbl{color:var(--text-muted);font-weight:700;white-space:nowrap;min-width:60px;}
+.ssf-val{color:var(--text);flex:1;}
+.ssf-list{margin:0;padding-left:18px;color:var(--text);}
 
 /* ============================================================
    DETAIL PANEL
@@ -928,7 +937,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
     </div>
     <div class="dev-card">
       <div class="dev-card-title">ℹ️ 版本資訊</div>
-      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v3.0.4</span></div>
+      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v3.0.7</span></div>
       <div class="dev-row"><span>Build Date</span><span>2026-03-16</span></div>
       <div class="dev-row"><span>知識庫更新</span><span>2026-03-09 20:48 UTC</span></div>
       <div class="dev-row"><span>資料筆數</span><span id="devCount">—</span></div>
@@ -965,7 +974,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
 <header class="header">
   <div class="brand" onclick="switchTab('home',document.getElementById('tabHome'))" style="cursor:pointer;" title="返回首頁">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="13" x2="12" y2="17"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
-    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v3.0.4</span></span>
+    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v3.0.7</span></span>
   </div>
 
   <select class="role-select" id="roleSelect" onchange="setRole(this.value)">
@@ -1349,7 +1358,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
         </div>
         <div class="setting-row">
           <div class="setting-info"><div class="setting-lbl">版本</div></div>
-          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v3.0.4</span>
+          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v3.0.7</span>
         </div>
       </div>
 
@@ -1466,14 +1475,14 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
      ============================================================ -->
 <footer class="site-footer">
   <div>⚠️ <strong>免責聲明：</strong>本系統資料來源於<a href="https://www.edb.gov.hk" target="_blank" rel="noopener">香港特別行政區政府教育局（EDB）</a>官方網站，僅供參考及輔助管理用途，一切以教育局官方公告為準。本系統並非教育局官方產品。</div>
-  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v3.0.4 &nbsp;|&nbsp; &copy; 2026</div>
+  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v3.0.7 &nbsp;|&nbsp; &copy; 2026</div>
 </footer>
 
 <script>
 /* ============================================================
    VERSION
    ============================================================ */
-const VERSION = 'v3.0.4';
+const VERSION = 'v3.0.7';
 
 /* ============================================================
    MOCK DATA
@@ -2398,10 +2407,12 @@ function renderSupplier(){
   if(!grid) return;
   const supData=DATA.filter(d=>d.roles?.supplier?.r);
   const applicable=supData.filter(d=>d.grant_info?.type==='applicable');
+  const tenders=supData.filter(d=>d.roles?.supplier?.is_tender);
   const totalAmt=applicable.reduce((a,d)=>a+(d.grant_info?.amount_hkd||0),0);
   const expiring=supData.filter(d=>{ const s=getSoonestDeadline(d); return s&&daysUntil(s)>=0&&daysUntil(s)<=S.alertDays; });
   stats.innerHTML=`
     <div class="sup-stat"><div class="sv">${supData.length}</div><div class="sl">相關通告</div></div>
+    <div class="sup-stat"><div class="sv" style="color:var(--accent)">${tenders.length}</div><div class="sl">📑 招標項目</div></div>
     <div class="sup-stat"><div class="sv" style="color:var(--green)">${totalAmt?'HK$'+fmtAmt(totalAmt):'—'}</div><div class="sl">💰 可申請金額合計</div></div>
     <div class="sup-stat"><div class="sv" style="color:var(--yellow)">${expiring.length}</div><div class="sl">⏰ 即將截止</div></div>
   `;
@@ -2415,21 +2426,30 @@ function renderSupplier(){
   }
   grid.innerHTML=supData.length?supData.map(d=>buildCard(d)).join(''):`<div class="empty-state"><div class="es-icon">🏢</div><div class="es-text">目前沒有與供應商相關的通告</div></div>`;
 
-  // Build simple chart content
+  // Build improved procurement charts
   const chartEl=document.getElementById('supplierChartContent');
-  if(chartEl&&supData.length){
-    const typeCount={};
-    supData.forEach(d=>{(d.topics||[]).forEach(t=>{typeCount[t]=(typeCount[t]||0)+1;});});
-    const maxBar=Math.max(...Object.values(typeCount),1);
-    const topicLabels={curriculum:'課程',student:'學生支援',finance:'財務資助',hr:'人事管理',it:'資訊科技',activity:'學校活動',exam:'評估考試'};
-    chartEl.innerHTML=`<div style="margin-top:12px"><div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px">按主題分佈</div>`+
-      Object.entries(typeCount).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-        <span style="font-size:11px;min-width:60px;color:var(--text-muted)">${topicLabels[k]||k}</span>
-        <div style="flex:1;height:18px;background:var(--surface2);border-radius:4px;overflow:hidden">
-          <div style="height:100%;width:${(v/maxBar*100).toFixed(0)}%;background:var(--accent);border-radius:4px;transition:width .3s"></div>
-        </div>
-        <span style="font-size:11px;font-weight:600;min-width:20px">${v}</span>
-      </div>`).join('')+'</div>';
+  if(chartEl && supData.length){
+    const catLabels={IT:'💻 資訊科技',Construction:'🏗️ 工程',Furniture:'🪑 家具',Services:'📋 服務',Training:'🎓 培訓',Stationery:'✏️ 文具',Other:'📦 其他',none:'(無)'};
+    const counts={};
+    supData.forEach(d=>{ const c=d.roles?.supplier?.procurement_cat || 'none'; counts[c]=(counts[c]||0)+1; });
+    const sortedCats = Object.entries(counts).filter(x=>x[0]!=='none').sort((a,b)=>b[1]-a[1]);
+    const maxVal = Math.max(...Object.values(counts), 1);
+    
+    chartEl.innerHTML = `
+      <div style="margin-top:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px">按採購類別分佈 (Procurement Categories)</div>
+        ${sortedCats.map(([k,v])=>`
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="font-size:11px;min-width:75px;color:var(--text-muted)">${catLabels[k]||k}</span>
+            <div style="flex:1;height:18px;background:var(--surface2);border-radius:4px;overflow:hidden">
+              <div style="height:100%;width:${(v/maxVal*100).toFixed(0)}%;background:var(--accent);border-radius:4px;transition:width .4s ease"></div>
+            </div>
+            <span style="font-size:11px;font-weight:600;min-width:20px;text-align:right">${v}</span>
+          </div>
+        `).join('')}
+        ${sortedCats.length === 0 ? '<div style="font-size:11px;color:var(--text-muted);text-align:center;padding:10px">暫無採購分類數據</div>' : ''}
+      </div>
+    `;
   }
 }
 
@@ -2691,6 +2711,22 @@ function openDetail(id){
   document.getElementById('dtc-resources').innerHTML=`<div class="role-accordion">${roleOrder.map(r=>{
     const info=d.roles?.[r]||{r:false,pts:[],acts:[]};
     const isCurrent=r===S.role;
+    
+    // Supplier specific block
+    let supplierStats = '';
+    if (r === 'supplier' && (info.procurement_cat && info.procurement_cat !== 'none' || info.eligibility)) {
+        supplierStats = `
+          <div class="supplier-special-fields">
+            <div class="ssf-row"><span class="ssf-lbl">🏷️ 類別</span> <span class="ssf-val">${info.procurement_cat||'未分類'}</span></div>
+            <div class="ssf-row"><span class="ssf-lbl">📑 招標</span> <span class="ssf-val">${info.is_tender ? '✅ 是' : '❌ 否'}</span></div>
+            <div class="ssf-row"><span class="ssf-lbl">💰 預算</span> <span class="ssf-val">${info.budget_estimate ? 'HK$ ' + info.budget_estimate.toLocaleString() : '未提供'}</span></div>
+            ${info.eligibility ? `<div class="ssf-row"><span class="ssf-lbl">🎓 資格</span> <span class="ssf-val">${info.eligibility}</span></div>` : ''}
+            ${info.contact_unit ? `<div class="ssf-row"><span class="ssf-lbl">📞 聯絡</span> <span class="ssf-val">${info.contact_unit}</span></div>` : ''}
+            ${info.compliance_ref?.length ? `<div class="ssf-row"><span class="ssf-lbl">⚖️ 參考</span> <ul class="ssf-list">${info.compliance_ref.map(c=>`<li>${c}</li>`).join('')}</ul></div>` : ''}
+          </div>
+        `;
+    }
+
     return `<div class="role-card${isCurrent?' current-role':''}">
       <div class="role-card-hdr" onclick="this.nextElementSibling.classList.toggle('open')">
         <span class="role-card-name">${roleName[r]||r}${isCurrent?' ← 目前角色':''}</span>
@@ -2699,6 +2735,7 @@ function openDetail(id){
       <div class="role-card-body${isCurrent?' open':''}">
         ${info.pts?.length?`<div class="sec-lbl" style="margin-top:8px">重點事項</div><ul class="kp-list">${info.pts.map(p=>`<li>${p}</li>`).join('')}</ul>`:''}
         ${info.acts?.length?`<div class="sec-lbl">行動清單</div><ul class="kp-list">${info.acts.map(a=>`<li>${actText(a)}</li>`).join('')}</ul>`:''}
+        ${supplierStats}
       </div>
     </div>`;
   }).join('')}</div>`;
@@ -2823,6 +2860,16 @@ function printDetail(){
   background:var(--surface2);border:1px solid var(--border);
   border-radius:8px;padding:12px;font-size:12px;margin-bottom:14px;line-height:1.7;
 }
+/* Supplier special fields (v3.0.4) */
+.supplier-special-fields{
+  margin-top:12px;padding:12px;background:rgba(59,130,246,.06);
+  border:1px solid rgba(59,130,246,.15);border-radius:10px;font-size:12px;
+}
+.ssf-row{display:flex;margin-bottom:6px;align-items:flex-start;}
+.ssf-lbl{color:var(--text-muted);width:80px;font-weight:600;flex-shrink:0;}
+.ssf-val{color:var(--accent);font-weight:700;}
+.ssf-list{margin:4px 0 0 16px;padding:0;color:var(--text);list-style-type:square;}
+.ssf-list li{margin-bottom:2px;}
 </style></head><body>
   <h1>${d.number}　${d.title}</h1>
   <div class="meta">

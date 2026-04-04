@@ -124,6 +124,14 @@ python3 -m http.server 8080
 
 > ⚠️ `circulars.json` 必須與 `edb-dashboard.html` 在同一目錄
 
+### 發布到 GitHub Pages
+
+```bash
+bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
+```
+
+此命令會自動執行 patch version bump、同步 workspace 到 deploy repo、commit、push；若 GitHub Pages 未即時更新，請到 Actions 手動確認最新 workflow。
+
 ---
 
 ## 🔧 CLI 參數
@@ -211,3 +219,4 @@ Private project — Leonard Wong (leonard.ai.wong@gmail.com)
 - **Live Demo:** https://leonard-wong-git.github.io/EDB-AI-Circular-System/
 - **EDB 通告來源:** https://applications.edb.gov.hk/circular/circular.aspx?langno=2
 - **OpenAI API:** https://platform.openai.com/docs
+- **K1 知識庫接口：** [K1_API_SPEC.md](https://leonard-wong-git.github.io/edb-knowledge/K1_API_SPEC.md)
