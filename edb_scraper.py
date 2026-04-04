@@ -85,6 +85,10 @@ LLM_MODEL_DEFAULT = "gpt-5-nano"
 LLM_TEMPERATURE   = 1     # DO NOT CHANGE — project spec rule
 
 POST_REVIEW_PROCUREMENT_KEYWORDS = ["採購", "招標", "報價", "供應商", "承辦商", "投標"]
+POST_REVIEW_CURRICULUM_KEYWORDS = [
+    "課程", "學與教", "學習", "教學", "展覽", "講座", "教材", "資源",
+    "國家安全教育", "價值觀教育", "小學人文科", "中國歷史", "公民與社會發展科",
+]
 
 ORDERED_TERM_RULES = [
     {
@@ -111,6 +115,12 @@ ORDERED_TERM_RULES = [
         "to": "按學校採購程序提交文件及回覆要求",
         "reason": "把含糊動作改成可執行表述",
     },
+    {
+        "priority": 5,
+        "from": "學與教資源",
+        "to": "學與教資源／課程相關材料",
+        "reason": "統一 curriculum 類通告用語，突出課程應用場景",
+    },
 ]
 
 KNOWLEDGE_RECOMMENDED_LINKS = [
@@ -123,6 +133,19 @@ KNOWLEDGE_RECOMMENDED_LINKS = [
         "label": "廉政公署採購參考資料",
         "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
         "why": "補充防貪及採購誠信要求",
+    },
+]
+
+CURRICULUM_RECOMMENDED_LINKS = [
+    {
+        "label": "課程發展指引",
+        "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
+        "why": "補充課程架構、學習領域與學與教資源的官方參考",
+    },
+    {
+        "label": "學校表現指標 (KPM)",
+        "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
+        "why": "補充課程推行、自評與學校層面跟進的參考框架",
     },
 ]
 
@@ -1000,16 +1023,31 @@ def _unique_applied_rules(applied: list[dict]) -> list[dict]:
     return output
 
 
+def _merge_link_lists(*groups: list[dict]) -> list[dict]:
+    merged = []
+    seen = set()
+    for group in groups:
+        for item in group:
+            url = item.get("url")
+            if not url or url in seen:
+                continue
+            seen.add(url)
+            merged.append(item)
+    return merged
+
+
 def _apply_post_analysis_review(circ: dict) -> dict:
     """Second-pass deterministic knowledge review after primary analysis."""
     reviewed = copy.deepcopy(circ)
     applied_rules: list[dict] = []
     missing_points: list[str] = []
     role_notes: list[str] = []
+    added_links: list[dict] = []
 
     reviewed["summary"] = _replace_terms(reviewed.get("summary", ""), applied_rules)
 
     roles = reviewed.get("roles", {})
+    topics = reviewed.get("topics", []) or []
     for role_data in roles.values():
         if not isinstance(role_data, dict):
             continue
@@ -1031,6 +1069,10 @@ def _apply_post_analysis_review(circ: dict) -> dict:
         ]
     )
     has_procurement_signal = any(keyword in source_text for keyword in POST_REVIEW_PROCUREMENT_KEYWORDS)
+    has_curriculum_signal = (
+        "curriculum" in topics
+        or any(keyword in source_text for keyword in POST_REVIEW_CURRICULUM_KEYWORDS)
+    )
 
     if isinstance(supplier, dict):
         supplier_text = " ".join(supplier.get("pts", []) + supplier.get("acts", []))
@@ -1057,6 +1099,39 @@ def _apply_post_analysis_review(circ: dict) -> dict:
 
             supplier["pts"] = _dedupe_strings(supplier.get("pts", []))
             supplier["acts"] = _dedupe_strings(supplier.get("acts", []))
+            added_links.extend(KNOWLEDGE_RECOMMENDED_LINKS)
+
+    if has_curriculum_signal:
+        curriculum_roles = ["principal", "vice_principal", "department_head", "teacher", "eo_admin"]
+        curriculum_note = "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。"
+        implementation_note = "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。"
+        school_followup_note = "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
+
+        for role_name in curriculum_roles:
+            role_data = roles.get(role_name)
+            if not isinstance(role_data, dict):
+                continue
+
+            if role_name in {"principal", "vice_principal", "department_head", "teacher"} and not role_data.get("r"):
+                role_data["r"] = True
+                role_notes.append(f"偵測到 curriculum 類訊號，將 `{role_name}` 角色標記為相關。")
+
+            if role_data.get("r"):
+                role_data.setdefault("pts", [])
+                role_data.setdefault("acts", [])
+
+                if curriculum_note not in role_data["pts"]:
+                    role_data["pts"].append(curriculum_note)
+                if role_name in {"principal", "vice_principal", "eo_admin"} and school_followup_note not in role_data["pts"]:
+                    role_data["pts"].append(school_followup_note)
+                if role_name in {"department_head", "teacher"} and implementation_note not in role_data["acts"]:
+                    role_data["acts"].append(implementation_note)
+
+                role_data["pts"] = _dedupe_strings(role_data["pts"])[:3]
+                role_data["acts"] = _dedupe_strings(role_data["acts"])[:3]
+
+        missing_points.append("補回 curriculum 類通告的課程落實 / 校本安排提醒。")
+        added_links.extend(CURRICULUM_RECOMMENDED_LINKS)
 
     reviewed["knowledge_review"] = {
         "terminology_review": [
@@ -1069,7 +1144,7 @@ def _apply_post_analysis_review(circ: dict) -> dict:
             for rule in _unique_applied_rules(applied_rules)
         ],
         "missing_points": missing_points,
-        "recommended_links": KNOWLEDGE_RECOMMENDED_LINKS if has_procurement_signal and supplier and supplier.get("r") else [],
+        "recommended_links": _merge_link_lists(added_links),
         "role_notes": role_notes,
     }
     return reviewed
@@ -1412,7 +1487,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.8")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.9")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

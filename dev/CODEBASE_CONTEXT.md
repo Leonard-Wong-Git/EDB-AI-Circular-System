@@ -10,7 +10,7 @@
 | Layer | Technology | Notes |
 |-------|-----------|-------|
 | Frontend | Pure HTML / CSS / JS (single-page) | No framework; SheetJS CDN for Excel export only |
-| Backend | Python 3.10+ (`edb_scraper.py`) | Single-file pipeline: scrape → PDF → LLM → post-analysis knowledge review → JSON |
+| Backend | Python 3.10+ (`edb_scraper.py`) | Single-file pipeline: scrape → PDF → LLM → deterministic post-analysis knowledge review → JSON |
 | PDF extraction | PyMuPDF (fitz) >= 1.24.0 | Replaced pdfplumber/pdfminer (2026-03-15) |
 | LLM | OpenAI gpt-5-nano | temperature=1 fixed; `developer` role; `max_completion_tokens`=16000; `json_schema` structured output |
 | Embeddings | text-embedding-3-small | Used for semantic knowledge search (KnowledgeStore); 0.45 threshold |
@@ -176,6 +176,7 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 11 | Semantic Fact-Checking (0.45 Threshold) | 2026-04-03 | Replaced keyword matching with vector similarity against knowledge.json. Threshold set to 0.45 to prevent irrelevant fact injection. |
 | 12 | Enhanced Supplier Schema | 2026-04-04 | Added is_tender, procurement_cat, budget_estimate, and compliance_ref to CIRCULAR_SCHEMA for improved supplier statistics. |
 | 13 | Deterministic Post-analysis Knowledge Review | 2026-04-04 | After primary AI analysis, apply an ordered normalization/enrichment pass to standardize supplier terminology, backfill missing supplier guidance, attach recommended links, and reduce role drift without overwriting hard facts from the circular. |
+| 14 | Topic-aware Curriculum Review Extension | 2026-04-04 | Extended the deterministic second-pass review to curriculum-style circulars so terminology normalization, curriculum implementation reminders, and official curriculum/KPM links can be added without rewriting hard facts. |
 
 ---
 
@@ -204,3 +205,4 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 2026-04-04 | Codex_20260404_0004 | Added automated publish flow: `deploy.sh` now calls `dev/tools/publish_release.py` to patch-bump versions, sync workspace to deploy repo, commit, push, and rely on push-triggered Pages deployment. |
 | 2026-04-04 | Codex_20260404_0005 | Added `dev/tools/simulate_post_analysis_review.py` prototype to validate a second-pass knowledge review layer: ordered terminology normalization, missing-point enrichment, recommended links, and role-drift stabilization. |
 | 2026-04-04 | Codex_20260404_0006 | Integrated the first runnable post-analysis knowledge review into `edb_scraper.py`; bumped dashboard/scraper version to v3.0.8 and added `knowledge_review` output metadata. |
+| 2026-04-04 | Codex_20260404_0008 | Extended deterministic post-analysis knowledge review to curriculum signals, added curriculum-specific reminders/links, and bumped local workspace version to v3.0.9 pending deploy. |

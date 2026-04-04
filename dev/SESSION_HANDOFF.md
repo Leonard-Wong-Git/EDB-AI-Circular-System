@@ -1,18 +1,18 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v3.0.8** (2026-04-04) ← **workspace 已完成首個 runnable knowledge review integration**
+1. Version: **v3.0.9** (2026-04-04) ← **workspace 已升級至 curriculum-aware knowledge review；GitHub Pages live 仍為 v3.0.8，尚未 deploy**
 2. Core commands / features:
-   - `edb-dashboard.html` — v3.0.8（供應商統計與採購類別顯示仍在）
-   - `edb_scraper.py` — v3.0.8（KnowledgeStore 語義搜尋 + deterministic post-analysis knowledge review）
+   - `edb-dashboard.html` — v3.0.9（供應商統計與採購類別顯示仍在）
+   - `edb_scraper.py` — v3.0.9（KnowledgeStore 語義搜尋 + deterministic post-analysis knowledge review，已擴展 curriculum）
    - `circulars.json` — EDB 通告 + gpt-5-nano AI 分析（remote auto-update 115 circulars 保留）
    - `knowledge.json` — 從 edb-knowledge 獲取的語義事實來源（v1.2.2，107 facts ✅）
    - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具
    - `requirements.txt` — Python 依賴清單
    - `dev/knowledge/role_facts.json` — K1 基線知識庫（存檔）
    - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 接口合約規格
-3. Regression baseline: v3.0.8 local version markers PASS；post-analysis review helper check PASS；simulation PASS
-4. Release / merge status: **v3.0.8 workspace ready；尚未 deploy/push**
+3. Regression baseline: v3.0.9 local version markers PASS；curriculum helper check PASS；py_compile PASS；latest live HTML previously confirmed at v3.0.8
+4. Release / merge status: **v3.0.9 僅存在 workspace，尚未 push / deploy；GitHub Pages live 仍為 v3.0.8**
 5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -72,10 +72,10 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 若用戶要正式上線，deploy/push `v3.0.8`，再驗證 live output 是否包含新的 `knowledge_review`
+1. **[下一步 ⭐]** 如需上線，將 workspace `v3.0.9` push / deploy，並重新驗證 GitHub Pages
 2. **[重要]** 若用戶提供新版 `role_facts.json`，整合取代 `dev/knowledge/role_facts.json`，並同步驗證 K1 接口
-3. **[其後]** 擴展第二輪 review 到非 supplier 角色，但保持 deterministic / non-destructive
-4. **[繼續]** 觀察 0.45 threshold 是否需要進一步微調（依據後續 smoke test 結果）
+3. **[其後]** 視需要把 `knowledge_review` 顯示到 dashboard 詳情頁，讓補漏/補連結可見
+4. **[其後]** 決定下一個 topic-aware review 擴展（finance / student / hr），保持 deterministic / non-destructive
 5. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
 6. **[選做]** LLM 引擎切換機制
 
@@ -126,7 +126,7 @@ git checkout v2.1.0-dashboard
    - remote `circulars.json` 可能在 code/docs 發布期間被 GitHub Actions 更新
    - `deploy.sh` publish commit rebase 時若只衝突在 `circulars.json`，應保留較新的 remote 版本，再繼續推送 code/docs release
 9. **⚠️ Knowledge review boundary（2026-04-04 確認）：**
-   - 第二輪 review 現時只針對 supplier 場景做 deterministic enrichment
+   - 第二輪 review 現時只針對 supplier + curriculum 場景做 deterministic enrichment
    - 不應改寫 deadline、金額、編號、scope 等硬事實
 
 ## Regression / Verification Notes
@@ -161,27 +161,22 @@ Do not close a session with code changes without completing the version bump.
 
 ## Last Session Record
 1. UTC date: 2026-04-04
-2. Session ID: Codex_20260404_0006
+2. Session ID: Codex_20260404_0008
 3. Completed:
-   - ✅ 將 deterministic post-analysis knowledge review 接入 `edb_scraper.py`
-   - ✅ review 現會在 primary analysis 後自動執行，並寫出 `knowledge_review` metadata
-   - ✅ supplier 場景可自動補 `eligibility` / `contact_unit` / `compliance_ref`
-   - ✅ supplier 場景可自動附加相關知識連結，並做 ordered terminology normalization
-   - ✅ 版本升級：`v3.0.7` → `v3.0.8`
+   - ✅ 將 deterministic knowledge review 由 supplier 擴展到 curriculum 類通告
+   - ✅ 加入 curriculum-specific terminology normalization、implementation reminders、recommended links
+   - ✅ 本地版本升級為 `v3.0.9`
+   - ✅ 保持第二輪 review 為加值功能，不改 deadline / 金額 / 編號 / scope 等硬事實
 4. Pending:
+   - 如需上線，將 workspace `v3.0.9` push / deploy
    - 等待用戶提供新版 `role_facts.json`
-   - 若用戶要正式上線，deploy/push `v3.0.8`
-   - 下一次發布時觀察 `circulars.json` rebase conflict 是否再次出現
+   - 視需要把 `knowledge_review` 顯示到 dashboard
 5. Next priorities (max 3):
-   - deploy/push `v3.0.8`
+   - 視需要發佈 `v3.0.9`
    - 等待 / 整合新版 role_facts.json
-   - 擴展第二輪 review 到更多角色
-6. Risks / blockers: 第二輪 review 現只做 supplier enrichment；若擴展到全部角色需保持 deterministic / non-destructive
+   - 決定下一個擴展 topic（finance / student / hr）
+6. Risks / blockers: 第二輪 review 現只做 supplier + curriculum enrichment；若再擴展到更多 topic 仍需保持 deterministic / non-destructive
 7. Files materially changed:
-   - `edb_scraper.py`（接入 post-analysis review）
-   - `edb-dashboard.html`（版本升級到 v3.0.8）
-   - `README.md`（新增知識校正層說明）
-   - `dev/CODEBASE_CONTEXT.md`、`dev/DOC_SYNC_CHECKLIST.md`
    - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
-8. Validation summary: `py_compile` PASS；helper-based review check PASS；simulation PASS；version markers updated to v3.0.8
-9. Git commits: 未執行
+8. Validation summary: py_compile PASS；curriculum helper check PASS；local version markers confirm v3.0.9；live state not re-claimed in this session
+9. Git commits: none in this workspace session（尚未 deploy）

@@ -1,6 +1,158 @@
 # Session Log
 <!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->
 
+## 2026-04-04 Curriculum-aware Knowledge Review Extension + v3.0.9
+
+1. Agent & Session ID: Codex_20260404_0008
+2. Task summary: 依使用者同意，將 deterministic 第二輪 knowledge review 由 supplier 擴展到 curriculum 類通告，加入課程用語標準化、課程落實提醒與官方參考連結；workspace 版本升級到 `v3.0.9`，但本 session 未宣稱已 live。
+3. Layer classification: Product / System Layer（analysis pipeline behavior change）+ Development Governance Layer（session persistence）
+4. Source triage: 非 bug fix；屬既有 post-analysis enrichment 的 topic-aware 擴展。目標是提升 curriculum 類通告使用度，同時保持 deterministic / non-destructive。
+5. Files read: `AGENTS.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `dev/DOC_SYNC_CHECKLIST.md`, `README.md`, `edb_scraper.py`, `edb-dashboard.html`
+6. Files changed: `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 確認 `edb_scraper.py` 已加入 `POST_REVIEW_CURRICULUM_KEYWORDS`
+   - ✅ 確認第二輪 review 會在 curriculum 類訊號下補充課程落實 / 校本安排提醒
+   - ✅ 確認 curriculum 類會加上課程發展指引與 KPM 連結
+   - ✅ 確認本地版本標記已升至 `v3.0.9`
+   - ✅ 同步更新 README / handoff / context，避免治理文件仍停留在 `v3.0.8`
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - inline helper check using a curriculum-style sample → PASS
+   - `rg -n "POST_REVIEW_CURRICULUM_KEYWORDS|CURRICULUM_RECOMMENDED_LINKS|_apply_post_analysis_review|v3\\.0\\.9" edb_scraper.py edb-dashboard.html` → PASS
+9. Pending:
+   - 如需上線，deploy / push `v3.0.9`
+   - 等待用戶提供新版 `role_facts.json`
+   - 決定下一個擴展 topic（finance / student / hr）
+10. Next priorities:
+   - 視需要發佈 `v3.0.9`
+   - 等待 / 整合新版 role_facts.json
+   - 決定下一個擴展 topic
+11. Risks / blockers:
+   - 第二輪 review 雖已擴展到 curriculum，但仍不可覆蓋 deadline、金額、編號、scope 等硬事實
+   - README 描述已更新為 `v3.0.9` 功能說明，但這不代表 live site 已部署到 `v3.0.9`
+12. Notes:
+   - 本次 PERSIST 主要是把已完成的 workspace 變更正式記錄下來，避免之後 session 仍誤以為第二輪 review 只支援 supplier
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - supplier-only 的第二輪 review 使用面太窄，使用者希望 curriculum 類通告也可受益。
+2. Root Cause:
+   - handoff / log / context 仍停留在 `v3.0.8 supplier-only` 的描述，而 workspace 已存在未持久化的 curriculum 擴展。
+3. Fix:
+   - 確認並保留現有 curriculum 擴展實作，然後同步更新 README、CODEBASE_CONTEXT、SESSION_HANDOFF、SESSION_LOG。
+4. Verification:
+   - py_compile PASS；curriculum helper check PASS；local version markers PASS。
+5. Regression / rule update:
+   - 無新增長期治理規則；沿用既有 `Analysis pipeline behavior change` doc-sync row。
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | curriculum 類通告，summary 含 `學與教資源` | 套用 `_apply_post_analysis_review` | 用詞標準化，補課程落實提醒與 curriculum links | helper check 顯示 summary 正常替換並加入 curriculum links | PASS |
+| Boundary | 原 analysis 未標記全部 curriculum 角色 | 套用 `_apply_post_analysis_review` | principal / vice_principal / department_head / teacher 可按規則標為相關 | helper check 顯示 `vice_principal` 被自動標為相關 | PASS |
+| Failure path guard | 通告含課程訊號但硬事實已存在 | 套用 review | 不改 deadline / 金額 / 編號 / scope | helper check 只改 summary / roles / knowledge_review | PASS |
+| Regression | 既有 supplier review 路徑仍在 | 搜尋關鍵實作與版本標記 | supplier / curriculum 規則並存，版本標記一致 | `rg` 顯示 procurement + curriculum review constants / functions 均存在 | PASS |
+
+Overall: PASS
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: continue from the local v3.0.9 workspace, where deterministic post-analysis knowledge review now covers both supplier and curriculum signals. This state has been documented locally but has not yet been pushed/deployed in this session.
+
+Pending tasks (priority order):
+1. If the user wants v3.0.9 live, deploy/push the current workspace and verify GitHub Pages / output artifacts after publish.
+2. If the user provides a new `role_facts.json`, integrate it to replace `dev/knowledge/role_facts.json` and validate the K1 interface.
+3. Decide the next topic-aware review extension after curriculum (likely finance / student / hr), while keeping the second-pass review deterministic and non-destructive.
+
+Key files changed in this session:
+- `README.md`
+- `dev/CODEBASE_CONTEXT.md`
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- The second-pass review now covers supplier + curriculum, but it still must not overwrite hard facts such as dates, amounts, scope, or circular number.
+- README now documents v3.0.9 behavior, but that does not mean GitHub Pages is already live at v3.0.9.
+- During future deploys, if the only rebase conflict is on `circulars.json`, preserve the newer remote data.
+
+Validation status: py_compile PASS; curriculum helper check PASS; local version markers PASS at v3.0.9; no deploy performed in this session.
+
+Post-startup first action: confirm whether the user wants to publish v3.0.9 now, or continue directly into the next knowledge-review extension / role_facts integration.
+```
+
+## 2026-04-04 Publish v3.0.8 (Value-add Only)
+
+1. Agent & Session ID: Codex_20260404_0007
+2. Task summary: 依使用者要求，將 `v3.0.8` 發布上線，並保持這次只是加值功能，不再升版、不擴大改動範圍。
+3. Layer classification: Product / System Layer（release publish）+ Development Governance Layer（session persistence）
+4. Source triage: 非新功能開發；屬已完成 workspace 狀態的發布。關鍵要求是固定版本為 `v3.0.8`，不要再 bump。
+5. Files read: `dev/tools/publish_release.py`, `deploy.sh`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+6. Files changed: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 以 `deploy.sh --no-bump` 發布，版本保持 `v3.0.8`
+   - ✅ deploy repo push 成功：commit `3e0a581`
+   - ✅ live GitHub Pages fetched and confirmed at `v3.0.8`
+   - ✅ 保持本次定位為加值功能發布，未再擴大改動範圍
+8. Validation / QC:
+   - `python3 dev/tools/publish_release.py --no-bump --dry-run` → PASS
+   - `git -C ~/Documents/EDB-AI-Circular-System status --short --branch` → clean after push
+   - `curl -L https://leonard-wong-git.github.io/EDB-AI-Circular-System/edb-dashboard.html | rg -n "v3\\.0\\.[0-9]+"` → all visible markers `v3.0.8`
+9. Pending:
+   - 等待用戶提供新版 `role_facts.json`
+   - 視需要把 `knowledge_review` 顯示到 dashboard
+10. Next priorities:
+   - 等待 / 整合新版 role_facts.json
+   - 顯示 `knowledge_review` 到 dashboard
+   - 擴展第二輪 review 到更多角色
+11. Risks / blockers:
+   - 第二輪 review 目前仍只聚焦 supplier enrichment
+   - 未來 deploy 仍需留意 remote `circulars.json` 可能較新
+12. Notes:
+   - 使用者特別要求「只是加值功能，其他不能更改」，因此本次用 `--no-bump` 發布既有 `v3.0.8`
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - 需要把 `v3.0.8` 上線，但不能因自動發佈流程再升版或混入額外範圍。
+2. Root Cause:
+   - `deploy.sh` 預設會做 patch bump；若直接執行會變成 `v3.0.9`。
+3. Fix:
+   - 使用 `deploy.sh --no-bump` 發布目前 workspace。
+4. Verification:
+   - dry run 顯示 current/target 都是 `v3.0.8`；push 成功；live HTML all markers = `v3.0.8`
+5. Regression / rule update:
+   - 無新增治理規則；沿用既有發布腳本參數能力。
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: continue from v3.0.8, which is already live on GitHub Pages. This release added the first runnable post-analysis knowledge review as a value-add feature without changing the core hard-fact handling logic.
+
+Pending tasks (priority order):
+1. If the user provides a new `role_facts.json`, integrate it to replace `dev/knowledge/role_facts.json` and validate the K1 interface.
+2. If the user wants the new enrichment visible in UI, surface `knowledge_review` in the dashboard detail view.
+3. If expanding beyond supplier, keep the second-pass review deterministic and non-destructive.
+
+Key files changed in this session:
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- The post-analysis review must not overwrite hard facts such as dates, amounts, scope, or circular number.
+- `knowledge_review` is in the JSON output but is not yet specially rendered by the dashboard.
+- During future deploys, remote `circulars.json` may be newer than the workspace copy; preserve the newer remote data if that is the only rebase conflict.
+
+Validation status: deploy dry run PASS; deploy repo push PASS; live GitHub Pages fetch PASS and confirmed v3.0.8.
+
+Post-startup first action: confirm whether the user wants to work on `role_facts.json` integration next, or to expose `knowledge_review` in the dashboard UI.
+```
+
 ## 2026-04-04 Runnable Knowledge Review Integration + v3.0.8
 
 1. Agent & Session ID: Codex_20260404_0006

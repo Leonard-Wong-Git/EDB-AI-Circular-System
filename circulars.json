@@ -39,7 +39,7 @@
         "resource_value_hkd": null,
         "note": "提供展覽資源、導賞、講座及相關學習活動等支援"
       },
-      "summary": "本通告通知各小學及中學（包括特殊學校）有關「星耀中華：時代棟樑的風範與精神」專題展覽的情況。展覽由愛國教育支援中心於 2026 年 3 月 13 日起展出，內容聚焦十二位國家時代棟樑的人生事蹟與民族精神，涵蓋文化、科學、軍事、藝術、建築、體育等領域，並提供學與教資源、展品資料、導賞、講座及學習活動。學校可選擇在工作日（星期一至五，公眾假期除外）預約參訪，需提前安排師生分組以便輪流參與講座與展覽。展覽內容與相關科目或跨學習領域的課程重點對接，如小學人文科、中學中國歷史、歷史科、初中公民、經濟與社會科及高中公民與社會發展科、價值觀教育及國家安全教育等。另可在參訪當日同時申請參觀愛國教育支援中心內的「抗日戰爭勝利80周年專題展覽」，豐富愛國主義教育的學習經歷。申請預約請使用愛國教育支援中心網頁 https://www.hkpec.hk/article/1009，學校需於參訪前至少三星期提交表格，中心將聯絡負責教師以確認預約與相關安排。如有需要，請致電 2770 0071 聯絡中心。教育局長（江紹卓代行）於 2026 年 3 月 13 日發布此通告。 ",
+      "summary": "本通告通知各小學及中學（包括特殊學校）有關「星耀中華：時代棟樑的風範與精神」專題展覽的情況。展覽由愛國教育支援中心於 2026 年 3 月 13 日起展出，內容聚焦十二位國家時代棟樑的人生事蹟與民族精神，涵蓋文化、科學、軍事、藝術、建築、體育等領域，並提供學與教資源／課程相關材料、展品資料、導賞、講座及學習活動。學校可選擇在工作日（星期一至五，公眾假期除外）預約參訪，需提前安排師生分組以便輪流參與講座與展覽。展覽內容與相關科目或跨學習領域的課程重點對接，如小學人文科、中學中國歷史、歷史科、初中公民、經濟與社會科及高中公民與社會發展科、價值觀教育及國家安全教育等。另可在參訪當日同時申請參觀愛國教育支援中心內的「抗日戰爭勝利80周年專題展覽」，豐富愛國主義教育的學習經歷。申請預約請使用愛國教育支援中心網頁 https://www.hkpec.hk/article/1009，學校需於參訪前至少三星期提交表格，中心將聯絡負責教師以確認預約與相關安排。如有需要，請致電 2770 0071 聯絡中心。教育局長（江紹卓代行）於 2026 年 3 月 13 日發布此通告。 ",
       "roles": {
         "principal": {
           "r": true,
@@ -55,14 +55,21 @@
           ]
         },
         "vice_principal": {
-          "r": false,
-          "pts": [],
+          "r": true,
+          "pts": [
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
+          ],
           "acts": []
         },
         "department_head": {
-          "r": false,
-          "pts": [],
-          "acts": []
+          "r": true,
+          "pts": [
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。"
+          ],
+          "acts": [
+            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。"
+          ]
         },
         "teacher": {
           "r": true,
@@ -122,7 +129,36 @@
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26043C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26043E.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26043S.pdf"
-      ]
+      ],
+      "knowledge_review": {
+        "terminology_review": [
+          {
+            "priority": 5,
+            "from": "學與教資源",
+            "to": "學與教資源／課程相關材料",
+            "reason": "統一 curriculum 類通告用語，突出課程應用場景"
+          }
+        ],
+        "missing_points": [
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+        ],
+        "recommended_links": [
+          {
+            "label": "課程發展指引",
+            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
+            "why": "補充課程架構、學習領域與學與教資源的官方參考"
+          },
+          {
+            "label": "學校表現指標 (KPM)",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
+            "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          }
+        ],
+        "role_notes": [
+          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
+          "偵測到 curriculum 類訊號，將 `department_head` 角色標記為相關。"
+        ]
+      }
     },
     {
       "id": 1,
@@ -165,7 +201,7 @@
             "提供諮詢以促進整體落地"
           ],
           "acts": [
-            "公佈本通函內容，指導學校使用學與教資源",
+            "公佈本通函內容，指導學校使用學與教資源／課程相關材料",
             "協調校方落實資源於課程與活動中"
           ]
         },
@@ -190,7 +226,8 @@
           ],
           "acts": [
             "協助科目組整合白皮書要點於課程中",
-            "推動科內活動以融入資源內容"
+            "推動科內活動以融入資源內容",
+            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。"
           ]
         },
         "teacher": {
@@ -202,7 +239,8 @@
           ],
           "acts": [
             "於適當課程中融入白皮書內容",
-            "參考國家安全教育資源網頁設計教學活動"
+            "參考國家安全教育資源網頁設計教學活動",
+            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。"
           ]
         },
         "eo_admin": {
@@ -241,7 +279,7 @@
       ],
       "actions": [
         {
-          "text": "公布本次通告內容，指導學校使用相關學與教資源，協調校本推動安排。",
+          "text": "公布本次通告內容，指導學校使用相關學與教資源／課程相關材料，協調校本推動安排。",
           "role": "principal",
           "dl": null,
           "note": ""
@@ -276,7 +314,33 @@
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26041C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26041E.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26041S.pdf"
-      ]
+      ],
+      "knowledge_review": {
+        "terminology_review": [
+          {
+            "priority": 5,
+            "from": "學與教資源",
+            "to": "學與教資源／課程相關材料",
+            "reason": "統一 curriculum 類通告用語，突出課程應用場景"
+          }
+        ],
+        "missing_points": [
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+        ],
+        "recommended_links": [
+          {
+            "label": "課程發展指引",
+            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
+            "why": "補充課程架構、學習領域與學與教資源的官方參考"
+          },
+          {
+            "label": "學校表現指標 (KPM)",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
+            "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          }
+        ],
+        "role_notes": []
+      }
     }
   ]
 }
