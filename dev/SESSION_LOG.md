@@ -1,6 +1,95 @@
 # Session Log
 <!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->
 
+## 2026-04-04 Publish v3.0.9 with Curriculum-enriched circulars
+
+1. Agent & Session ID: Codex_20260404_0009
+2. Task summary: 依使用者要求將 `v3.0.9` 推上 GitHub，並讓現有 `circulars.json` 實際吃到 curriculum-aware deterministic review，令 GitHub Pages 可直接看到 supplier + curriculum 加值結果。
+3. Layer classification: Product / System Layer（release publish + generated data refresh）+ Development Governance Layer（session persistence）
+4. Source triage: 主要是發布與輸出資料更新，不是新功能設計。`--llm-only` 因本機未設 `OPENAI_API_KEY` 無法執行，因此改用 deterministic post-analysis review 直接重寫既有 `circulars.json`。
+5. Files read: `circulars.json`, `edb_scraper.py`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+6. Files changed: `circulars.json`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ `python3 edb_scraper.py --llm-only --output ./circulars.json -v` 嘗試執行，確認被 `OPENAI_API_KEY` 缺失阻擋
+   - ✅ 直接將現有 `circulars.json` 套用 `_apply_post_analysis_review(circ)`，更新 2 份通告的第二輪 review 輸出
+   - ✅ 使用 `deploy.sh --no-bump` 發布 `v3.0.9`
+   - ✅ deploy repo push 成功：commit `bfc1126`
+   - ✅ 以 cache-busting 方式重新抓取 live HTML / `circulars.json`，確認 `v3.0.9` 與 curriculum 加值內容已上線
+8. Validation / QC:
+   - `python3 edb_scraper.py --llm-only --output ./circulars.json -v` → FAIL（`OPENAI_API_KEY not set`）
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - deterministic rewrite of `circulars.json` via inline Python → PASS（updated 2 circulars）
+   - `bash ~/Downloads/Claude-edb-Project-V3/deploy.sh --no-bump` → PASS
+   - `curl -L 'https://leonard-wong-git.github.io/EDB-AI-Circular-System/edb-dashboard.html?t=20260404-1541' | rg -n "v3\\.0\\.[0-9]+"` → PASS（all visible markers `v3.0.9`）
+   - `curl -L 'https://leonard-wong-git.github.io/EDB-AI-Circular-System/circulars.json?t=20260404-1541' | rg -n 'knowledge_review|課程發展指引|學校表現指標 \\(KPM\\)'` → PASS
+9. Pending:
+   - 等待用戶提供新版 `role_facts.json`
+   - 視需要把 `knowledge_review` 顯示到 dashboard
+   - 視需要修正 term-normalization 多次套用的 idempotent 行為
+10. Next priorities:
+   - 等待 / 整合新版 role_facts.json
+   - 決定下一個擴展 topic（finance / student / hr）
+   - 視需要修正 normalization idempotent 行為
+11. Risks / blockers:
+   - 本機未設定 `OPENAI_API_KEY`，所以不能直接用 `--llm-only` 重跑 LLM
+   - 目前 live 內容已更新，但若再次重複套用 deterministic review，term normalization 的 idempotent 行為仍值得修正
+12. Notes:
+   - 最容易在 live 看出 `v3.0.9` 變化的通告是 `EDBCM043/2026`，其次是 `EDBCM041/2026`
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - 使用者要把 `v3.0.9` 上 GitHub，並想知道哪份現有通告最容易看出 curriculum 加值效果。
+2. Root Cause:
+   - 這次變更主要在後端分析層；若不更新 `circulars.json`，單純 push 前端/程式碼不一定會在頁面立即顯示差異。
+   - 同時本機缺 `OPENAI_API_KEY`，無法直接以 `--llm-only` 重新跑 LLM。
+3. Fix:
+   - 對現有 `circulars.json` 直接套用 deterministic second-pass review，讓既有 curriculum 通告帶入 `knowledge_review` 與標準化字眼後再發布。
+4. Verification:
+   - live HTML 版本標記為 `v3.0.9`
+   - live `circulars.json` 可見 `knowledge_review`
+   - live `EDBCM043/2026` summary 出現 `學與教資源／課程相關材料`
+   - live `EDBCM043/2026` / `EDBCM041/2026` 可見 `課程發展指引`、`學校表現指標 (KPM)`
+5. Regression / rule update:
+   - 無新增治理規則；保留對 normalization idempotent 行為的觀察項。
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal publish | workspace 已是 `v3.0.9`，`circulars.json` 可寫 | `deploy.sh --no-bump` | 版本保持 `v3.0.9` 並推上 GitHub Pages | commit `bfc1126` pushed；live HTML markers = `v3.0.9` | PASS |
+| Boundary | 無 `OPENAI_API_KEY` | 執行 `--llm-only` | 明確失敗，不假裝已重跑 LLM | 報錯 `OPENAI_API_KEY not set` | PASS with notes |
+| Data refresh fallback | 現有 JSON 只有 2 份通告 | 套用 `_apply_post_analysis_review(circ)` | curriculum 加值應直接落入現有 JSON | updated 2 circulars；live JSON 可見 `knowledge_review` 與 curriculum links | PASS |
+| Regression | `EDBCM043/2026` 為 curriculum 類真實通告 | 發布後抓 live JSON | 可以在現有真實通告看到 `3.0.9` 差異 | live summary 出現 `學與教資源／課程相關材料`；role notes / links 存在 | PASS |
+
+Overall: PASS with notes
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: continue from live v3.0.9. GitHub Pages now serves the curriculum-aware deterministic post-analysis review, and the current live `circulars.json` already includes `knowledge_review` for the two published curriculum circulars.
+
+Pending tasks (priority order):
+1. If the user provides a new `role_facts.json`, integrate it to replace `dev/knowledge/role_facts.json` and validate the K1 interface.
+2. Decide the next topic-aware review extension after curriculum (likely finance / student / hr), while keeping the second-pass review deterministic and non-destructive.
+3. If repeated application of term normalization will remain part of the workflow, harden `_replace_terms()` for idempotent behavior.
+
+Key files changed in this session:
+- `circulars.json`
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- Local `--llm-only` could not run in this session because `OPENAI_API_KEY` was not set.
+- Live v3.0.9 is confirmed, but future repeated deterministic rewrites may need an idempotent normalization guard.
+- During future deploys, if the only rebase conflict is on `circulars.json`, preserve the newer remote data.
+
+Validation status: py_compile PASS; deterministic rewrite PASS; deploy repo push PASS; cache-busted live HTML and live `circulars.json` confirm v3.0.9.
+
+Post-startup first action: if no new `role_facts.json` is provided yet, inspect the current topic-review helpers and choose the next high-value topic extension after curriculum.
+```
+
 ## 2026-04-04 Curriculum-aware Knowledge Review Extension + v3.0.9
 
 1. Agent & Session ID: Codex_20260404_0008

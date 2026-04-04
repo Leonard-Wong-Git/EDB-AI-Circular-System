@@ -1,7 +1,7 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v3.0.9** (2026-04-04) ← **workspace 已升級至 curriculum-aware knowledge review；GitHub Pages live 仍為 v3.0.8，尚未 deploy**
+1. Version: **v3.0.9** (2026-04-04) ← **workspace 與 GitHub Pages live 已對齊；knowledge review 已覆蓋 supplier + curriculum**
 2. Core commands / features:
    - `edb-dashboard.html` — v3.0.9（供應商統計與採購類別顯示仍在）
    - `edb_scraper.py` — v3.0.9（KnowledgeStore 語義搜尋 + deterministic post-analysis knowledge review，已擴展 curriculum）
@@ -11,8 +11,8 @@
    - `requirements.txt` — Python 依賴清單
    - `dev/knowledge/role_facts.json` — K1 基線知識庫（存檔）
    - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 接口合約規格
-3. Regression baseline: v3.0.9 local version markers PASS；curriculum helper check PASS；py_compile PASS；latest live HTML previously confirmed at v3.0.8
-4. Release / merge status: **v3.0.9 僅存在 workspace，尚未 push / deploy；GitHub Pages live 仍為 v3.0.8**
+3. Regression baseline: v3.0.9 local version markers PASS；curriculum helper check PASS；py_compile PASS；GitHub Pages live HTML + circulars.json confirm v3.0.9
+4. Release / merge status: **v3.0.9 已推送並已於 GitHub Pages live**
 5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -72,10 +72,10 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 如需上線，將 workspace `v3.0.9` push / deploy，並重新驗證 GitHub Pages
-2. **[重要]** 若用戶提供新版 `role_facts.json`，整合取代 `dev/knowledge/role_facts.json`，並同步驗證 K1 接口
-3. **[其後]** 視需要把 `knowledge_review` 顯示到 dashboard 詳情頁，讓補漏/補連結可見
-4. **[其後]** 決定下一個 topic-aware review 擴展（finance / student / hr），保持 deterministic / non-destructive
+1. **[下一步 ⭐]** 若用戶提供新版 `role_facts.json`，整合取代 `dev/knowledge/role_facts.json`，並同步驗證 K1 接口
+2. **[重要]** 視需要把 `knowledge_review` 顯示到 dashboard 詳情頁，讓補漏/補連結可見
+3. **[其後]** 決定下一個 topic-aware review 擴展（finance / student / hr），保持 deterministic / non-destructive
+4. **[觀察]** 後續若再重跑 deterministic review，多次套用字眼標準化需留意 idempotent 行為
 5. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
 6. **[選做]** LLM 引擎切換機制
 
@@ -161,22 +161,22 @@ Do not close a session with code changes without completing the version bump.
 
 ## Last Session Record
 1. UTC date: 2026-04-04
-2. Session ID: Codex_20260404_0008
+2. Session ID: Codex_20260404_0009
 3. Completed:
-   - ✅ 將 deterministic knowledge review 由 supplier 擴展到 curriculum 類通告
-   - ✅ 加入 curriculum-specific terminology normalization、implementation reminders、recommended links
-   - ✅ 本地版本升級為 `v3.0.9`
-   - ✅ 保持第二輪 review 為加值功能，不改 deadline / 金額 / 編號 / scope 等硬事實
+   - ✅ 以 `deploy.sh --no-bump` 發布 `v3.0.9`
+   - ✅ 將現有 `circulars.json` 套用 deterministic review，令 curriculum 加值實際落入發布內容
+   - ✅ deploy repo 已推送：commit `bfc1126`
+   - ✅ GitHub Pages live HTML 與 live `circulars.json` 已確認顯示 `v3.0.9`
 4. Pending:
-   - 如需上線，將 workspace `v3.0.9` push / deploy
    - 等待用戶提供新版 `role_facts.json`
    - 視需要把 `knowledge_review` 顯示到 dashboard
+   - 視需要修正 term-normalization 多次套用的 idempotent 行為
 5. Next priorities (max 3):
-   - 視需要發佈 `v3.0.9`
    - 等待 / 整合新版 role_facts.json
    - 決定下一個擴展 topic（finance / student / hr）
+   - 視需要修正 normalization idempotent 行為
 6. Risks / blockers: 第二輪 review 現只做 supplier + curriculum enrichment；若再擴展到更多 topic 仍需保持 deterministic / non-destructive
 7. Files materially changed:
    - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
-8. Validation summary: py_compile PASS；curriculum helper check PASS；local version markers confirm v3.0.9；live state not re-claimed in this session
-9. Git commits: none in this workspace session（尚未 deploy）
+8. Validation summary: py_compile PASS；curriculum helper check PASS；deploy repo push PASS；cache-busted live HTML + live circulars.json confirm v3.0.9
+9. Git commits: deploy repo commit `bfc1126` pushed to `origin/main`

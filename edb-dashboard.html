@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDB 通告智能分析系統 v3.0.9</title>
+<title>EDB 通告智能分析系統 v3.0.10</title>
 <style>
 /* ============================================================
    PALETTES (accent colours only — theme-independent)
@@ -937,7 +937,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
     </div>
     <div class="dev-card">
       <div class="dev-card-title">ℹ️ 版本資訊</div>
-      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v3.0.9</span></div>
+      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v3.0.10</span></div>
       <div class="dev-row"><span>Build Date</span><span>2026-03-16</span></div>
       <div class="dev-row"><span>知識庫更新</span><span>2026-03-09 20:48 UTC</span></div>
       <div class="dev-row"><span>資料筆數</span><span id="devCount">—</span></div>
@@ -974,7 +974,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
 <header class="header">
   <div class="brand" onclick="switchTab('home',document.getElementById('tabHome'))" style="cursor:pointer;" title="返回首頁">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="13" x2="12" y2="17"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
-    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v3.0.9</span></span>
+    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v3.0.10</span></span>
   </div>
 
   <select class="role-select" id="roleSelect" onchange="setRole(this.value)">
@@ -1358,7 +1358,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
         </div>
         <div class="setting-row">
           <div class="setting-info"><div class="setting-lbl">版本</div></div>
-          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v3.0.9</span>
+          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v3.0.10</span>
         </div>
       </div>
 
@@ -1475,14 +1475,14 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
      ============================================================ -->
 <footer class="site-footer">
   <div>⚠️ <strong>免責聲明：</strong>本系統資料來源於<a href="https://www.edb.gov.hk" target="_blank" rel="noopener">香港特別行政區政府教育局（EDB）</a>官方網站，僅供參考及輔助管理用途，一切以教育局官方公告為準。本系統並非教育局官方產品。</div>
-  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v3.0.9 &nbsp;|&nbsp; &copy; 2026</div>
+  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v3.0.10 &nbsp;|&nbsp; &copy; 2026</div>
 </footer>
 
 <script>
 /* ============================================================
    VERSION
    ============================================================ */
-const VERSION = 'v3.0.9';
+const VERSION = 'v3.0.10';
 
 /* ============================================================
    MOCK DATA
@@ -1740,6 +1740,61 @@ function toggleLang(){ S.lang=S.lang==='zh'?'en':'zh'; lsSet('edb_lang',S.lang);
    ============================================================ */
 const ROLE_NAMES={principal:'👔 校長',vice_principal:'🏫 副校長',department_head:'📚 科主任',teacher:'🧑‍🏫 教師',eo_admin:'📋 行政主任',supplier:'🏢 供應商'};
 function getRoleName(r){ return ROLE_NAMES[r]||r; }
+function escapeHtml(s){
+  return (s||'')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+function cleanOfficialText(text){
+  if(!text) return '';
+  const headingRe=/^(檔號：|教育局通函第|分發名單：|副本送：|摘要|背景|詳情|查詢|附件|附錄|備註|目的|申請方法|申請程序|申請資格|截止日期|聯絡方法|注意事項|安排|內容|對象|範圍|要求|流程|說明|支援|結果|附件一|附件二|附件三|\d+\.)/;
+  let cleaned=(text||'')
+    .replace(/\r\n?/g,'\n')
+    .replace(/\u00a0/g,' ')
+    .replace(/檔\s*號\s*：/g,'檔號：')
+    .replace(/分發名單\s*：/g,'分發名單：')
+    .replace(/副本送\s*：/g,'副本送：')
+    .replace(/[ \t]+/g,' ')
+    .replace(/\n{3,}/g,'\n\n')
+    .trim();
+
+  const merged=[];
+  cleaned.split('\n').map(line=>line.trim()).filter(Boolean).forEach(line=>{
+    if(!merged.length){ merged.push(line); return; }
+    const prev=merged[merged.length-1];
+    const prevStandalone=headingRe.test(prev) || prev.length<=18;
+    const lineStandalone=headingRe.test(line) || line.length<=18;
+    const shouldJoin=!/[。！？；：:]$/.test(prev) && !prevStandalone && !lineStandalone;
+    merged[merged.length-1]=shouldJoin ? `${prev}${line}` : `${prev}\n\n${line}`;
+  });
+
+  cleaned=merged.join('')
+    .replace(/(號)(分發名單：|副本送：)/g,'$1\n\n$2')
+    .replace(/([」』》])((摘要|背景|詳情|查詢|附件|附錄))/g,'$1\n\n$2')
+    .replace(/([^\n])(摘要|背景|詳情|查詢|附件|附錄)/g,'$1\n\n$2')
+    .replace(/([一-龥])\s+([一-龥])/g,'$1$2')
+    .replace(/([（《「『])\s+/g,'$1')
+    .replace(/\s+([）》」』，。！？；：])/g,'$1')
+    .replace(/\n{3,}/g,'\n\n')
+    .trim();
+
+  return cleaned;
+}
+function officialTextForDisplay(text){
+  return cleanOfficialText(text).split('\n\n').filter(Boolean);
+}
+function renderOfficialHtml(text){
+  const paragraphs=officialTextForDisplay(text);
+  if(!paragraphs.length) return '';
+  return `<div class="summary-text">${paragraphs.map(p=>`<p>${escapeHtml(p)}</p>`).join('')}</div>`;
+}
+function officialPreview(text, maxLen=150){
+  const cleaned=cleanOfficialText(text).replace(/\n+/g,' ');
+  return cleaned.length>maxLen ? cleaned.slice(0,maxLen)+'…' : cleaned;
+}
 function updateRoleIndicator(){
   const el=document.getElementById('roleIndicator');
   if(el){ el.textContent=getRoleName(S.role); el.title='目前角色：'+getRoleName(S.role); }
@@ -2022,7 +2077,7 @@ function buildCard(d, inAttention=false){
         <span class="card-date">${d.date}${d.isNew?' <span class="badge b-green">NEW</span>':''}</span>
       </div>
       <div class="card-title">${d.title}</div>
-      <div class="card-summary">${d.official || (d.summary||'').substring(0,150)}</div>
+      <div class="card-summary">${escapeHtml(d.official ? officialPreview(d.official, 150) : (d.summary||'').substring(0,150))}</div>
       <div class="card-footer">
         <div class="card-tags">
           ${impactBadge(d.impact)} ${complianceBadge(d.compliance)}
@@ -2556,7 +2611,8 @@ function setApplyStatus(id,val){
 function shareDetail(){
   const id=S.currentDetailId; if(id===null) return;
   const d=DATA.find(x=>x.id===id); if(!d) return;
-  const text=`${d.number} — ${d.title}\n${d.official}\n\n來源: EDB 通告智能分析系統`;
+  const official=cleanOfficialText(d.official||'');
+  const text=`${d.number} — ${d.title}\n${official}\n\n來源: EDB 通告智能分析系統`;
   if(navigator.share){ navigator.share({title:d.title,text:text}).catch(e=>console.log('Share cancelled')); }
   else { navigator.clipboard.writeText(text).then(()=>showToast('已複製到剪貼板')).catch(e=>showToast('複製失敗')); }
 }
@@ -2649,6 +2705,8 @@ function openDetail(id){
   // PDF links at top of panel
   document.getElementById('dpPdfLinks').innerHTML=buildPdfLinks(d);
 
+  const officialHtml=renderOfficialHtml(d.official);
+
   // AI Analysis tab (combined: summary + actions + deadlines)
   const g=d.grant_info;
   let grantHtml='';
@@ -2700,7 +2758,7 @@ function openDetail(id){
     ${grantHtml}
     <div class="sec-lbl">📝 AI 分析摘要</div>
     <div class="summary-text">${(d.summary||'').split('\n\n').map(p=>`<p>${p}</p>`).join('')}</div>
-    ${d.official ? `<div class="sec-lbl">官方摘要</div><div class="info-block">${d.official}</div>` : ''}
+    ${officialHtml ? `<div class="sec-lbl">📄 官方原文整理版</div>${officialHtml}` : ''}
     <div class="ai-disclaimer">⚠️ 以上 AI 分析由人工智能生成，可能存在錯誤。一切以<a href="https://www.edb.gov.hk/tc/circular/index.html" target="_blank">教育局官方通告原文</a>為準。</div>
     ${actionsHtml}
     ${dlHtml}`;
@@ -2778,6 +2836,7 @@ function printDetail(){
   const roleKey=S.role;
   const roleActions=(d.actions||[]).filter(a=>!a.role||a.role===roleKey||a.role==='all');
   const roleInfo=d.roles?.[roleKey];
+  const officialPrint=(officialTextForDisplay(d.official||'').map(p=>`<p style="margin-bottom:6px">${escapeHtml(p)}</p>`).join('')) || '—';
   const html=`<!DOCTYPE html><html lang="zh-HK"><head><meta charset="UTF-8">
   <title>${d.number} — EDB 通告報告</title>
   <style>
@@ -2889,8 +2948,8 @@ function printDetail(){
   </div>`).join('')}`:''}
   ${d.deadlines?.length?`<h2>⏰ 所有截止日期</h2>
   <ul>${d.deadlines.map(dl=>`<li><strong>${dl.date||'—'}</strong>　${dl.label||dl.type||''}${dl.note?' — '+dl.note:''}</li>`).join('')}</ul>`:''}
-  <h2>📄 官方原文摘要</h2>
-  <div class="block" style="font-size:9.5pt;color:#475569">${d.official||'—'}</div>
+  <h2>📄 官方原文整理版</h2>
+  <div class="block" style="font-size:9.5pt;color:#475569">${officialPrint}</div>
   <div class="footer">
     <span>由 EDB 通告智能分析系統生成</span>
     <span>${new Date().toLocaleString('zh-HK')}　|　數據來源：香港教育局</span>
