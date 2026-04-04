@@ -1,9 +1,9 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v3.0.3** (2026-04-02) ← **當前版本；已 commit 至 git repo；待 push 至 GitHub**
+1. Version: **v3.0.4** (2026-04-04) ← **當前版本；已 commit 至 git repo；待 push 至 GitHub**
 2. Core commands / features:
-   - `edb-dashboard.html` — v3.0.1 Dashboard（3,061 行；設定佈局修復 + 篩選導航修復 + UX 整合）
+   - `edb-dashboard.html` — v3.0.4 Dashboard（月曆截止標籤修正 + 資源申請延伸功能）
    - `edb_scraper.py` — 後端爬蟲 + AI 分析管線（PyMuPDF 引擎 + K1 知識注入 + R1-v2）
    - `circulars.json` — EDB 通告 + gpt-5-nano AI 分析（GitHub Pages 已部署 ✅）
    - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具
@@ -71,12 +71,11 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 執行 `bash ~/Downloads/Claude-edb-Project-V3/deploy.sh` → push v3.0.3 → Cmd+Shift+R 確認上線
-2. **[已建立]** git repo 已掛載 VM，Claude 今後自動 commit；用戶只需 push
-3. **[繼續]** 繼續收集並修復 dashboard bugs（每次修復遵守 Version Bump Rule）
+1. **[下一步 ⭐]** 執行 `bash ~/Downloads/Claude-edb-Project-V3/deploy.sh` → push v3.0.4 → GitHub Actions 觸發 workflow → Cmd+Shift+R 確認上線
+2. **[繼續]** 繼續收集並修復 dashboard bugs（每次修復遵守 Version Bump Rule）
+3. **[K1 接口]** K1 知識庫（https://leonard-wong-git.github.io/edb-knowledge/k1-dashboard.html）接口已預留，`dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` 為接口 SSOT；待 K1 側準備好後交付 `role_facts.json` 替換 `dev/knowledge/role_facts.json`
 4. **[下一步]** 供應商統計新數據字段（scraper 修改，目前圖表為 placeholder）
 5. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
-6. **[選做]** LLM 引擎切換機制
 
 ## v2.1.0 Key Changes（2026-03-22）
 - 新增 🏠 首頁 tab（panel-home），首頁與通告總覽正式分離
@@ -153,23 +152,28 @@ Increment scheme:
 Do not close a session with code changes without completing the version bump.
 
 ## Last Session Record
-1. UTC date: 2026-04-02
-2. Session ID: Claude_20260402_0000
+1. UTC date: 2026-04-04
+2. Session ID: Claude_20260404_0747
 3. Completed:
-   - ✅ 修復「角色及資源」tab 行動清單顯示 JSON 亂碼（新增 `actText()` helper）
-   - ✅ v3.0.1 → v3.0.2（6 處）
-   - ✅ JS syntax PASS；4/4 unit tests PASS
+   - ✅ 月曆截止事件加入類型標籤（知悉日期／申請截止），不再只顯示編號
+   - ✅ 資源申請「已申請」狀態新增可編輯提交日期 + 備註欄位
+   - ✅ 資源申請「申請中」狀態新增進度備註欄位
+   - ✅ 新增 `toISODate()`、`setApplyDate()`、`setApplyNote()` helper 函數
+   - ✅ 提交日期改為 ISO 格式儲存（向下相容舊格式）
+   - ✅ `applyNotes` 新增至 state 及 localStorage
+   - ✅ v3.0.3 → v3.0.4（6 處）；7/7 unit tests PASS
+   - ✅ commit `7048591` 已完成
+   - ✅ K1 知識庫接口說明整理並提供給用戶（接口 SSOT：`dev/K1_KNOWLEDGE_INTERFACE_SPEC.md`）
 4. Pending:
-   - cp files → commit → push v3.0.2 到 git repo
-   - 確認 GitHub Pages 顯示 v3.0.2
+   - 用戶執行 push → GitHub Actions 觸發 workflow → 確認上線 v3.0.4
 5. Next priorities (max 3):
-   - Push v3.0.2 到 git repo 並確認 GitHub Pages 部署
-   - 繼續 dashboard bug fixes（待用戶報告）
-   - 供應商圖表數據字段（scraper）
-6. Risks / blockers: push 前先 cp governance files 防 rebase 覆蓋
+   - Push v3.0.4 並觸發 workflow，確認 GitHub Pages 顯示 v3.0.4
+   - 繼續收集 dashboard bugs（每次修復遵守 Version Bump Rule）
+   - K1 接口：待 K1 側準備好後交付 role_facts.json
+6. Risks / blockers: push 前先 `git pull --rebase`；GitHub Pages 需手動觸發 workflow
 7. Files materially changed:
-   - `edb-dashboard.html`（actText helper + render fix + v3.0.2）
-   - `dev/SESSION_HANDOFF.md`（版本 + Open Priorities + Last Session 更新）
-   - `dev/SESSION_LOG.md`（新增 2026-04-02 session entry）
-8. Validation summary: JS syntax PASS；4 unit tests PASS
-9. Git commits: 待用戶在 Mac Terminal 推送
+   - `edb-dashboard.html`（月曆 + 資源申請延伸 + v3.0.4）
+   - `dev/SESSION_HANDOFF.md`（版本基線 + Open Priorities + Last Session 更新）
+   - `dev/SESSION_LOG.md`（新增 2026-04-04 session entry）
+8. Validation summary: 7/7 unit tests PASS；JS syntax PASS
+9. Git commits: `7048591` 已 commit；待用戶 push

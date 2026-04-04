@@ -1,5 +1,78 @@
 # Session Log
 
+## 2026-04-04 月曆截止標籤 + 資源申請延伸功能 + K1 接口說明 — v3.0.4
+
+1. Agent & Session ID: Claude_20260404_0747
+2. Task summary: 修正月曆 4 月截止事件只顯示編號（無類型標籤）；資源申請選擇狀態後新增可互動延伸欄位；整理 K1 知識庫接口說明
+3. Layer classification: Product / System Layer（前端 bug fix + 功能延伸）
+4. Files changed: `edb-dashboard.html`（月曆 dlLabel + apply-ext CSS + applyNotes state + helper 函數 + renderResources extHtml + setApplyStatus 重寫 + v3.0.4）
+
+5. Completed:
+   - ✅ 月曆 `renderCalendar`：dl 事件新增 `dlLabel`，顯示格式由 `⏰ EDBC042` → `⏰ EDBC042 申請截止`
+   - ✅ CSS 新增 `.apply-ext`、`.apply-ext-row`、`.apply-ext-lbl`、`.apply-date-inp`、`.apply-note-inp`
+   - ✅ State 新增 `applyNotes:{}`，localStorage key `edb_apply_notes` 初始化
+   - ✅ 新增 `toISODate()`：zh-HK 日期格式轉 ISO（向下相容）
+   - ✅ 新增 `setApplyDate(id, isoDate)`：更新提交日期至 localStorage
+   - ✅ 新增 `setApplyNote(id, note)`：更新備註至 localStorage
+   - ✅ `renderResources` 用 `extHtml` 替代 `stNote`：已申請→日期+備註欄；申請中→進度備註欄
+   - ✅ `setApplyStatus` 重寫：ISO 日期格式、動態 DOM 更新 ext 表單
+   - ✅ v3.0.3 → v3.0.4（6 處）
+   - ✅ 7/7 unit tests PASS
+   - ✅ commit `7048591`
+   - ✅ K1 接口說明提供：SSOT `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md`；現有佔位數據 `dev/knowledge/role_facts.json` v1.0.0
+
+6. Push status: 待用戶執行 push + 觸發 GitHub Actions workflow
+
+### Problem → Root Cause → Fix → Verification
+
+**Bug 1：月曆 4 月截止事件無類型標籤**
+- Problem: 4 月截止事件（綠色⏰）只顯示 `⏰ EDBC042`，無「申請截止」等說明
+- Root Cause: `shortTitle` for `type==='dl'` 硬編碼為 `⏰ ${shortNum}`，丟棄了 `ev.title` 中的類型標籤
+- Fix: 新增 `dlLabel = ev.title.replace(/^⏰\s*/,'').substring(0,4)`，拼入 `shortTitle`
+- Verification: Node.js 測試 `⏰ EDBC042 申請截止` ✅
+
+**Bug 2：資源申請選狀態後無延伸功能**
+- Problem: 選「已申請」後只顯示靜態文字「✅ 已於 X 提交」，無法編輯日期或加備註
+- Root Cause: `stNote` 只是 `div.textContent`，無可互動輸入欄
+- Fix: 替換為 `extHtml`（已申請→日期picker+備註input；申請中→進度備註input）
+- Verification: 邏輯測試 PASS；`toISODate()` 格式轉換測試 PASS ✅
+
+### DOC_SYNC Matrix Scan — SKIP (registry not present)
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: EDB 通告智能分析系統 dashboard 持續維護，當前版本 v3.0.4。
+
+Progress state: v3.0.4 已完整 commit（commit 7048591），待用戶 push 至 GitHub 並觸發 Actions workflow 部署。
+
+Pending tasks (priority order):
+1. 確認用戶是否已 push v3.0.4 → 若未 push，提示執行 `bash ~/Downloads/Claude-edb-Project-V3/deploy.sh` 並觸發 GitHub Actions workflow
+2. 繼續收集並修復 dashboard bugs（每次修復遵守 Version Bump Rule：6 處版本號同步更新）
+3. K1 知識庫接口：`dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` 為接口 SSOT；待 K1 側準備好後交付 role_facts.json 替換 `dev/knowledge/role_facts.json`
+4. 供應商統計圖表新數據字段（scraper 修改，目前為 placeholder）
+
+Key files changed this session:
+- edb-dashboard.html（月曆截止標籤 + 資源申請延伸表單 + v3.0.4，commit 7048591）
+- dev/SESSION_HANDOFF.md（版本基線更新至 v3.0.4）
+- dev/SESSION_LOG.md（新增本 session entry）
+
+Known risks / cautions:
+- push 前先 `git pull --rebase origin main`（GitHub Actions 定時 commit circulars.json，遠端可能領先本地）
+- GitHub Pages 需手動觸發 `Update EDB Circulars` workflow，push 本身不觸發部署
+- git repo 路徑：`~/Documents/EDB-AI-Circular-System`（VM 掛載路徑：`/sessions/.../mnt/Documents/EDB-AI-Circular-System`）
+- Version Bump Rule：每次改 edb-dashboard.html 必須更新 6 處版本號
+
+Validation status: 7/7 unit tests PASS；commit 7048591 已完成
+
+Post-startup first action: 確認 `git log --oneline -3` 顯示 commit 7048591，然後詢問用戶是否已完成 push 及 workflow 觸發，並確認 GitHub Pages 顯示 v3.0.4。
+```
+
+---
+
 ## 2026-04-02 截止日期類型標籤斷行修正 + v3.0.3
 
 1. Agent & Session ID: Claude_20260402_0100
