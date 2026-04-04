@@ -1,18 +1,18 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **Workspace files show v3.0.5** (detected 2026-04-04) ← **治理文件尚未有對應產品 session 記錄；推送前必須先對帳**
+1. Version: **v3.0.8** (2026-04-04) ← **workspace 已完成首個 runnable knowledge review integration**
 2. Core commands / features:
-   - `edb-dashboard.html` — on-disk version marker = v3.0.5（供應商統計與採購類別顯示仍在）
-   - `edb_scraper.py` — banner version marker = v3.0.5（KnowledgeStore 語義搜尋 + 增強供應商 Schema 仍在）
-   - `circulars.json` — EDB 通告 + gpt-5-nano AI 分析（待更新 push ✅）
+   - `edb-dashboard.html` — v3.0.8（供應商統計與採購類別顯示仍在）
+   - `edb_scraper.py` — v3.0.8（KnowledgeStore 語義搜尋 + deterministic post-analysis knowledge review）
+   - `circulars.json` — EDB 通告 + gpt-5-nano AI 分析（remote auto-update 115 circulars 保留）
    - `knowledge.json` — 從 edb-knowledge 獲取的語義事實來源（v1.2.2，107 facts ✅）
    - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具
    - `requirements.txt` — Python 依賴清單
    - `dev/knowledge/role_facts.json` — K1 基線知識庫（存檔）
    - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 接口合約規格
-3. Regression baseline: Latest documented product verification = v3.0.4 JS syntax PASS；workspace version markers currently show v3.0.5 but are not yet reconciled in SESSION_LOG
-4. Release / merge status: **Do not push/deploy until v3.0.5 drift is reconciled and documented**
+3. Regression baseline: v3.0.8 local version markers PASS；post-analysis review helper check PASS；simulation PASS
+4. Release / merge status: **v3.0.8 workspace ready；尚未 deploy/push**
 5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -23,8 +23,8 @@
 ## Layer Map
 1. Product / System Layer: EDB 通告爬蟲 + AI 分析 + Dashboard 前端
 2. Development Governance Layer: AGENTS.md 規則、SESSION 管理、Root Safety Check
-3. Current task belongs to which layer: Development Governance Layer（startup verification + deployment state confirmation）
-4. Known layer-boundary risks: workspace `v3.0.5` 與 GitHub Pages live `v3.0.4` 不一致；不可把本地版本誤當已部署版本
+3. Current task belongs to which layer: Product / System Layer（analysis pipeline behavior change）
+4. Known layer-boundary risks: 第二輪 review 必須只做補充/標準化，不能覆蓋通告硬事實；deploy 時仍要注意 remote `circulars.json` 可能較新
 
 ## Mandatory Start Checklist
 1. ✅ Read `dev/SESSION_HANDOFF.md`
@@ -72,10 +72,10 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 先把 workspace `v3.0.5` 發布到 deploy repo / GitHub Pages；目前 live site 經實測仍是 `v3.0.4`
-2. **[重要]** 若要繼續產品開發，先補寫 `v3.0.5` 的產品層 SESSION_LOG 記錄，避免版本與驗證證據脫節
-3. **[其後]** 若用戶提供新版 `role_facts.json`，整合取代 `dev/knowledge/role_facts.json`，並同步驗證 K1 接口
-4. **[繼續]** 發布後 hard refresh 驗證 GitHub Pages 是否顯示 `v3.0.5`
+1. **[下一步 ⭐]** 若用戶要正式上線，deploy/push `v3.0.8`，再驗證 live output 是否包含新的 `knowledge_review`
+2. **[重要]** 若用戶提供新版 `role_facts.json`，整合取代 `dev/knowledge/role_facts.json`，並同步驗證 K1 接口
+3. **[其後]** 擴展第二輪 review 到非 supplier 角色，但保持 deterministic / non-destructive
+4. **[繼續]** 觀察 0.45 threshold 是否需要進一步微調（依據後續 smoke test 結果）
 5. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
 6. **[選做]** LLM 引擎切換機制
 
@@ -122,18 +122,16 @@ git checkout v2.1.0-dashboard
    - 日期字段：`txtPeriodFrom` / `txtPeriodTo`
    - 搜尋按鈕：`btnSearch2`（JS 觸發）
 7. PyMuPDF (fitz) 已替換 pdfplumber/pdfminer（2026-03-15）— school-year workflow 全綠
-8. **⚠️ Workspace 文檔漂移（2026-04-04 確認）：**
-   - `edb-dashboard.html` 與 `edb_scraper.py` 均顯示 v3.0.5
-   - `dev/SESSION_LOG.md` 最新產品條目僅記錄到 v3.0.4
-   - 緩解：下一 session 先比對 diff / 驗證 / 補文檔，再部署
-9. **⚠️ Live deployment state（2026-04-04 實測）：**
-   - GitHub Pages `edb-dashboard.html` 仍顯示 v3.0.4
-   - live site 尚未包含已確認的 v3.0.5 workspace 狀態
-   - 緩解：先 deploy / trigger workflow，再用 live HTML 重新驗證版本
+8. **⚠️ Publish conflict note（2026-04-04 實測）：**
+   - remote `circulars.json` 可能在 code/docs 發布期間被 GitHub Actions 更新
+   - `deploy.sh` publish commit rebase 時若只衝突在 `circulars.json`，應保留較新的 remote 版本，再繼續推送 code/docs release
+9. **⚠️ Knowledge review boundary（2026-04-04 確認）：**
+   - 第二輪 review 現時只針對 supplier 場景做 deterministic enrichment
+   - 不應改寫 deadline、金額、編號、scope 等硬事實
 
 ## Regression / Verification Notes
 1. v2.1.0 QC: 24/24 structural checks 通過；JS syntax check 通過
-2. GitHub Pages 部署：需 workflow 執行（不是 push 自動觸發）
+2. GitHub Pages 部署：push 至 `main` 現已自動觸發 Pages deployment；仍可保留 manual/schedule workflow 用於 scraper
 3. school-year 最後成功：1h 23m（16 hours ago as of 2026-03-22）
 
 ## Consolidation Watchlist
@@ -163,26 +161,27 @@ Do not close a session with code changes without completing the version bump.
 
 ## Last Session Record
 1. UTC date: 2026-04-04
-2. Session ID: Codex_20260404_0003
+2. Session ID: Codex_20260404_0006
 3. Completed:
-   - ✅ 依 AGENTS.md §1 完成 startup reads：`AGENTS.md` → `SESSION_HANDOFF.md` → `SESSION_LOG.md` → `CODEBASE_CONTEXT.md`
-   - ✅ 驗證 workspace 確為 `v3.0.5`，且 supplier schema / UI 已包含 `eligibility`、`contact_unit`、`procurement_cat`
-   - ✅ 實測 GitHub Pages live `edb-dashboard.html` 仍為 `v3.0.4`
-   - ✅ 確認目前不能宣稱 `v3.0.5` 已上線
-   - ✅ 在 `README.md` 新增 K1 API spec 外部連結
+   - ✅ 將 deterministic post-analysis knowledge review 接入 `edb_scraper.py`
+   - ✅ review 現會在 primary analysis 後自動執行，並寫出 `knowledge_review` metadata
+   - ✅ supplier 場景可自動補 `eligibility` / `contact_unit` / `compliance_ref`
+   - ✅ supplier 場景可自動附加相關知識連結，並做 ordered terminology normalization
+   - ✅ 版本升級：`v3.0.7` → `v3.0.8`
 4. Pending:
-   - 發布 workspace `v3.0.5` 到 deploy repo / GitHub Pages
-   - 補寫 `v3.0.5` 的產品層 session documentation（若要延續當前 workspace 狀態）
    - 等待用戶提供新版 `role_facts.json`
+   - 若用戶要正式上線，deploy/push `v3.0.8`
+   - 下一次發布時觀察 `circulars.json` rebase conflict 是否再次出現
 5. Next priorities (max 3):
-   - deploy 並驗證 GitHub Pages v3.0.5
-   - 補齊 v3.0.5 產品 session 記錄
+   - deploy/push `v3.0.8`
    - 等待 / 整合新版 role_facts.json
-6. Risks / blockers: live site 仍是 v3.0.4；若跳過 deploy 驗證或文檔同步，容易誤報版本狀態
+   - 擴展第二輪 review 到更多角色
+6. Risks / blockers: 第二輪 review 現只做 supplier enrichment；若擴展到全部角色需保持 deterministic / non-destructive
 7. Files materially changed:
-   - `README.md`（新增 K1 API spec 連結）
-   - `dev/SESSION_HANDOFF.md`（Last Session Record 更新）
-   - `dev/SESSION_LOG.md`（新增本 session entry）
-   - `dev/DOC_SYNC_CHECKLIST.md`（新增 README link/reference row）
-8. Validation summary: startup reads PASS；workspace v3.0.5 markers confirmed；live GitHub Pages fetched and confirmed at v3.0.4；README link insertion verified
+   - `edb_scraper.py`（接入 post-analysis review）
+   - `edb-dashboard.html`（版本升級到 v3.0.8）
+   - `README.md`（新增知識校正層說明）
+   - `dev/CODEBASE_CONTEXT.md`、`dev/DOC_SYNC_CHECKLIST.md`
+   - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
+8. Validation summary: `py_compile` PASS；helper-based review check PASS；simulation PASS；version markers updated to v3.0.8
 9. Git commits: 未執行

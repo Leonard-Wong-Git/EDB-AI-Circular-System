@@ -22,6 +22,7 @@ This system automatically scrapes Hong Kong Education Bureau (EDB) circulars, pe
 | 🏠 首頁 | ✅ v2.1.0 | 最新通告、需關注項、即將截止一覽 |
 | 📊 通告總覽 | ✅ 正式版 | 統計卡片、篩選、搜尋、卡片/列表切換 |
 | 🤖 AI 智能分析 | ✅ 正式版 | gpt-5-nano 多角色分析，含摘要/行動/截止 |
+| 🧠 知識校正層 | ✅ v3.0.8 | AI 首輪分析後，統一 supplier 用詞、補漏、補連結、降低角色飄移 |
 | 👥 六角色視圖 | ✅ 正式版 | 校長/副校長/科主任/教師/行政/供應商 |
 | 📅 月曆視圖 | ✅ 正式版 | EDBC 格式通告、截止日期標記 |
 | 💰 資源申請 | ✅ 正式版 | 可申請撥款追蹤 |
@@ -43,6 +44,7 @@ edb_scraper.py              ← Python 後端管線
     ├── HTML 抓取（位置式解析）
     ├── PDF 下載 + 解析（PyMuPDF）
     ├── AI 分析（gpt-5-nano, json_schema）
+    ├── 知識校正（統一字眼 / 補漏 / 補連結）
     └── circulars.json 輸出（增量 merge）
          │
          ▼
@@ -131,6 +133,7 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 ```
 
 此命令會自動執行 patch version bump、同步 workspace 到 deploy repo、commit、push；若 GitHub Pages 未即時更新，請到 Actions 手動確認最新 workflow。
+此命令現時亦會觸發 push-based GitHub Pages deployment；本次實測已成功把 live site 更新到 `v3.0.7`。
 
 ---
 

@@ -10,7 +10,7 @@
 | Layer | Technology | Notes |
 |-------|-----------|-------|
 | Frontend | Pure HTML / CSS / JS (single-page) | No framework; SheetJS CDN for Excel export only |
-| Backend | Python 3.10+ (`edb_scraper.py`) | Single-file pipeline: scrape → PDF → LLM → JSON |
+| Backend | Python 3.10+ (`edb_scraper.py`) | Single-file pipeline: scrape → PDF → LLM → post-analysis knowledge review → JSON |
 | PDF extraction | PyMuPDF (fitz) >= 1.24.0 | Replaced pdfplumber/pdfminer (2026-03-15) |
 | LLM | OpenAI gpt-5-nano | temperature=1 fixed; `developer` role; `max_completion_tokens`=16000; `json_schema` structured output |
 | Embeddings | text-embedding-3-small | Used for semantic knowledge search (KnowledgeStore); 0.45 threshold |
@@ -62,6 +62,7 @@ EDB-Circular-AI-analysis-system/
     │   ├── parse_form.py           # ASP.NET form parser
     │   ├── parse_row.py            # Circular row parser
     │   ├── parse_structure.py      # DOM structure analyzer
+    │   ├── simulate_post_analysis_review.py  # Prototype: post-analysis knowledge review simulation
     │   └── test_llm.py             # LLM API diagnostics
     └── init_backup/                # AGENTS.md install backups
 ```
@@ -73,9 +74,9 @@ EDB-Circular-AI-analysis-system/
 | Entry Point | Description |
 |-------------|-------------|
 | `edb-dashboard.html` | Open in browser; fetches `circulars.json` from same directory |
-| `edb_scraper.py --school-year -o ./circulars.json -v` | Full school-year scrape + LLM analysis |
-| `edb_scraper.py --days 3 -o ./circulars.json -v` | Incremental 3-day scrape |
-| `edb_scraper.py --llm-only -o ./circulars.json -v` | Re-run LLM only (no scrape) |
+| `edb_scraper.py --school-year -o ./circulars.json -v` | Full school-year scrape + LLM analysis + post-analysis knowledge review |
+| `edb_scraper.py --days 3 -o ./circulars.json -v` | Incremental 3-day scrape + deterministic knowledge review |
+| `edb_scraper.py --llm-only -o ./circulars.json -v` | Re-run LLM only (no scrape) while retaining post-analysis review |
 | `.github/workflows/update-circulars.yml` | CI trigger (manual: school-year; cron: days-3) |
 
 ---
@@ -102,7 +103,7 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 ```
 
 ### CI (GitHub Actions)
-- **Trigger:** cron 3×/day (HKT 07:00/13:00/17:00) auto uses `--days 3`; manual dispatch supports school-year/days-3/14/30/365
+- **Trigger:** push to `main` auto-deploys Pages for code/docs changes; cron 3×/day (HKT 07:00/13:00/17:00) auto uses `--days 3`; manual dispatch supports school-year/days-3/14/30/365
 - **Secret:** `OPENAI_API_KEY` (Settings → Secrets → Actions)
 - **Deploy:** Commits `circulars.json` → deploys entire repo root to GitHub Pages
 - **Conflict strategy:** Save fresh JSON to `/tmp`, `git fetch + reset --hard origin/main`, copy back, commit
@@ -174,6 +175,7 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 9 | Scraper PHASE 4 merge (not overwrite) | 2026-03-23 | days-3 mode was overwriting entire circulars.json; PHASE 4 now loads existing JSON, merges raw results in, sorts by date desc — prevents school-year data loss |
 | 11 | Semantic Fact-Checking (0.45 Threshold) | 2026-04-03 | Replaced keyword matching with vector similarity against knowledge.json. Threshold set to 0.45 to prevent irrelevant fact injection. |
 | 12 | Enhanced Supplier Schema | 2026-04-04 | Added is_tender, procurement_cat, budget_estimate, and compliance_ref to CIRCULAR_SCHEMA for improved supplier statistics. |
+| 13 | Deterministic Post-analysis Knowledge Review | 2026-04-04 | After primary AI analysis, apply an ordered normalization/enrichment pass to standardize supplier terminology, backfill missing supplier guidance, attach recommended links, and reduce role drift without overwriting hard facts from the circular. |
 
 ---
 
@@ -199,4 +201,6 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 2026-03-23 | Claude_20260323_0000 | v2.1.0 update: dashboard 2766→3,047 lines, README rewritten, CHANGELOG updated, Key Decision #9 (PHASE 4 merge fix). |
 | 2026-03-26 | Claude_20260326_1100 | v3.0.0 update: list view bug fix (setView block), version bump v2.1.0→v3.0.0, Key Decision #10 (auto version bump rule), AGENTS.md INIT.md merge (5 sections updated). |
 | 2026-04-04 | ba64ba27-0c19-41b8-95fc-7dc27a068588 | v3.0.4 integration: KnowledgeStore integrated with semantic search (0.45 threshold), enhanced supplier schema in CIRCULAR_SCHEMA, dashboard UI update for procurement stats. |
-| 2026-04-04 | Codex_20260404_0004 | Added automated publish flow: `deploy.sh` now calls `dev/tools/publish_release.py` to patch-bump versions, sync workspace to deploy repo, commit, and push. |
+| 2026-04-04 | Codex_20260404_0004 | Added automated publish flow: `deploy.sh` now calls `dev/tools/publish_release.py` to patch-bump versions, sync workspace to deploy repo, commit, push, and rely on push-triggered Pages deployment. |
+| 2026-04-04 | Codex_20260404_0005 | Added `dev/tools/simulate_post_analysis_review.py` prototype to validate a second-pass knowledge review layer: ordered terminology normalization, missing-point enrichment, recommended links, and role-drift stabilization. |
+| 2026-04-04 | Codex_20260404_0006 | Integrated the first runnable post-analysis knowledge review into `edb_scraper.py`; bumped dashboard/scraper version to v3.0.8 and added `knowledge_review` output metadata. |

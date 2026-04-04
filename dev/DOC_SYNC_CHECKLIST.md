@@ -21,6 +21,8 @@
 | New project doc added | This file — add a row for the new doc's update triggers | row presence check |
 | README link / reference update | README.md relevant section; SESSION_LOG.md entry if done in-session | manual review |
 | Deploy / release workflow change | README.md publish instructions; GIT_PUSH_MANUAL.md; CODEBASE_CONTEXT.md Build & Run / Path Map | manual review |
+| Prototype / simulation tool added | CODEBASE_CONTEXT.md Directory Map if tool is meant for reuse; SESSION_LOG.md entry | manual review |
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | manual review |
 | _[Add project-specific rows below this line]_ | | |
 
 ## Anti-pattern: No Matching Row

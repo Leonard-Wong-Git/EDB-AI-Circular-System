@@ -1,6 +1,234 @@
 # Session Log
 <!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->
 
+## 2026-04-04 Runnable Knowledge Review Integration + v3.0.8
+
+1. Agent & Session ID: Codex_20260404_0006
+2. Task summary: 將模擬版第二輪 knowledge review 正式接入 `edb_scraper.py`，做 supplier-focused deterministic normalization / enrichment；版本升級到 `v3.0.8`。
+3. Layer classification: Product / System Layer（analysis pipeline behavior change）+ Development Governance Layer（session persistence）
+4. Source triage: 非 bug fix；屬既有 AI 分析流程的後置 enrichment 行為新增。目標是先上第一個 runnable 版，而非全面重做 prompt。
+5. Files read: `edb_scraper.py`, `edb-dashboard.html`, `dev/SESSION_HANDOFF.md`, `dev/DOC_SYNC_CHECKLIST.md`, `dev/CODEBASE_CONTEXT.md`
+6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/DOC_SYNC_CHECKLIST.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 新增 `_apply_post_analysis_review(circ)` 到 `edb_scraper.py`
+   - ✅ primary analysis 成功後，會自動執行第二輪 deterministic review
+   - ✅ reused existing analysed records 時，也會套用 deterministic review
+   - ✅ 輸出新增 `knowledge_review` 欄位
+   - ✅ supplier 場景自動補 `eligibility`、`contact_unit`、`compliance_ref`
+   - ✅ supplier 場景自動附加 `recommended_links`
+   - ✅ 版本升級：`v3.0.7` → `v3.0.8`
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py dev/tools/simulate_post_analysis_review.py` → PASS
+   - helper check via inline Python → PASS
+   - `python3 dev/tools/simulate_post_analysis_review.py` → PASS
+   - `rg -n "v3\\.0\\.8|knowledge_review|_apply_post_analysis_review|recommended_links|eligibility|contact_unit" edb_scraper.py edb-dashboard.html` → PASS
+9. Pending:
+   - 若用戶要正式上線，deploy/push `v3.0.8`
+   - 等待用戶提供新版 `role_facts.json`
+   - 視需要把第二輪 review 擴展到其他角色
+10. Next priorities:
+   - deploy/push `v3.0.8`
+   - 等待 / 整合新版 role_facts.json
+   - 擴展 deterministic review 到更多角色
+11. Risks / blockers:
+   - 第二輪 review 必須維持 non-destructive；不可覆蓋 deadline、金額、編號等硬事實
+   - 目前 enrichment 主要集中 supplier，其他角色仍未擴展
+12. Notes:
+   - 這個版本先把最清晰、最容易觀察效果的 supplier path 做通
+   - `knowledge_review` 暫時寫入 JSON；前端尚未專門顯示該 block
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - 使用者已確認方向，希望把第二輪知識校正從模擬變成第一個可運行版。
+2. Root Cause:
+   - 現有 pipeline 只有 primary AI analysis，沒有正式的 post-analysis review stage。
+3. Fix:
+   - 在 `edb_scraper.py` 新增 deterministic review helper，於 primary analysis 之後執行。
+   - review 目前負責 ordered terminology normalization、missing-point enrichment、recommended links、supplier role stabilization。
+4. Verification:
+   - py_compile PASS；inline helper verification PASS；simulation PASS。
+5. Regression / rule update:
+   - 無新增長期治理規則；doc sync registry 新增 `Analysis pipeline behavior change` row。
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | 採購/供應商相關通告，supplier 已標記相關 | 套用 `_apply_post_analysis_review` | 用詞標準化 + 補 `eligibility/contact_unit/compliance_ref` + links | helper check 顯示補齊與標準化均成功 | PASS |
+| Boundary | 已分析舊記錄被 reuse | 進入 existing-summary skip path | 不重跑 LLM 也能套用 deterministic review | skip path 現已呼叫 `_apply_post_analysis_review` | PASS |
+| Failure path guard | review 不應覆蓋硬事實 | 套用 review | 不改 deadline/金額/編號等欄位 | helper 只改 summary/roles/actions/knowledge_review | PASS |
+| Regression | 模擬工具仍可運行 | 執行 `simulate_post_analysis_review.py` | 模擬輸出仍可觀察 before/after | script 執行成功 | PASS |
+
+Overall: PASS
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: continue from the first runnable post-analysis knowledge review integration. Workspace is now at v3.0.8, and `edb_scraper.py` includes a deterministic second-pass review after primary AI analysis.
+
+Pending tasks (priority order):
+1. If the user wants this live, deploy/push v3.0.8 and verify the updated output on GitHub Pages / generated JSON.
+2. If the user provides a new `role_facts.json`, integrate it to replace `dev/knowledge/role_facts.json` and validate the K1 interface.
+3. If expanding the review layer, keep it deterministic and non-destructive; extend beyond supplier only after verifying the current supplier path.
+
+Key files changed in this session:
+- `edb_scraper.py`
+- `edb-dashboard.html`
+- `README.md`
+- `dev/CODEBASE_CONTEXT.md`
+- `dev/DOC_SYNC_CHECKLIST.md`
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- The post-analysis review must not overwrite hard facts such as dates, amounts, scope, or circular number.
+- `knowledge_review` is written to JSON but is not yet specially rendered by the dashboard.
+- During future deploys, remote `circulars.json` may still be newer than the workspace copy; preserve the newer remote data if that is the only rebase conflict.
+
+Validation status: py_compile PASS; helper-based review check PASS; simulation PASS; version markers updated to v3.0.8.
+
+Post-startup first action: decide with the user whether to deploy/push v3.0.8 now, or continue with `role_facts.json` / broader knowledge-review expansion first.
+```
+
+## 2026-04-04 Post-analysis Knowledge Review Simulation
+
+1. Agent & Session ID: Codex_20260404_0005
+2. Task summary: 依使用者確認的方向，先做一個 deterministic 模擬，驗證在 primary AI analysis 之後加一層 knowledge review 是否可行。
+3. Layer classification: Product / System Layer（analysis pipeline prototype）+ Development Governance Layer（session persistence）
+4. Source triage: 非 bug fix；屬新行為模擬。目標是先驗證第二輪 review 的 shape，而不是直接改 production scraper。
+5. Files read: `edb_scraper.py`, `dev/knowledge/fin_management_supplier.md`, `dev/knowledge/icac_reference.md`, `dev/knowledge/press_releases_supplier.md`, `dev/knowledge/ROLE_KNOWLEDGE_INDEX.md`, `dev/DOC_SYNC_CHECKLIST.md`
+6. Files changed: `dev/tools/simulate_post_analysis_review.py`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 新增 `dev/tools/simulate_post_analysis_review.py`
+   - ✅ 模擬 ordered terminology normalization
+   - ✅ 模擬 missing-point enrichment：supplier `eligibility` / `contact_unit` / `compliance_ref`
+   - ✅ 模擬 recommended links：EDB 財務管理（供應商）+ ICAC 採購參考
+   - ✅ 模擬 role-drift 守門條件（採購/供應商 keyword）
+8. Validation / QC:
+   - `python3 dev/tools/simulate_post_analysis_review.py` → PASS
+   - `python3 -m py_compile dev/tools/simulate_post_analysis_review.py` → PASS
+   - 模擬輸出顯示 before/after、`terminology_review`、`knowledge_review`、`feasibility_assessment`
+9. Pending:
+   - 若用戶同意，把第二輪 review 接入 `edb_scraper.py`
+   - 等待用戶提供新版 `role_facts.json`
+10. Next priorities:
+   - 接入 knowledge review 第二輪
+   - 等待 / 整合新版 role_facts.json
+   - 驗證下一次自動發布流程穩定性
+11. Risks / blockers:
+   - 正式接入前，必須限制第二輪只做補充/標準化，不可覆蓋 deadline、金額、編號等硬事實
+   - 目前 simulation 是 deterministic prototype，尚未覆蓋所有角色與所有 topic
+12. Notes:
+   - 這個 prototype 特別對準 supplier 場景，因為現有知識檔最完整，也最容易觀察補漏/補連結效果
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - 使用者想先看到「AI 首輪分析後，再接入知識庫意見」的可行性，而不是直接改正式流程。
+2. Root Cause:
+   - 現有 `edb_scraper.py` 只有 primary analysis，knowledge 主要用於第一輪 prompt 注入，沒有獨立的 post-analysis review stage。
+3. Fix:
+   - 新增 `dev/tools/simulate_post_analysis_review.py`，用 sample circular + sample analysis 模擬第二輪 review。
+4. Verification:
+   - script 成功輸出 before/after JSON，顯示 ordered terminology normalization、missing-point enrichment、recommended links、role-drift note。
+5. Regression / rule update:
+   - 無新增長期規則；僅記錄 prototype 已建立，可作下一步接入基礎。
+
+## 2026-04-04 Auto Publish Flow + v3.0.7 Live
+
+1. Agent & Session ID: Codex_20260404_0004
+2. Task summary: 實作自動發布流程，讓 `deploy.sh` 可自動 patch version bump、同步 workspace 至 deploy repo、commit、push，並透過 push-triggered GitHub Actions 令 GitHub Pages 生效；本次成功發布至 live `v3.0.7`。
+3. Layer classification: Product / System Layer（deploy workflow / release automation）+ Development Governance Layer（session persistence）
+4. Source triage: 問題屬部署流程缺口，而非產品邏輯 bug。原 `deploy.sh` 只在 deploy repo 內 `pull/push`，沒有同步 workspace、沒有版本 bump、也沒有自動觸發 Pages 生效。
+5. Files read: `deploy.sh`, `dev/GIT_PUSH_MANUAL.md`, `.github/workflows/update-circulars.yml`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/DOC_SYNC_CHECKLIST.md`, `edb-dashboard.html`, `edb_scraper.py`
+6. Files changed: `dev/tools/publish_release.py`, `deploy.sh`, `.github/workflows/update-circulars.yml`, `edb-dashboard.html`, `edb_scraper.py`, `README.md`, `dev/GIT_PUSH_MANUAL.md`, `dev/CODEBASE_CONTEXT.md`, `dev/DOC_SYNC_CHECKLIST.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 新增 `dev/tools/publish_release.py`
+   - ✅ `deploy.sh` 改為調用自動發布腳本
+   - ✅ push 到 `main` 時，workflow 現可直接部署 Pages；push event 會跳過 scraper / circulars commit steps
+   - ✅ 自動版本升級成功：`v3.0.5` → `v3.0.7`
+   - ✅ deploy repo push 成功：commit `3047c10`
+   - ✅ GitHub Pages live fetch 確認已上線 `v3.0.7`
+8. Validation / QC:
+   - `python3 dev/tools/publish_release.py --dry-run` → PASS（預覽 `v3.0.5` → `v3.0.6`，後續實際發布到 `v3.0.7`）
+   - `python3 -m py_compile dev/tools/publish_release.py` → PASS
+   - `git -C ~/Documents/EDB-AI-Circular-System status --short --branch` → `main...origin/main`
+   - `curl -L https://leonard-wong-git.github.io/EDB-AI-Circular-System/edb-dashboard.html | rg -n "v3\\.0\\.[0-9]+"` → live markers all `v3.0.7`
+9. Pending:
+   - 等待用戶提供新版 `role_facts.json`
+   - 下一次發布時觀察 `circulars.json` conflict 是否再現
+10. Next priorities:
+   - 等待 / 整合新版 role_facts.json
+   - 驗證下一次自動發布流程穩定性
+   - 視需要補充 v3.0.7 發布說明
+11. Risks / blockers:
+   - remote `circulars.json` 可能比 workspace 新；若發布的是 code/docs，rebase conflict 時需保留較新的 remote data
+   - `publish_release.py` 目前預設 patch bump；若之後要 minor/major bump，需擴充參數
+12. Notes:
+   - 第一次 sandbox 執行被 Documents 寫入權限阻擋，之後以批准方式完成
+   - rebase 衝突僅出現在 `circulars.json`；本次以 remote 較新資料為準繼續發布
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - 使用者希望「自動更新 version number 及 upload GitHub 使生效」，但現有 `deploy.sh` 只做 deploy repo 內的 `pull/push`。
+2. Root Cause:
+   - 缺少 workspace → deploy repo 的同步步驟、缺少版本 bump、自動部署亦未由 push 觸發。
+3. Fix:
+   - 新增 `publish_release.py` 處理 patch bump、同步、commit、rebase、push。
+   - `deploy.sh` 改為一鍵調用該腳本。
+   - workflow 新增 `push` trigger，並在 push event 下跳過 scraper-only steps。
+4. Verification:
+   - dry run、語法檢查、deploy repo 狀態、live GitHub Pages HTML 均已驗證成功。
+5. Regression / rule update:
+   - 無新增 AGENTS 長期規則；僅在 doc-sync registry 補充 `Deploy / release workflow change` row。
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal publish | workspace at `v3.0.5`, deploy repo exists | `bash deploy.sh` | patch version bump + sync + commit + push + Pages live update | `v3.0.7` pushed as commit `3047c10`; live HTML shows `v3.0.7` | PASS |
+| Boundary dry run | workspace ready, no write wanted | `python3 dev/tools/publish_release.py --dry-run` | show current and target versions without writing | reported `v3.0.5` → `v3.0.6`, no writes | PASS |
+| Failure path: remote ahead | deploy repo behind remote by one auto-update commit | publish followed by `pull --rebase` | conflict isolated and recoverable without losing newer data | conflict occurred only on `circulars.json`; resolved by keeping remote data | PASS with notes |
+| Regression: scraper workflow | push event for code/docs release | GitHub Actions run | deploy Pages without re-running scraper or committing `circulars.json` | workflow updated with `if: github.event_name != 'push'` on scraper-only steps | PASS |
+
+Overall: PASS with notes
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: continue from a working auto-publish baseline. `deploy.sh` now performs patch version bump + sync to deploy repo + commit/push, and GitHub Pages was verified live at v3.0.7 on 2026-04-04.
+
+Pending tasks (priority order):
+1. If the user provides a new `role_facts.json`, integrate it to replace `dev/knowledge/role_facts.json` and validate the K1 interface.
+2. On the next release, watch for `circulars.json` rebase conflicts. If the conflict is only between workspace data and a newer remote auto-update, keep the newer remote `circulars.json`.
+3. If needed, extend `publish_release.py` to support explicit minor/major bumps instead of patch-only.
+
+Key files changed in this session:
+- `dev/tools/publish_release.py`
+- `deploy.sh`
+- `.github/workflows/update-circulars.yml`
+- `edb-dashboard.html`
+- `edb_scraper.py`
+- `README.md`
+- `dev/GIT_PUSH_MANUAL.md`
+- `dev/CODEBASE_CONTEXT.md`
+- `dev/DOC_SYNC_CHECKLIST.md`
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- `publish_release.py` currently defaults to patch bump only.
+- Remote `circulars.json` may be fresher than the workspace copy during code/docs releases; prefer the newer remote data if that is the only rebase conflict.
+- The workspace itself is still not a git repo; deployment continues to rely on the external repo at `~/Documents/EDB-AI-Circular-System`.
+
+Validation status: publish dry run PASS; Python compile PASS; deploy repo pushed cleanly; GitHub Pages live HTML fetched and confirmed at v3.0.7.
+
+Post-startup first action: verify whether the user wants to work on the pending `role_facts.json` / K1 integration next, and if so inspect the current `dev/knowledge/role_facts.json` before changing any API/data-flow code.
+```
+
 ## 2026-04-04 README K1 API Link Update
 
 1. Agent & Session ID: Codex_20260404_0003

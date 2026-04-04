@@ -32,6 +32,7 @@ EDB Circular Scraper + gpt-5-nano Analyzer
 """
 
 import argparse
+import copy
 import json
 import logging
 import os
@@ -82,6 +83,48 @@ CACHE_DIR       = Path(".edb_cache")
 # LLM — ⚠️ FIXED RULES:
 LLM_MODEL_DEFAULT = "gpt-5-nano"
 LLM_TEMPERATURE   = 1     # DO NOT CHANGE — project spec rule
+
+POST_REVIEW_PROCUREMENT_KEYWORDS = ["採購", "招標", "報價", "供應商", "承辦商", "投標"]
+
+ORDERED_TERM_RULES = [
+    {
+        "priority": 1,
+        "from": "買設備",
+        "to": "採購設備",
+        "reason": "以正式採購用語取代口語化表述",
+    },
+    {
+        "priority": 2,
+        "from": "報價／投標",
+        "to": "報價／招標",
+        "reason": "統一 supplier 用語，避免投標/招標混用",
+    },
+    {
+        "priority": 3,
+        "from": "承辦商",
+        "to": "供應商／承辦商",
+        "reason": "對外角色描述更完整",
+    },
+    {
+        "priority": 4,
+        "from": "跟進學校安排",
+        "to": "按學校採購程序提交文件及回覆要求",
+        "reason": "把含糊動作改成可執行表述",
+    },
+]
+
+KNOWLEDGE_RECOMMENDED_LINKS = [
+    {
+        "label": "學校財務管理（供應商視角）",
+        "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+        "why": "補充學校採購、利益衝突及供應商溝通的標準參考",
+    },
+    {
+        "label": "廉政公署採購參考資料",
+        "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
+        "why": "補充防貪及採購誠信要求",
+    },
+]
 
 HEADERS = {
     "User-Agent": (
@@ -923,6 +966,115 @@ def _empty_analysis() -> dict:
     }
 
 
+def _dedupe_strings(items: list[str]) -> list[str]:
+    seen = set()
+    output = []
+    for item in items:
+        if not item or item in seen:
+            continue
+        seen.add(item)
+        output.append(item)
+    return output
+
+
+def _replace_terms(text: str, applied: list[dict]) -> str:
+    if not text:
+        return text
+    result = text
+    for rule in ORDERED_TERM_RULES:
+        if rule["from"] in result:
+            result = result.replace(rule["from"], rule["to"])
+            applied.append(rule)
+    return result
+
+
+def _unique_applied_rules(applied: list[dict]) -> list[dict]:
+    seen = set()
+    output = []
+    for rule in sorted(applied, key=lambda item: item["priority"]):
+        key = (rule["from"], rule["to"])
+        if key in seen:
+            continue
+        seen.add(key)
+        output.append(rule)
+    return output
+
+
+def _apply_post_analysis_review(circ: dict) -> dict:
+    """Second-pass deterministic knowledge review after primary analysis."""
+    reviewed = copy.deepcopy(circ)
+    applied_rules: list[dict] = []
+    missing_points: list[str] = []
+    role_notes: list[str] = []
+
+    reviewed["summary"] = _replace_terms(reviewed.get("summary", ""), applied_rules)
+
+    roles = reviewed.get("roles", {})
+    for role_data in roles.values():
+        if not isinstance(role_data, dict):
+            continue
+        role_data["pts"] = [_replace_terms(pt, applied_rules) for pt in role_data.get("pts", [])]
+        role_data["acts"] = [_replace_terms(act, applied_rules) for act in role_data.get("acts", [])]
+        role_data["pts"] = _dedupe_strings(role_data.get("pts", []))
+        role_data["acts"] = _dedupe_strings(role_data.get("acts", []))
+
+    for action in reviewed.get("actions", []):
+        action["text"] = _replace_terms(action.get("text", ""), applied_rules)
+
+    supplier = roles.get("supplier")
+    source_text = " ".join(
+        [
+            reviewed.get("title", ""),
+            reviewed.get("official", ""),
+            reviewed.get("pdf_text", "")[:1200],
+            reviewed.get("summary", ""),
+        ]
+    )
+    has_procurement_signal = any(keyword in source_text for keyword in POST_REVIEW_PROCUREMENT_KEYWORDS)
+
+    if isinstance(supplier, dict):
+        supplier_text = " ".join(supplier.get("pts", []) + supplier.get("acts", []))
+        if any(keyword in supplier_text for keyword in POST_REVIEW_PROCUREMENT_KEYWORDS):
+            has_procurement_signal = True
+
+        if has_procurement_signal and not supplier.get("r"):
+            supplier["r"] = True
+            role_notes.append("偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。")
+
+        if supplier.get("r"):
+            if not supplier.get("eligibility"):
+                supplier["eligibility"] = "應按學校/招標文件列明的供應商資格、產品規格及提交條件核對。"
+                missing_points.append("補回 supplier `eligibility`，提醒需核對招標/報價資格與文件要求。")
+            if not supplier.get("contact_unit"):
+                supplier["contact_unit"] = "建議以通告或招標文件列明的學校/教育局聯絡單位為準。"
+                missing_points.append("補回 supplier `contact_unit`，避免聯絡路徑缺失。")
+            if not supplier.get("compliance_ref"):
+                supplier["compliance_ref"] = [
+                    "避免利益衝突及不當利益往來",
+                    "按學校採購程序及招標文件要求提交資料",
+                ]
+                missing_points.append("補回 supplier `compliance_ref`，加上廉潔及程序要求。")
+
+            supplier["pts"] = _dedupe_strings(supplier.get("pts", []))
+            supplier["acts"] = _dedupe_strings(supplier.get("acts", []))
+
+    reviewed["knowledge_review"] = {
+        "terminology_review": [
+            {
+                "priority": rule["priority"],
+                "from": rule["from"],
+                "to": rule["to"],
+                "reason": rule["reason"],
+            }
+            for rule in _unique_applied_rules(applied_rules)
+        ],
+        "missing_points": missing_points,
+        "recommended_links": KNOWLEDGE_RECOMMENDED_LINKS if has_procurement_signal and supplier and supplier.get("r") else [],
+        "role_notes": role_notes,
+    }
+    return reviewed
+
+
 # =============================================================================
 # MAIN PIPELINE
 # =============================================================================
@@ -1080,6 +1232,8 @@ def run_pipeline(args) -> int:
                 for key in _empty_analysis():
                     if key not in circ:
                         circ[key] = existing[num].get(key)
+                circ = _apply_post_analysis_review(circ)
+                raw[idx] = circ
                 continue
 
             if not circ.get("pdf_text") and not circ.get("official"):
@@ -1088,6 +1242,8 @@ def run_pipeline(args) -> int:
             result = analyzer.analyze(circ)
             if result:
                 circ.update(result)
+                circ = _apply_post_analysis_review(circ)
+                raw[idx] = circ
             else:
                 log.warning(f"  → LLM failed — using empty analysis defaults")
                 circ.update(_empty_analysis())
@@ -1157,6 +1313,7 @@ def run_pipeline(args) -> int:
             "deadlines":  circ.get("deadlines", []),
             "actions":    circ.get("actions", []),
             "diff":       circ.get("diff", None),
+            "knowledge_review": circ.get("knowledge_review", None),
             "pdf_urls":   pdf_urls,   # [C.pdf, E.pdf, S.pdf] — sorted TC/EN/SC
         }
         output_list.append(record)
@@ -1255,7 +1412,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.7")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.8")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")
