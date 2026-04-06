@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-06T11:38:12Z",
+  "generated_at": "2026-04-06T20:44:25Z",
   "model": "gpt-5-nano",
   "temperature": 1,
-  "range": "past 3 days (from 2026-04-03)",
+  "range": "school-year (from 2025-09-01)",
   "date_from": "2025-09-01",
   "date_to": "2026-04-01",
-  "days": 3,
+  "days": 30,
   "count": 114,
   "circulars": [
     {
@@ -60,7 +60,8 @@
           "r": true,
           "pts": [
             "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
-            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。",
+            "留意撥款用途、批核流程、可動用範圍及年度結餘安排，避免偏離通告列明用途。"
           ],
           "acts": []
         },
@@ -201,7 +202,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -223,6 +225,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -399,7 +406,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -421,6 +429,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -1171,7 +1184,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -1183,6 +1197,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -1430,7 +1454,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -1452,6 +1477,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -1625,7 +1655,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -1647,6 +1678,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -1835,7 +1871,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -1857,6 +1894,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -2014,7 +2056,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -2036,6 +2079,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -2096,17 +2144,20 @@
           "r": true,
           "pts": [
             "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
-            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。",
+            "留意撥款用途、批核流程、可動用範圍及年度結餘安排，避免偏離通告列明用途。"
           ],
           "acts": []
         },
         "department_head": {
           "r": true,
           "pts": [
-            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。"
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如涉及校本計劃或資源申請，應先對應實施目的、預算依據及預期成效。"
           ],
           "acts": [
-            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。"
+            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。",
+            "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。"
           ]
         },
         "teacher": {
@@ -2164,16 +2215,10 @@
       ],
       "diff": null,
       "knowledge_review": {
-        "terminology_review": [
-          {
-            "priority": 5,
-            "from": "學與教資源",
-            "to": "學與教資源／課程相關材料",
-            "reason": "統一 curriculum 類通告用語，突出課程應用場景"
-          }
-        ],
+        "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -2185,6 +2230,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -2346,14 +2401,7 @@
       ],
       "diff": null,
       "knowledge_review": {
-        "terminology_review": [
-          {
-            "priority": 5,
-            "from": "學與教資源",
-            "to": "學與教資源／課程相關材料",
-            "reason": "統一 curriculum 類通告用語，突出課程應用場景"
-          }
-        ],
+        "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
@@ -3084,7 +3132,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -3106,6 +3155,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -3297,7 +3351,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -3319,6 +3374,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -3394,7 +3454,8 @@
           ],
           "acts": [
             "審核申請中的學習目標與課程對齊，檢視安全措施並提出改進建議",
-            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。"
+            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。",
+            "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。"
           ]
         },
         "teacher": {
@@ -3417,7 +3478,8 @@
             "監督資料完整性與保密性"
           ],
           "acts": [
-            "整理與提交申請及報告材料，促進行政流程與資料管理"
+            "整理與提交申請及報告材料，促進行政流程與資料管理",
+            "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。"
           ]
         },
         "supplier": {
@@ -3490,7 +3552,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -3502,6 +3565,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -3751,7 +3824,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -3773,6 +3847,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -4175,7 +4254,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -4197,6 +4277,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -4364,7 +4449,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -4386,6 +4472,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -4753,7 +4844,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -4775,6 +4867,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -4950,7 +5047,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -4972,6 +5070,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -5330,7 +5433,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -5352,6 +5456,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -5526,7 +5635,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -5548,6 +5658,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -5725,7 +5840,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -5747,6 +5863,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -5995,7 +6116,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -6017,6 +6139,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -6162,7 +6289,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -6174,6 +6302,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -6346,7 +6484,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -6368,6 +6507,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -6795,7 +6939,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -6817,6 +6962,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -7037,7 +7187,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -7059,6 +7210,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -7159,7 +7315,8 @@
             "協調與供應商之對接與資料管理"
           ],
           "acts": [
-            "整理資源套相關的行政手續與時程"
+            "整理資源套相關的行政手續與時程",
+            "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。"
           ]
         },
         "supplier": {
@@ -7243,7 +7400,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -7265,6 +7423,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -7413,7 +7576,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -7435,6 +7599,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -7580,7 +7749,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -7592,6 +7762,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -7764,7 +7944,9 @@
       "diff": null,
       "knowledge_review": {
         "terminology_review": [],
-        "missing_points": [],
+        "missing_points": [
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
+        ],
         "recommended_links": [
           {
             "label": "學校財務管理（供應商視角）",
@@ -7775,6 +7957,11 @@
             "label": "廉政公署採購參考資料",
             "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
             "why": "補充防貪及採購誠信要求"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -7971,7 +8158,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -7993,6 +8181,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -8153,7 +8346,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -8165,6 +8359,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -8326,7 +8530,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -8348,6 +8553,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -8483,7 +8693,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -8505,6 +8716,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -8661,7 +8877,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -8673,6 +8890,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -8891,7 +9118,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -8903,6 +9131,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -9065,7 +9303,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -9087,6 +9326,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -9233,7 +9477,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -9255,6 +9500,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -9414,7 +9664,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -9436,6 +9687,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -9868,7 +10124,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -9880,6 +10137,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -10327,7 +10594,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -10349,6 +10617,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -10524,7 +10797,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -10546,6 +10820,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -10794,17 +11073,20 @@
           "r": true,
           "pts": [
             "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
-            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。",
+            "留意撥款用途、批核流程、可動用範圍及年度結餘安排，避免偏離通告列明用途。"
           ],
           "acts": []
         },
         "department_head": {
           "r": true,
           "pts": [
-            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。"
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如涉及校本計劃或資源申請，應先對應實施目的、預算依據及預期成效。"
           ],
           "acts": [
-            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。"
+            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。",
+            "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。"
           ]
         },
         "teacher": {
@@ -10871,7 +11153,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -10883,6 +11166,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -11042,7 +11335,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -11064,6 +11358,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -11483,7 +11782,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -11505,6 +11805,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -11677,7 +11982,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -11699,6 +12005,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -11744,7 +12055,8 @@
           "r": true,
           "pts": [
             "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
-            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。",
+            "留意撥款用途、批核流程、可動用範圍及年度結餘安排，避免偏離通告列明用途。"
           ],
           "acts": []
         },
@@ -11764,10 +12076,12 @@
         "department_head": {
           "r": true,
           "pts": [
-            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。"
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如涉及校本計劃或資源申請，應先對應實施目的、預算依據及預期成效。"
           ],
           "acts": [
-            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。"
+            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。",
+            "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。"
           ]
         },
         "teacher": {
@@ -11780,9 +12094,13 @@
           ]
         },
         "eo_admin": {
-          "r": false,
-          "pts": [],
-          "acts": []
+          "r": true,
+          "pts": [
+            "核對申請資格、截止日期、所需證明文件及收支記錄要求，並保留佐證以備查核。"
+          ],
+          "acts": [
+            "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。"
+          ]
         },
         "supplier": {
           "r": true,
@@ -11824,7 +12142,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -11846,9 +12165,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
-        "role_notes": []
+        "role_notes": [
+          "偵測到 finance 類訊號，將 `eo_admin` 角色標記為相關。"
+        ]
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25177C.pdf",
@@ -12004,7 +12330,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -12016,6 +12343,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -12168,7 +12505,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -12190,6 +12528,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -12364,7 +12707,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -12386,6 +12730,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -12554,7 +12903,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -12576,6 +12926,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -12733,7 +13088,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -12745,6 +13101,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -12896,7 +13262,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -12908,6 +13275,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -13411,7 +13788,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -13433,6 +13811,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -13535,7 +13918,8 @@
           ],
           "acts": [
             "監督整體合規與報告流程",
-            "與財務/校務部門協作完成申報"
+            "與財務/校務部門協作完成申報",
+            "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。"
           ]
         },
         "supplier": {
@@ -13609,7 +13993,9 @@
       "diff": null,
       "knowledge_review": {
         "terminology_review": [],
-        "missing_points": [],
+        "missing_points": [
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
+        ],
         "recommended_links": [
           {
             "label": "學校財務管理（供應商視角）",
@@ -13620,6 +14006,11 @@
             "label": "廉政公署採購參考資料",
             "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
             "why": "補充防貪及採購誠信要求"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -13777,7 +14168,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -13789,6 +14181,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -14156,7 +14558,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -14178,6 +14581,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -14419,7 +14827,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -14441,6 +14850,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -14599,7 +15013,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -14611,6 +15026,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -14787,7 +15212,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -14809,6 +15235,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -15204,7 +15635,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -15226,6 +15658,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -15502,7 +15939,8 @@
           ],
           "acts": [
             "提交科務計畫與資源申請",
-            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。"
+            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。",
+            "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。"
           ]
         },
         "teacher": {
@@ -15524,7 +15962,8 @@
             "協助校長匯報餘額"
           ],
           "acts": [
-            "更新財務紀錄與報表"
+            "更新財務紀錄與報表",
+            "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。"
           ]
         },
         "supplier": {
@@ -15564,7 +16003,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -15576,6 +16016,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -15751,7 +16201,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -15773,6 +16224,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -16071,7 +16527,8 @@
           ],
           "acts": [
             "安排場所與設備清單",
-            "整理參與名單與出勤記錄"
+            "整理參與名單與出勤記錄",
+            "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。"
           ]
         },
         "supplier": {
@@ -16123,7 +16580,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -16135,6 +16593,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -16311,7 +16779,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -16333,6 +16802,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -16499,7 +16973,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -16521,6 +16996,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -16666,7 +17146,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -16678,6 +17159,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -16805,7 +17296,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -16817,6 +17309,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -16993,7 +17495,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -17005,6 +17508,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -17899,7 +18412,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -17911,6 +18425,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -18098,7 +18622,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -18120,6 +18645,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -18283,7 +18813,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -18295,6 +18826,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -18439,7 +18980,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -18451,6 +18993,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -18838,7 +19390,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -18860,6 +19413,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -18934,10 +19492,12 @@
         "department_head": {
           "r": true,
           "pts": [
-            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。"
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如涉及校本計劃或資源申請，應先對應實施目的、預算依據及預期成效。"
           ],
           "acts": [
-            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。"
+            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。",
+            "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。"
           ]
         },
         "teacher": {
@@ -18962,7 +19522,8 @@
           ],
           "acts": [
             "彙整財務與匯報資料",
-            "更新通告及內部通告"
+            "更新通告及內部通告",
+            "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。"
           ]
         },
         "supplier": {
@@ -19025,7 +19586,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -19047,6 +19609,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -19583,7 +20150,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -19595,6 +20163,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -19785,7 +20363,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -19807,6 +20386,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -20028,7 +20612,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -20050,6 +20635,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -20599,7 +21189,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -20611,6 +21202,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -20770,7 +21371,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -20792,6 +21394,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -20956,7 +21563,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -20968,6 +21576,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -21071,7 +21689,8 @@
           ],
           "acts": [
             "整理資料並回饋校方",
-            "溝通部門間資料問題"
+            "溝通部門間資料問題",
+            "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。"
           ]
         },
         "supplier": {
@@ -21123,7 +21742,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -21135,6 +21755,16 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -21514,7 +22144,8 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
@@ -21536,6 +22167,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
@@ -21961,7 +22597,9 @@
       "diff": null,
       "knowledge_review": {
         "terminology_review": [],
-        "missing_points": [],
+        "missing_points": [
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
+        ],
         "recommended_links": [
           {
             "label": "學校財務管理（供應商視角）",
@@ -21972,6 +22610,11 @@
             "label": "廉政公署採購參考資料",
             "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
             "why": "補充防貪及採購誠信要求"
+          },
+          {
+            "label": "學校發展津貼的參考資料",
+            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
         "role_notes": []
