@@ -1,18 +1,18 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v3.0.10** (2026-04-06) ← **GitHub Pages live 已更新到 v3.0.10；full-year workflow 已完成，live `circulars.json` 為 114 份通告**
+1. Version: **v3.0.12** (2026-04-06) ← **workspace 已更新 AI 補充說明文案；尚未發布**
 2. Core commands / features:
-   - `edb-dashboard.html` — v3.0.10（新增官方原文整理版顯示清洗）
-   - `edb_scraper.py` — v3.0.10（KnowledgeStore 語義搜尋 + deterministic post-analysis knowledge review，已擴展 curriculum）
+   - `edb-dashboard.html` — v3.0.12（AI 補充說明改為「根據EDB學校管理知識中心及相關知識庫整理」）
+   - `edb_scraper.py` — v3.0.12（KnowledgeStore 語義搜尋 + deterministic post-analysis knowledge review，含 idempotent normalization guard）
    - `circulars.json` — EDB 通告 + gpt-5-nano AI 分析（remote auto-update 115 circulars 保留）
    - `knowledge.json` — 從 edb-knowledge 獲取的語義事實來源（v1.2.2，107 facts ✅）
    - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具
    - `requirements.txt` — Python 依賴清單
    - `dev/knowledge/role_facts.json` — K1 基線知識庫（存檔）
    - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 接口合約規格
-3. Regression baseline: v3.0.10 live HTML markers PASS；live `circulars.json` generated_at `2026-04-06T11:38:12Z`；count `114`；knowledge_review live PASS
-4. Release / merge status: **v3.0.10 已推送並已於 GitHub Pages live；full-year workflow 已完成**
+3. Regression baseline: local py_compile PASS；dashboard JS syntax PASS；version markers PASS at v3.0.12；文案替換 PASS
+4. Release / merge status: **v3.0.12 僅存在 workspace，尚未 push / deploy**
 5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -72,7 +72,7 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 修正 curriculum / terminology normalization 的 idempotent 問題，避免 live 通告出現重複字樣如 `學與教資源／課程相關材料／課程相關材料`
+1. **[下一步 ⭐]** 如需上線，發布 `v3.0.12` 並重新檢查 GitHub Pages
 2. **[重要]** 若用戶提供新版 `role_facts.json`，整合取代 `dev/knowledge/role_facts.json`，並同步驗證 K1 接口
 3. **[其後]** 決定下一個 topic-aware review 擴展（finance / student / hr），保持 deterministic / non-destructive
 4. **[觀察]** 視需要再微調「官方原文整理版」對 metadata 行的段落整理規則
@@ -161,23 +161,22 @@ Do not close a session with code changes without completing the version bump.
 
 ## Last Session Record
 1. UTC date: 2026-04-04
-2. Session ID: Codex_20260406_0001
+2. Session ID: Codex_20260406_0003
 3. Completed:
-   - ✅ 驗證 GitHub Pages live 現已顯示 `v3.0.10`
-   - ✅ 驗證 full-year workflow 已完成；live `circulars.json` generated_at = `2026-04-06T11:38:12Z`
-   - ✅ 驗證 live `circulars.json` count = `114`
-   - ✅ 驗證 live `knowledge_review`、`課程發展指引`、`學校表現指標 (KPM)` 已存在
+   - ✅ 將 AI 補充說明文案改為「以下補充根據EDB學校管理知識中心及相關知識庫整理」
+   - ✅ 版本同步升至 `v3.0.12`（dashboard + scraper）
+   - ✅ README 功能說明已同步
+   - ✅ 尚未發布，保留給下一步按需上線
 4. Pending:
+   - 如需上線，發布 `v3.0.12`
    - 等待用戶提供新版 `role_facts.json`
-   - 修正 terminology normalization 的 idempotent 問題
-   - 視需要修正 term-normalization 多次套用的 idempotent 行為
    - 視需要再微調官方原文整理版的 metadata 分段規則
 5. Next priorities (max 3):
-   - 修正 normalization idempotent 行為
+   - 視需要發布 `v3.0.12`
    - 等待 / 整合新版 role_facts.json
    - 決定下一個擴展 topic（finance / student / hr）
-6. Risks / blockers: live data 已確認出現 `學與教資源／課程相關材料／課程相關材料` 類型重複字樣；第二輪 review 再擴展前需先處理 idempotent 問題
+6. Risks / blockers: `v3.0.12` 尚未發布，因此 live 站點暫未反映這次文案更新
 7. Files materially changed:
    - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
-8. Validation summary: cache-busted live HTML PASS at v3.0.10；live `circulars.json` PASS with generated_at `2026-04-06T11:38:12Z` and count `114`；regression found in repeated terminology replacement
-9. Git commits: no new repo commit in this verification-only session
+8. Validation summary: py_compile PASS；dashboard JS syntax PASS；version markers PASS at v3.0.12；文案替換 PASS
+9. Git commits: none in this workspace-only wording session

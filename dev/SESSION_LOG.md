@@ -1,6 +1,182 @@
 # Session Log
 <!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->
 
+## 2026-04-06 Wording update for AI supplement source note + v3.0.12
+
+1. Agent & Session ID: Codex_20260406_0003
+2. Task summary: 依使用者指定，把 AI 補充說明文案統一改為「以下補充根據EDB學校管理知識中心及相關知識庫整理」，並同步升版到 `v3.0.12`。
+3. Layer classification: Product / System Layer（frontend display wording change）+ Development Governance Layer（session persistence）
+4. Source triage: 非邏輯修復；屬使用者可見文案優化。目標是讓知識補充來源描述更清楚、更聚焦。
+5. Files read: `edb-dashboard.html`, `README.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+6. Files changed: `edb-dashboard.html`, `edb_scraper.py`, `README.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 詳情頁 AI 補充說明更新為：`以下補充根據EDB學校管理知識中心及相關知識庫整理`
+   - ✅ 版本同步升至 `v3.0.12`
+   - ✅ README 功能區版本說明同步更新
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - dashboard JS syntax check → PASS
+   - `rg -n "v3\\.0\\.12|以下補充根據EDB學校管理知識中心及相關知識庫整理" edb-dashboard.html edb_scraper.py README.md` → PASS
+9. Pending:
+   - 如需上線，發布 `v3.0.12`
+   - 等待用戶提供新版 `role_facts.json`
+10. Next priorities:
+   - 視需要發布 `v3.0.12`
+   - 等待 / 整合新版 role_facts.json
+   - 決定下一個擴展 topic（finance / student / hr）
+11. Risks / blockers:
+   - 這次只改 workspace 文案，live 站點尚未反映
+12. Notes:
+   - 這句新文案放在 AI 補充說明位置，比原本泛稱「知識庫」更準確描述來源範圍
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - 使用者希望知識補充來源文案更清晰，明確指向 EDB 學校管理知識中心。
+2. Root Cause:
+   - 既有說法太泛，未突出主要知識來源與整理性質。
+3. Fix:
+   - 將前端 AI 補充說明改成使用者指定句子。
+4. Verification:
+   - py_compile PASS
+   - dashboard JS syntax PASS
+   - 版本與文案 grep PASS
+5. Regression / rule update:
+   - 無新增治理規則；屬前端文案微調。
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | 開啟詳情頁 | 顯示 AI 補充說明 | 出現指定新文案 | grep confirms exact string in dashboard | PASS |
+| Regression | 版本同步要求仍生效 | 檢查 dashboard / scraper 版本 | 兩者都升到同一 patch 版 | both at v3.0.12 | PASS |
+
+Overall: PASS
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: continue from workspace v3.0.12. The AI supplement disclaimer text has been updated to say: 「以下補充根據EDB學校管理知識中心及相關知識庫整理」. This wording change is local only so far and has not yet been published.
+
+Pending tasks (priority order):
+1. If the user wants this wording live, publish v3.0.12 and re-check GitHub Pages.
+2. If the user provides a new `role_facts.json`, integrate it to replace `dev/knowledge/role_facts.json` and validate the K1 interface.
+3. Decide the next topic-aware review extension after curriculum (likely finance / student / hr), keeping the second-pass review deterministic and non-destructive.
+
+Key files changed in this session:
+- `edb-dashboard.html`
+- `edb_scraper.py`
+- `README.md`
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- v3.0.12 has not been published yet, so the live site does not include this wording update.
+- During future deploys, keep dashboard and scraper version markers synchronized or `deploy.sh` will reject the publish.
+- The official text cleanup remains display-only and may still need minor paragraph-tuning later.
+
+Validation status: py_compile PASS; dashboard JS syntax PASS; version markers PASS at v3.0.12; wording grep PASS.
+
+Post-startup first action: confirm whether to publish v3.0.12 now or continue with the next knowledge-base integration step.
+```
+
+## 2026-04-06 Fix duplicated curriculum term normalization + publish v3.0.11
+
+1. Agent & Session ID: Codex_20260406_0002
+2. Task summary: 依使用者同意，修正 second-pass terminology normalization 的 duplicated-term regression，讓 curriculum 標準字樣在重複套用時保持 idempotent；之後在 full-year 的 114 條資料上重套修補並發布 `v3.0.11`。
+3. Layer classification: Product / System Layer（analysis pipeline behavior fix + release publish）+ Development Governance Layer（session persistence）
+4. Source triage: 真正的 regression root cause 在 `_replace_terms()`：某些 `to` 文字包含 `from`，導致再次套用時重複展開。這是 code logic issue，不是 workflow 或平台問題。
+5. Files read: `edb_scraper.py`, `circulars.json`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `circulars.json`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ `_replace_terms()` 新增 idempotent guard，避免再對已標準化字串重複擴張
+   - ✅ `_replace_terms()` 會把既有重複字樣自動收斂回單一標準寫法
+   - ✅ 版本同步升至 `v3.0.11`
+   - ✅ 從 live 下載 full-year `114` 條 `circulars.json`，在最新資料上重套修補
+   - ✅ 解決 deploy repo `circulars.json` rebase conflict，成功推送 commit `49d81c4`
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - inline `_replace_terms()` check:
+     - `學與教資源` → `學與教資源／課程相關材料`
+     - `學與教資源／課程相關材料` → unchanged
+     - `學與教資源／課程相關材料／課程相關材料` → collapsed to single standardized form
+   - regenerated local `circulars.json` from live 114-circular dataset → PASS
+   - `git -C ~/Documents/EDB-AI-Circular-System show HEAD:edb-dashboard.html | rg -n "v3\\.0\\.11"` → PASS
+   - `git -C ~/Documents/EDB-AI-Circular-System show HEAD:circulars.json | rg -n '學與教資源／課程相關材料／課程相關材料|學與教資源／課程相關材料'` → PASS with notes (only single standardized form remains)
+   - `curl -L 'https://leonard-wong-git.github.io/EDB-AI-Circular-System/edb-dashboard.html?t=20260406-v3011' | rg -n "v3\\.0\\.[0-9]+"` → still showed `v3.0.10` at immediate post-push check
+9. Pending:
+   - 等待 GitHub Pages 對外更新到 `v3.0.11`
+   - 等待用戶提供新版 `role_facts.json`
+   - 視需要再微調官方原文整理版的 metadata 分段規則
+10. Next priorities:
+   - 重新驗證 GitHub Pages 是否已更新到 `v3.0.11`
+   - 等待 / 整合新版 role_facts.json
+   - 決定下一個擴展 topic（finance / student / hr）
+11. Risks / blockers:
+   - repo 內容已正確，但 GitHub Pages / CDN 仍可能短暫回舊版 `v3.0.10`
+   - deploy repo 在發布中曾因 remote full-year commit 領先而產生 `circulars.json` rebase conflict；這次已安全解決
+12. Notes:
+   - 本次衝突處理保留了 full-year 的 114 條最新資料，沒有回退到本地舊的 2 條資料
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - live full-year 資料中出現 `學與教資源／課程相關材料／課程相關材料` 的重複字樣。
+2. Root Cause:
+   - `_replace_terms()` 直接以 `str.replace()` 套規則，而 curriculum 這條規則的 `to` 文字包含 `from`，第二次套用時會再補一層 suffix。
+3. Fix:
+   - 對 self-containing 規則加入 idempotent guard：
+     - 先把已重複展開的字樣收斂
+     - 再只替換尚未帶 suffix 的 source
+4. Verification:
+   - 三個最小字串場景都正確
+   - full-year `114` 條資料重套後，local / deploy repo `HEAD` 皆已去除 duplicated-term
+   - publish commit `49d81c4` 已推上 `origin/main`
+5. Regression / rule update:
+   - Key Decision #15 added in `CODEBASE_CONTEXT.md`: self-containing terminology rules must be idempotent
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | raw curriculum term only | `_replace_terms('學與教資源')` | single standardized term | `學與教資源／課程相關材料` | PASS |
+| Boundary | already standardized term | `_replace_terms('學與教資源／課程相關材料')` | unchanged | unchanged | PASS |
+| Failure / recovery | duplicated standardized term | `_replace_terms('學與教資源／課程相關材料／課程相關材料')` | collapse back to single standardized term | collapsed correctly | PASS |
+| Release regression | full-year 114-circular dataset in live snapshot | reapply review + inspect output | duplicated curriculum term removed without data loss | local regenerated dataset count `114`; duplicates removed | PASS |
+
+Overall: PASS with notes
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: continue from repo v3.0.11. The duplicated curriculum term bug has been fixed in code, the corrected 114-circular dataset has been regenerated and pushed in commit `49d81c4`, but GitHub Pages still returned v3.0.10 at the immediate post-push public check.
+
+Pending tasks (priority order):
+1. Re-check GitHub Pages until the frontend shows v3.0.11 and confirm the public `circulars.json` no longer contains duplicated curriculum strings.
+2. If the user provides a new `role_facts.json`, integrate it to replace `dev/knowledge/role_facts.json` and validate the K1 interface.
+3. Decide the next topic-aware review extension after curriculum (likely finance / student / hr), keeping the second-pass review deterministic and non-destructive.
+
+Key files changed in this session:
+- `edb_scraper.py`
+- `edb-dashboard.html`
+- `README.md`
+- `dev/CODEBASE_CONTEXT.md`
+- `circulars.json`
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- Repo content is correct at v3.0.11, but GitHub Pages/CDN may still briefly serve v3.0.10 until deployment propagation completes.
+- The full-year dataset must be preserved during any future publish conflict; do not let a local truncated `circulars.json` overwrite it.
+- The official text cleanup remains display-only and may still need minor paragraph-tuning later.
+
+Validation status: py_compile PASS; idempotent normalization unit check PASS; regenerated 114-circular dataset PASS; deploy repo push PASS; public Pages still needed re-check after propagation.
+
+Post-startup first action: fetch the live `edb-dashboard.html` and `circulars.json` with cache-busting query strings to confirm the public site has moved from v3.0.10 to v3.0.11 and the duplicated curriculum term is gone.
+```
+
 ## 2026-04-06 Verify live v3.0.10 after full-year workflow
 
 1. Agent & Session ID: Codex_20260406_0001
