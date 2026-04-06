@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDB 通告智能分析系統 v3.0.13</title>
+<title>EDB 通告智能分析系統 v3.0.14</title>
 <style>
 /* ============================================================
    PALETTES (accent colours only — theme-independent)
@@ -880,9 +880,9 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
     <div class="sc-box-title">⌨️ 鍵盤快捷鍵</div>
     <div class="sc-item"><span>切換至校長</span><span><kbd class="sc-key">1</kbd></span></div>
     <div class="sc-item"><span>切換至副校長</span><span><kbd class="sc-key">2</kbd></span></div>
-    <div class="sc-item"><span>切換至科主任</span><span><kbd class="sc-key">3</kbd></span></div>
+    <div class="sc-item"><span>切換至主任</span><span><kbd class="sc-key">3</kbd></span></div>
     <div class="sc-item"><span>切換至教師</span><span><kbd class="sc-key">4</kbd></span></div>
-    <div class="sc-item"><span>切換至行政主任</span><span><kbd class="sc-key">5</kbd></span></div>
+    <div class="sc-item"><span>切換至EO</span><span><kbd class="sc-key">5</kbd></span></div>
     <div class="sc-item"><span>切換至供應商</span><span><kbd class="sc-key">6</kbd></span></div>
     <div class="sc-item"><span>聚焦搜尋欄</span><span><kbd class="sc-key">/</kbd></span></div>
     <div class="sc-item"><span>切換深色/淺色主題</span><span><kbd class="sc-key">D</kbd></span></div>
@@ -937,7 +937,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
     </div>
     <div class="dev-card">
       <div class="dev-card-title">ℹ️ 版本資訊</div>
-      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v3.0.13</span></div>
+      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v3.0.14</span></div>
       <div class="dev-row"><span>Build Date</span><span>2026-03-16</span></div>
       <div class="dev-row"><span>知識庫更新</span><span>2026-03-09 20:48 UTC</span></div>
       <div class="dev-row"><span>資料筆數</span><span id="devCount">—</span></div>
@@ -974,15 +974,15 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
 <header class="header">
   <div class="brand" onclick="switchTab('home',document.getElementById('tabHome'))" style="cursor:pointer;" title="返回首頁">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="13" x2="12" y2="17"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
-    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v3.0.13</span></span>
+    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v3.0.14</span></span>
   </div>
 
   <select class="role-select" id="roleSelect" onchange="setRole(this.value)">
     <option value="principal">👔 校長</option>
     <option value="vice_principal">🏫 副校長</option>
-    <option value="department_head">📚 科主任</option>
+    <option value="department_head">📚 主任</option>
     <option value="teacher">🧑‍🏫 教師</option>
-    <option value="eo_admin">📋 行政主任</option>
+    <option value="eo_admin">📋 EO</option>
     <option value="supplier">🏢 供應商</option>
   </select>
   <span class="role-indicator" id="roleIndicator" title="目前角色"></span>
@@ -1358,7 +1358,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
         </div>
         <div class="setting-row">
           <div class="setting-info"><div class="setting-lbl">版本</div></div>
-          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v3.0.13</span>
+          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v3.0.14</span>
         </div>
       </div>
 
@@ -1384,7 +1384,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
           <div>
             <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">👥 角色視圖</div>
             <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
-              頂部下拉選單切換角色（校長／副校長／科主任／教師／行政主任／供應商）。選擇後，詳情面板的「行動」欄會以藍色高亮當前角色的行動項；「角色」頁顯示每個角色的責任及行動清單。鍵盤 1–6 可快速切換角色。
+              頂部下拉選單切換角色（校長／副校長／主任／教師／EO／供應商）。選擇後，詳情面板的「行動」欄會以藍色高亮當前角色的行動項；「角色」頁顯示每個角色的責任及行動清單。鍵盤 1–6 可快速切換角色。
             </div>
           </div>
 
@@ -1475,14 +1475,14 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
      ============================================================ -->
 <footer class="site-footer">
   <div>⚠️ <strong>免責聲明：</strong>本系統資料來源於<a href="https://www.edb.gov.hk" target="_blank" rel="noopener">香港特別行政區政府教育局（EDB）</a>官方網站，僅供參考及輔助管理用途，一切以教育局官方公告為準。本系統並非教育局官方產品。</div>
-  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v3.0.13 &nbsp;|&nbsp; &copy; 2026</div>
+  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v3.0.14 &nbsp;|&nbsp; &copy; 2026</div>
 </footer>
 
 <script>
 /* ============================================================
    VERSION
    ============================================================ */
-const VERSION = 'v3.0.13';
+const VERSION = 'v3.0.14';
 
 /* ============================================================
    MOCK DATA
@@ -1499,7 +1499,7 @@ const MOCK = [
     summary:`教育局本次通告要求全港公營及直資學校就2026/27學年特殊教育需要（SEN）學生支援津貼提交正式申請。此項津貼旨在協助學校為有特殊教育需要的學生提供適切的學習支援服務，包括聘用額外教學人員、購置專業評估工具及設備，以及安排專業培訓等。\n\n申請學校須完整填妥附件A（申請表格），詳列本學年已識別的SEN學生人數、現行支援措施、所需資源及預算概算。同時需提交附件B（學校SEN支援計劃摘要）及附件C（上學年支援成效評估報告）。\n\n重要注意事項：所有表格必須透過「教師易」系統於2026年3月12日下午5時前提交，逾期申請將不予受理。`,
     roles:{
       principal:{r:true,pts:["需授權並簽署所有申請表格（附件A/B/C）","確保學校SEN政策與申請一致","了解潛在撥款金額以作預算規劃"],acts:["3月10日前召開SEN統籌會議","審閱並簽署所有表格"]},
-      vice_principal:{r:true,pts:["負責統籌各科SEN學生數據收集","協調特殊教育統籌主任準備文件"],acts:["分配數據收集任務至各科主任"]},
+      vice_principal:{r:true,pts:["負責統籌各科SEN學生數據收集","協調特殊教育統籌主任準備文件"],acts:["分配數據收集任務至各主任"]},
       department_head:{r:true,pts:["提供本科SEN學生名單及支援記錄","確認學科調適措施文件化"],acts:["整理本科SEN學生支援記錄，3月9日前交副校長"]},
       teacher:{r:true,pts:["需提供個別學生的學習支援觀察記錄"],acts:["提交SEN學生課堂支援觀察記錄"]},
       eo_admin:{r:true,pts:["負責透過「教師易」系統提交申請","需備存提交確認截圖"],acts:["登入edb.gov.hk/teachers，3月12日17:00前完成提交"]},
@@ -1511,7 +1511,7 @@ const MOCK = [
     ],
     actions:[
       {text:"登入「教師易」系統下載附件A/B/C表格",role:"eo_admin",dl:"2026-03-08",note:"使用學校帳號登入"},
-      {text:"各科主任統計本科SEN學生人數及已提供支援措施",role:"department_head",dl:"2026-03-09",note:""},
+      {text:"各主任統計本科SEN學生人數及已提供支援措施",role:"department_head",dl:"2026-03-09",note:""},
       {text:"特殊教育統籌主任匯整全校SEN數據並填寫附件A",role:"vice_principal",dl:"2026-03-10",note:""},
       {text:"校長審閱並簽署附件A、B、C",role:"principal",dl:"2026-03-10",note:"確保數據準確無誤"},
       {text:"行政人員透過「教師易」系統正式提交並保存確認編號",role:"eo_admin",dl:"2026-03-12",note:"截止時間為下午5時"}
@@ -1531,7 +1531,7 @@ const MOCK = [
       principal:{r:true,pts:["需確保教師CPD計劃配合學校發展需要","統籌學校整體報名安排"],acts:["審批教師報名申請","確保各科均有教師報名"]},
       vice_principal:{r:true,pts:["統籌各科教師的培訓報名","追蹤教師CPD記錄是否達標（建議150小時/年）"],acts:["整理各科教師培訓需求，3月15日前提交報名表"]},
       department_head:{r:true,pts:["根據科組發展需要為教師選擇合適課程"],acts:["安排本科教師報讀相關課程"]},
-      teacher:{r:true,pts:["可選報最多兩項課程","建議選擇與個人專業發展計劃相符的課程","完成培訓可計入CPD記錄"],acts:["3月17日前向科主任提交課程選擇"]},
+      teacher:{r:true,pts:["可選報最多兩項課程","建議選擇與個人專業發展計劃相符的課程","完成培訓可計入CPD記錄"],acts:["3月17日前向主任提交課程選擇"]},
       eo_admin:{r:false,pts:["行政支援：協助收集及整理報名表格"],acts:[]},
       supplier:{r:false,pts:["本通告與供應商無直接關係"],acts:[]}
     },
@@ -1640,8 +1640,8 @@ const L={
   zh:{
     overview:'📊 通告總覽',calendar:'📅 月曆',resources:'💰 資源申請',
     bookmarks:'⭐ 收藏',supplier:'🏢 供應商',settings:'⚙️ 設定',
-    principal:'👔 校長',vice_principal:'🏫 副校長',department_head:'📚 科主任',
-    teacher:'🧑‍🏫 教師',eo_admin:'📋 行政主任',supplier_role:'🏢 供應商',
+    principal:'👔 校長',vice_principal:'🏫 副校長',department_head:'📚 主任',
+    teacher:'🧑‍🏫 教師',eo_admin:'📋 EO',supplier_role:'🏢 供應商',
     high:'高',mid:'中',low:'低',mandatory:'必須',recommended:'建議',
     informational:'參考',applicable:'💰 可申請',resource:'📦 資源',
     unread:'未讀',read:'已讀',done:'✅ 已跟進',
@@ -1738,7 +1738,7 @@ function toggleLang(){ S.lang=S.lang==='zh'?'en':'zh'; lsSet('edb_lang',S.lang);
 /* ============================================================
    ROLE
    ============================================================ */
-const ROLE_NAMES={principal:'👔 校長',vice_principal:'🏫 副校長',department_head:'📚 科主任',teacher:'🧑‍🏫 教師',eo_admin:'📋 行政主任',supplier:'🏢 供應商'};
+const ROLE_NAMES={principal:'👔 校長',vice_principal:'🏫 副校長',department_head:'📚 主任',teacher:'🧑‍🏫 教師',eo_admin:'📋 EO',supplier:'🏢 供應商'};
 function getRoleName(r){ return ROLE_NAMES[r]||r; }
 function escapeHtml(s){
   return (s||'')
@@ -2723,7 +2723,7 @@ function openDetail(id){
   }
 
   // Build actions HTML
-  const rn={principal:'👔 校長',vice_principal:'🏫 副校長',department_head:'📚 科主任',teacher:'🧑‍🏫 教師',eo_admin:'📋 行政主任',supplier:'🏢 供應商'};
+  const rn={principal:'👔 校長',vice_principal:'🏫 副校長',department_head:'📚 主任',teacher:'🧑‍🏫 教師',eo_admin:'📋 EO',supplier:'🏢 供應商'};
   let actionsHtml=(d.actions||[]).length?`<div class="sec-lbl">📋 行動清單</div><div class="action-list">${(d.actions||[]).map((a,i)=>{
     const days=a.dl?daysUntil(a.dl):null;
     const dlCls=days!==null?(days<0?'a-dl-ok':days<=3?'a-dl-urgent':days<=S.alertDays?'a-dl-soon':'a-dl-ok'):'a-dl-ok';

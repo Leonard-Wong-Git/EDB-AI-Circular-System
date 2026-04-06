@@ -24,7 +24,7 @@ This system automatically scrapes Hong Kong Education Bureau (EDB) circulars, pe
 | 🤖 AI 智能分析 | ✅ 正式版 | gpt-5-nano 多角色分析，含摘要/行動/截止 |
 | 📄 官方原文整理版 | ✅ v3.0.12 | 清洗斷行、空白與段落，提升官方摘錄可讀性 |
 | 🧠 知識校正層 | ✅ v3.0.13 | AI 首輪分析後，按序統一字眼，並對 supplier / curriculum / finance 類通告做補漏、補連結、降低角色飄移 |
-| 👥 六角色視圖 | ✅ 正式版 | 校長/副校長/科主任/教師/行政/供應商 |
+| 👥 六角色視圖 | ✅ 正式版 | 校長/副校長/主任/教師/EO/供應商 |
 | 📅 月曆視圖 | ✅ 正式版 | EDBC 格式通告、截止日期標記 |
 | 💰 資源申請 | ✅ 正式版 | 可申請撥款追蹤 |
 | ⭐ 收藏 / 📌 釘選 | ✅ 正式版 | 一般收藏 vs 常備參考通告 |
@@ -171,9 +171,9 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 |----------|------|----------|
 | `principal` | 校長 | 全校決策、資源分配、政策回應 |
 | `vice_principal` | 副校長 | 日常營運監督、政策落實 |
-| `department_head` | 科主任 | 科組落實、課程調整 |
+| `department_head` | 主任 | 科組落實、課程調整 |
 | `teacher` | 教師 | 課堂影響、學生指導 |
-| `eo_admin` | 行政主任 | 表格填報、截止追蹤 |
+| `eo_admin` | EO | 表格填報、截止追蹤 |
 | `supplier` | 供應商 | 招標機會、規格變更 |
 
 ---

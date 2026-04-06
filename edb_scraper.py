@@ -332,7 +332,7 @@ CIRCULAR_SCHEMA = {
 # LLM SYSTEM PROMPT
 # =============================================================================
 
-SYSTEM_PROMPT = """你是一個香港教育局（EDB）通告分析專家，服務對象包括學校校長、副校長、科主任、教師、行政主任和供應商。
+SYSTEM_PROMPT = """你是一個香港教育局（EDB）通告分析專家，服務對象包括學校校長、副校長、主任、教師、EO 和供應商。
 你具備深厚的香港學校管理知識，並能將提供的「經審核知識庫 (Knowledge Base)」與通告內容進行語義對照分析。
 
 你的任務是閱讀 EDB 通告全文，提取結構化資訊，以 JSON 格式輸出分析結果。
@@ -1576,7 +1576,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.13")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.14")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

@@ -1,6 +1,176 @@
 # Session Log
 <!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->
 
+## 2026-04-06 Role label normalization to 主任 / EO + v3.0.14
+
+1. Agent & Session ID: Codex_20260406_0007
+2. Task summary: 依使用者要求統一角色名稱，將 `department_head` 的對外顯示改為「主任」，將 `eo_admin` 的對外顯示改為「EO」，並同步更新 prompt / README；workspace 版本升至 `v3.0.14`。
+3. Layer classification: Product / System Layer（frontend / prompt wording change）+ Development Governance Layer（session persistence）
+4. Source triage: 非功能邏輯修復；屬角色名稱統一與 user-facing wording change。保留原 schema key，不改資料結構，只更新顯示與 prompt 用詞。
+5. Files read: `edb-dashboard.html`, `edb_scraper.py`, `README.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/DOC_SYNC_CHECKLIST.md`
+6. Files changed: `edb-dashboard.html`, `edb_scraper.py`, `README.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 角色下拉、快捷鍵說明、角色名稱映射統一為「主任 / EO」
+   - ✅ README 六角色說明同步改為「主任 / EO」
+   - ✅ `SYSTEM_PROMPT` 角色稱呼同步改為「主任 / EO」
+   - ✅ 版本同步升至 `v3.0.14`
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - dashboard JS syntax check → PASS
+   - `rg -n "v3\\.0\\.14|主任／教師／EO|📚 主任|📋 EO|副校長、主任、教師、EO" edb-dashboard.html edb_scraper.py README.md` → PASS
+9. Pending:
+   - 決定是否發布 `v3.0.14`
+   - 等待用戶提供新版 `role_facts.json`
+   - 如需讓 finance-aware review 反映到 live `circulars.json`，再跑 workflow
+10. Next priorities:
+   - 視需要發布 `v3.0.14`
+   - 等待 / 整合新版 role_facts.json
+   - 視需要重跑 workflow 更新 live `circulars.json`
+11. Risks / blockers:
+   - `v3.0.14` 目前只在 workspace；live 站仍是 `v3.0.13`
+   - 這次只改顯示與 prompt 用詞，不影響 schema key；下游若有外部系統依賴中文顯示名稱，需留意同步
+12. Notes:
+   - 這次依你的偏好統一叫法，但仍保留 `department_head` / `eo_admin` 作為內部 key，避免破壞現有資料結構
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - 你希望角色名稱更貼近實際使用習慣，不想再顯示「科主任 / 行政主任」。
+2. Root Cause:
+   - 前端與文檔沿用了較早期的角色中文名稱，未按實際用語統一。
+3. Fix:
+   - 將對外顯示統一為「主任 / EO」，並同步更新 `SYSTEM_PROMPT` 與 README。
+4. Verification:
+   - py_compile PASS
+   - dashboard JS syntax PASS
+   - grep confirms `v3.0.14` and new role labels
+5. Regression / rule update:
+   - 無新增治理規則；屬 user-facing wording normalization。
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | 開啟 dashboard | 查看角色下拉與快捷鍵說明 | 顯示「主任 / EO」 | grep confirms updated labels | PASS |
+| Prompt parity | 執行 scraper prompt 輸出 | 檢查 `SYSTEM_PROMPT` | 顯示「主任 / EO」 | prompt string updated | PASS |
+| Regression | 內部 key 不應改動 | 檢查 `department_head` / `eo_admin` | schema / key 保持不變 | only labels changed | PASS |
+| Release readiness | dashboard / scraper 同步升版 | 檢查版本標記 | 皆為 `v3.0.14` | grep confirms `v3.0.14` | PASS |
+
+Overall: PASS
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: continue from local v3.0.14. The user-facing role names have been normalized so `department_head` displays as 「主任」 and `eo_admin` displays as 「EO」, while the internal schema keys remain unchanged. This wording update is local only so far and has not yet been published.
+
+Pending tasks (priority order):
+1. Decide whether to publish v3.0.14 so the new role labels can go live on GitHub Pages.
+2. If the user provides a new `role_facts.json`, integrate it to replace `dev/knowledge/role_facts.json` and validate the K1 interface.
+3. If the user wants finance-aware review reflected in live circular output, run the appropriate workflow again so `circulars.json` is regenerated under the latest code.
+4. Decide the next topic-aware review extension after finance (likely student / hr), keeping the second-pass review deterministic and non-destructive.
+
+Key files changed in this session:
+- `edb-dashboard.html`
+- `edb_scraper.py`
+- `README.md`
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- v3.0.14 is local only; the public site is still on v3.0.13 until a deploy happens.
+- The role schema keys remain `department_head` / `eo_admin`; only user-facing labels changed.
+- Even after deploy, live `circulars.json` will not show any new analysis behavior until a workflow regenerates it.
+
+Validation status: py_compile PASS; dashboard JS syntax PASS; role-label grep PASS; version markers PASS at v3.0.14; no deploy performed in this session.
+
+Post-startup first action: confirm whether the next step is publishing v3.0.14 or continuing with the next integration task, then inspect the affected release state before changing code.
+```
+
+## 2026-04-06 Publish v3.0.13 finance-aware review to repo
+
+1. Agent & Session ID: Codex_20260406_0006
+2. Task summary: 依使用者要求執行 `push`，將本地 `v3.0.13`（finance-aware deterministic review）發布到 deploy repo / GitHub repo，並重新驗證 public GitHub Pages 狀態。
+3. Layer classification: Product / System Layer（release publish / verification）+ Development Governance Layer（session persistence）
+4. Source triage: 非新功能開發；屬 release publish 與 propagation 驗證。目標是把已完成的 finance 擴展推上 repo，並如實確認 public site 是否已更新。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `dev/DOC_SYNC_CHECKLIST.md`
+6. Files changed: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 執行 `bash /Users/leonard/Downloads/Claude-edb-Project-V3/deploy.sh --no-bump`
+   - ✅ 成功推送 deploy repo `main` 至 commit `ce10a29`
+   - ✅ 驗證 deploy repo 狀態乾淨、已與 `origin/main` 對齊
+   - ✅ 重新抓取 public GitHub Pages HTML / JSON 進行 cache-busted 驗證
+   - ✅ 更新 handoff / log，記錄「repo 已上 `v3.0.13`、public site 暫仍 `v3.0.12`」的當前狀態
+8. Validation / QC:
+   - `bash /Users/leonard/Downloads/Claude-edb-Project-V3/deploy.sh --no-bump` → PASS
+   - `git -C ~/Documents/EDB-AI-Circular-System rev-parse --short HEAD` → PASS (`ce10a29`)
+   - `git -C ~/Documents/EDB-AI-Circular-System status --short --branch` → PASS (`main...origin/main`)
+   - `curl -L 'https://leonard-wong-git.github.io/EDB-AI-Circular-System/edb-dashboard.html?t=20260406-v3013-push' | rg -n "v3\\.0\\.[0-9]+|const VERSION|以下補充根據EDB學校管理知識中心及相關知識庫整理"` → PASS with notes (public HTML still shows `v3.0.12`, wording string already present)
+   - `curl -L 'https://leonard-wong-git.github.io/EDB-AI-Circular-System/circulars.json?t=20260406-v3013-push' | rg -n '"generated_at"|"count"|knowledge_review|學校財務管理|學校發展津貼的參考資料'` → PASS with notes (`generated_at=2026-04-06T11:38:12Z`, `count=114`; finance-specific regenerated data not live yet)
+9. Pending:
+   - 等待用戶提供新版 `role_facts.json`
+   - 如需讓 finance-aware review 反映到 live `circulars.json`，再跑 workflow
+   - 決定下一個 topic-aware review 擴展（student / hr）
+10. Next priorities:
+   - 等待 / 整合新版 role_facts.json
+   - 視需要重跑 workflow 更新 live `circulars.json`
+   - 決定下一個擴展 topic（student / hr）
+11. Risks / blockers:
+   - 即使前端版本追上，若不再跑 workflow，live `circulars.json` 仍會維持 `2026-04-06T11:38:12Z` 的既有 114 條結果
+12. Notes:
+   - 再次 cache-busted 檢查後，public GitHub Pages 已確認追上 `v3.0.13`
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - 使用者要求 `push` 本地 `v3.0.13`，並需要知道是否已經真正上線。
+2. Root Cause:
+   - finance-aware review 已完成於 workspace，但尚未推送到 repo；而 public Pages 是否更新需另行驗證。
+3. Fix:
+   - 執行既有 `deploy.sh --no-bump` 發布流程，之後立即用 cache-busting 方式檢查 public HTML / JSON。
+4. Verification:
+   - deploy repo `HEAD=ce10a29`
+   - deploy repo clean and tracking `origin/main`
+   - public HTML 已為 `v3.0.13`
+   - public JSON 仍為 `generated_at=2026-04-06T11:38:12Z`, `count=114`
+5. Regression / rule update:
+   - 無新增治理規則；本次屬 release publish 與 live-state documentation update。
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Publish flow | local workspace 已在 `v3.0.13` | 執行 `deploy.sh --no-bump` | repo `main` 成功更新到 `v3.0.13` | commit `ce10a29` pushed | PASS |
+| Repo parity | push 完成後 | 檢查 deploy repo status | working tree clean and tracking origin | `main...origin/main` | PASS |
+| Public frontend propagation | push 後再次檢查 public HTML | 應看到 `v3.0.13` 或明確辨識 propagation 未完成 | public HTML 已顯示 `v3.0.13` | PASS |
+| Public data refresh | 未再跑 workflow | 檢查 public `circulars.json` | 仍保留既有 full-year dataset | `generated_at=2026-04-06T11:38:12Z`, `count=114` | PASS |
+
+Overall: PASS
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: continue from live v3.0.13. The finance-aware deterministic second-pass review has been pushed to `main` in commit `ce10a29`, and GitHub Pages has now been re-verified publicly at v3.0.13. The public `circulars.json` still reflects the earlier full-year dataset generated at `2026-04-06T11:38:12Z` with count `114`.
+
+Pending tasks (priority order):
+1. If the user wants finance-aware review reflected in live circular output, run the appropriate workflow again so `circulars.json` is regenerated under the v3.0.13 code.
+2. If the user provides a new `role_facts.json`, integrate it to replace `dev/knowledge/role_facts.json` and validate the K1 interface.
+3. Decide the next topic-aware review extension after finance (likely student / hr), keeping the second-pass review deterministic and non-destructive.
+
+Key files changed in this session:
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- Even after the frontend updates to v3.0.13, live `circulars.json` will not show finance-aware enrichment until a workflow regenerates it.
+- The finance review must not overwrite hard facts such as grant amount, grant type, dates, scope, or circular number.
+
+Validation status: deploy script PASS; repo HEAD/status PASS; public HTML check PASS at v3.0.13; public `circulars.json` still shows generated_at `2026-04-06T11:38:12Z` / count `114`.
+
+Post-startup first action: decide whether to rerun the workflow so live `circulars.json` can be regenerated under the v3.0.13 code, or move on to the next topic-aware review / K1 integration task.
+```
+
 ## 2026-04-06 Topic-aware finance review extension + v3.0.13
 
 1. Agent & Session ID: Codex_20260406_0005
