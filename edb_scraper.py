@@ -89,6 +89,10 @@ POST_REVIEW_CURRICULUM_KEYWORDS = [
     "課程", "學與教", "學習", "教學", "展覽", "講座", "教材", "資源",
     "國家安全教育", "價值觀教育", "小學人文科", "中國歷史", "公民與社會發展科",
 ]
+POST_REVIEW_FINANCE_KEYWORDS = [
+    "津貼", "撥款", "資助", "經費", "申請", "財務", "報銷", "結餘",
+    "收支", "發還", "資助學校", "學校發展津貼",
+]
 
 ORDERED_TERM_RULES = [
     {
@@ -146,6 +150,19 @@ CURRICULUM_RECOMMENDED_LINKS = [
         "label": "學校表現指標 (KPM)",
         "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
         "why": "補充課程推行、自評與學校層面跟進的參考框架",
+    },
+]
+
+FINANCE_RECOMMENDED_LINKS = [
+    {
+        "label": "學校財務管理",
+        "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+        "why": "補充撥款運用、財務安排及校內批核的官方參考",
+    },
+    {
+        "label": "學校發展津貼的參考資料",
+        "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
+        "why": "補充津貼基本原則、申請/發放安排及會計處理要求",
     },
 ]
 
@@ -1105,6 +1122,11 @@ def _apply_post_analysis_review(circ: dict) -> dict:
         "curriculum" in topics
         or any(keyword in source_text for keyword in POST_REVIEW_CURRICULUM_KEYWORDS)
     )
+    has_finance_signal = (
+        "finance" in topics
+        or reviewed.get("grant_info", {}).get("type") in {"applicable", "resource"}
+        or any(keyword in source_text for keyword in POST_REVIEW_FINANCE_KEYWORDS)
+    )
 
     if isinstance(supplier, dict):
         supplier_text = " ".join(supplier.get("pts", []) + supplier.get("acts", []))
@@ -1164,6 +1186,41 @@ def _apply_post_analysis_review(circ: dict) -> dict:
 
         missing_points.append("補回 curriculum 類通告的課程落實 / 校本安排提醒。")
         added_links.extend(CURRICULUM_RECOMMENDED_LINKS)
+
+    if has_finance_signal:
+        finance_roles = ["principal", "vice_principal", "department_head", "eo_admin"]
+        finance_overview_note = "留意撥款用途、批核流程、可動用範圍及年度結餘安排，避免偏離通告列明用途。"
+        finance_admin_note = "核對申請資格、截止日期、所需證明文件及收支記錄要求，並保留佐證以備查核。"
+        finance_followup_note = "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。"
+        finance_planning_note = "如涉及校本計劃或資源申請，應先對應實施目的、預算依據及預期成效。"
+
+        for role_name in finance_roles:
+            role_data = roles.get(role_name)
+            if not isinstance(role_data, dict):
+                continue
+
+            if role_name in {"principal", "vice_principal", "eo_admin"} and not role_data.get("r"):
+                role_data["r"] = True
+                role_notes.append(f"偵測到 finance 類訊號，將 `{role_name}` 角色標記為相關。")
+
+            if role_data.get("r"):
+                role_data.setdefault("pts", [])
+                role_data.setdefault("acts", [])
+
+                if role_name in {"principal", "vice_principal"} and finance_overview_note not in role_data["pts"]:
+                    role_data["pts"].append(finance_overview_note)
+                if role_name == "eo_admin" and finance_admin_note not in role_data["pts"]:
+                    role_data["pts"].append(finance_admin_note)
+                if role_name in {"department_head", "eo_admin"} and finance_followup_note not in role_data["acts"]:
+                    role_data["acts"].append(finance_followup_note)
+                if role_name == "department_head" and finance_planning_note not in role_data["pts"]:
+                    role_data["pts"].append(finance_planning_note)
+
+                role_data["pts"] = _dedupe_strings(role_data["pts"])[:3]
+                role_data["acts"] = _dedupe_strings(role_data["acts"])[:3]
+
+        missing_points.append("補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。")
+        added_links.extend(FINANCE_RECOMMENDED_LINKS)
 
     reviewed["knowledge_review"] = {
         "terminology_review": [
@@ -1519,7 +1576,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.12")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.13")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

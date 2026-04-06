@@ -178,6 +178,7 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 13 | Deterministic Post-analysis Knowledge Review | 2026-04-04 | After primary AI analysis, apply an ordered normalization/enrichment pass to standardize supplier terminology, backfill missing supplier guidance, attach recommended links, and reduce role drift without overwriting hard facts from the circular. |
 | 14 | Topic-aware Curriculum Review Extension | 2026-04-04 | Extended the deterministic second-pass review to curriculum-style circulars so terminology normalization, curriculum implementation reminders, and official curriculum/KPM links can be added without rewriting hard facts. |
 | 15 | Idempotent Terminology Normalization Guard | 2026-04-06 | Term-standardization rules that expand a source string into a target containing that same source must collapse duplicate expansions and avoid reapplying on already-normalized text. |
+| 16 | Topic-aware Finance Review Extension | 2026-04-06 | Extended the deterministic second-pass review to finance-style circulars so grant-use, document-retention, and finance-process reminders plus official finance references can be added without overwriting grant facts or deadlines. |
 
 ---
 
@@ -208,3 +209,4 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 2026-04-04 | Codex_20260404_0006 | Integrated the first runnable post-analysis knowledge review into `edb_scraper.py`; bumped dashboard/scraper version to v3.0.8 and added `knowledge_review` output metadata. |
 | 2026-04-04 | Codex_20260404_0008 | Extended deterministic post-analysis knowledge review to curriculum signals, added curriculum-specific reminders/links, and bumped local workspace version to v3.0.9 pending deploy. |
 | 2026-04-06 | Codex_20260406_0002 | Fixed duplicated curriculum term replacement by making `_replace_terms()` idempotent, then prepared v3.0.11 for regenerated data and release. |
+| 2026-04-06 | Codex_20260406_0005 | Extended deterministic post-analysis knowledge review to finance signals, adding grant-use/document reminders and finance reference links; bumped local workspace version to v3.0.13 pending deploy. |

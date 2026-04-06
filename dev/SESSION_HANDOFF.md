@@ -1,18 +1,18 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v3.0.12** (2026-04-06) ← **workspace 已更新 AI 補充說明文案；尚未發布**
+1. Version: **v3.0.13** (2026-04-06) ← **workspace 已完成 finance-aware review 擴展；尚未發布**
 2. Core commands / features:
-   - `edb-dashboard.html` — v3.0.12（AI 補充說明改為「根據EDB學校管理知識中心及相關知識庫整理」）
-   - `edb_scraper.py` — v3.0.12（KnowledgeStore 語義搜尋 + deterministic post-analysis knowledge review，含 idempotent normalization guard）
-   - `circulars.json` — EDB 通告 + gpt-5-nano AI 分析（remote auto-update 115 circulars 保留）
+   - `edb-dashboard.html` — v3.0.13（版本同步；未新增前端行為）
+   - `edb_scraper.py` — v3.0.13（KnowledgeStore 語義搜尋 + deterministic post-analysis knowledge review，現覆蓋 supplier / curriculum / finance）
+   - `circulars.json` — EDB 通告 + gpt-5-nano AI 分析（GitHub Pages live 仍為 `generated_at=2026-04-06T11:38:12Z`, `count=114`）
    - `knowledge.json` — 從 edb-knowledge 獲取的語義事實來源（v1.2.2，107 facts ✅）
    - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具
    - `requirements.txt` — Python 依賴清單
    - `dev/knowledge/role_facts.json` — K1 基線知識庫（存檔）
    - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 接口合約規格
-3. Regression baseline: local py_compile PASS；dashboard JS syntax PASS；version markers PASS at v3.0.12；文案替換 PASS
-4. Release / merge status: **v3.0.12 僅存在 workspace，尚未 push / deploy**
+3. Regression baseline: local py_compile PASS；finance helper check PASS；dashboard JS syntax PASS；version markers PASS at v3.0.13；public GitHub Pages 目前仍停留在 `v3.0.12`
+4. Release / merge status: **live 仍為 v3.0.12；workspace 已前進到 v3.0.13，待決定是否 deploy**
 5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -24,7 +24,7 @@
 1. Product / System Layer: EDB 通告爬蟲 + AI 分析 + Dashboard 前端
 2. Development Governance Layer: AGENTS.md 規則、SESSION 管理、Root Safety Check
 3. Current task belongs to which layer: Product / System Layer（analysis pipeline behavior change）
-4. Known layer-boundary risks: 第二輪 review 必須只做補充/標準化，不能覆蓋通告硬事實；deploy 時仍要注意 remote `circulars.json` 可能較新
+4. Known layer-boundary risks: 第二輪 review 必須只做補充/標準化，不能覆蓋通告硬事實；deploy 時仍要注意 remote `circulars.json` 可能較新；finance 擴展不可改寫 grant_info / 金額 / deadline
 
 ## Mandatory Start Checklist
 1. ✅ Read `dev/SESSION_HANDOFF.md`
@@ -72,9 +72,9 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 如需上線，發布 `v3.0.12` 並重新檢查 GitHub Pages
+1. **[下一步 ⭐]** 決定是否發布 `v3.0.13`，讓 finance-aware review 上 GitHub Pages
 2. **[重要]** 若用戶提供新版 `role_facts.json`，整合取代 `dev/knowledge/role_facts.json`，並同步驗證 K1 接口
-3. **[其後]** 決定下一個 topic-aware review 擴展（finance / student / hr），保持 deterministic / non-destructive
+3. **[其後]** 決定下一個 topic-aware review 擴展（student / hr），保持 deterministic / non-destructive
 4. **[觀察]** 視需要再微調「官方原文整理版」對 metadata 行的段落整理規則
 5. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
 6. **[選做]** LLM 引擎切換機制
@@ -126,7 +126,7 @@ git checkout v2.1.0-dashboard
    - remote `circulars.json` 可能在 code/docs 發布期間被 GitHub Actions 更新
    - `deploy.sh` publish commit rebase 時若只衝突在 `circulars.json`，應保留較新的 remote 版本，再繼續推送 code/docs release
 9. **⚠️ Knowledge review boundary（2026-04-04 確認）：**
-   - 第二輪 review 現時只針對 supplier + curriculum 場景做 deterministic enrichment
+   - 第二輪 review 現時只針對 supplier + curriculum + finance 場景做 deterministic enrichment
    - 不應改寫 deadline、金額、編號、scope 等硬事實
 
 ## Regression / Verification Notes
@@ -160,23 +160,26 @@ Increment scheme:
 Do not close a session with code changes without completing the version bump.
 
 ## Last Session Record
-1. UTC date: 2026-04-04
-2. Session ID: Codex_20260406_0003
+1. UTC date: 2026-04-06
+2. Session ID: Codex_20260406_0005
 3. Completed:
-   - ✅ 將 AI 補充說明文案改為「以下補充根據EDB學校管理知識中心及相關知識庫整理」
-   - ✅ 版本同步升至 `v3.0.12`（dashboard + scraper）
-   - ✅ README 功能說明已同步
-   - ✅ 尚未發布，保留給下一步按需上線
+   - ✅ 將 deterministic 第二輪 knowledge review 擴展到 finance 類訊號
+   - ✅ finance 分支會補回撥款用途、文件要求、收支存檔提醒與官方財務參考連結
+   - ✅ 版本同步升至 `v3.0.13`（dashboard + scraper）
+   - ✅ README / CODEBASE_CONTEXT 已同步 finance-aware review 描述
 4. Pending:
-   - 如需上線，發布 `v3.0.12`
+   - 決定是否發布 `v3.0.13`
    - 等待用戶提供新版 `role_facts.json`
+   - 決定下一個 topic-aware review 擴展（finance / student / hr）
    - 視需要再微調官方原文整理版的 metadata 分段規則
 5. Next priorities (max 3):
-   - 視需要發布 `v3.0.12`
+   - 視需要發布 `v3.0.13`
    - 等待 / 整合新版 role_facts.json
-   - 決定下一個擴展 topic（finance / student / hr）
-6. Risks / blockers: `v3.0.12` 尚未發布，因此 live 站點暫未反映這次文案更新
+   - 決定下一個擴展 topic（student / hr）
+6. Risks / blockers:
+   - `v3.0.13` 目前只在 workspace；若要讓 finance-aware review 反映到 live，仍需 deploy 並重跑 workflow 更新 `circulars.json`
+   - 等待用戶提供新版 `role_facts.json` 後，才可繼續 K1 接口整合驗證
 7. Files materially changed:
-   - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
-8. Validation summary: py_compile PASS；dashboard JS syntax PASS；version markers PASS at v3.0.12；文案替換 PASS
-9. Git commits: none in this workspace-only wording session
+   - `edb_scraper.py`、`edb-dashboard.html`、`README.md`、`dev/CODEBASE_CONTEXT.md`、`dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
+8. Validation summary: py_compile PASS；finance helper check PASS；dashboard JS syntax PASS；version markers PASS at v3.0.13
+9. Git commits: none in this workspace-only finance extension session
