@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDB 通告智能分析系統 v3.0.14</title>
+<title>EDB 通告智能分析系統 v3.0.16</title>
 <style>
 /* ============================================================
    PALETTES (accent colours only — theme-independent)
@@ -880,10 +880,11 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
     <div class="sc-box-title">⌨️ 鍵盤快捷鍵</div>
     <div class="sc-item"><span>切換至校長</span><span><kbd class="sc-key">1</kbd></span></div>
     <div class="sc-item"><span>切換至副校長</span><span><kbd class="sc-key">2</kbd></span></div>
-    <div class="sc-item"><span>切換至主任</span><span><kbd class="sc-key">3</kbd></span></div>
-    <div class="sc-item"><span>切換至教師</span><span><kbd class="sc-key">4</kbd></span></div>
-    <div class="sc-item"><span>切換至EO</span><span><kbd class="sc-key">5</kbd></span></div>
-    <div class="sc-item"><span>切換至供應商</span><span><kbd class="sc-key">6</kbd></span></div>
+    <div class="sc-item"><span>切換至科主任</span><span><kbd class="sc-key">3</kbd></span></div>
+    <div class="sc-item"><span>切換至主任</span><span><kbd class="sc-key">4</kbd></span></div>
+    <div class="sc-item"><span>切換至教師</span><span><kbd class="sc-key">5</kbd></span></div>
+    <div class="sc-item"><span>切換至EO</span><span><kbd class="sc-key">6</kbd></span></div>
+    <div class="sc-item"><span>切換至供應商</span><span><kbd class="sc-key">7</kbd></span></div>
     <div class="sc-item"><span>聚焦搜尋欄</span><span><kbd class="sc-key">/</kbd></span></div>
     <div class="sc-item"><span>切換深色/淺色主題</span><span><kbd class="sc-key">D</kbd></span></div>
     <div class="sc-item"><span>關閉面板</span><span><kbd class="sc-key">Esc</kbd></span></div>
@@ -937,7 +938,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
     </div>
     <div class="dev-card">
       <div class="dev-card-title">ℹ️ 版本資訊</div>
-      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v3.0.14</span></div>
+      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v3.0.16</span></div>
       <div class="dev-row"><span>Build Date</span><span>2026-03-16</span></div>
       <div class="dev-row"><span>知識庫更新</span><span>2026-03-09 20:48 UTC</span></div>
       <div class="dev-row"><span>資料筆數</span><span id="devCount">—</span></div>
@@ -974,13 +975,14 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
 <header class="header">
   <div class="brand" onclick="switchTab('home',document.getElementById('tabHome'))" style="cursor:pointer;" title="返回首頁">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="13" x2="12" y2="17"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
-    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v3.0.14</span></span>
+    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v3.0.16</span></span>
   </div>
 
   <select class="role-select" id="roleSelect" onchange="setRole(this.value)">
     <option value="principal">👔 校長</option>
     <option value="vice_principal">🏫 副校長</option>
-    <option value="department_head">📚 主任</option>
+    <option value="subject_head">📘 科主任</option>
+    <option value="panel_chair">📚 主任</option>
     <option value="teacher">🧑‍🏫 教師</option>
     <option value="eo_admin">📋 EO</option>
     <option value="supplier">🏢 供應商</option>
@@ -1358,7 +1360,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
         </div>
         <div class="setting-row">
           <div class="setting-info"><div class="setting-lbl">版本</div></div>
-          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v3.0.14</span>
+          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v3.0.16</span>
         </div>
       </div>
 
@@ -1384,7 +1386,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
           <div>
             <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">👥 角色視圖</div>
             <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
-              頂部下拉選單切換角色（校長／副校長／主任／教師／EO／供應商）。選擇後，詳情面板的「行動」欄會以藍色高亮當前角色的行動項；「角色」頁顯示每個角色的責任及行動清單。鍵盤 1–6 可快速切換角色。
+              頂部下拉選單切換角色（校長／副校長／科主任／主任／教師／EO／供應商）。選擇後，詳情面板的「行動」欄會以藍色高亮當前角色的行動項；「角色」頁顯示每個角色的責任及行動清單。鍵盤 1–7 可快速切換角色。
             </div>
           </div>
 
@@ -1475,14 +1477,14 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
      ============================================================ -->
 <footer class="site-footer">
   <div>⚠️ <strong>免責聲明：</strong>本系統資料來源於<a href="https://www.edb.gov.hk" target="_blank" rel="noopener">香港特別行政區政府教育局（EDB）</a>官方網站，僅供參考及輔助管理用途，一切以教育局官方公告為準。本系統並非教育局官方產品。</div>
-  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v3.0.14 &nbsp;|&nbsp; &copy; 2026</div>
+  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v3.0.16 &nbsp;|&nbsp; &copy; 2026</div>
 </footer>
 
 <script>
 /* ============================================================
    VERSION
    ============================================================ */
-const VERSION = 'v3.0.14';
+const VERSION = 'v3.0.16';
 
 /* ============================================================
    MOCK DATA
@@ -1640,7 +1642,7 @@ const L={
   zh:{
     overview:'📊 通告總覽',calendar:'📅 月曆',resources:'💰 資源申請',
     bookmarks:'⭐ 收藏',supplier:'🏢 供應商',settings:'⚙️ 設定',
-    principal:'👔 校長',vice_principal:'🏫 副校長',department_head:'📚 主任',
+    principal:'👔 校長',vice_principal:'🏫 副校長',subject_head:'📘 科主任',panel_chair:'📚 主任',
     teacher:'🧑‍🏫 教師',eo_admin:'📋 EO',supplier_role:'🏢 供應商',
     high:'高',mid:'中',low:'低',mandatory:'必須',recommended:'建議',
     informational:'參考',applicable:'💰 可申請',resource:'📦 資源',
@@ -1650,7 +1652,7 @@ const L={
   en:{
     overview:'📊 Circulars',calendar:'📅 Calendar',resources:'💰 Resources',
     bookmarks:'⭐ Saved',supplier:'🏢 Supplier',settings:'⚙️ Settings',
-    principal:'👔 Principal',vice_principal:'🏫 VP',department_head:'📚 HOD',
+    principal:'👔 Principal',vice_principal:'🏫 VP',subject_head:'📘 Subject Head',panel_chair:'📚 Panel Chair',
     teacher:'🧑‍🏫 Teacher',eo_admin:'📋 Admin',supplier_role:'🏢 Supplier',
     high:'High',mid:'Mid',low:'Low',mandatory:'Mandatory',recommended:'Recommended',
     informational:'Info',applicable:'💰 Applicable',resource:'📦 Resource',
@@ -1666,7 +1668,7 @@ function t(k){ return (L[S.lang]||L.zh)[k]||k; }
 function lsGet(k,def){ try{ const v=localStorage.getItem(k); return v===null?def:JSON.parse(v); }catch(e){ return def; } }
 function lsSet(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
 function lsLoad(){
-  S.role       = lsGet('edb_role','principal');
+  S.role       = normalizeRoleKey(lsGet('edb_role','principal'));
   S.theme      = lsGet('edb_theme','light');
   S.palette    = lsGet('edb_palette','summer');
   S.layout     = lsGet('edb_layout','standard');
@@ -1738,8 +1740,47 @@ function toggleLang(){ S.lang=S.lang==='zh'?'en':'zh'; lsSet('edb_lang',S.lang);
 /* ============================================================
    ROLE
    ============================================================ */
-const ROLE_NAMES={principal:'👔 校長',vice_principal:'🏫 副校長',department_head:'📚 主任',teacher:'🧑‍🏫 教師',eo_admin:'📋 EO',supplier:'🏢 供應商'};
+const ROLE_NAMES={principal:'👔 校長',vice_principal:'🏫 副校長',subject_head:'📘 科主任',panel_chair:'📚 主任',teacher:'🧑‍🏫 教師',eo_admin:'📋 EO',supplier:'🏢 供應商'};
+const ROLE_ORDER=['principal','vice_principal','subject_head','panel_chair','teacher','eo_admin','supplier'];
+const LEGACY_ROLE_ALIASES={department_head:'panel_chair'};
 function getRoleName(r){ return ROLE_NAMES[r]||r; }
+function normalizeRoleKey(role){
+  return LEGACY_ROLE_ALIASES[role] || role;
+}
+function emptyRoleInfo(){ return {r:false,pts:[],acts:[]}; }
+function mergeRoleInfo(base, incoming){
+  const merged={r:Boolean(base?.r||incoming?.r),pts:[...(base?.pts||[])],acts:[...(base?.acts||[])]};
+  (incoming?.pts||[]).forEach(item=>{ if(item && !merged.pts.includes(item)) merged.pts.push(item); });
+  (incoming?.acts||[]).forEach(item=>{ if(item && !merged.acts.includes(item)) merged.acts.push(item); });
+  return merged;
+}
+function normalizeRecordRoles(record){
+  const src=record?.roles||{};
+  const roles={
+    principal: emptyRoleInfo(),
+    vice_principal: emptyRoleInfo(),
+    subject_head: emptyRoleInfo(),
+    panel_chair: emptyRoleInfo(),
+    teacher: emptyRoleInfo(),
+    eo_admin: emptyRoleInfo(),
+    supplier:{r:false,pts:[],acts:[],is_tender:false,procurement_cat:'none',budget_estimate:null,compliance_ref:[],eligibility:'',contact_unit:''}
+  };
+  Object.entries(src).forEach(([rawKey, value])=>{
+    const roleKey=normalizeRoleKey(rawKey);
+    if(!(roleKey in roles)) return;
+    if(roleKey==='supplier'){
+      if(value && typeof value==='object') roles.supplier={...roles.supplier,...value};
+      return;
+    }
+    roles[roleKey]=mergeRoleInfo(roles[roleKey], value||{});
+  });
+  record.roles=roles;
+  (record.actions||[]).forEach(action=>{ action.role=normalizeRoleKey(action.role); });
+  (record.deadlines||[]).forEach(dl=>{
+    if(Array.isArray(dl.roles)) dl.roles=[...new Set(dl.roles.map(normalizeRoleKey))];
+  });
+  return record;
+}
 function escapeHtml(s){
   return (s||'')
     .replace(/&/g,'&amp;')
@@ -1800,8 +1841,8 @@ function updateRoleIndicator(){
   if(el){ el.textContent=getRoleName(S.role); el.title='目前角色：'+getRoleName(S.role); }
 }
 function setRole(r){
-  S.role=r; lsSet('edb_role',r);
-  document.getElementById('roleSelect').value=r;
+  S.role=normalizeRoleKey(r); lsSet('edb_role',S.role);
+  document.getElementById('roleSelect').value=S.role;
   updateRoleIndicator();
   updateSupplierTab();
   renderAll();
@@ -2723,7 +2764,7 @@ function openDetail(id){
   }
 
   // Build actions HTML
-  const rn={principal:'👔 校長',vice_principal:'🏫 副校長',department_head:'📚 主任',teacher:'🧑‍🏫 教師',eo_admin:'📋 EO',supplier:'🏢 供應商'};
+  const rn=ROLE_NAMES;
   let actionsHtml=(d.actions||[]).length?`<div class="sec-lbl">📋 行動清單</div><div class="action-list">${(d.actions||[]).map((a,i)=>{
     const days=a.dl?daysUntil(a.dl):null;
     const dlCls=days!==null?(days<0?'a-dl-ok':days<=3?'a-dl-urgent':days<=S.alertDays?'a-dl-soon':'a-dl-ok'):'a-dl-ok';
@@ -2764,9 +2805,8 @@ function openDetail(id){
     ${dlHtml}`;
 
   // Resources/Roles tab
-  const roleOrder=['principal','vice_principal','department_head','teacher','eo_admin','supplier'];
   const roleName=ROLE_NAMES;
-  document.getElementById('dtc-resources').innerHTML=`<div class="role-accordion">${roleOrder.map(r=>{
+  document.getElementById('dtc-resources').innerHTML=`<div class="role-accordion">${ROLE_ORDER.map(r=>{
     const info=d.roles?.[r]||{r:false,pts:[],acts:[]};
     const isCurrent=r===S.role;
     
@@ -3147,9 +3187,9 @@ function initShortcuts(){
     if(k==='?'){ showScModal(); return; }
     if(k==='/'){ e.preventDefault(); document.getElementById('searchInput').focus(); return; }
     if(k==='d'||k==='D'){ cycleTheme(); showToast('主題：'+(S.theme==='dark'?'🌙 深色':S.theme==='light'?'☀️ 淺色':'⚙️ 自動')); return; }
-    const roles=['principal','vice_principal','department_head','teacher','eo_admin','supplier'];
+    const roles=ROLE_ORDER;
     const idx=parseInt(k)-1;
-    if(idx>=0&&idx<6){ setRole(roles[idx]); showToast('角色：'+getRoleName(roles[idx])); }
+    if(idx>=0&&idx<roles.length){ setRole(roles[idx]); showToast('角色：'+getRoleName(roles[idx])); }
   });
 }
 
@@ -3162,10 +3202,10 @@ async function loadData(){
     const res=await fetch(path);
     if(!res.ok) throw new Error('HTTP '+res.status);
     const json=await res.json();
-    DATA=[...(json.circulars||json)];
+    DATA=[...(json.circulars||json)].map(item=>normalizeRecordRoles(item));
     showToast('已載入 ' + (json.circulars||json).length + ' 條通告');
   } catch(e){
-    DATA=[...MOCK];
+    DATA=[...MOCK].map(item=>normalizeRecordRoles(item));
     // Show warning if likely caused by file:// protocol restriction
     const isFileProtocol = location.protocol === 'file:';
     const msg = isFileProtocol

@@ -1,6 +1,360 @@
 # Session Log
 <!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->
 
+## 2026-04-06 Product-side role compatibility layer + v3.0.16
+
+1. Agent & Session ID: Codex_20260406_0011
+2. Task summary: 把產品端做成第一階段角色相容層，讓 `edb_scraper.py` 和 `edb-dashboard.html` 可接受新的 `subject_head` / `panel_chair` 契約，同時保持舊 `department_head` 資料可讀，並把 workspace 版本升到 `v3.0.16`。
+3. Layer classification: Product / System Layer（analysis pipeline behavior change + frontend display behavior change）+ Development Governance Layer（session persistence）
+4. Source triage: 非 bug fix；屬角色 schema 過渡重構。目標是避免 K1 規格已換新角色後，產品端仍只認舊 key，導致知識庫接入或 live 舊資料其中一邊失效。
+5. Files read: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/DOC_SYNC_CHECKLIST.md`
+6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ `CIRCULAR_SCHEMA` / `SYSTEM_PROMPT` 改為 `subject_head` + `panel_chair`
+   - ✅ 新增 `_normalize_roles_payload()`，將 legacy `department_head` 自動映射到 `panel_chair`
+   - ✅ `actions` / `deadlines` 中的 legacy role key 也會一併正規化
+   - ✅ dashboard 改為七角色 UI：校長 / 副校長 / 科主任 / 主任 / 教師 / EO / 供應商
+   - ✅ localStorage 舊 `department_head` 角色選擇可自動轉為 `panel_chair`
+   - ✅ 版本同步升至 `v3.0.16`
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - dashboard JS syntax check → PASS
+   - legacy-role normalization helper check → PASS
+   - `rg -n "subject_head|panel_chair|department_head|v3\\.0\\.16" edb_scraper.py edb-dashboard.html README.md` → PASS
+9. Pending:
+   - 決定是否發布 `v3.0.16`
+   - 等待用戶提供新版 `role_facts.json`
+   - 重跑 workflow，驗證 live `circulars.json` 在新角色結構下的輸出與顯示
+   - 視需要微調 `subject_head` / `panel_chair` 的 topic-aware 分流
+10. Next priorities:
+   - 視需要發布 `v3.0.16`
+   - 等待 / 整合新版 role_facts.json
+   - 視需要重跑 workflow 更新 live `circulars.json`
+11. Risks / blockers:
+   - `v3.0.16` 目前只在 workspace；live 站仍是 `v3.0.14`
+   - 第一階段相容層目前採保守映射：legacy `department_head` 一律先落到 `panel_chair`
+   - `subject_head` / `panel_chair` 的 topic-aware 分流仍可再細化
+12. Notes:
+   - 這輪刻意不做激進推斷；舊資料不會自動猜成 `subject_head`，避免錯分類
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - K1 契約已切到 `subject_head` / `panel_chair`，但產品端仍只認 `department_head`。
+2. Root Cause:
+   - 舊 schema、前端角色 UI、post-analysis review 與資料讀取流程都還沒建立過渡層。
+3. Fix:
+   - 在 scraper 與 dashboard 同步加入 compatibility layer，讓新舊角色鍵都能被吸收，並將前端顯示正式改為七角色。
+4. Verification:
+   - py_compile PASS
+   - JS syntax PASS
+   - helper 測試確認 legacy `department_head` → `panel_chair`，且 review 邏輯在新角色結構下仍可運作
+5. Regression / rule update:
+   - Key Decision #19 added in `CODEBASE_CONTEXT.md`: role compatibility layer before full schema cutover
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | 新分析輸出要採用新角色契約 | 以 `subject_head` / `panel_chair` schema 編譯與前端載入 | scraper / dashboard 接受新角色鍵 | schema / UI 均已更新 | PASS |
+| Boundary | 舊資料只含 `department_head` | 套用 `_normalize_roles_payload(sample)` | 自動落到 `panel_chair`，`subject_head` 保持空白 | `panel_chair` 吃到 legacy 內容，`subject_head=[]` | PASS |
+| Error / safety path | 舊 actions / deadlines 仍含 `department_head` | 正規化 sample actions / deadlines | role key 同步轉為 `panel_chair` | helper check shows `panel_chair` in actions / deadlines | PASS |
+| Regression | student review 在新角色結構下仍可跑 | 以 student sample 執行 `_apply_post_analysis_review()` | `panel_chair` 與 `subject_head` 角色結構均有效 | helper check shows `REVIEW_PANEL_RELATED=True`, `REVIEW_SUBJECT_RELATED=True` | PASS |
+
+Overall: PASS
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: continue from local v3.0.16. The first product-side compatibility layer for the new role contract is now in place: scraper and dashboard accept `subject_head` / `panel_chair`, while legacy `department_head` data is normalized to `panel_chair`. This is still workspace-only and has not been deployed yet.
+
+Pending tasks (priority order):
+1. Decide whether to publish v3.0.16 so the 7-role UI and compatibility layer go live on GitHub Pages.
+2. When the user provides a new `role_facts.json`, validate it against the K1 v2.0.0 contract before integrating it.
+3. Rerun the workflow so live `circulars.json` is regenerated under the new role structure and then verify the public site output.
+4. If needed, refine the topic-aware split between `subject_head` and `panel_chair` so curriculum / student / finance reminders land on the most appropriate role.
+
+Key files changed in this session:
+- `edb_scraper.py`
+- `edb-dashboard.html`
+- `README.md`
+- `dev/CODEBASE_CONTEXT.md`
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- v3.0.16 is local only; the public site is still on v3.0.14 until a deploy happens.
+- The compatibility layer currently maps legacy `department_head` conservatively to `panel_chair`; it does not auto-infer `subject_head` from old records.
+- The workspace still does not contain a real new `dev/knowledge/role_facts.json`, so K1 payload validation remains pending.
+
+Validation status: py_compile PASS; dashboard JS syntax PASS; legacy-role normalization helper PASS; version markers PASS at v3.0.16; no deploy performed in this session.
+
+Post-startup first action: inspect whether the next step is deploying v3.0.16 or validating an incoming new `role_facts.json`, then use the compatibility layer as the baseline for that decision.
+```
+
+## 2026-04-06 K1 role-contract alignment planning + spec v2.0.0
+
+1. Agent & Session ID: Codex_20260406_0010
+2. Task summary: 依使用者確認，先把 K1 接口契約正式對齊到新的角色模型，將知識交換規格從 `department_head` 過渡為 `subject_head` + `panel_chair`，並把 `eo_admin` 的中文說明統一為 `EO`。
+3. Layer classification: Product / System Layer（knowledge interface / contract change）+ Development Governance Layer（session persistence）
+4. Source triage: 非 bug fix；屬知識庫輸出契約與產品端未來 schema 重構的前置對齊。這輪不改產品代碼，先修正 SSOT / 契約層，避免接入新版 `role_facts.json` 時出現角色定義漂移。
+5. Files read: `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md`, `dev/DOC_SYNC_CHECKLIST.md`, `README.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `edb_scraper.py`, `edb-dashboard.html`, `dev/knowledge/ROLE_KNOWLEDGE_INDEX.md`
+6. Files changed: `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md`, `dev/DOC_SYNC_CHECKLIST.md`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 將 K1 接口規格升版到 `v2.0.0`
+   - ✅ 正式定義 K1 角色契約：`subject_head` = 科主任、`panel_chair` = 主任、`eo_admin` = EO
+   - ✅ 補上 `department_head` deprecated 過渡說明
+   - ✅ 更新 validator 範例，禁止新版交付再使用 `department_head`
+   - ✅ 更新 CODEBASE_CONTEXT / handoff，記錄「規格已更新、產品端仍待相容層改造」的當前狀態
+   - ✅ 在 `DOC_SYNC_CHECKLIST` 新增 `Knowledge interface / contract change` 類別，避免之後漏同步
+8. Validation / QC:
+   - `rg -n "subject_head|panel_chair|department_head|eo_admin|v2\\.0\\.0|deprecated" dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` → PASS
+   - `rg -n "role contract|subject_head|panel_chair|v2\\.0\\.0" README.md dev/CODEBASE_CONTEXT.md dev/SESSION_HANDOFF.md dev/DOC_SYNC_CHECKLIST.md` → PASS
+   - Manual review → PASS（確認這輪只更新契約與文檔，未改產品 schema / dashboard / scraper 執行邏輯）
+9. Pending:
+   - 在產品端實作 `department_head` → `subject_head` + `panel_chair` 的相容層
+   - 等待用戶提供新版 `role_facts.json`
+   - 決定是否發布 `v3.0.15`
+   - 視需要重跑 workflow，讓新 review / 後續角色相容層反映到 live `circulars.json`
+10. Next priorities:
+   - 實作角色 schema 相容層
+   - 等待 / 整合新版 role_facts.json
+   - 視需要發布 `v3.0.15`
+11. Risks / blockers:
+   - 產品端目前仍使用 `department_head`
+   - K1 規格已更新到新角色契約，若此時直接注入新版知識庫，可能出現 key mismatch
+   - workspace 目前沒有 `dev/knowledge/role_facts.json`，尚未能做接收端實測
+12. Notes:
+   - 這次先調整契約層，是為了讓後續產品端重構和知識庫交付對齊，不是代表產品已完成 schema 切換
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - 使用者已明確確認角色語意應拆分為「科主任」與「主任」，並要求知識庫輸出也對齊。
+2. Root Cause:
+   - 現有 K1 規格仍沿用 `department_head` / `行政主任`，與你已確認的角色語意不一致。
+3. Fix:
+   - 先把 K1 接口規格升版到 `v2.0.0`，改為 `subject_head` / `panel_chair` / `eo_admin=EO`，並加上 legacy 過渡說明。
+4. Verification:
+   - K1 spec role list、validator、版本升級規則已完成更新
+   - CODEBASE_CONTEXT / SESSION_HANDOFF / README 已同步標記這次契約調整
+5. Regression / rule update:
+   - 新增 `DOC_SYNC_CHECKLIST` 條目：`Knowledge interface / contract change`
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | K1 規格仍為舊版 | 更新 role contract to v2.0.0 | spec 明確改為 `subject_head` / `panel_chair` / `eo_admin=EO` | role table + examples + validator 已更新 | PASS |
+| Boundary | 舊資料仍使用 `department_head` | 在規格中加入過渡說明 | 不讓新交付繼續使用舊 key，但保留接收端過渡指引 | deprecated migration section 已加入 | PASS |
+| Error / safety path | 產品端尚未完成 schema 改造 | 僅更新契約與文檔 | 不應誤稱產品已完成 key 切換 | handoff / context 均標明仍待 compatibility refactor | PASS |
+| Regression | 現有 topic / 其他角色不應被改亂 | 檢查 validator 與 role list | 只變更目標角色集合，其餘 topic / role 約束保留 | manual review confirms targeted-only change | PASS |
+
+Overall: PASS
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: continue from local v3.0.15, with the K1 knowledge contract now aligned at spec level to `subject_head` / `panel_chair` / `eo_admin=EO` in `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` v2.0.0. Product code still uses `department_head`, so the next engineering step is a compatibility-layer refactor rather than direct deployment.
+
+Pending tasks (priority order):
+1. Implement the product-side compatibility refactor from `department_head` toward `subject_head` + `panel_chair` without breaking existing `circulars.json` or dashboard rendering.
+2. When the user provides a new `role_facts.json`, validate it against the v2.0.0 K1 contract before integrating it.
+3. Decide whether to publish v3.0.15 after the role-compatibility work is ready.
+4. If the user wants the latest review logic reflected in live data, rerun the workflow so `circulars.json` is regenerated under the latest code.
+
+Key files changed in this session:
+- `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md`
+- `dev/DOC_SYNC_CHECKLIST.md`
+- `README.md`
+- `dev/CODEBASE_CONTEXT.md`
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- The K1 contract has moved ahead of product code: spec now expects `subject_head` / `panel_chair`, but `edb_scraper.py` and `edb-dashboard.html` still use `department_head`.
+- The workspace currently does not contain `dev/knowledge/role_facts.json`, so no real K1 handoff file has been validated yet.
+- Do not claim the product schema is updated until the compatibility layer is implemented and verified.
+
+Validation status: spec grep PASS; doc-sync grep PASS; manual review PASS; no product code changes in this session.
+
+Post-startup first action: inspect the current `department_head` usage in `edb_scraper.py` and `edb-dashboard.html`, then implement the compatibility-layer plan before accepting a new K1 payload.
+```
+
+## 2026-04-06 Topic-aware student review extension + v3.0.15
+
+1. Agent & Session ID: Codex_20260406_0009
+2. Task summary: 依使用者要求開始 `student` topic-aware review，將 deterministic 第二輪 knowledge review 擴展到學生參與 / 支援 / 家校通知場景，並同步升版到 `v3.0.15`。
+3. Layer classification: Product / System Layer（analysis pipeline behavior change）+ Development Governance Layer（session persistence）
+4. Source triage: 非 bug fix；屬既有 post-analysis enrichment 的 topic-aware 擴展。目標是提升學生相關通告的加值效果，同時保持 deterministic / non-destructive。
+5. Files read: `edb_scraper.py`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/DOC_SYNC_CHECKLIST.md`, `dev/knowledge/sch_activities.md`, `dev/knowledge/sch_admin_guide.md`, `dev/knowledge/ROLE_KNOWLEDGE_INDEX.md`
+6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 新增 `POST_REVIEW_STUDENT_KEYWORDS`
+   - ✅ 新增 `STUDENT_RECOMMENDED_LINKS`
+   - ✅ 第二輪 review 現可在 student 類訊號下補回學生參與支援、家長通知與校內記錄提醒
+   - ✅ 收緊 finance signal，避免 student 類通告只因「申請」字眼就誤觸 finance review
+   - ✅ 版本同步升至 `v3.0.15`
+   - ✅ README / CODEBASE_CONTEXT / handoff 已同步 supplier + curriculum + finance + student 的現況
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - student helper check using `_apply_post_analysis_review(sample)` → PASS
+   - dashboard JS syntax check → PASS
+   - `rg -n "v3\\.0\\.15|supplier / curriculum / finance / student|supplier \\+ curriculum \\+ finance \\+ student|POST_REVIEW_STUDENT_KEYWORDS|STUDENT_RECOMMENDED_LINKS" edb-dashboard.html edb_scraper.py README.md` → PASS
+9. Pending:
+   - 決定是否發布 `v3.0.15`
+   - 等待用戶提供新版 `role_facts.json`
+   - 如需讓 student-aware / finance-aware review 反映到 live `circulars.json`，再跑 workflow
+   - 決定下一個 topic-aware review 擴展（hr）
+10. Next priorities:
+   - 視需要發布 `v3.0.15`
+   - 等待 / 整合新版 role_facts.json
+   - 視需要重跑 workflow 更新 live `circulars.json`
+11. Risks / blockers:
+   - `v3.0.15` 目前僅存在 workspace；live 站仍是 `v3.0.14`
+   - 即使前端版本追上，student-aware / finance-aware review 仍需 workflow 重生 `circulars.json` 才會完整反映在 live 資料
+12. Notes:
+   - 這次 student 擴展與 finance 既有規則共存；finance signal 已改為更保守的判斷，避免 topic 交叉污染
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - 使用者希望在 supplier / curriculum / finance 之後，下一個 topic-aware review 擴展到 `student`。
+2. Root Cause:
+   - 現有第二輪 review 尚未覆蓋學生參與、家長通知與學生支援安排，因此很多學生相關通告仍缺少穩定的第二輪加值。
+3. Fix:
+   - 在 `_apply_post_analysis_review()` 新增 student signal 分支，補回學生支援、家校通知與校內記錄提醒，並加入學生運作相關官方連結。
+4. Verification:
+   - py_compile PASS
+   - student helper check 顯示 `vice_principal` / `department_head` / `eo_admin` 可被正確標記為相關
+   - `grant_info.type` 與既有 action 文本保持不變
+   - finance 誤判條件已收緊，student sample 不再誤觸 finance review
+5. Regression / rule update:
+   - Key Decision #17 added in `CODEBASE_CONTEXT.md`: student-style circulars now receive deterministic student review without overwriting hard facts
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | student 類通告 | 套用 `_apply_post_analysis_review(sample)` | 補 student 提醒與官方 student links | `principal/eo_admin/teacher` 補 student 提醒，links 含 `學校活動指引` / `學校行政手冊` | PASS |
+| Boundary | student 類但部分角色原本未標記相關 | 同上 | `vice_principal` / `department_head` / `eo_admin` 可被標記為相關，但不強改全部角色 | helper check 顯示三者為 `True` | PASS |
+| Error / safety path | student review 不可改寫硬事實 | 檢查 `grant_info.type` 與既有 action | 原值保持不變 | `grant_info.type=none`、`提交學生參與名單` 原樣保留 | PASS |
+| Regression | finance 不應因單一「申請」字眼誤觸 | 以 student sample 重跑 review | 不應再出現 finance missing point / links | helper check 只出現 student missing point / links | PASS |
+
+Overall: PASS
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: continue from local v3.0.15. The deterministic second-pass knowledge review now covers supplier + curriculum + finance + student, but this student-aware extension is workspace-only so far and has not yet been published.
+
+Pending tasks (priority order):
+1. Decide whether to publish v3.0.15 so the student-aware review can go live on GitHub Pages.
+2. If the user provides a new `role_facts.json`, integrate it to replace `dev/knowledge/role_facts.json` and validate the K1 interface.
+3. If the user wants student-aware / finance-aware review reflected in live circular output, run the appropriate workflow again so `circulars.json` is regenerated under the latest code.
+4. Decide the next topic-aware review extension after student (likely hr), while keeping the second-pass review deterministic and non-destructive.
+
+Key files changed in this session:
+- `edb_scraper.py`
+- `edb-dashboard.html`
+- `README.md`
+- `dev/CODEBASE_CONTEXT.md`
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- v3.0.15 is local only; the public site is still on v3.0.14 until a deploy happens.
+- Even after deploy, live `circulars.json` will not show student-aware / finance-aware enrichment until a workflow regenerates it.
+- The student review must not overwrite hard facts such as grant amount, grant type, dates, scope, or circular number.
+
+Validation status: py_compile PASS; student helper check PASS; dashboard JS syntax PASS; version markers PASS at v3.0.15; no deploy performed in this session.
+
+Post-startup first action: if no `role_facts.json` is provided yet, inspect whether the next step should be publishing v3.0.15 or implementing the next topic-aware review extension.
+```
+
+## 2026-04-06 Publish v3.0.14 role-label update to repo
+
+1. Agent & Session ID: Codex_20260406_0008
+2. Task summary: 依使用者確認，將本地 `v3.0.14`（主任 / EO 角色名稱統一）發佈到 deploy repo / GitHub repo，並重新驗證 public GitHub Pages 狀態。
+3. Layer classification: Product / System Layer（release publish / verification）+ Development Governance Layer（session persistence）
+4. Source triage: 非新功能開發；屬 release publish 與 propagation 驗證。目標是把已完成的 role-label update 推上 repo，並如實確認 public site 是否已更新。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/DOC_SYNC_CHECKLIST.md`
+6. Files changed: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 執行 `bash /Users/leonard/Downloads/Claude-edb-Project-V3/deploy.sh --no-bump`
+   - ✅ 成功推送 deploy repo `main` 至 commit `cec74e8`
+   - ✅ 驗證 deploy repo 狀態乾淨、已與 `origin/main` 對齊
+   - ✅ 重新抓取 public GitHub Pages HTML 進行 cache-busted 驗證
+   - ✅ 更新 handoff / log，記錄 `v3.0.14` 已 live 的當前狀態
+8. Validation / QC:
+   - `bash /Users/leonard/Downloads/Claude-edb-Project-V3/deploy.sh --no-bump` → PASS
+   - `git -C ~/Documents/EDB-AI-Circular-System rev-parse --short HEAD` → PASS (`cec74e8`)
+   - `git -C ~/Documents/EDB-AI-Circular-System status --short --branch` → PASS (`main...origin/main`)
+   - `curl -L 'https://leonard-wong-git.github.io/EDB-AI-Circular-System/edb-dashboard.html?t=20260406-v3014-recheck2' | rg -n "v3\\.0\\.[0-9]+|const VERSION|📚 主任|📋 EO|主任／教師／EO"` → PASS (public HTML now shows `v3.0.14`)
+9. Pending:
+   - 等待用戶提供新版 `role_facts.json`
+   - 如需讓 finance-aware review 反映到 live `circulars.json`，再跑 workflow
+10. Next priorities:
+   - 等待 / 整合新版 role_facts.json
+   - 視需要重跑 workflow 更新 live `circulars.json`
+   - 決定下一個擴展 topic（student / hr）
+11. Risks / blockers:
+   - 即使前端版本追上，若不再跑 workflow，live `circulars.json` 仍不會反映新的分析輸出
+12. Notes:
+   - 再次 cache-busted 檢查後，public GitHub Pages 已確認追上 `v3.0.14`
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - 使用者要把 `v3.0.14` 的角色名稱更新推上 GitHub。
+2. Root Cause:
+   - `v3.0.14` 僅存在 workspace，尚未推送到 deploy repo / public site。
+3. Fix:
+   - 執行既有 `deploy.sh --no-bump` 發布流程，之後立即用 cache-busting 方式檢查 public HTML。
+4. Verification:
+   - deploy repo `HEAD=cec74e8`
+   - deploy repo clean and tracking `origin/main`
+   - public HTML 已為 `v3.0.14`
+5. Regression / rule update:
+   - 無新增治理規則；本次屬 release publish 與 live-state documentation update。
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Publish flow | local workspace 已在 `v3.0.14` | 執行 `deploy.sh --no-bump` | repo `main` 成功更新到 `v3.0.14` | commit `cec74e8` pushed | PASS |
+| Repo parity | push 完成後 | 檢查 deploy repo status | working tree clean and tracking origin | `main...origin/main` | PASS |
+| Public frontend propagation | push 後再次檢查 public HTML | 應看到 `v3.0.14` 或明確辨識 propagation 未完成 | public HTML 已顯示 `v3.0.14` | PASS |
+
+Overall: PASS
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: continue from live v3.0.14. The role-label normalization (`department_head` → 「主任」, `eo_admin` → 「EO」) has been pushed to `main` in commit `cec74e8`, and GitHub Pages has now been re-verified publicly at v3.0.14.
+
+Pending tasks (priority order):
+1. If the user provides a new `role_facts.json`, integrate it to replace `dev/knowledge/role_facts.json` and validate the K1 interface.
+2. If the user wants finance-aware review reflected in live circular output, run the appropriate workflow again so `circulars.json` is regenerated under the latest code.
+3. Decide the next topic-aware review extension after finance (likely student / hr), keeping the second-pass review deterministic and non-destructive.
+
+Key files changed in this session:
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- The role schema keys remain `department_head` / `eo_admin`; only user-facing labels changed.
+- Even after deploy, live `circulars.json` will not show any new analysis behavior until a workflow regenerates it.
+
+Validation status: deploy script PASS; repo HEAD/status PASS; public HTML check PASS at v3.0.14.
+
+Post-startup first action: confirm whether the next step is `role_facts.json` integration, rerunning workflow for live `circulars.json`, or implementing the next topic-aware review extension.
+```
+
 ## 2026-04-06 Role label normalization to 主任 / EO + v3.0.14
 
 1. Agent & Session ID: Codex_20260406_0007

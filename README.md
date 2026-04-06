@@ -23,8 +23,8 @@ This system automatically scrapes Hong Kong Education Bureau (EDB) circulars, pe
 | 📊 通告總覽 | ✅ 正式版 | 統計卡片、篩選、搜尋、卡片/列表切換 |
 | 🤖 AI 智能分析 | ✅ 正式版 | gpt-5-nano 多角色分析，含摘要/行動/截止 |
 | 📄 官方原文整理版 | ✅ v3.0.12 | 清洗斷行、空白與段落，提升官方摘錄可讀性 |
-| 🧠 知識校正層 | ✅ v3.0.13 | AI 首輪分析後，按序統一字眼，並對 supplier / curriculum / finance 類通告做補漏、補連結、降低角色飄移 |
-| 👥 六角色視圖 | ✅ 正式版 | 校長/副校長/主任/教師/EO/供應商 |
+| 🧠 知識校正層 | ✅ v3.0.15 | AI 首輪分析後，按序統一字眼，並對 supplier / curriculum / finance / student 類通告做補漏、補連結、降低角色飄移 |
+| 👥 七角色視圖 | ✅ v3.0.16 | 校長/副校長/科主任/主任/教師/EO/供應商（兼容舊 `department_head` 資料） |
 | 📅 月曆視圖 | ✅ 正式版 | EDBC 格式通告、截止日期標記 |
 | 💰 資源申請 | ✅ 正式版 | 可申請撥款追蹤 |
 | ⭐ 收藏 / 📌 釘選 | ✅ 正式版 | 一般收藏 vs 常備參考通告 |
@@ -45,7 +45,7 @@ edb_scraper.py              ← Python 後端管線
     ├── HTML 抓取（位置式解析）
     ├── PDF 下載 + 解析（PyMuPDF）
     ├── AI 分析（gpt-5-nano, json_schema）
-    ├── 知識校正（統一字眼 / 補漏 / 補連結；目前覆蓋 supplier + curriculum + finance）
+    ├── 知識校正（統一字眼 / 補漏 / 補連結；目前覆蓋 supplier + curriculum + finance + student）
     └── circulars.json 輸出（增量 merge）
          │
          ▼
@@ -94,7 +94,7 @@ EDB-AI-Circular-System/
     ├── K1_KNOWLEDGE_INTERFACE_SPEC.md ← K1 知識庫接口合約
     ├── v0.2.0-FRONTEND-SPEC.md     ← 前端規格 SSOT
     └── knowledge/
-        └── role_facts.json         ← K1 基線知識庫（6 主題 × 7 角色）
+        └── role_facts.json         ← K1 基線知識庫（角色契約以 K1 spec 為準）
 ```
 
 ---
@@ -165,16 +165,19 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 
 ---
 
-## 👥 六大分析角色
+## 👥 七大分析角色
 
 | 角色 Key | 中文 | 關注範圍 |
 |----------|------|----------|
 | `principal` | 校長 | 全校決策、資源分配、政策回應 |
 | `vice_principal` | 副校長 | 日常營運監督、政策落實 |
-| `department_head` | 主任 | 科組落實、課程調整 |
+| `subject_head` | 科主任 | 學科 / 科組落實、課程調整 |
+| `panel_chair` | 主任 | 課程統籌、訓輔、活動、總務、教務、學務、SEN、IT 統籌等校本主任職系 |
 | `teacher` | 教師 | 課堂影響、學生指導 |
 | `eo_admin` | EO | 表格填報、截止追蹤 |
 | `supplier` | 供應商 | 招標機會、規格變更 |
+
+> 過渡說明：舊資料若仍使用 `department_head`，前端會先兼容映射為 `panel_chair`。
 
 ---
 

@@ -24,6 +24,7 @@
 | Prototype / simulation tool added | CODEBASE_CONTEXT.md Directory Map if tool is meant for reuse; SESSION_LOG.md entry | manual review |
 | Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | manual review |
 | Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | manual review |
+| Knowledge interface / contract change | K1_KNOWLEDGE_INTERFACE_SPEC.md; CODEBASE_CONTEXT.md Key Decisions / maintenance log; SESSION_LOG.md entry; README.md only if user-facing behavior description changes | manual review |
 | _[Add project-specific rows below this line]_ | | |
 
 ## Anti-pattern: No Matching Row

@@ -93,6 +93,10 @@ POST_REVIEW_FINANCE_KEYWORDS = [
     "津貼", "撥款", "資助", "經費", "申請", "財務", "報銷", "結餘",
     "收支", "發還", "資助學校", "學校發展津貼",
 ]
+POST_REVIEW_STUDENT_KEYWORDS = [
+    "學生", "學生活動", "比賽", "交流", "家長", "家校", "參與", "支援",
+    "訓育", "輔導", "SEN", "校外活動", "健康", "網絡安全",
+]
 
 ORDERED_TERM_RULES = [
     {
@@ -163,6 +167,19 @@ FINANCE_RECOMMENDED_LINKS = [
         "label": "學校發展津貼的參考資料",
         "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
         "why": "補充津貼基本原則、申請/發放安排及會計處理要求",
+    },
+]
+
+STUDENT_RECOMMENDED_LINKS = [
+    {
+        "label": "學校活動指引",
+        "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
+        "why": "補充學生活動安排、風險管理及校內行政協調的官方參考",
+    },
+    {
+        "label": "學校行政手冊",
+        "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
+        "why": "補充學生支援、家校溝通及校內程序處理的行政參考",
     },
 ]
 
@@ -254,13 +271,14 @@ CIRCULAR_SCHEMA = {
                 "type": "object",
                 "additionalProperties": False,
                 "required": [
-                    "principal", "vice_principal", "department_head",
+                    "principal", "vice_principal", "subject_head", "panel_chair",
                     "teacher", "eo_admin", "supplier",
                 ],
                 "properties": {
                     "principal":       _ROLE_OBJ,
                     "vice_principal":  _ROLE_OBJ,
-                    "department_head": _ROLE_OBJ,
+                    "subject_head":    _ROLE_OBJ,
+                    "panel_chair":     _ROLE_OBJ,
                     "teacher":         _ROLE_OBJ,
                     "eo_admin":        _ROLE_OBJ,
                     "supplier":        _SUPPLIER_ROLE_OBJ,
@@ -332,7 +350,7 @@ CIRCULAR_SCHEMA = {
 # LLM SYSTEM PROMPT
 # =============================================================================
 
-SYSTEM_PROMPT = """你是一個香港教育局（EDB）通告分析專家，服務對象包括學校校長、副校長、主任、教師、EO 和供應商。
+SYSTEM_PROMPT = """你是一個香港教育局（EDB）通告分析專家，服務對象包括學校校長、副校長、科主任、主任、教師、EO 和供應商。
 你具備深厚的香港學校管理知識，並能將提供的「經審核知識庫 (Knowledge Base)」與通告內容進行語義對照分析。
 
 你的任務是閱讀 EDB 通告全文，提取結構化資訊，以 JSON 格式輸出分析結果。
@@ -370,7 +388,7 @@ roles（每角色分析）：
   r    — 此通告是否與該角色相關（true/false）
   pts  — 重點事項，最多 3 項中文短句
   acts — 具體行動，最多 3 項（如無需行動則為空數組）
-  角色清單：principal, vice_principal, department_head, teacher, eo_admin, supplier
+  角色清單：principal, vice_principal, subject_head, panel_chair, teacher, eo_admin, supplier
   (supplier 角色額外包含：is_tender, procurement_cat, budget_estimate, compliance_ref, eligibility, contact_unit)
 
 deadlines（截止日期）：
@@ -380,7 +398,7 @@ deadlines（截止日期）：
   日期格式：YYYY-MM-DD
 
 actions（具體行動步驟）：
-  按時間先後排列，role 欄只用：principal, vice_principal, department_head, teacher, eo_admin, supplier
+  按時間先後排列，role 欄只用：principal, vice_principal, subject_head, panel_chair, teacher, eo_admin, supplier
   dl 填 YYYY-MM-DD 或 null
 
 diff（版本比較）：
@@ -992,7 +1010,7 @@ def _empty_analysis() -> dict:
         },
         "roles": {
             **{r: {"r": False, "pts": [], "acts": []}
-               for r in ["principal", "vice_principal", "department_head", "teacher", "eo_admin"]},
+               for r in ["principal", "vice_principal", "subject_head", "panel_chair", "teacher", "eo_admin"]},
             "supplier": {
                 "r": False, "pts": [], "acts": [],
                 "is_tender": False, "procurement_cat": "none",
@@ -1015,6 +1033,55 @@ def _dedupe_strings(items: list[str]) -> list[str]:
         seen.add(item)
         output.append(item)
     return output
+
+
+def _merge_role_obj(base: dict | None, incoming: dict | None) -> dict:
+    merged = copy.deepcopy(base or {"r": False, "pts": [], "acts": []})
+    if not isinstance(incoming, dict):
+        return merged
+    merged["r"] = bool(merged.get("r") or incoming.get("r"))
+    merged["pts"] = _dedupe_strings((merged.get("pts", []) or []) + (incoming.get("pts", []) or []))
+    merged["acts"] = _dedupe_strings((merged.get("acts", []) or []) + (incoming.get("acts", []) or []))
+    return merged
+
+
+def _normalize_roles_payload(circ: dict) -> dict:
+    """Normalize legacy and new role payloads to the current 7-role contract."""
+    normalized = copy.deepcopy(circ)
+    defaults = _empty_analysis()["roles"]
+    original_roles = normalized.get("roles", {})
+    roles = copy.deepcopy(defaults)
+
+    if isinstance(original_roles, dict):
+        for role_name in ["principal", "vice_principal", "subject_head", "panel_chair", "teacher", "eo_admin", "supplier"]:
+            if role_name not in original_roles:
+                continue
+            if role_name == "supplier":
+                merged_supplier = copy.deepcopy(roles["supplier"])
+                if isinstance(original_roles[role_name], dict):
+                    merged_supplier.update(original_roles[role_name])
+                roles["supplier"] = merged_supplier
+            else:
+                roles[role_name] = _merge_role_obj(roles[role_name], original_roles[role_name])
+
+        if "department_head" in original_roles:
+            roles["panel_chair"] = _merge_role_obj(roles["panel_chair"], original_roles["department_head"])
+
+    normalized["roles"] = roles
+
+    for action in normalized.get("actions", []) or []:
+        if action.get("role") == "department_head":
+            action["role"] = "panel_chair"
+
+    for deadline in normalized.get("deadlines", []) or []:
+        if isinstance(deadline.get("roles"), list):
+            deadline["roles"] = [
+                "panel_chair" if role == "department_head" else role
+                for role in deadline["roles"]
+            ]
+            deadline["roles"] = list(dict.fromkeys(deadline["roles"]))
+
+    return normalized
 
 
 def _replace_terms(text: str, applied: list[dict]) -> str:
@@ -1087,7 +1154,7 @@ def _merge_link_lists(*groups: list[dict]) -> list[dict]:
 
 def _apply_post_analysis_review(circ: dict) -> dict:
     """Second-pass deterministic knowledge review after primary analysis."""
-    reviewed = copy.deepcopy(circ)
+    reviewed = _normalize_roles_payload(circ)
     applied_rules: list[dict] = []
     missing_points: list[str] = []
     role_notes: list[str] = []
@@ -1122,10 +1189,11 @@ def _apply_post_analysis_review(circ: dict) -> dict:
         "curriculum" in topics
         or any(keyword in source_text for keyword in POST_REVIEW_CURRICULUM_KEYWORDS)
     )
+    finance_keyword_hits = sum(1 for keyword in POST_REVIEW_FINANCE_KEYWORDS if keyword in source_text)
     has_finance_signal = (
         "finance" in topics
         or reviewed.get("grant_info", {}).get("type") in {"applicable", "resource"}
-        or any(keyword in source_text for keyword in POST_REVIEW_FINANCE_KEYWORDS)
+        or finance_keyword_hits >= 2
     )
 
     if isinstance(supplier, dict):
@@ -1156,7 +1224,7 @@ def _apply_post_analysis_review(circ: dict) -> dict:
             added_links.extend(KNOWLEDGE_RECOMMENDED_LINKS)
 
     if has_curriculum_signal:
-        curriculum_roles = ["principal", "vice_principal", "department_head", "teacher", "eo_admin"]
+        curriculum_roles = ["principal", "vice_principal", "subject_head", "panel_chair", "teacher", "eo_admin"]
         curriculum_note = "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。"
         implementation_note = "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。"
         school_followup_note = "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
@@ -1166,7 +1234,7 @@ def _apply_post_analysis_review(circ: dict) -> dict:
             if not isinstance(role_data, dict):
                 continue
 
-            if role_name in {"principal", "vice_principal", "department_head", "teacher"} and not role_data.get("r"):
+            if role_name in {"principal", "vice_principal", "subject_head", "panel_chair", "teacher"} and not role_data.get("r"):
                 role_data["r"] = True
                 role_notes.append(f"偵測到 curriculum 類訊號，將 `{role_name}` 角色標記為相關。")
 
@@ -1178,7 +1246,7 @@ def _apply_post_analysis_review(circ: dict) -> dict:
                     role_data["pts"].append(curriculum_note)
                 if role_name in {"principal", "vice_principal", "eo_admin"} and school_followup_note not in role_data["pts"]:
                     role_data["pts"].append(school_followup_note)
-                if role_name in {"department_head", "teacher"} and implementation_note not in role_data["acts"]:
+                if role_name in {"subject_head", "panel_chair", "teacher"} and implementation_note not in role_data["acts"]:
                     role_data["acts"].append(implementation_note)
 
                 role_data["pts"] = _dedupe_strings(role_data["pts"])[:3]
@@ -1188,7 +1256,7 @@ def _apply_post_analysis_review(circ: dict) -> dict:
         added_links.extend(CURRICULUM_RECOMMENDED_LINKS)
 
     if has_finance_signal:
-        finance_roles = ["principal", "vice_principal", "department_head", "eo_admin"]
+        finance_roles = ["principal", "vice_principal", "panel_chair", "eo_admin"]
         finance_overview_note = "留意撥款用途、批核流程、可動用範圍及年度結餘安排，避免偏離通告列明用途。"
         finance_admin_note = "核對申請資格、截止日期、所需證明文件及收支記錄要求，並保留佐證以備查核。"
         finance_followup_note = "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。"
@@ -1211,9 +1279,9 @@ def _apply_post_analysis_review(circ: dict) -> dict:
                     role_data["pts"].append(finance_overview_note)
                 if role_name == "eo_admin" and finance_admin_note not in role_data["pts"]:
                     role_data["pts"].append(finance_admin_note)
-                if role_name in {"department_head", "eo_admin"} and finance_followup_note not in role_data["acts"]:
+                if role_name in {"panel_chair", "eo_admin"} and finance_followup_note not in role_data["acts"]:
                     role_data["acts"].append(finance_followup_note)
-                if role_name == "department_head" and finance_planning_note not in role_data["pts"]:
+                if role_name == "panel_chair" and finance_planning_note not in role_data["pts"]:
                     role_data["pts"].append(finance_planning_note)
 
                 role_data["pts"] = _dedupe_strings(role_data["pts"])[:3]
@@ -1221,6 +1289,46 @@ def _apply_post_analysis_review(circ: dict) -> dict:
 
         missing_points.append("補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。")
         added_links.extend(FINANCE_RECOMMENDED_LINKS)
+
+    has_student_signal = (
+        "student" in topics
+        or any(keyword in source_text for keyword in POST_REVIEW_STUDENT_KEYWORDS)
+    )
+
+    if has_student_signal:
+        student_roles = ["principal", "vice_principal", "subject_head", "panel_chair", "teacher", "eo_admin"]
+        student_support_note = "留意學生參與條件、支援安排及活動期間的照顧需要，避免遺漏個別學生的參與支援。"
+        parent_notice_note = "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+        implementation_followup_note = "按學生級別、活動安排及支援需要，預早協調人手、分組、風險提示及記錄安排。"
+        admin_record_note = "整理學生名單、家長通知、回覆記錄及相關支援文件，並保留校內存檔。"
+
+        for role_name in student_roles:
+            role_data = roles.get(role_name)
+            if not isinstance(role_data, dict):
+                continue
+
+            if role_name in {"vice_principal", "subject_head", "panel_chair", "teacher", "eo_admin"} and not role_data.get("r"):
+                role_data["r"] = True
+                role_notes.append(f"偵測到 student 類訊號，將 `{role_name}` 角色標記為相關。")
+
+            if role_data.get("r"):
+                role_data.setdefault("pts", [])
+                role_data.setdefault("acts", [])
+
+                if role_name in {"principal", "vice_principal", "subject_head", "panel_chair"} and student_support_note not in role_data["pts"]:
+                    role_data["pts"].append(student_support_note)
+                if role_name in {"principal", "vice_principal", "eo_admin"} and parent_notice_note not in role_data["pts"]:
+                    role_data["pts"].append(parent_notice_note)
+                if role_name in {"subject_head", "panel_chair", "teacher"} and implementation_followup_note not in role_data["acts"]:
+                    role_data["acts"].append(implementation_followup_note)
+                if role_name == "eo_admin" and admin_record_note not in role_data["acts"]:
+                    role_data["acts"].append(admin_record_note)
+
+                role_data["pts"] = _dedupe_strings(role_data["pts"])[:3]
+                role_data["acts"] = _dedupe_strings(role_data["acts"])[:3]
+
+        missing_points.append("補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。")
+        added_links.extend(STUDENT_RECOMMENDED_LINKS)
 
     reviewed["knowledge_review"] = {
         "terminology_review": [
@@ -1396,6 +1504,7 @@ def run_pipeline(args) -> int:
                 for key in _empty_analysis():
                     if key not in circ:
                         circ[key] = existing[num].get(key)
+                circ = _normalize_roles_payload(circ)
                 circ = _apply_post_analysis_review(circ)
                 raw[idx] = circ
                 continue
@@ -1406,11 +1515,13 @@ def run_pipeline(args) -> int:
             result = analyzer.analyze(circ)
             if result:
                 circ.update(result)
+                circ = _normalize_roles_payload(circ)
                 circ = _apply_post_analysis_review(circ)
                 raw[idx] = circ
             else:
                 log.warning(f"  → LLM failed — using empty analysis defaults")
                 circ.update(_empty_analysis())
+                circ = _normalize_roles_payload(circ)
 
             # Polite rate-limiting
             if idx < len(raw) - 1:
@@ -1444,6 +1555,7 @@ def run_pipeline(args) -> int:
 
     output_list = []
     for idx, circ in enumerate(merged_sorted):
+        circ = _normalize_roles_payload(circ)
         # Merge defaults for any missing fields
         defaults = _empty_analysis()
         for key, val in defaults.items():
@@ -1576,7 +1688,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.14")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.16")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

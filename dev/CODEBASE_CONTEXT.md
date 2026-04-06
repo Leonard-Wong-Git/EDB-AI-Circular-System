@@ -54,7 +54,7 @@ EDB-Circular-AI-analysis-system/
     ├── v0.2.0-FRONTEND-SPEC.md     # Frontend spec SSOT
     ├── HANDOFF_PROMPT_v14.md       # Legacy handoff (archived)
     ├── knowledge/
-    │   ├── role_facts.json         # K1 baseline knowledge (6 topics × 7 roles)
+    │   ├── role_facts.json         # K1 baseline knowledge (role contract per K1 spec; file currently awaiting refreshed handoff copy)
     │   ├── ROLE_KNOWLEDGE_INDEX.md # Top 5 files per role
     │   ├── *.md                    # Topic knowledge files (fin, hr, curriculum, etc.)
     ├── tools/
@@ -179,6 +179,9 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 14 | Topic-aware Curriculum Review Extension | 2026-04-04 | Extended the deterministic second-pass review to curriculum-style circulars so terminology normalization, curriculum implementation reminders, and official curriculum/KPM links can be added without rewriting hard facts. |
 | 15 | Idempotent Terminology Normalization Guard | 2026-04-06 | Term-standardization rules that expand a source string into a target containing that same source must collapse duplicate expansions and avoid reapplying on already-normalized text. |
 | 16 | Topic-aware Finance Review Extension | 2026-04-06 | Extended the deterministic second-pass review to finance-style circulars so grant-use, document-retention, and finance-process reminders plus official finance references can be added without overwriting grant facts or deadlines. |
+| 17 | Topic-aware Student Review Extension | 2026-04-06 | Extended the deterministic second-pass review to student-style circulars so participation support, parent-notice, and student-record reminders plus student-operations references can be added without overwriting hard facts. |
+| 18 | K1 Role Contract Alignment Target | 2026-04-06 | The agreed next-step contract for knowledge exchange is `subject_head` = 科主任, `panel_chair` = 主任, `eo_admin` = EO; product code still requires a compatibility refactor before fully adopting these keys end-to-end. |
+| 19 | Role Compatibility Layer Before Full Schema Cutover | 2026-04-06 | Product code now normalizes legacy `department_head` data into `panel_chair` while accepting the new `subject_head` / `panel_chair` contract, so old `circulars.json` remains readable during the migration window. |
 
 ---
 
@@ -210,3 +213,6 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 2026-04-04 | Codex_20260404_0008 | Extended deterministic post-analysis knowledge review to curriculum signals, added curriculum-specific reminders/links, and bumped local workspace version to v3.0.9 pending deploy. |
 | 2026-04-06 | Codex_20260406_0002 | Fixed duplicated curriculum term replacement by making `_replace_terms()` idempotent, then prepared v3.0.11 for regenerated data and release. |
 | 2026-04-06 | Codex_20260406_0005 | Extended deterministic post-analysis knowledge review to finance signals, adding grant-use/document reminders and finance reference links; bumped local workspace version to v3.0.13 pending deploy. |
+| 2026-04-06 | Codex_20260406_0009 | Extended deterministic post-analysis knowledge review to student signals, adding participation-support/parent-notice reminders and student-operation reference links; bumped local workspace version to v3.0.15 pending deploy. |
+| 2026-04-06 | Codex_20260406_0010 | Updated the K1 interface contract to v2.0.0 so knowledge exchange aligns on `subject_head` / `panel_chair` / `eo_admin=EO`, while documenting that product code still needs a compatibility-layer refactor before full schema adoption. |
+| 2026-04-06 | Codex_20260406_0011 | Implemented the first product-side compatibility layer for the new role contract: scraper output now uses `subject_head` / `panel_chair`, legacy `department_head` is normalized to `panel_chair`, dashboard UI exposes 7 roles, and workspace version is now v3.0.16 pending deploy. |

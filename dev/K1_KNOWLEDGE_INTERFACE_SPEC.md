@@ -1,7 +1,8 @@
 # K1 知識庫接口規格（對外獨立版）
 
-**文件版本：** 1.0.0
+**文件版本：** 2.0.0
 **建立日期：** 2026-03-15
+**更新日期：** 2026-04-06
 **維護方：** EDB Circular AI Analysis System
 **用途：** 供 K1 知識庫項目開發者參考，定義雙方接口契約
 **獨立性聲明：** 本文件完全獨立，K1 項目無需閱讀或接觸 EDB 項目的任何其他文件、代碼或配置。
@@ -13,9 +14,9 @@
 K1 知識庫項目的輸出，將被 EDB Circular AI Analysis System 在分析通告時注入 LLM prompt，以提升以下精準度：
 
 - 各角色的責任判斷（「這條通告校長需要親自處理嗎？」）
-- 採購 / 財務合規建議（「行政主任需要做幾份報價？」）
+- 採購 / 財務合規建議（「EO 需要做幾份報價？」）
 - 截止日期緊急程度評估（「這個截止對教師而言是否關鍵？」）
-- 角色相關行動清單生成（「科主任應該採取哪幾步？」）
+- 角色相關行動清單生成（「科主任或相關主任應該採取哪幾步？」）
 
 ---
 
@@ -60,7 +61,10 @@ Token 預算：  注入 LLM 時每次分析取用 ≤ 600 字（中文字符）
       "廉潔約章：所有 > HK$2,000 採購須要求供應商簽署廉潔約章（ICAC 要求）"
     ],
     "eo_admin": [
-      "行政主任負責採購程序合規，須保存完整報價記錄（最少 7 年）"
+      "EO 負責採購程序合規，須保存完整報價記錄（最少 7 年）"
+    ],
+    "panel_chair": [
+      "主任宜先確認校內採購需要、使用部門安排及文件流轉次序"
     ],
     "principal": [
       "整筆撥款（LSG）校長須確保各項撥款按核准用途使用，不可挪用"
@@ -101,19 +105,27 @@ Token 預算：  注入 LLM 時每次分析取用 ≤ 600 字（中文字符）
 
 > ⚠️ **約束：** Topic ID 必須完全吻合上表英文字串。如需新增 topic，雙方須協商後更新本文件版本。
 
-### 3.2 Role ID 清單
+### 3.2 Role ID 清單（v2.0.0）
 
 | Role ID | 中文說明 | 備注 |
 |---------|----------|------|
 | `all_roles` | 所有角色適用 | 特殊保留 key，必須使用 |
 | `principal` | 校長 | |
 | `vice_principal` | 副校長 | |
-| `department_head` | 科主任 | |
+| `subject_head` | 科主任 | 學科 / 科組 / 課程職能為主 |
+| `panel_chair` | 主任 | 泛指課程統籌主任、訓輔主任、活動主任、總務主任、教務主任、學務主任、特殊教育主任、資訊科技統籌主任等校本主任職系 |
 | `teacher` | 教師 | |
-| `eo_admin` | 行政主任 | |
+| `eo_admin` | EO | 英文職銜顯示，避免與一般「行政主任」中文泛稱混淆 |
 | `supplier` | 供應商 | |
 
 > ⚠️ **約束：** Role ID 必須完全吻合上表英文字串，包括下劃線格式。
+
+### 3.3 Legacy 過渡說明
+
+- `department_head` 自 `v2.0.0` 起列為 **deprecated legacy key**，不可用於新交付的 `role_facts.json`
+- 舊資料若仍只有 `department_head`，EDB 接收端在過渡期會優先把它視作 `panel_chair`
+- 如內容明確屬學科 / 科組 / 課程職能，EDB 端可在後續相容層再映射為 `subject_head`
+- 新交付請只使用：`subject_head`、`panel_chair`、`eo_admin`
 
 ---
 
@@ -191,8 +203,9 @@ K1 項目交付前，建議用以下 Python 腳本自我驗證：
 import json
 
 VALID_TOPICS = {"finance","hr","curriculum","activity","student","it","general"}
-VALID_ROLES  = {"all_roles","principal","vice_principal","department_head",
-                "teacher","eo_admin","supplier"}
+VALID_ROLES  = {"all_roles","principal","vice_principal","subject_head",
+                "panel_chair","teacher","eo_admin","supplier"}
+LEGACY_ROLE_ALIASES = {"department_head": "panel_chair"}
 MAX_FACT_LEN = 80
 MAX_FACTS_PER_KEY = 5
 
@@ -210,6 +223,11 @@ def validate(path="role_facts.json"):
             errors.append(f"{topic_id}: missing _keywords_zh")
         for role_key, facts in topic_data.items():
             if role_key.startswith("_"):
+                continue
+            if role_key in LEGACY_ROLE_ALIASES:
+                errors.append(
+                    f"{topic_id}.{role_key}: deprecated role, use {LEGACY_ROLE_ALIASES[role_key]} instead"
+                )
                 continue
             if role_key not in VALID_ROLES:
                 errors.append(f"{topic_id}.{role_key}: unknown role")
@@ -257,8 +275,8 @@ K1 項目                              EDB 項目
 | 變更類型 | Schema 版本號 | 是否需要通知 EDB |
 |----------|--------------|-----------------|
 | 新增 / 修改事實條目內容 | Patch（1.0.x） | 不需要，直接交付 |
-| 新增現有 topic 下的新 role key | Minor（1.x.0） | 建議通知 |
-| 新增全新 topic ID | **Minor（1.x.0）** | **必須通知，先更新本文件** |
+| 新增現有 topic 下的新 role key | Minor（2.x.0） | 建議通知 |
+| 新增全新 topic ID | **Minor（2.x.0）** | **必須通知，先更新本文件** |
 | 修改 topic ID 或 role ID 名稱 | **Major（x.0.0）** | **必須協商，雙方同步更新** |
 
 > Major 版本變更必須雙方同意後才能實施，避免 EDB 項目 silent break。
