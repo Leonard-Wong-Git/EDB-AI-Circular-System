@@ -399,7 +399,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -1626,8 +1625,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `eligibility`，提醒需核對招標/報價資格與文件要求。",
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -2080,7 +2077,7 @@
         "resource_value_hkd": null,
         "note": "提供展覽資源、導賞、講座及相關學習活動等支援"
       },
-      "summary": "本通告通知各小學及中學（包括特殊學校）有關「星耀中華：時代棟樑的風範與精神」專題展覽的情況。展覽由愛國教育支援中心於 2026 年 3 月 13 日起展出，內容聚焦十二位國家時代棟樑的人生事蹟與民族精神，涵蓋文化、科學、軍事、藝術、建築、體育等領域，並提供學與教資源／課程相關材料／課程相關材料、展品資料、導賞、講座及學習活動。學校可選擇在工作日（星期一至五，公眾假期除外）預約參訪，需提前安排師生分組以便輪流參與講座與展覽。展覽內容與相關科目或跨學習領域的課程重點對接，如小學人文科、中學中國歷史、歷史科、初中公民、經濟與社會科及高中公民與社會發展科、價值觀教育及國家安全教育等。另可在參訪當日同時申請參觀愛國教育支援中心內的「抗日戰爭勝利80周年專題展覽」，豐富愛國主義教育的學習經歷。申請預約請使用愛國教育支援中心網頁 https://www.hkpec.hk/article/1009，學校需於參訪前至少三星期提交表格，中心將聯絡負責教師以確認預約與相關安排。如有需要，請致電 2770 0071 聯絡中心。教育局長（江紹卓代行）於 2026 年 3 月 13 日發布此通告。 ",
+      "summary": "本通告通知各小學及中學（包括特殊學校）有關「星耀中華：時代棟樑的風範與精神」專題展覽的情況。展覽由愛國教育支援中心於 2026 年 3 月 13 日起展出，內容聚焦十二位國家時代棟樑的人生事蹟與民族精神，涵蓋文化、科學、軍事、藝術、建築、體育等領域，並提供學與教資源／課程相關材料、展品資料、導賞、講座及學習活動。學校可選擇在工作日（星期一至五，公眾假期除外）預約參訪，需提前安排師生分組以便輪流參與講座與展覽。展覽內容與相關科目或跨學習領域的課程重點對接，如小學人文科、中學中國歷史、歷史科、初中公民、經濟與社會科及高中公民與社會發展科、價值觀教育及國家安全教育等。另可在參訪當日同時申請參觀愛國教育支援中心內的「抗日戰爭勝利80周年專題展覽」，豐富愛國主義教育的學習經歷。申請預約請使用愛國教育支援中心網頁 https://www.hkpec.hk/article/1009，學校需於參訪前至少三星期提交表格，中心將聯絡負責教師以確認預約與相關安排。如有需要，請致電 2770 0071 聯絡中心。教育局長（江紹卓代行）於 2026 年 3 月 13 日發布此通告。 ",
       "roles": {
         "principal": {
           "r": true,
@@ -2239,7 +2236,7 @@
             "提供諮詢以促進整體落地"
           ],
           "acts": [
-            "公佈本通函內容，指導學校使用學與教資源／課程相關材料／課程相關材料",
+            "公佈本通函內容，指導學校使用學與教資源／課程相關材料",
             "協調校方落實資源於課程與活動中"
           ]
         },
@@ -2317,7 +2314,7 @@
       ],
       "actions": [
         {
-          "text": "公布本次通告內容，指導學校使用相關學與教資源／課程相關材料／課程相關材料，協調校本推動安排。",
+          "text": "公布本次通告內容，指導學校使用相關學與教資源／課程相關材料，協調校本推動安排。",
           "role": "principal",
           "dl": null,
           "note": ""
@@ -2544,7 +2541,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -2916,9 +2912,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26026C.pdf",
@@ -3301,14 +3295,7 @@
       ],
       "diff": null,
       "knowledge_review": {
-        "terminology_review": [
-          {
-            "priority": 5,
-            "from": "學與教資源",
-            "to": "學與教資源／課程相關材料",
-            "reason": "統一 curriculum 類通告用語，突出課程應用場景"
-          }
-        ],
+        "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
@@ -4377,9 +4364,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `eligibility`，提醒需核對招標/報價資格與文件要求。",
-          "補回 supplier `contact_unit`，避免聯絡路徑缺失。",
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -4404,9 +4388,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26015C.pdf",
@@ -5153,7 +5135,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -5545,7 +5526,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -6562,7 +6542,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -7082,9 +7061,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26008C.pdf",
@@ -7436,9 +7413,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `eligibility`，提醒需核對招標/報價資格與文件要求。",
-          "補回 supplier `contact_unit`，避免聯絡路徑缺失。",
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -7463,9 +7437,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26005C.pdf",
@@ -7622,9 +7594,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26012C.pdf",
@@ -8356,9 +8326,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `eligibility`，提醒需核對招標/報價資格與文件要求。",
-          "補回 supplier `contact_unit`，避免聯絡路徑缺失。",
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -8383,9 +8350,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26013C.pdf",
@@ -8518,9 +8483,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `eligibility`，提醒需核對招標/報價資格與文件要求。",
-          "補回 supplier `contact_unit`，避免聯絡路徑缺失。",
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -8545,9 +8507,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26016C.pdf",
@@ -9273,9 +9233,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `eligibility`，提醒需核對招標/報價資格與文件要求。",
-          "補回 supplier `contact_unit`，避免聯絡路徑缺失。",
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -9300,9 +9257,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25213C.pdf",
@@ -10758,9 +10713,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `eligibility`，提醒需核對招標/報價資格與文件要求。",
-          "補回 supplier `contact_unit`，避免聯絡路徑缺失。",
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -10785,9 +10737,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25212C.pdf",
@@ -10935,11 +10885,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `department_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25208C.pdf",
@@ -11096,8 +11042,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `contact_unit`，避免聯絡路徑缺失。",
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -11122,9 +11066,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25202C.pdf",
@@ -11541,7 +11483,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -11736,9 +11677,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `eligibility`，提醒需核對招標/報價資格與文件要求。",
-          "補回 supplier `contact_unit`，避免聯絡路徑缺失。",
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -11763,9 +11701,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25197C.pdf",
@@ -11888,9 +11824,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `eligibility`，提醒需核對招標/報價資格與文件要求。",
-          "補回 supplier `contact_unit`，避免聯絡路徑缺失。",
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -11915,12 +11848,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `department_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25177C.pdf",
@@ -12240,9 +12168,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `eligibility`，提醒需核對招標/報價資格與文件要求。",
-          "補回 supplier `contact_unit`，避免聯絡路徑缺失。",
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -12267,9 +12192,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25200C.pdf",
@@ -12631,7 +12554,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -13489,7 +13411,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -13514,9 +13435,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25198C.pdf",
@@ -14500,7 +14419,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -15833,7 +15751,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -16031,7 +15948,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -16583,9 +16499,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `eligibility`，提醒需核對招標/報價資格與文件要求。",
-          "補回 supplier `contact_unit`，避免聯絡路徑缺失。",
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -16610,9 +16523,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25138C.pdf",
@@ -17233,10 +17144,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25168C.pdf",
@@ -18190,9 +18098,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `eligibility`，提醒需核對招標/報價資格與文件要求。",
-          "補回 supplier `contact_unit`，避免聯絡路徑缺失。",
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -18217,9 +18122,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25155C.pdf",
@@ -18721,9 +18624,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `eligibility`，提醒需核對招標/報價資格與文件要求。",
-          "補回 supplier `contact_unit`，避免聯絡路徑缺失。",
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -19149,9 +19049,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `department_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25164C.pdf",
@@ -19507,9 +19405,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `eligibility`，提醒需核對招標/報價資格與文件要求。",
-          "補回 supplier `contact_unit`，避免聯絡路徑缺失。",
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -19534,9 +19429,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25129C.pdf",
@@ -20135,9 +20028,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `eligibility`，提醒需核對招標/報價資格與文件要求。",
-          "補回 supplier `contact_unit`，避免聯絡路徑缺失。",
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -20162,9 +20052,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25149C.pdf",
@@ -20330,9 +20218,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `eligibility`，提醒需核對招標/報價資格與文件要求。",
-          "補回 supplier `contact_unit`，避免聯絡路徑缺失。",
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -20357,9 +20242,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25146C.pdf",
@@ -20531,7 +20414,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -20888,9 +20770,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `eligibility`，提醒需核對招標/報價資格與文件要求。",
-          "補回 supplier `contact_unit`，避免聯絡路徑缺失。",
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
@@ -20915,9 +20794,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25144C.pdf",

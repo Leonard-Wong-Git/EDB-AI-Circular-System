@@ -1,18 +1,18 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v3.0.9** (2026-04-04) ← **workspace 與 GitHub Pages live 已對齊；knowledge review 已覆蓋 supplier + curriculum**
+1. Version: **v3.0.10** (2026-04-06) ← **GitHub Pages live 已更新到 v3.0.10；full-year workflow 已完成，live `circulars.json` 為 114 份通告**
 2. Core commands / features:
-   - `edb-dashboard.html` — v3.0.9（供應商統計與採購類別顯示仍在）
-   - `edb_scraper.py` — v3.0.9（KnowledgeStore 語義搜尋 + deterministic post-analysis knowledge review，已擴展 curriculum）
+   - `edb-dashboard.html` — v3.0.10（新增官方原文整理版顯示清洗）
+   - `edb_scraper.py` — v3.0.10（KnowledgeStore 語義搜尋 + deterministic post-analysis knowledge review，已擴展 curriculum）
    - `circulars.json` — EDB 通告 + gpt-5-nano AI 分析（remote auto-update 115 circulars 保留）
    - `knowledge.json` — 從 edb-knowledge 獲取的語義事實來源（v1.2.2，107 facts ✅）
    - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具
    - `requirements.txt` — Python 依賴清單
    - `dev/knowledge/role_facts.json` — K1 基線知識庫（存檔）
    - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 接口合約規格
-3. Regression baseline: v3.0.9 local version markers PASS；curriculum helper check PASS；py_compile PASS；GitHub Pages live HTML + circulars.json confirm v3.0.9
-4. Release / merge status: **v3.0.9 已推送並已於 GitHub Pages live**
+3. Regression baseline: v3.0.10 live HTML markers PASS；live `circulars.json` generated_at `2026-04-06T11:38:12Z`；count `114`；knowledge_review live PASS
+4. Release / merge status: **v3.0.10 已推送並已於 GitHub Pages live；full-year workflow 已完成**
 5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -72,10 +72,10 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 若用戶提供新版 `role_facts.json`，整合取代 `dev/knowledge/role_facts.json`，並同步驗證 K1 接口
-2. **[重要]** 視需要把 `knowledge_review` 顯示到 dashboard 詳情頁，讓補漏/補連結可見
+1. **[下一步 ⭐]** 修正 curriculum / terminology normalization 的 idempotent 問題，避免 live 通告出現重複字樣如 `學與教資源／課程相關材料／課程相關材料`
+2. **[重要]** 若用戶提供新版 `role_facts.json`，整合取代 `dev/knowledge/role_facts.json`，並同步驗證 K1 接口
 3. **[其後]** 決定下一個 topic-aware review 擴展（finance / student / hr），保持 deterministic / non-destructive
-4. **[觀察]** 後續若再重跑 deterministic review，多次套用字眼標準化需留意 idempotent 行為
+4. **[觀察]** 視需要再微調「官方原文整理版」對 metadata 行的段落整理規則
 5. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
 6. **[選做]** LLM 引擎切換機制
 
@@ -161,22 +161,23 @@ Do not close a session with code changes without completing the version bump.
 
 ## Last Session Record
 1. UTC date: 2026-04-04
-2. Session ID: Codex_20260404_0009
+2. Session ID: Codex_20260406_0001
 3. Completed:
-   - ✅ 以 `deploy.sh --no-bump` 發布 `v3.0.9`
-   - ✅ 將現有 `circulars.json` 套用 deterministic review，令 curriculum 加值實際落入發布內容
-   - ✅ deploy repo 已推送：commit `bfc1126`
-   - ✅ GitHub Pages live HTML 與 live `circulars.json` 已確認顯示 `v3.0.9`
+   - ✅ 驗證 GitHub Pages live 現已顯示 `v3.0.10`
+   - ✅ 驗證 full-year workflow 已完成；live `circulars.json` generated_at = `2026-04-06T11:38:12Z`
+   - ✅ 驗證 live `circulars.json` count = `114`
+   - ✅ 驗證 live `knowledge_review`、`課程發展指引`、`學校表現指標 (KPM)` 已存在
 4. Pending:
    - 等待用戶提供新版 `role_facts.json`
-   - 視需要把 `knowledge_review` 顯示到 dashboard
+   - 修正 terminology normalization 的 idempotent 問題
    - 視需要修正 term-normalization 多次套用的 idempotent 行為
+   - 視需要再微調官方原文整理版的 metadata 分段規則
 5. Next priorities (max 3):
+   - 修正 normalization idempotent 行為
    - 等待 / 整合新版 role_facts.json
    - 決定下一個擴展 topic（finance / student / hr）
-   - 視需要修正 normalization idempotent 行為
-6. Risks / blockers: 第二輪 review 現只做 supplier + curriculum enrichment；若再擴展到更多 topic 仍需保持 deterministic / non-destructive
+6. Risks / blockers: live data 已確認出現 `學與教資源／課程相關材料／課程相關材料` 類型重複字樣；第二輪 review 再擴展前需先處理 idempotent 問題
 7. Files materially changed:
    - `dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
-8. Validation summary: py_compile PASS；curriculum helper check PASS；deploy repo push PASS；cache-busted live HTML + live circulars.json confirm v3.0.9
-9. Git commits: deploy repo commit `bfc1126` pushed to `origin/main`
+8. Validation summary: cache-busted live HTML PASS at v3.0.10；live `circulars.json` PASS with generated_at `2026-04-06T11:38:12Z` and count `114`；regression found in repeated terminology replacement
+9. Git commits: no new repo commit in this verification-only session

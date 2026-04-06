@@ -1005,8 +1005,40 @@ def _replace_terms(text: str, applied: list[dict]) -> str:
         return text
     result = text
     for rule in ORDERED_TERM_RULES:
-        if rule["from"] in result:
-            result = result.replace(rule["from"], rule["to"])
+        source = rule["from"]
+        target = rule["to"]
+        changed = False
+
+        if source in target:
+            suffix = target[len(source):]
+            if suffix:
+                duplicate_pattern = re.compile(
+                    re.escape(source) + f"(?:{re.escape(suffix)})+"
+                )
+                normalized = duplicate_pattern.sub(target, result)
+                if normalized != result:
+                    result = normalized
+                    changed = True
+
+                source_pattern = re.compile(
+                    re.escape(source) + f"(?!{re.escape(suffix)})"
+                )
+                replaced = source_pattern.sub(target, result)
+                if replaced != result:
+                    result = replaced
+                    changed = True
+            elif source in result:
+                replaced = result.replace(source, target)
+                if replaced != result:
+                    result = replaced
+                    changed = True
+        elif source in result:
+            replaced = result.replace(source, target)
+            if replaced != result:
+                result = replaced
+                changed = True
+
+        if changed:
             applied.append(rule)
     return result
 
@@ -1487,7 +1519,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.10")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.11")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

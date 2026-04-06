@@ -1,6 +1,179 @@
 # Session Log
 <!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->
 
+## 2026-04-06 Verify live v3.0.10 after full-year workflow
+
+1. Agent & Session ID: Codex_20260406_0001
+2. Task summary: 使用者已完成 full-year workflow；本 session 重新驗證 GitHub Pages live 狀態、full-year 輸出是否已上線，以及新前端 `v3.0.10` 是否生效。
+3. Layer classification: Product / System Layer（release verification / regression check）+ Development Governance Layer（session persistence）
+4. Source triage: 非開發實作；屬 live 驗證與 regression 發現。使用者已完成外部 workflow，因此重點是驗證輸出與找出新問題。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`
+6. Files changed: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 驗證 GitHub Pages cache-busted live HTML 已顯示 `v3.0.10`
+   - ✅ 驗證 live HTML 已含 `官方原文整理版`
+   - ✅ 驗證 live `circulars.json` generated_at = `2026-04-06T11:38:12Z`
+   - ✅ 驗證 live `circulars.json` count = `114`
+   - ✅ 驗證大量通告已包含 `knowledge_review` 與 curriculum links
+8. Validation / QC:
+   - `curl -L 'https://leonard-wong-git.github.io/EDB-AI-Circular-System/edb-dashboard.html?t=20260406-verify' | rg -n "v3\\.0\\.[0-9]+|官方原文整理版|const VERSION = 'v3\\.0\\.[0-9]+';"` → PASS
+   - `curl -L 'https://leonard-wong-git.github.io/EDB-AI-Circular-System/circulars.json?t=20260406-verify' | rg -n '"count"|"generated_at"|knowledge_review|課程發展指引|學校表現指標 \\(KPM\\)|學與教資源／課程相關材料'` → PASS with notes
+9. Pending:
+   - 修正 terminology normalization 的 idempotent 問題
+   - 等待用戶提供新版 `role_facts.json`
+   - 視需要再微調官方原文整理版的 metadata 分段規則
+10. Next priorities:
+   - 修正 normalization idempotent 行為
+   - 等待 / 整合新版 role_facts.json
+   - 決定下一個擴展 topic（finance / student / hr）
+11. Risks / blockers:
+   - live `circulars.json` 已出現重複字樣，例如 `學與教資源／課程相關材料／課程相關材料`
+   - 這表示第二輪 terminology normalization 目前不是完全 idempotent
+12. Notes:
+   - 使用者已自行完成 full-year workflow，因此這次不需執行 scraper，只做 live 驗證
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - 需要確認 full-year workflow 後，live site 是否真的到 `v3.0.10`，以及資料是否完整更新。
+2. Root Cause:
+   - 上一 session 結束時 repo 已是 `v3.0.10`，但 GitHub Pages 尚未完成更新；full-year workflow 也尚未完成。
+3. Fix:
+   - 以 cache-busting 方式直接抓 live HTML 與 live `circulars.json` 重新驗證。
+4. Verification:
+   - live HTML = `v3.0.10`
+   - live `circulars.json` generated_at = `2026-04-06T11:38:12Z`
+   - live count = `114`
+   - live `knowledge_review` / curriculum links 均存在
+5. Regression / rule update:
+   - 發現新 regression：curriculum term normalization 會重複套用，需在後續修正 `_replace_terms()` 或加 guard。
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Live frontend | GitHub Pages 已有新 deployment | 抓 `edb-dashboard.html` | visible version markers = `v3.0.10`，且有 `官方原文整理版` | 全數命中 | PASS |
+| Live data refresh | user already ran full-year workflow | 抓 `circulars.json` | generated_at 更新且 count 顯著大於 2 | `2026-04-06T11:38:12Z`，count `114` | PASS |
+| Knowledge review rollout | curriculum review 已在 pipeline | 搜尋 `knowledge_review` / curriculum links | 多份 live 通告應包含對應欄位 | live JSON 命中大量 `knowledge_review` + curriculum links | PASS |
+| Regression detection | terminology normalization 需可重複安全套用 | 檢查 live JSON 文本 | 不應出現 duplicated standardized term | 發現 `學與教資源／課程相關材料／課程相關材料` | FAIL |
+
+Overall: PASS with notes
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: continue from live v3.0.10. The full-year workflow has completed, GitHub Pages now serves v3.0.10, and live `circulars.json` has generated_at `2026-04-06T11:38:12Z` with count `114`.
+
+Pending tasks (priority order):
+1. Fix the terminology-normalization idempotent issue so curriculum strings like `學與教資源／課程相關材料／課程相關材料` no longer appear in live data.
+2. If the user provides a new `role_facts.json`, integrate it to replace `dev/knowledge/role_facts.json` and validate the K1 interface.
+3. Decide the next topic-aware review extension after curriculum (likely finance / student / hr), keeping the second-pass review deterministic and non-destructive.
+
+Key files changed in this session:
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- Live v3.0.10 is confirmed, but live data reveals a real regression in repeated terminology replacement.
+- The official text cleanup is display-only; it improves readability but does not change the underlying `official` source text.
+- During future deploys, keep dashboard and scraper version markers synchronized or `deploy.sh` will reject the publish.
+
+Validation status: live HTML PASS at v3.0.10; live `circulars.json` PASS at generated_at `2026-04-06T11:38:12Z` / count `114`; regression found in duplicated curriculum term replacement.
+
+Post-startup first action: inspect `_replace_terms()` and the second-pass review flow, then patch the idempotent guard before any further topic-review expansion.
+```
+
+## 2026-04-04 Official Text Cleanup UI + v3.0.10 Repo Publish
+
+1. Agent & Session ID: Codex_20260404_0010
+2. Task summary: 依使用者要求先做方案 A，在前端加入「官方原文整理版」清洗顯示，改善官方摘錄的斷行、空白與段落可讀性；版本同步升到 `v3.0.10`，並先推上 repo 供用戶手動跑 full-year workflow。
+3. Layer classification: Product / System Layer（frontend display behavior change + release publish）+ Development Governance Layer（session persistence）
+4. Source triage: 非後端分析邏輯改動；屬前端顯示層改善。清洗器只改顯示，不改 `circulars.json` schema，也不改 `official` 原始內容來源。
+5. Files read: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/DOC_SYNC_CHECKLIST.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+6. Files changed: `edb-dashboard.html`, `edb_scraper.py`, `README.md`, `dev/DOC_SYNC_CHECKLIST.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 在 `edb-dashboard.html` 新增 `cleanOfficialText()`、`renderOfficialHtml()`、`officialPreview()`
+   - ✅ 詳情頁的「官方摘要」改為「官方原文整理版」
+   - ✅ 卡片摘要、分享文字、列印內容同步套用官方原文清洗
+   - ✅ 版本同步升至 `v3.0.10`（dashboard + scraper）
+   - ✅ 使用 `deploy.sh --no-bump` 推送 repo：commit `3cc4e58`
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - `node - <<'JS' ... new Function(script) ...` dashboard JS syntax check → PASS
+   - `rg -n "v3\\.0\\.10|官方原文整理版|cleanOfficialText" edb-dashboard.html edb_scraper.py README.md` → PASS
+   - `bash ~/Downloads/Claude-edb-Project-V3/deploy.sh --no-bump` → PASS
+   - `curl -L 'https://leonard-wong-git.github.io/EDB-AI-Circular-System/edb-dashboard.html?t=20260404-1610' | rg -n "v3\\.0\\.[0-9]+"` → still showed `v3.0.9` at verification time
+9. Pending:
+   - 等待 GitHub Pages 前端更新到 `v3.0.10`
+   - 建議用戶在 GitHub 手動跑 full-year workflow
+   - 等待用戶提供新版 `role_facts.json`
+10. Next priorities:
+   - 手動跑 full-year workflow
+   - 等待 / 整合新版 role_facts.json
+   - 視需要修正 normalization idempotent 行為
+11. Risks / blockers:
+   - 目前 repo 已是 `v3.0.10`，但 GitHub Pages 在驗證時仍回 `v3.0.9`，可能只是 deploy / CDN 延遲
+   - 清洗器目前優先改善可讀性，不保證把所有 metadata 行都整理成完美段落；後續仍可再微調規則
+12. Notes:
+   - 由於你將手動跑 full-year workflow，先把 `v3.0.10` 推上 repo 是必要的，否則 workflow 仍會基於 `v3.0.9` 程式碼執行
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - 詳情頁內的官方摘錄直接顯示原始 `official` 文字，受原文抽取換行影響，可讀性不理想。
+2. Root Cause:
+   - 前端原樣渲染 `d.official`，沒有做空白、斷行與段落整理。
+3. Fix:
+   - 新增 client-side 清洗器，將官方原文整理為較易讀的段落，再用於詳情頁、卡片摘要、分享與列印。
+4. Verification:
+   - dashboard JS syntax PASS
+   - `v3.0.10` 版本標記 PASS
+   - repo push PASS
+   - live 前端版本仍待 GitHub Pages 跟上
+5. Regression / rule update:
+   - 新增 doc-sync registry row：`Frontend display behavior change`
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | 通告含 `official` 文字 | 開啟詳情頁 | 顯示「官方原文整理版」而非 raw block | 前端已改用 `renderOfficialHtml()` | PASS |
+| Boundary | card / share / print 也引用 `official` | 卡片預覽、分享、列印 | 文字同樣經清洗，不再直接帶原始斷行 | 3 個輸出點均已改用清洗後文字 | PASS |
+| Failure guard | 不應改變資料來源或 schema | 檢查 `circulars.json` 依賴 | 只改顯示層，不改資料結構 | 只修改前端 helper 與文案 | PASS |
+| Release | dashboard 與 scraper 版本需同步 | `deploy.sh --no-bump` | 可成功發布，不再出現 version mismatch | commit `3cc4e58` pushed | PASS |
+
+Overall: PASS with notes
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: continue from repo v3.0.10. The dashboard now includes a client-side “official text cleanup” display layer, and the repo has already been pushed so a manual full-year workflow can use the latest code. At verification time, GitHub Pages still returned v3.0.9, so live frontend propagation should be re-checked.
+
+Pending tasks (priority order):
+1. Re-check GitHub Pages until the frontend shows v3.0.10, then confirm the cleaned “官方原文整理版” is visible.
+2. Run or verify the manual full-year workflow so all circulars regenerate under the current code baseline.
+3. If the user provides a new `role_facts.json`, integrate it to replace `dev/knowledge/role_facts.json` and validate the K1 interface.
+
+Key files changed in this session:
+- `edb-dashboard.html`
+- `edb_scraper.py`
+- `README.md`
+- `dev/DOC_SYNC_CHECKLIST.md`
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- Repo is already at v3.0.10, but GitHub Pages may still be serving cached or not-yet-updated v3.0.9 frontend content.
+- The official text cleanup is display-only; it improves readability but does not change the underlying `official` source text.
+- During future deploys, keep dashboard and scraper version markers synchronized or `deploy.sh` will reject the publish.
+
+Validation status: py_compile PASS; dashboard JS syntax PASS; repo push PASS; live frontend version still needed re-check after Pages propagation.
+
+Post-startup first action: re-fetch the live `edb-dashboard.html` with a cache-busting query string to confirm whether GitHub Pages has updated from v3.0.9 to v3.0.10.
+```
+
 ## 2026-04-04 Publish v3.0.9 with Curriculum-enriched circulars
 
 1. Agent & Session ID: Codex_20260404_0009
