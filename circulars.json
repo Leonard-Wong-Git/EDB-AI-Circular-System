@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-08T08:45:24Z",
+  "generated_at": "2026-04-08T12:01:11Z",
   "model": "gpt-5-nano",
   "temperature": 1,
   "range": "past 3 days (from 2026-04-05)",
@@ -217,6 +217,9 @@
         ],
         "role_notes": []
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26053C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26053E.pdf",
@@ -430,6 +433,9 @@
         ],
         "role_notes": []
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26049C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26049E.pdf",
@@ -634,6 +640,9 @@
         ],
         "role_notes": []
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26050C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26050E.pdf",
@@ -884,6 +893,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26042C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26042E.pdf",
@@ -1112,6 +1124,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26048C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26048E.pdf",
@@ -1303,6 +1318,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26056C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26056S.pdf"
@@ -1554,6 +1572,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26051C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26051S.pdf"
@@ -1757,6 +1778,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26039C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26039E.pdf",
@@ -1982,6 +2006,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26029C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26029E.pdf",
@@ -2275,6 +2302,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26009C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26009E.pdf",
@@ -2494,6 +2524,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26046C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26046E.pdf",
@@ -2721,6 +2754,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26038C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26038E.pdf",
@@ -2917,6 +2953,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26034C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26034E.pdf",
@@ -3105,6 +3144,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26043C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26043E.pdf",
@@ -3311,6 +3353,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26041C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26041E.pdf",
@@ -3531,6 +3576,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26045C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26045E.pdf",
@@ -3752,6 +3800,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26030C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26030E.pdf",
@@ -3928,6 +3979,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26026C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26026E.pdf",
@@ -4154,6 +4208,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26036C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26036E.pdf",
@@ -4397,6 +4454,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26040C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26040E.pdf",
@@ -4607,6 +4667,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26032C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26032E.pdf",
@@ -4908,6 +4971,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26037C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26037E.pdf",
@@ -5144,6 +5210,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26035C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26035E.pdf",
@@ -5373,6 +5442,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26025C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26025E.pdf",
@@ -5586,6 +5658,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26015C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26015E.pdf",
@@ -5809,6 +5884,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26031C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26031E.pdf",
@@ -6029,6 +6107,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26019C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26019E.pdf",
@@ -6250,6 +6331,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26027C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26027E.pdf",
@@ -6459,6 +6543,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26033C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26033S.pdf"
@@ -6678,6 +6765,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26007C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26007E.pdf",
@@ -6898,6 +6988,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26028C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26028E.pdf",
@@ -7121,6 +7214,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26023C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26023E.pdf",
@@ -7421,6 +7517,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26017C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26017E.pdf",
@@ -7602,6 +7701,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26010E.pdf"
       ]
@@ -7820,6 +7922,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26022C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26022E.pdf",
@@ -8040,6 +8145,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26020C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26020E.pdf",
@@ -8323,6 +8431,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26021C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26021E.pdf",
@@ -8595,6 +8706,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26008C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26008E.pdf",
@@ -8834,6 +8948,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26006C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26006E.pdf",
@@ -9034,6 +9151,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26005C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26005E.pdf",
@@ -9213,6 +9333,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26012C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26012E.pdf"
@@ -9408,6 +9531,9 @@
         ],
         "role_notes": []
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26011C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26011E.pdf"
@@ -9656,6 +9782,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26003C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26003E.pdf",
@@ -9863,6 +9992,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26014C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26014E.pdf",
@@ -10076,6 +10208,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26013C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26013E.pdf",
@@ -10257,6 +10392,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26016C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26016E.pdf",
@@ -10460,6 +10598,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25222C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25222E.pdf",
@@ -10725,6 +10866,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25221C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25221E.pdf",
@@ -10939,6 +11083,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25218C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25218E.pdf",
@@ -11131,6 +11278,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25213C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25213E.pdf",
@@ -11342,6 +11492,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25207C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25207E.pdf",
@@ -11635,6 +11788,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25201C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25201E.pdf",
@@ -11834,6 +11990,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25220C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25220E.pdf",
@@ -12128,6 +12287,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25217C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25217E.pdf",
@@ -12357,6 +12519,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25176C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25176E.pdf",
@@ -12584,6 +12749,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25216C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25216E.pdf",
@@ -12797,6 +12965,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25212C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25212E.pdf",
@@ -12986,6 +13157,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25208C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25208E.pdf",
@@ -13197,6 +13371,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25202C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25202S.pdf"
@@ -13391,6 +13568,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25215C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25215E.pdf",
@@ -13686,6 +13866,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25206C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25206E.pdf",
@@ -13910,6 +14093,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25197C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25197E.pdf",
@@ -14100,6 +14286,9 @@
           "偵測到 finance 類訊號，將 `eo_admin` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25177C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25177E.pdf",
@@ -14294,6 +14483,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25205C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25205E.pdf",
@@ -14498,6 +14690,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25200C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25200E.pdf",
@@ -14724,6 +14919,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25183C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25183E.pdf",
@@ -14944,6 +15142,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25186C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25186E.pdf",
@@ -15148,6 +15349,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25204C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25204E.pdf",
@@ -15335,6 +15539,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25203C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25203E.pdf",
@@ -15528,6 +15735,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25179C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25179E.pdf",
@@ -15722,6 +15932,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25174C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25174E.pdf",
@@ -15933,6 +16146,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25198C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25198E.pdf",
@@ -16133,6 +16349,9 @@
         ],
         "role_notes": []
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25195C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25195E.pdf",
@@ -16337,6 +16556,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25196C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25196E.pdf",
@@ -16559,6 +16781,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25193C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25193E.pdf",
@@ -16774,6 +16999,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25162C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25162E.pdf",
@@ -17067,6 +17295,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25192C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25192E.pdf",
@@ -17272,6 +17503,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25190C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25190E.pdf",
@@ -17494,6 +17728,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25189C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25189E.pdf",
@@ -17730,6 +17967,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25182C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25182E.pdf",
@@ -17959,6 +18199,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25187C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25187E.pdf",
@@ -18180,6 +18423,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25157C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25157E.pdf",
@@ -18372,6 +18618,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25191C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25191E.pdf",
@@ -18599,6 +18848,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25180C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25180E.pdf",
@@ -18820,6 +19072,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25169E.pdf"
       ]
@@ -19010,6 +19265,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25184C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25184E.pdf",
@@ -19238,6 +19496,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25152C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25152E.pdf",
@@ -19443,6 +19704,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25138C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25138E.pdf",
@@ -19624,6 +19888,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25147C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25147E.pdf",
@@ -19798,6 +20065,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25143C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25143E.pdf",
@@ -20010,6 +20280,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25178C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25178E.pdf",
@@ -20158,6 +20431,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25168C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25168E.pdf",
@@ -20411,6 +20687,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25160C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25160E.pdf",
@@ -20631,6 +20910,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25171C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25171E.pdf",
@@ -20829,6 +21111,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25139C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25139E.pdf",
@@ -21035,6 +21320,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25159C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25159S.pdf"
@@ -21268,6 +21556,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25155C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25155E.pdf",
@@ -21478,6 +21769,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25154C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25154E.pdf",
@@ -21658,6 +21952,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25141C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25141E.pdf",
@@ -21877,6 +22174,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25156C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25156E.pdf",
@@ -22121,6 +22421,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25172C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25172E.pdf",
@@ -22343,6 +22646,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25164C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25164E.pdf",
@@ -22558,6 +22864,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25132C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25132E.pdf",
@@ -22771,6 +23080,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25129C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25129E.pdf",
@@ -22963,6 +23275,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25173C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25173S.pdf"
@@ -23199,6 +23514,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25140C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25140E.pdf",
@@ -23466,6 +23784,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25149C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25149E.pdf",
@@ -23680,6 +24001,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25146C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25146E.pdf",
@@ -23900,6 +24224,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25135C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25135E.pdf",
@@ -24110,6 +24437,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25148C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25148S.pdf"
@@ -24321,6 +24651,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25144C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25144E.pdf",
@@ -24521,6 +24854,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25131C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25131E.pdf",
@@ -24713,6 +25049,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25127C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25127E.pdf",
@@ -24935,6 +25274,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25101C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25101E.pdf",
@@ -25168,6 +25510,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25145C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25145E.pdf",
@@ -25363,6 +25708,9 @@
           "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25158C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25158E.pdf",
@@ -25657,6 +26005,9 @@
           "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
         ]
       },
+      "k1_topics": [],
+      "k1_facts": [],
+      "k1_guidelines": [],
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25151C.pdf",
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM25151E.pdf",
