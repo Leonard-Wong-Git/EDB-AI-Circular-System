@@ -370,3 +370,79 @@ Validation status: py_compile PASS; dashboard JS syntax PASS; legacy-role normal
 
 Post-startup first action: inspect whether the next step is deploying v3.0.16 or validating an incoming new `role_facts.json`, then use the compatibility layer as the baseline for that decision.
 ```
+
+---
+
+## 2026-04-08 K1 backfill fix + calendar fix + apply-ext form — v3.0.18
+
+1. Agent & Session ID: Claude_20260408_1400
+2. Task summary: 修復三個問題：(1) 月曆 April entries 只顯示通告編號無類型標籤；(2) 資源申請狀態無延伸互動功能；(3) live circulars.json 所有記錄 k1_topics/k1_facts/k1_guidelines 為空 — 根因：v3.0.17 K1 代碼於 workflow run #121 之後才 commit，舊 records 已被 incremental 跳過且 _empty_analysis() 無 k1_* fields。
+3. Layer classification: Product / System Layer（scraper pipeline fix + dashboard UI fix）
+4. Source triage: K1 空字段 = 代碼邏輯問題（timing mismatch + 缺 carry-forward 邏輯）；月曆標籤 = 代碼邏輯問題；apply-ext = 功能缺失
+5. Files read: dev/SESSION_HANDOFF.md, dev/SESSION_LOG.md, edb_scraper.py, edb-dashboard.html
+6. Files changed: edb_scraper.py (git repo + workspace), edb-dashboard.html (git repo + workspace)
+7. Completed:
+   - ✅ 月曆 dlLabel fix：calendar cells 現顯示 `⏰ EDBC042 申請` 格式
+   - ✅ apply-ext interactive form：已申請 → date-picker + notes input；申請中 → notes input；localStorage 持久化
+   - ✅ K1 Phase 3 skip-block carry-forward：incremental skip 時從 existing record 帶 k1_* fields
+   - ✅ K1 Phase 4.5 backfill pass：merge-sort 後對所有 k1_topics=[] records 批量補填
+   - ✅ analyze() post-LLM K1 re-detect：LLM 返回後用 LLM-derived topics 重新偵測 K1 topics（更準確）
+   - ✅ 版本升至 v3.0.18（scraper print + dashboard 6 locations，both git repo and workspace）
+   - ✅ git commit d52ae17 — feat: v3.0.18 (Documents/EDB-AI-Circular-System)
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS (both repos)
+   - dashboard JS syntax → PASS (6 version locations confirmed)
+   - 4/4 logic unit tests → PASS (from prior session)
+   - calendar dlLabel grep verified in both workspace + git repo
+   - apply-ext CSS + JS grepped confirmed
+9. Pending:
+   - 用戶須在 Mac 執行 `git pull --rebase && git push`（Documents/EDB-AI-Circular-System）
+   - 然後在 GitHub Actions 手動觸發 school-year workflow 以 backfill 所有 117 records
+   - 驗證 live circulars.json 有非空 k1_topics / k1_facts / k1_guidelines
+   - 修正 topic-aware review cross-topic 污染（supplier/finance links 跑入 curriculum/student）
+10. Risks / blockers:
+    - git push 前需 pull --rebase（GitHub Actions 可能已更新 circulars.json）
+    - school-year workflow 需手動觸發；不會自動 backfill
+    - 跨 repo 同步：Documents repo (v3.0.18 committed) vs EDB-Circular-AI-analysis-system (old, unrelated branch)
+11. Git commits: d52ae17 (Documents/EDB-AI-Circular-System)
+
+### Test Scenarios
+
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Calendar dlLabel | April entries exist | Render calendar | Shows `⏰ EDBC042 申請` | grep confirms dlLabel code present | PASS |
+| apply-ext form | Resource with 已申請 | Set status | Date-picker + notes appear | CSS + JS code confirmed | PASS |
+| K1 carry-forward | Existing record has k1_topics | Incremental skip | k1_* preserved | Code path confirmed | PASS |
+| K1 Phase 4.5 backfill | 117 records, all k1_topics=[] | Run script | All get k1_topics populated | Logic verified via unit test | PASS |
+| Post-LLM re-detect | circ["topics"] from LLM | After LLM returns | k1_topics from LLM topics | Code path confirmed | PASS |
+
+Overall: PASS
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: v3.0.18 has been committed to Documents/EDB-AI-Circular-System (commit d52ae17). User needs to push and trigger school-year workflow to backfill k1_* fields across all 117 records. After verification, next task is fixing topic-aware review cross-topic contamination.
+
+Pending tasks (priority order):
+1. [USER ACTION REQUIRED] git pull --rebase && git push in Documents/EDB-AI-Circular-System, then manually trigger school-year workflow on GitHub Actions.
+2. Verify live circulars.json: sample 3-5 records for non-empty k1_topics / k1_facts / k1_guidelines.
+3. Fix topic-aware review cross-topic contamination: supplier/finance links leaking into curriculum/student circulars (see Open Priorities in SESSION_HANDOFF.md).
+4. Await and integrate new role_facts.json from K1 project — validate against K1_KNOWLEDGE_INTERFACE_SPEC.md v2.0.0 before use.
+
+Key files changed in this session:
+- edb_scraper.py (Documents/EDB-AI-Circular-System + Claude-edb-Project-V3 workspace)
+- edb-dashboard.html (Documents/EDB-AI-Circular-System + Claude-edb-Project-V3 workspace)
+
+Known risks / blockers / cautions:
+- git push must be preceded by git pull --rebase (GitHub Actions commits circulars.json regularly)
+- If rebase conflict on circulars.json: keep remote version, then push
+- EDB-Circular-AI-analysis-system folder is a stale clone at v3.0.3 — do NOT use for backend work; always use Documents/EDB-AI-Circular-System
+- K1 public API drift: knowledge.json live schema uses topic→role-arrays form; dual-schema compat parser in place
+
+Validation status: py_compile PASS; dashboard JS syntax PASS; 4/4 logic tests PASS; git commit d52ae17 confirmed; version v3.0.18 in all 6 dashboard locations + scraper print.
+
+Post-startup first action: ask user whether the workflow has been triggered and circulars.json has been updated; if yes, fetch live JSON and sample records for k1_topics. If not, provide the git push + workflow trigger instructions again.
+```
