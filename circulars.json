@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-08T05:33:12Z",
+  "generated_at": "2026-04-08T08:45:24Z",
   "model": "gpt-5-nano",
   "temperature": 1,
   "range": "past 3 days (from 2026-04-05)",
@@ -393,8 +393,6 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 supplier `contact_unit`，避免聯絡路徑缺失。",
-          "補回 supplier `compliance_ref`，加上廉潔及程序要求。",
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
@@ -430,9 +428,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26049C.pdf",
@@ -636,9 +632,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "pdf_urls": [
         "https://applications.edb.gov.hk/circular/upload/EDBCM/EDBCM26050C.pdf",
