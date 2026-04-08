@@ -79,6 +79,8 @@ REQUEST_DELAY   = 1.5    # seconds — be polite to the server
 PDF_MAX_PAGES   = 25     # max pages per PDF to extract
 PDF_MAX_CHARS   = 8000   # cap PDF text sent to LLM
 CACHE_DIR       = Path(".edb_cache")
+K1_KNOWLEDGE_URL = "https://leonard-wong-git.github.io/edb-knowledge/knowledge.json"
+K1_GUIDELINES_URL = "https://leonard-wong-git.github.io/edb-knowledge/guidelines.json"
 
 # LLM — ⚠️ FIXED RULES:
 LLM_MODEL_DEFAULT = "gpt-5-nano"
@@ -182,6 +184,28 @@ STUDENT_RECOMMENDED_LINKS = [
         "why": "補充學生支援、家校溝通及校內程序處理的行政參考",
     },
 ]
+
+K1_TOPIC_KEYWORDS = {
+    "finance": ["採購", "財務", "津貼", "撥款", "資助", "金額", "招標", "報價", "經費"],
+    "hr": ["教師", "CPD", "培訓", "聘任", "薪酬", "專業發展", "教職員"],
+    "curriculum": ["課程", "科目", "評估", "學習", "教學", "課時", "學與教", "教材"],
+    "activity": ["活動", "考察", "旅行", "比賽", "境外", "交流", "參觀", "展覽"],
+    "student": ["學生", "意外", "安全", "健康", "SEN", "欺凌", "家長", "校外活動"],
+    "it": ["資訊科技", "電腦", "設備", "IT", "AI", "網絡", "系統", "平台"],
+    "general": ["行政", "安排", "指引", "程序", "通知"],
+}
+
+ANALYSIS_TO_K1_TOPIC = {
+    "finance": "finance",
+    "procurement": "finance",
+    "hr": "hr",
+    "curriculum": "curriculum",
+    "activity": "activity",
+    "student": "student",
+    "safety": "student",
+    "it": "it",
+    "exam": "curriculum",
+}
 
 HEADERS = {
     "User-Agent": (
@@ -829,15 +853,143 @@ class KnowledgeStore:
             return []
 
 
+class K1KnowledgeClient:
+    """Fetch K1 public JSON endpoints and return prompt-ready facts/guidelines."""
+
+    def __init__(self, verbose: bool = False):
+        self.verbose = verbose
+        self.log = logging.getLogger("K1")
+        self.knowledge = None
+        self.guidelines = None
+        self.topic_keywords = copy.deepcopy(K1_TOPIC_KEYWORDS)
+
+    def _fetch_json(self, url: str) -> Optional[dict]:
+        if not HAS_REQUESTS:
+            self.log.warning(f"  requests unavailable — skip K1 fetch: {url}")
+            return None
+        try:
+            resp = requests.get(url, headers=HEADERS, timeout=20)
+            resp.raise_for_status()
+            return resp.json()
+        except Exception as exc:
+            self.log.warning(f"  K1 fetch failed ({url}): {exc}")
+            return None
+
+    def ensure_loaded(self):
+        if self.knowledge is None:
+            self.knowledge = self._fetch_json(K1_KNOWLEDGE_URL) or {}
+            self._refresh_topic_keywords_from_knowledge()
+        if self.guidelines is None:
+            self.guidelines = self._fetch_json(K1_GUIDELINES_URL) or {}
+
+    def _refresh_topic_keywords_from_knowledge(self):
+        if not isinstance(self.knowledge, dict):
+            return
+        for topic_id, topic_data in self.knowledge.items():
+            if topic_id.startswith("_") or not isinstance(topic_data, dict):
+                continue
+            keywords = topic_data.get("_keywords_zh")
+            if isinstance(keywords, list) and keywords:
+                self.topic_keywords[topic_id] = [
+                    kw for kw in keywords if isinstance(kw, str) and kw.strip()
+                ]
+
+    def detect_topics(self, circ: dict) -> list[str]:
+        text = " ".join(
+            filter(
+                None,
+                [
+                    circ.get("title", ""),
+                    circ.get("official", ""),
+                    circ.get("pdf_text", "")[:2000],
+                    circ.get("summary", ""),
+                ],
+            )
+        )
+        topics = []
+
+        for topic in circ.get("topics", []) or []:
+            mapped = ANALYSIS_TO_K1_TOPIC.get(topic)
+            if mapped and mapped not in topics:
+                topics.append(mapped)
+
+        for topic, keywords in self.topic_keywords.items():
+            if topic == "general":
+                continue
+            if any(keyword and keyword in text for keyword in keywords):
+                if topic not in topics:
+                    topics.append(topic)
+
+        if not topics and any(keyword in text for keyword in self.topic_keywords.get("general", [])):
+            topics.append("general")
+
+        return topics
+
+    def fetch_facts(self, topics: list[str]) -> list[str]:
+        self.ensure_loaded()
+        facts: list[str] = []
+        for topic in topics:
+            topic_data = (self.knowledge or {}).get(topic)
+            if isinstance(topic_data, list):
+                facts.extend(self._extract_legacy_facts(topic_data))
+            elif isinstance(topic_data, dict):
+                facts.extend(self._extract_role_bucket_facts(topic_data))
+        return _dedupe_strings(facts)
+
+    def _extract_legacy_facts(self, entries: list[dict]) -> list[str]:
+        facts = []
+        for entry in entries:
+            if not isinstance(entry, dict):
+                continue
+            if entry.get("review_state") != "approved":
+                continue
+            roles = entry.get("roles", {})
+            if not isinstance(roles, dict):
+                continue
+            if not any(roles.get(role_key) for role_key in ("all_roles", "department_head", "panel_chair", "subject_head")):
+                continue
+            fact = entry.get("fact")
+            if isinstance(fact, str) and fact.strip():
+                facts.append(fact.strip())
+        return facts
+
+    def _extract_role_bucket_facts(self, topic_data: dict) -> list[str]:
+        facts = []
+        for role_key in ("all_roles", "department_head", "panel_chair", "subject_head"):
+            role_facts = topic_data.get(role_key, [])
+            if not isinstance(role_facts, list):
+                continue
+            for fact in role_facts:
+                if isinstance(fact, str) and fact.strip():
+                    facts.append(fact.strip())
+        return facts
+
+    def fetch_guidelines(self, topics: list[str]) -> list[dict]:
+        self.ensure_loaded()
+        docs = []
+        seen = set()
+        for topic in topics:
+            for doc in (self.guidelines or {}).get(topic, []) or []:
+                if not isinstance(doc, dict):
+                    continue
+                url = doc.get("url")
+                if not url or url in seen:
+                    continue
+                seen.add(url)
+                docs.append(doc)
+        return docs
+
+
 class LLMAnalyzer:
     """Wraps gpt-5-nano Structured Output analysis."""
 
-    def __init__(self, client: "OpenAI", model: str = LLM_MODEL_DEFAULT, verbose: bool = False, knowledge_engine: KnowledgeStore = None):
+    def __init__(self, client: "OpenAI", model: str = LLM_MODEL_DEFAULT, verbose: bool = False, knowledge_engine: KnowledgeStore = None, k1_client: K1KnowledgeClient = None):
         self.client  = client
         self.model   = model
         self.verbose = verbose
         self.log     = logging.getLogger("LLM")
         self.kn      = knowledge_engine
+        self.k1      = k1_client
 
     def analyze(self, circ: dict) -> Optional[dict]:
         """
@@ -852,7 +1004,22 @@ class LLMAnalyzer:
             relevant_facts = self.kn.find_relevant(search_text)
             circ["relevant_facts"] = relevant_facts  # Store for provenance
 
-        prompt = self._build_prompt(circ, relevant_facts)
+        k1_topics = []
+        k1_facts = []
+        k1_guidelines = []
+        if self.k1:
+            k1_topics = self.k1.detect_topics(circ)
+            try:
+                k1_facts = self.k1.fetch_facts(k1_topics)
+                k1_guidelines = self.k1.fetch_guidelines(k1_topics)
+            except Exception as exc:
+                self.log.warning(f"  K1 enrichment skipped: {exc}")
+                k1_topics, k1_facts, k1_guidelines = [], [], []
+        circ["k1_topics"] = k1_topics
+        circ["k1_facts"] = k1_facts
+        circ["k1_guidelines"] = k1_guidelines
+
+        prompt = self._build_prompt(circ, relevant_facts, k1_facts, k1_guidelines)
 
         self.log.info(f"  → LLM ({self.model}, temp={LLM_TEMPERATURE})")
         try:
@@ -887,7 +1054,7 @@ class LLMAnalyzer:
             self.log.error(f"  LLM API error: {exc}")
             return None
 
-    def _build_prompt(self, circ: dict, facts: list[str] = None) -> str:
+    def _build_prompt(self, circ: dict, facts: list[str] = None, k1_facts: list[str] = None, k1_guidelines: list[dict] = None) -> str:
         """Build user prompt for LLM."""
         lines = [
             f"通告號：{circ.get('number', '?')}",
@@ -898,6 +1065,16 @@ class LLMAnalyzer:
         ]
         if facts:
             lines += ["【經審核知識庫 (相關事實對照)】", "\n".join(f"- {f}" for f in facts), ""]
+        if k1_facts:
+            lines += ["【相關政策事實】", "\n".join(f"- {fact}" for fact in k1_facts), ""]
+        if k1_guidelines:
+            doc_lines = []
+            for doc in k1_guidelines:
+                title = doc.get("title") or doc.get("titleShort") or "未命名文件"
+                year = doc.get("year")
+                suffix = f"（{year}）" if year and year not in title else ""
+                doc_lines.append(f"- {title}{suffix}: {doc.get('url', '')}")
+            lines += ["【相關指引文件】", "\n".join(doc_lines), ""]
         
         if circ.get("official"):
             lines += ["【官方摘要 / 網頁文字】", circ["official"], ""]
@@ -1379,6 +1556,7 @@ def run_pipeline(args) -> int:
     # ── Init LLM & Knowledge ──────────────────────────────────────────────────
     client = None
     kn = None
+    k1 = None
     analyzer = None
     if not args.dry_run:
         if not HAS_OPENAI:
@@ -1393,15 +1571,16 @@ def run_pipeline(args) -> int:
         
         # Load knowledge base (prefer local if exists, else public URL)
         kn_path = Path("dev/knowledge/knowledge.json")
-        kn_url = "https://leonard-wong-git.github.io/edb-knowledge/knowledge.json"
+        kn_url = K1_KNOWLEDGE_URL
         kn = KnowledgeStore(client, verbose=args.verbose)
         if kn_path.exists():
             kn.load(str(kn_path))
         else:
             kn.load(kn_url)
+        k1 = K1KnowledgeClient(verbose=args.verbose)
             
         try:
-            analyzer = LLMAnalyzer(client, model=args.model, verbose=args.verbose, knowledge_engine=kn)
+            analyzer = LLMAnalyzer(client, model=args.model, verbose=args.verbose, knowledge_engine=kn, k1_client=k1)
             log.info(f"LLM ready: {args.model}  temperature={LLM_TEMPERATURE} (fixed)")
         except RuntimeError as exc:
             log.error(str(exc))
@@ -1590,6 +1769,9 @@ def run_pipeline(args) -> int:
             "actions":    circ.get("actions", []),
             "diff":       circ.get("diff", None),
             "knowledge_review": circ.get("knowledge_review", None),
+            "k1_topics":  circ.get("k1_topics", []),
+            "k1_facts":   circ.get("k1_facts", []),
+            "k1_guidelines": circ.get("k1_guidelines", []),
             "pdf_urls":   pdf_urls,   # [C.pdf, E.pdf, S.pdf] — sorted TC/EN/SC
         }
         output_list.append(record)
@@ -1688,7 +1870,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.16")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.17")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

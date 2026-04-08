@@ -158,6 +158,27 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 - Test-verified: 2026-03-10 (Claude_20260310_FE01 — Pages deployment successful)
 - Notes: Node.js 20 deprecation warning (cosmetic, deadline June 2026); deploy entire repo root
 
+### K1 Knowledge Public JSON API
+- Base URL: https://leonard-wong-git.github.io/edb-knowledge/
+- Version: live payload `_meta.version` = `1.2.2`
+- Auth: None (public GitHub Pages JSON)
+- Required params:
+  - `knowledge.json`: no query params; returns topic-keyed knowledge payload
+  - `guidelines.json`: no query params; returns topic-keyed guideline document lists
+- Forbidden params:
+  - none documented
+  - do not assume `K1_API_SPEC.md` is publicly available on GitHub Pages; the public URL returned 404 during 2026-04-08 verification
+- Response path:
+  - `knowledge.json`: current live shape is `topic_id -> object` with `_keywords_zh` plus role arrays (`all_roles`, `department_head`, etc.); integration code also tolerates the older entry-list shape described in the user-provided task brief
+  - `guidelines.json`: `topic_id -> [ { id, title, titleShort, url, year, format, ... } ]`
+- Official docs: unavailable on public Pages as of 2026-04-08 (`K1_API_SPEC.md` URL returned 404); implementation aligned against the user-provided integration brief plus live endpoint payload verification
+- Doc-reviewed: 2026-04-08 (Codex_20260408_0001)
+- Test-verified: 2026-04-08 (Codex_20260408_0001 — fetched live `knowledge.json` and `guidelines.json`, verified `_meta.version=1.2.2`)
+- Notes:
+  - prompt injection filters facts by detected topics plus role relevance (`all_roles`, `department_head`, and forward-compatible `panel_chair` / `subject_head` buckets)
+  - guideline links are attached for every detected topic
+  - fetch failure must degrade gracefully and continue LLM analysis without K1 context
+
 ---
 
 ## Key Decisions
@@ -182,6 +203,7 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 17 | Topic-aware Student Review Extension | 2026-04-06 | Extended the deterministic second-pass review to student-style circulars so participation support, parent-notice, and student-record reminders plus student-operations references can be added without overwriting hard facts. |
 | 18 | K1 Role Contract Alignment Target | 2026-04-06 | The agreed next-step contract for knowledge exchange is `subject_head` = 科主任, `panel_chair` = 主任, `eo_admin` = EO; product code still requires a compatibility refactor before fully adopting these keys end-to-end. |
 | 19 | Role Compatibility Layer Before Full Schema Cutover | 2026-04-06 | Product code now normalizes legacy `department_head` data into `panel_chair` while accepting the new `subject_head` / `panel_chair` contract, so old `circulars.json` remains readable during the migration window. |
+| 20 | K1 Public JSON Prompt Injection | 2026-04-08 | `edb_scraper.py` now fetches K1 `knowledge.json` and `guidelines.json` at analysis time, injects prompt-ready facts and guideline links with graceful fallback, and tolerates both the older entry-list facts schema and the current live role-bucket facts schema. |
 
 ---
 
@@ -216,3 +238,4 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 2026-04-06 | Codex_20260406_0009 | Extended deterministic post-analysis knowledge review to student signals, adding participation-support/parent-notice reminders and student-operation reference links; bumped local workspace version to v3.0.15 pending deploy. |
 | 2026-04-06 | Codex_20260406_0010 | Updated the K1 interface contract to v2.0.0 so knowledge exchange aligns on `subject_head` / `panel_chair` / `eo_admin=EO`, while documenting that product code still needs a compatibility-layer refactor before full schema adoption. |
 | 2026-04-06 | Codex_20260406_0011 | Implemented the first product-side compatibility layer for the new role contract: scraper output now uses `subject_head` / `panel_chair`, legacy `department_head` is normalized to `panel_chair`, dashboard UI exposes 7 roles, and workspace version is now v3.0.16 pending deploy. |
+| 2026-04-08 | Codex_20260408_0001 | Integrated K1 public JSON prompt enrichment into `edb_scraper.py`: fetches live `knowledge.json` / `guidelines.json`, detects topics before LLM analysis, injects facts and guideline links into the prompt with graceful fallback, and bumped workspace version to v3.0.17. |

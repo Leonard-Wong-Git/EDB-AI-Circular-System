@@ -1,18 +1,18 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v3.0.16** (2026-04-06) ← **workspace 已完成第一階段角色相容層；尚未發布**
+1. Version: **v3.0.17** (2026-04-08) ← **workspace 已完成 K1 public JSON prompt integration；live 仍為 v3.0.16**
 2. Core commands / features:
-   - `edb-dashboard.html` — v3.0.16（七角色 UI：科主任 / 主任拆分；兼容舊 `department_head`）
-   - `edb_scraper.py` — v3.0.16（knowledge review 現覆蓋 supplier / curriculum / finance / student；角色 schema 進入相容層）
+   - `edb-dashboard.html` — v3.0.17（版本同步；live 仍未發佈）
+   - `edb_scraper.py` — v3.0.17（新增 K1 `knowledge.json` / `guidelines.json` prompt injection；fetch failure graceful fallback）
    - `circulars.json` — EDB 通告 + gpt-5-nano AI 分析（live 目前以最近 workflow 輸出為準）
    - `knowledge.json` — 從 edb-knowledge 獲取的語義事實來源（v1.2.2，107 facts ✅）
    - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具
    - `requirements.txt` — Python 依賴清單
    - `dev/knowledge/role_facts.json` — K1 基線知識庫（目前 workspace 缺檔，待接收新版交付）
    - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 接口合約規格（已對齊至 v2.0.0 角色契約）
-3. Regression baseline: local py_compile PASS；dashboard JS syntax PASS；legacy-role normalization helper PASS；version markers PASS at v3.0.16；public GitHub Pages 目前仍停留在 `v3.0.14`
-4. Release / merge status: **live 仍為 v3.0.14；workspace 已前進到 v3.0.16，待決定是否 deploy**
+3. Regression baseline: local py_compile PASS；dashboard JS syntax PASS；K1 finance/curriculum integration tests PASS；fetch failure fallback PASS；workspace version markers PASS at v3.0.17；deploy repo HEAD=`839a743`；public GitHub Pages last verified live at `v3.0.16`
+4. Release / merge status: **workspace 已前進到 `v3.0.17`；尚未 deploy。public GitHub Pages / live data 仍以 `v3.0.16` 為準**
 5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -23,8 +23,8 @@
 ## Layer Map
 1. Product / System Layer: EDB 通告爬蟲 + AI 分析 + Dashboard 前端
 2. Development Governance Layer: AGENTS.md 規則、SESSION 管理、Root Safety Check
-3. Current task belongs to which layer: Product / System Layer（knowledge contract alignment / pending role-schema refactor）
-4. Known layer-boundary risks: 第二輪 review 必須只做補充/標準化，不能覆蓋通告硬事實；deploy 時仍要注意 remote `circulars.json` 可能較新；角色契約已更新到 `subject_head` / `panel_chair` / `eo_admin=EO`，產品端現已完成第一階段相容層，但仍需以實際 workflow / live data 再驗證
+3. Current task belongs to which layer: Product / System Layer（K1 external JSON integration）+ Development Governance Layer（session persistence）
+4. Known layer-boundary risks: 第二輪 review 必須只做補充/標準化，不能覆蓋通告硬事實；deploy 時仍要注意 remote `circulars.json` 可能較新；角色契約已更新到 `subject_head` / `panel_chair` / `eo_admin=EO`；K1 public `knowledge.json` live schema 與舊 task brief 不完全一致，整合層現已做雙 schema 兼容
 
 ## Mandatory Start Checklist
 1. ✅ Read `dev/SESSION_HANDOFF.md`
@@ -72,11 +72,11 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 決定是否發布 `v3.0.16`，讓第一階段角色相容層上 GitHub Pages
-2. **[重要]** 接收新版 `role_facts.json`，驗證其符合 K1 v2.0.0 契約後再接入
-3. **[其後]** 重跑 workflow，驗證 live `circulars.json` 在新角色結構下的輸出與顯示
-4. **[其後]** 視需要微調 `subject_head` vs `panel_chair` 的 topic-aware 分流規則
-5. **[觀察]** 視需要再微調「官方原文整理版」對 metadata 行的段落整理規則
+1. **[下一步 ⭐]** 發布 `v3.0.17` 並驗證 live K1 facts / guidelines prompt integration
+2. **[重要]** 修正 topic-aware review 疊加污染：避免 supplier / finance links 跑入 curriculum / student 通告
+3. **[其後]** 接收新版 `role_facts.json`，驗證其符合 K1 v2.0.0 契約後再接入
+4. **[觀察]** 視需要再微調「官方原文整理版」對 metadata 行的段落整理規則
+5. **[其後]** 抽樣檢查 live `subject_head` vs `panel_chair` 輸出質素，必要時微調 topic-aware 分流規則
 6. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
 7. **[選做]** LLM 引擎切換機制
 
@@ -129,14 +129,18 @@ git checkout v2.1.0-dashboard
 9. **⚠️ Knowledge review boundary（2026-04-04 確認）：**
    - 第二輪 review 現時只針對 supplier + curriculum + finance 場景做 deterministic enrichment
    - 不應改寫 deadline、金額、編號、scope 等硬事實
-10. **⚠️ Role contract drift（2026-04-06 確認）：**
+10. **⚠️ Role contract migration watch（2026-04-06 確認）：**
    - K1 接口規格已更新為 `subject_head` / `panel_chair` / `eo_admin=EO`
-   - 產品端已完成第一階段相容層，但 live 資料與 workflow 尚未重生
-   - 在 workflow 驗證完成前，不應直接假設新版 `role_facts.json` 已完全可無痛注入現有流程
+   - 產品端已完成第一階段相容層，並已用 workflow 重生 live `circulars.json`
+   - 新版 `role_facts.json` 尚未交付；接入前仍需按 K1 v2.0.0 契約驗證
+11. **⚠️ K1 public API drift watch（2026-04-08 確認）：**
+   - public `knowledge.json` live payload 目前是 topic → role-arrays 形態，不是舊 task brief 的 entry-list 形態
+   - public `guidelines.json` 與 task brief 一致
+   - public `K1_API_SPEC.md` URL 於 2026-04-08 實測返回 404，因此整合是依據 live payload + user-provided spec 做兼容處理
 
 ## Regression / Verification Notes
 1. v2.1.0 QC: 24/24 structural checks 通過；JS syntax check 通過
-2. GitHub Pages 部署：push 至 `main` 現已自動觸發 Pages deployment；仍可保留 manual/schedule workflow 用於 scraper
+2. GitHub Pages 部署：push 至 `main` 現已自動觸發 Pages deployment；仍可保留 manual/schedule workflow 用於 scraper；`v3.0.16` live 已驗證
 3. school-year 最後成功：1h 23m（16 hours ago as of 2026-03-22）
 
 ## Consolidation Watchlist
@@ -166,28 +170,27 @@ Do not close a session with code changes without completing the version bump.
 
 ## Last Session Record
 1. UTC date: 2026-04-06
-2. Session ID: Codex_20260406_0011
+2. Session ID: Codex_20260408_0001
 3. Completed:
-   - ✅ 在 `edb_scraper.py` 加入第一階段角色相容層：新 schema 改用 `subject_head` / `panel_chair`
-   - ✅ legacy `department_head` 會自動映射到 `panel_chair`，actions / deadlines 角色鍵亦同步正規化
-   - ✅ `edb-dashboard.html` 改為七角色 UI，並兼容舊資料
-   - ✅ 版本同步升至 `v3.0.16`（dashboard + scraper）
-   - ✅ README / CODEBASE_CONTEXT / handoff 已同步角色相容層現況
+   - ✅ 整合 K1 public `knowledge.json` / `guidelines.json` fetch 到 `edb_scraper.py`
+   - ✅ 新增 pre-LLM topic detection、facts/guidelines prompt injection、graceful fallback
+   - ✅ 驗證 live K1 payload：`knowledge.json` / `guidelines.json` `_meta.version=1.2.2`
+   - ✅ 驗證 finance facts / curriculum docs / network-failure fallback
+   - ✅ 版本同步升至 `v3.0.17`
 4. Pending:
+   - 發布 `v3.0.17`
+   - 修正 topic-aware review 疊加污染
    - 等待用戶提供新版 `role_facts.json`
-   - 決定是否發布 `v3.0.16`
-   - 重跑 workflow，驗證 live `circulars.json` 的角色結構與顯示
-   - 視需要微調 `subject_head` / `panel_chair` 的 topic-aware 分流
    - 視需要再微調官方原文整理版的 metadata 分段規則
 5. Next priorities (max 3):
+   - 發布並驗證 `v3.0.17`
+   - 修正 topic-aware review 疊加污染
    - 等待 / 整合新版 role_facts.json
-   - 視需要發布 `v3.0.16`
-   - 視需要重跑 workflow 更新 live `circulars.json`
 6. Risks / blockers:
-   - `v3.0.16` 目前只在 workspace；live 站仍是 `v3.0.14`
-   - K1 規格與產品端已開始對齊，但尚未以新版 workflow / live data 完整驗證
-   - 等待用戶提供新版 `role_facts.json` 後，才可繼續 K1 接口整合驗證
+   - public K1 facts live schema 與舊 brief 不完全一致；目前依兼容 parser 處理
+   - public `K1_API_SPEC.md` URL 於 2026-04-08 返回 404
+   - 等待用戶提供新版 `role_facts.json` 後，才可完成另一條 K1 role-facts 接入驗證
 7. Files materially changed:
    - `edb_scraper.py`、`edb-dashboard.html`、`README.md`、`dev/CODEBASE_CONTEXT.md`、`dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
-8. Validation summary: py_compile PASS；dashboard JS syntax PASS；legacy-role normalization helper PASS；version markers PASS at `v3.0.16`
-9. Git commits: none in this workspace-only compatibility-layer session
+8. Validation summary: py_compile PASS；dashboard JS syntax PASS；K1 live payload verification PASS；finance facts injection PASS；curriculum guideline injection PASS；network-failure fallback PASS
+9. Git commits: none in this session
