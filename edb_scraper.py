@@ -1046,6 +1046,17 @@ class LLMAnalyzer:
                     f"deadlines={len(result.get('deadlines', []))} "
                     f"actions={len(result.get('actions', []))}"
                 )
+            # Re-detect K1 topics using LLM-derived topics for better accuracy
+            if self.k1:
+                enriched = {**circ, "topics": result.get("topics", [])}
+                k1_topics_post = self.k1.detect_topics(enriched)
+                if k1_topics_post:
+                    try:
+                        circ["k1_topics"]     = k1_topics_post
+                        circ["k1_facts"]      = self.k1.fetch_facts(k1_topics_post)
+                        circ["k1_guidelines"] = self.k1.fetch_guidelines(k1_topics_post)
+                    except Exception as exc:
+                        self.log.warning(f"  K1 post-LLM re-detect failed: {exc}")
             return result
         except json.JSONDecodeError as exc:
             self.log.error(f"  LLM returned invalid JSON: {exc}")
@@ -1683,6 +1694,10 @@ def run_pipeline(args) -> int:
                 for key in _empty_analysis():
                     if key not in circ:
                         circ[key] = existing[num].get(key)
+                # Carry forward k1 fields from existing record (if previously enriched)
+                for k1_key in ("k1_topics", "k1_facts", "k1_guidelines"):
+                    if k1_key not in circ:
+                        circ[k1_key] = existing[num].get(k1_key, [])
                 circ = _normalize_roles_payload(circ)
                 circ = _apply_post_analysis_review(circ)
                 raw[idx] = circ
@@ -1731,6 +1746,34 @@ def run_pipeline(args) -> int:
     kept_count    = len(merged) - len(raw)
     log.info(f"  Merge result: {new_count} new + {updated_count} updated + {kept_count} kept "
              f"= {len(merged)} total")
+
+    # =========================================================================
+    # PHASE 4.5 — K1 BACKFILL
+    # Enrich records that have empty k1_topics (analysed before K1 integration,
+    # or skipped in incremental mode). Uses LLM-derived circ["topics"] for
+    # accurate topic mapping; knowledge/guidelines are cached after first fetch.
+    # =========================================================================
+    if not args.dry_run and k1:
+        k1_backfilled = 0
+        for circ in merged_sorted:
+            if circ.get("k1_topics"):          # already enriched — skip
+                continue
+            k1_topics_bf = k1.detect_topics(circ)   # uses circ["topics"] from LLM
+            circ["k1_topics"] = k1_topics_bf
+            if k1_topics_bf:
+                try:
+                    circ["k1_facts"]      = k1.fetch_facts(k1_topics_bf)
+                    circ["k1_guidelines"] = k1.fetch_guidelines(k1_topics_bf)
+                    k1_backfilled += 1
+                except Exception as exc:
+                    log.warning(f"  K1 backfill {circ.get('number')}: {exc}")
+                    circ["k1_facts"]      = []
+                    circ["k1_guidelines"] = []
+            else:
+                circ["k1_facts"]      = []
+                circ["k1_guidelines"] = []
+        if k1_backfilled:
+            log.info(f"  K1 backfill: {k1_backfilled} records enriched")
 
     output_list = []
     for idx, circ in enumerate(merged_sorted):
@@ -1870,7 +1913,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.17")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.18")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")
