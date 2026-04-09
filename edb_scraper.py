@@ -1674,6 +1674,47 @@ def _build_sparse_summary_followup(reviewed: dict) -> str:
     return f"校內跟進重點包括{sentence}。"
 
 
+def _synthesize_sparse_actions(reviewed: dict) -> list[dict]:
+    """Promote role-level action points into top-level actions for sparse circulars."""
+    if reviewed.get("actions"):
+        return reviewed.get("actions", [])
+
+    roles = reviewed.get("roles") or {}
+    summary = reviewed.get("summary") or ""
+    source_text = " ".join([
+        reviewed.get("title", ""),
+        reviewed.get("official", ""),
+        reviewed.get("pdf_text", "")[:1200],
+    ]).strip()
+    summary_paragraphs = [p.strip() for p in summary.split("\n\n") if p.strip()]
+
+    sparse_case = (not source_text) or len(source_text) < 220 or len(summary_paragraphs) <= 2
+    if not sparse_case:
+        return reviewed.get("actions", [])
+
+    synthesized = []
+    seen = set()
+    for role_key in SUMMARY_ROLE_PRIORITY:
+        role = roles.get(role_key)
+        if not isinstance(role, dict) or not role.get("r"):
+            continue
+        for text in (role.get("acts") or []):
+            action_text = (text or "").strip()
+            if not action_text or action_text in seen:
+                continue
+            seen.add(action_text)
+            synthesized.append({
+                "text": action_text,
+                "role": role_key,
+                "dl": None,
+                "note": "",
+            })
+            break
+        if len(synthesized) >= 3:
+            break
+    return synthesized
+
+
 def _normalize_summary_text(text: str) -> str:
     text = (text or "").strip()
     if not text:
@@ -1751,6 +1792,8 @@ def _apply_post_analysis_review(circ: dict) -> dict:
         followup = _build_sparse_summary_followup(reviewed)
         if followup:
             reviewed["summary"] = "\n\n".join(summary_paragraphs + [followup]) if summary_paragraphs else followup
+
+    reviewed["actions"] = _synthesize_sparse_actions(reviewed)
 
     supplier = roles.get("supplier")
     source_text = " ".join(
@@ -2337,7 +2380,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.27")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.28")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

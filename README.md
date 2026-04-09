@@ -23,7 +23,7 @@ This system automatically scrapes Hong Kong Education Bureau (EDB) circulars, pe
 | 📊 通告總覽 | ✅ 正式版 | 統計卡片、篩選、搜尋、卡片/列表切換 |
 | 🤖 AI 智能分析 | ✅ 正式版 | gpt-5-nano 多角色分析，含摘要/行動/截止 |
 | 📄 官方原文整理版 | ✅ v3.0.12 | 清洗斷行、空白與段落，提升官方摘錄可讀性 |
-| 🧠 知識校正層 | ✅ v3.0.27 (workspace) | AI 首輪分析前後同時使用知識增強：prompt 會注入 K1 facts / guidelines，並按 K1 public `v1.3.1` schema 以 `subject_head + panel_chair + all_roles` 組裝主任層事實；本地 `role_facts.json` 亦會按 topic 取角色事實注入 `【EDB學校管理知識中心角色事實】` 區塊；summary 現採通告本位規則，對資訊較少但已有明確工作重點的通告，會補一段精簡 follow-up，而不是回退成空框架句 |
+| 🧠 知識校正層 | ✅ v3.0.28 (workspace) | AI 首輪分析前後同時使用知識增強：prompt 會注入 K1 facts / guidelines，並按 K1 public `v1.3.1` schema 以 `subject_head + panel_chair + all_roles` 組裝主任層事實；本地 `role_facts.json` 亦會按 topic 取角色事實注入 `【EDB學校管理知識中心角色事實】` 區塊；summary 現採通告本位規則，對資訊較少但已有明確工作重點的通告，會補一段精簡 follow-up，並於需要時把角色內行動提升為頂層 action 清單 |
 | 👥 七角色視圖 | ✅ v3.0.16 | 校長/副校長/科主任/主任/教師/EO/供應商（兼容舊 `department_head` 資料） |
 | 📅 月曆視圖 | ✅ 正式版 | EDBC 格式通告、截止日期標記 |
 | 💰 資源申請 | ✅ 正式版 | 可申請撥款追蹤 |

@@ -1,18 +1,18 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **live v3.0.26 / workspace v3.0.27** (2026-04-09) ← **GitHub Pages + live `circulars.json` 已確認帶出 `k1_*` 與 `role_fact_*` 欄位；workspace 目前正準備發布 sparse-summary follow-up 版**
+1. Version: **live v3.0.27 / workspace v3.0.28** (2026-04-09) ← **GitHub Pages + live `circulars.json` 已確認 `EDBCM053/2026` 的 sparse summary 第二段已生效；workspace 目前正準備發布 sparse-action synthesis 版**
 2. Core commands / features:
-   - `edb-dashboard.html` — workspace v3.0.27（版本同步待發佈）
-   - `edb_scraper.py` — workspace v3.0.27（K1 prompt injection 與 `v1.3.1` schema consume 已 live；本地 `role_facts.json` 已 live；workspace 為 sparse circular 加入精簡 follow-up 第二段）
+   - `edb-dashboard.html` — workspace v3.0.28（版本同步待發佈）
+   - `edb_scraper.py` — workspace v3.0.28（K1 prompt injection 與 `v1.3.1` schema consume 已 live；本地 `role_facts.json` 已 live；workspace 為 sparse circular 補回頂層 action 清單）
    - `circulars.json` — EDB 通告 + gpt-5-nano AI 分析（live 已由 school-year workflow 重生並帶出 `k1_*` / `role_fact_*` 欄位）
    - `knowledge.json` — 從 edb-knowledge 獲取的語義事實來源（v1.3.1，107 facts ✅）
    - `fetch_knowledge.py` — EDB / ICAC 知識支援產生器（仍屬維護中的 support path；2026-04-09 已對齊 split-role contract）
    - `requirements.txt` — Python 依賴清單
    - `dev/knowledge/role_facts.json` — K1 基線知識庫（新版已到位；workspace 已接入，待發布後回填 live data）
    - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 接口合約規格（已對齊至 v2.0.0 角色契約）
-3. Regression baseline: `python3 -m py_compile edb_scraper.py` PASS；dashboard JS compile PASS；summary helper PASS（`EDBCM049/2026` 與 `EDBCM050/2026` 保持差異；`EDBCM053/2026` 會補回精簡 follow-up 第二段）；workspace version markers PASS at v3.0.27；live Pages latest known PASS at `v3.0.26`
-4. Release / merge status: **live site is currently `v3.0.26`; next publish target is workspace `v3.0.27` sparse-summary follow-up refinement**
+3. Regression baseline: `python3 -m py_compile edb_scraper.py` PASS；dashboard JS compile PASS；sparse helper PASS（`EDBCM053/2026` 會補回精簡 follow-up 第二段，且在 `actions` 為空時會合成 1-3 條頂層 action）；workspace version markers PASS at v3.0.28；live Pages latest known PASS at `v3.0.27`
+4. Release / merge status: **live site is currently `v3.0.27`; next publish target is workspace `v3.0.28` sparse-action synthesis refinement**
 5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -72,8 +72,8 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 發布 workspace `v3.0.27`，再重跑 school-year workflow，驗證像 `EDBCM053/2026` 這類 sparse 通告會補回精簡而實用的第二段
-2. **[重要]** 抽樣檢查 5 份以上 live 通告，確認摘要既保留差異性，也不會回退成角色百科
+1. **[下一步 ⭐]** 發布 workspace `v3.0.28`，再重跑 school-year workflow，驗證像 `EDBCM053/2026` 這類 sparse 通告會重新出現頂層 action 清單
+2. **[重要]** 抽樣檢查 5 份以上 live 通告，確認 sparse action synthesis 不會把 rich circular 拉回角色百科式 action 填充
 3. **[重要]** 針對 `subject_head` vs `panel_chair` 的 role-facts 命中質素做抽樣檢查，必要時微調 local role-facts topic / role routing
 4. **[其後]** 再視需要回頭處理低優先的 deterministic finance residual contamination（資料層清潔項）
 6. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
@@ -209,3 +209,8 @@ Do not close a session with code changes without completing the version bump.
    - 主任層改為 `subject_head + panel_chair`
    - `eo_admin` 對外標示改為 `EO`
 3. repo 內剩餘 `department_head` 目前只應存在於 legacy compatibility path；下一次若再清理，需先確認不會破壞舊 `circulars.json` 與 archived/mockup 資料。
+
+## In-Progress Note (2026-04-09 UTC #2)
+1. live `v3.0.27` 已確認 `EDBCM053/2026` 的 sparse summary 第二段生效，但頂層 `actions` 仍為空，頁面上不易看到行動清單。
+2. workspace `v3.0.28` 已新增 sparse-action synthesis：當通告內容偏 sparse 且頂層 `actions` 為空時，會從最高訊號角色的既有 `acts` 合成最多 3 條頂層 action。
+3. 此規則只提升既有角色行動，不新造 action，也不覆蓋 rich circular 原本已有的頂層 action。

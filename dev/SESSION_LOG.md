@@ -1,6 +1,67 @@
 # Session Log
 <!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->
 
+## 2026-04-09 Sparse action synthesis fallback (workspace v3.0.28)
+
+1. Agent & Session ID: Codex_20260409_0011
+2. Task summary: 針對 `EDBCM053/2026` 這類 sparse circular，補回頁面可見的頂層 action 清單。當 top-level `actions` 為空，但角色內 `acts` 已有明確內容時，自動提升 1-3 條既有角色行動到頂層 `actions`。
+3. Layer classification: Product / System Layer（analysis pipeline behavior change）+ Development Governance Layer（session persistence）
+4. Source triage: user-visible output quality issue。live `v3.0.27` 已讓 sparse summary 補回第二段，但 `actions` 仍為空，導致頁面上看起來像沒有行動清單；問題不是 K1 或 workflow，而是 sparse circular 沒把既有 role actions 提升到 dashboard 主要 action 區。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `dev/DOC_SYNC_CHECKLIST.md`, `edb_scraper.py`, `edb-dashboard.html`, live `circulars.json`, `README.md`
+6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 新增 `_synthesize_sparse_actions()`，當 sparse circular 頂層 `actions` 為空時，從最高訊號角色的既有 `acts` 合成最多 3 條 action
+   - ✅ 保持 rich circular 原本的頂層 `actions` 不變，不覆蓋既有 action 清單
+   - ✅ 版本升至 `v3.0.28`
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - dashboard JS compile (`node` + `new Function`) → PASS
+   - sparse helper regression → PASS（`053` 類通告現在會產生 1-3 條頂層 action）
+9. Pending:
+   - 發布 `v3.0.28`
+   - 重跑 school-year workflow
+   - 驗證 live `EDBCM053/2026` 等 sparse 通告已重新顯示頂層 action 清單
+10. Next priorities:
+   - 發布 `v3.0.28`
+   - 重跑 workflow 並驗 live sparse actions
+   - 視結果再決定是否需要 rich/sparse action 分流進一步收口
+11. Risks / blockers:
+   - 本機仍缺 `OPENAI_API_KEY`，未做完整雲端 LLM 端到端回歸
+   - sparse action synthesis 若過度放寬，可能把 rich circular 的角色行動重複升到頂層；目前已限制只在 `actions` 為空時啟用
+12. Notes:
+   - 這輪不是新增新 action，而是把既有角色內 action 以較可見的形式提升到頂層。
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - 使用者指出 `EDBCM053/2026` 雖然摘要有改善，但頁面上看起來像失去了行動清單。
+2. Root Cause:
+   - sparse summary fallback 只改善了摘要；該類通告的明確行動仍留在 `roles.*.acts`，而頂層 `actions` 保持空陣列。
+3. Fix:
+   - 新增 sparse-action synthesis：若通告屬 sparse case 且 `actions` 為空，便從最高訊號角色的既有 `acts` 抽取最多 3 條，提升為頂層 `actions`。
+4. Verification:
+   - local helper 顯示 `EDBCM053/2026` 類資料在保留 summary 第二段的同時，也會得到頂層 action 清單
+   - rich circular 原有 `actions` 不受影響
+5. Regression / rule update:
+   - `CODEBASE_CONTEXT.md` Key Decision #31 added: sparse circulars may synthesize top-level actions from existing role-level acts.
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | sparse circular with empty top-level `actions` but non-empty role `acts` | apply sparse action synthesis | promote 1-3 existing role actions to top-level `actions` | `053` helper now emits synthesized top-level actions | PASS |
+| Boundary | sparse circular with many duplicated role actions | apply sparse action synthesis | dedupe and cap at 3 actions | helper keeps unique actions and stops at 3 | PASS |
+| Error / failure path | no `OPENAI_API_KEY` in env | local helper/syntax checks only | local QC valid; cloud regression explicitly skipped | local QC passed; cloud run skipped | PASS with notes |
+| Regression | rich circular already has top-level `actions` | sparse action synthesis should not rewrite list | existing top-level actions remain unchanged | synthesis exits early when `actions` already present | PASS |
+
+Overall: PASS with notes
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Session governance maintenance / log archive | SESSION_HANDOFF.md current state + SESSION_LOG.md current entry + archive pointer / files if rotation triggered | ✓ Done |
+
 ## 2026-04-09 K1 split-role cleanup for local knowledge generator
 
 1. Agent & Session ID: Codex_20260409_0010
