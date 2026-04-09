@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-09T07:04:46Z",
+  "generated_at": "2026-04-09T07:18:03Z",
   "model": "gpt-5-nano",
   "temperature": 1,
   "range": "school-year (from 2025-09-01)",
@@ -199,25 +199,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
-          },
           {
             "label": "學校活動指引",
             "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
@@ -457,7 +441,6 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
@@ -470,16 +453,6 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校財務管理",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充撥款運用、財務安排及校內批核的官方參考"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           },
           {
             "label": "學校活動指引",
@@ -846,16 +819,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -864,6 +827,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
           },
           {
             "label": "學校發展津貼的參考資料",
@@ -1170,16 +1138,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -1200,9 +1158,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -1456,30 +1412,14 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
+            "label": "學校財務管理",
             "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
           },
           {
             "label": "學校發展津貼的參考資料",
@@ -1497,9 +1437,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -1731,35 +1669,9 @@
       "diff": null,
       "knowledge_review": {
         "terminology_review": [],
-        "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
-        ],
-        "recommended_links": [
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
-          }
-        ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "missing_points": [],
+        "recommended_links": [],
+        "role_notes": []
       },
       "k1_topics": [
         "hr",
@@ -2077,9 +1989,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -2321,16 +2231,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -2351,9 +2251,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -2604,7 +2502,6 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
@@ -2619,16 +2516,6 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           },
           {
-            "label": "學校財務管理",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充撥款運用、財務安排及校內批核的官方參考"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
-          },
-          {
             "label": "學校活動指引",
             "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
             "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
@@ -2639,9 +2526,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -2973,16 +2858,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -3003,9 +2878,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -3258,20 +3131,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -3281,21 +3143,9 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -3561,20 +3411,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -3584,16 +3423,9 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -3828,29 +3660,13 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
+            "label": "學校財務管理",
             "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
           },
           {
             "label": "學校發展津貼的參考資料",
@@ -3858,9 +3674,7 @@
             "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -4094,9 +3908,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -4371,9 +4183,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -4627,30 +4437,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
           {
             "label": "學校活動指引",
             "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
@@ -4662,9 +4451,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -4922,16 +4709,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -4952,9 +4729,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -5199,9 +4974,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -5454,51 +5227,9 @@
       "diff": null,
       "knowledge_review": {
         "terminology_review": [],
-        "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
-        ],
-        "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
-          }
-        ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "missing_points": [],
+        "recommended_links": [],
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -5768,20 +5499,9 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -5791,11 +5511,6 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           },
           {
             "label": "學校活動指引",
@@ -5808,9 +5523,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -6081,9 +5794,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -6413,20 +6124,9 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -6436,11 +6136,6 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           },
           {
             "label": "學校活動指引",
@@ -6453,9 +6148,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -6724,45 +6417,9 @@
       "diff": null,
       "knowledge_review": {
         "terminology_review": [],
-        "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
-        ],
-        "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
-          }
-        ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "missing_points": [],
+        "recommended_links": [],
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -7028,20 +6685,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -7051,16 +6697,9 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -7312,16 +6951,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -7342,9 +6971,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "hr",
@@ -7606,16 +7233,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -7636,9 +7253,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -7879,20 +7494,9 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -7904,24 +7508,17 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           },
           {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
             "label": "學校發展津貼的參考資料",
             "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
             "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -8174,30 +7771,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
           {
             "label": "學校活動指引",
             "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
@@ -8209,9 +7785,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -8452,20 +8026,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -8475,21 +8038,9 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -8747,16 +8298,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -8777,9 +8318,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -9031,20 +8570,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -9054,21 +8582,9 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -9330,16 +8846,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -9360,9 +8866,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -9691,20 +9195,9 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -9716,24 +9209,17 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           },
           {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
             "label": "學校發展津貼的參考資料",
             "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
             "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -9958,20 +9444,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
           {
             "label": "學校活動指引",
             "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
@@ -9983,9 +9458,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -10236,45 +9709,9 @@
       "diff": null,
       "knowledge_review": {
         "terminology_review": [],
-        "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
-        ],
-        "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
-          }
-        ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "missing_points": [],
+        "recommended_links": [],
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -10507,20 +9944,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -10530,21 +9956,9 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "it",
@@ -10848,20 +10262,9 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -10871,11 +10274,6 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           },
           {
             "label": "學校活動指引",
@@ -10888,9 +10286,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -11191,20 +10587,9 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -11214,11 +10599,6 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           },
           {
             "label": "學校活動指引",
@@ -11231,9 +10611,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -11506,16 +10884,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -11524,6 +10892,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
           },
           {
             "label": "學校發展津貼的參考資料",
@@ -11541,9 +10914,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -11764,20 +11135,9 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -11787,11 +11147,6 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           },
           {
             "label": "學校活動指引",
@@ -11804,9 +11159,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -12029,20 +11382,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
           {
             "label": "學校財務管理",
             "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
@@ -12054,9 +11396,7 @@
             "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance"
@@ -12263,14 +11603,9 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
+            "label": "學校財務管理",
             "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
           },
           {
             "label": "學校發展津貼的參考資料",
@@ -12511,20 +11846,9 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -12534,11 +11858,6 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           },
           {
             "label": "學校活動指引",
@@ -12551,9 +11870,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -12785,21 +12102,10 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
           {
             "label": "學校財務管理",
             "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
@@ -12821,9 +12127,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -13063,20 +12367,9 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -13086,11 +12379,6 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           },
           {
             "label": "學校活動指引",
@@ -13103,9 +12391,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -13320,30 +12606,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
           {
             "label": "學校活動指引",
             "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
@@ -13355,9 +12620,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -13591,21 +12854,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
           {
             "label": "學校財務管理",
             "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
@@ -13615,21 +12866,9 @@
             "label": "學校發展津貼的參考資料",
             "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
             "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "hr",
@@ -13961,9 +13200,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -14203,16 +13440,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -14221,6 +13448,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
           },
           {
             "label": "學校發展津貼的參考資料",
@@ -14238,9 +13470,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -14466,30 +13696,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
           {
             "label": "學校活動指引",
             "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
@@ -14501,9 +13710,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -14741,20 +13948,9 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -14764,11 +13960,6 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           },
           {
             "label": "學校活動指引",
@@ -14781,9 +13972,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -15113,16 +14302,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -15143,9 +14322,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -15413,9 +14590,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -15748,16 +14923,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -15778,9 +14943,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -16035,16 +15198,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -16053,6 +15206,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
           },
           {
             "label": "學校發展津貼的參考資料",
@@ -16070,9 +15228,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -16327,50 +15483,21 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
+            "label": "學校財務管理",
             "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
           },
           {
             "label": "學校發展津貼的參考資料",
             "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
             "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -16616,45 +15743,9 @@
       "diff": null,
       "knowledge_review": {
         "terminology_review": [],
-        "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
-        ],
-        "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
-          }
-        ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "missing_points": [],
+        "recommended_links": [],
+        "role_notes": []
       },
       "k1_topics": [
         "it",
@@ -16867,7 +15958,6 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
@@ -16882,16 +15972,6 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           },
           {
-            "label": "學校財務管理",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充撥款運用、財務安排及校內批核的官方參考"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
-          },
-          {
             "label": "學校活動指引",
             "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
             "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
@@ -16902,9 +15982,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -17144,20 +16222,9 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -17167,11 +16234,6 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           },
           {
             "label": "學校活動指引",
@@ -17184,9 +16246,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -17449,9 +16509,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -17775,16 +16833,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -17805,9 +16853,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -18059,30 +17105,14 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
+            "label": "學校財務管理",
             "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
           },
           {
             "label": "學校發展津貼的參考資料",
@@ -18100,9 +17130,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -18317,36 +17345,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
-          },
           {
             "label": "學校活動指引",
             "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
@@ -18358,10 +17359,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 finance 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -18624,9 +17622,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -18850,21 +17846,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -18874,26 +17858,9 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -19147,50 +18114,21 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
+          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。"
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
+            "label": "學校財務管理",
             "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
           },
           {
             "label": "學校發展津貼的參考資料",
             "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
             "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -19437,20 +18375,9 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -19460,11 +18387,6 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           },
           {
             "label": "學校活動指引",
@@ -19477,9 +18399,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -19714,21 +18634,10 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
           {
             "label": "學校財務管理",
             "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
@@ -19750,9 +18659,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -19998,9 +18905,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -20237,8 +19142,7 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
           {
@@ -20250,21 +19154,9 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -20494,20 +19386,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
           {
             "label": "學校活動指引",
             "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
@@ -20519,9 +19400,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -20764,20 +19643,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -20787,21 +19655,9 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -21057,14 +19913,9 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
+            "label": "學校財務管理",
             "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
           },
           {
             "label": "學校發展津貼的參考資料",
@@ -21307,21 +20158,10 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
           {
             "label": "學校財務管理",
             "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
@@ -21343,9 +20183,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -21604,16 +20442,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -21634,9 +20462,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -21885,20 +20711,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -21908,21 +20723,9 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -22236,20 +21039,9 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -22259,11 +21051,6 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           },
           {
             "label": "學校活動指引",
@@ -22276,9 +21063,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -22517,7 +21302,6 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
@@ -22532,16 +21316,6 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           },
           {
-            "label": "學校財務管理",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充撥款運用、財務安排及校內批核的官方參考"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
-          },
-          {
             "label": "學校活動指引",
             "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
             "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
@@ -22552,9 +21326,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -22815,16 +21587,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -22845,9 +21607,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -23114,16 +21874,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -23144,9 +21894,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -23393,16 +22141,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -23423,9 +22161,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -23685,16 +22421,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -23715,9 +22441,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -23978,9 +22702,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -24236,20 +22958,9 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -24259,11 +22970,6 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           },
           {
             "label": "學校活動指引",
@@ -24276,9 +22982,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -24538,16 +23242,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -24568,9 +23262,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -24829,9 +23521,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -25088,20 +23778,9 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -25111,11 +23790,6 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           },
           {
             "label": "學校活動指引",
@@ -25128,9 +23802,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -25379,16 +24051,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -25399,14 +24061,17 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           },
           {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
+          },
+          {
             "label": "學校發展津貼的參考資料",
             "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
             "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -25656,9 +24321,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -25901,9 +24564,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -26184,9 +24845,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -26403,9 +25062,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -26681,20 +25338,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
           {
             "label": "學校活動指引",
             "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
@@ -26706,9 +25352,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "hr",
@@ -26965,16 +25609,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -26995,9 +25629,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -27241,9 +25873,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -27483,7 +26113,6 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
@@ -27498,16 +26127,6 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           },
           {
-            "label": "學校財務管理",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充撥款運用、財務安排及校內批核的官方參考"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
-          },
-          {
             "label": "學校活動指引",
             "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
             "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
@@ -27518,9 +26137,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -27787,20 +26404,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
           {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
@@ -27810,21 +26416,9 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -28068,7 +26662,6 @@
         "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
@@ -28083,16 +26676,6 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           },
           {
-            "label": "學校財務管理",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充撥款運用、財務安排及校內批核的官方參考"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
-          },
-          {
             "label": "學校活動指引",
             "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
             "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
@@ -28103,9 +26686,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -28354,9 +26935,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -28614,16 +27193,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -28644,9 +27213,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -28924,16 +27491,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -28942,6 +27499,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
           },
           {
             "label": "學校發展津貼的參考資料",
@@ -28959,9 +27521,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -29211,30 +27771,14 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
+            "label": "學校財務管理",
             "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
           },
           {
             "label": "學校發展津貼的參考資料",
@@ -29252,9 +27796,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -29506,16 +28048,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -29536,9 +28068,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -29785,30 +28315,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
           {
             "label": "學校活動指引",
             "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
@@ -29820,9 +28329,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -30056,20 +28563,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
           {
             "label": "學校活動指引",
             "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
@@ -30081,9 +28577,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -30358,16 +28852,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -30388,9 +28872,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -30696,16 +29178,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -30726,9 +29198,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -30981,16 +29451,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -31011,9 +29471,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -31272,16 +29730,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -31302,9 +29750,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -31547,9 +29993,7 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
-          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
         "recommended_links": [
           {
@@ -31561,31 +30005,9 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校財務管理",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充撥款運用、財務安排及校內批核的官方參考"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
-          },
-          {
-            "label": "學校活動指引",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
-            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
-          },
-          {
-            "label": "學校行政手冊",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
-            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -31824,36 +30246,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
-          },
           {
             "label": "學校活動指引",
             "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
@@ -31865,9 +30260,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -32134,9 +30527,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -32397,9 +30788,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -32655,30 +31044,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "課程發展指引",
-            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
-            "why": "補充課程架構、學習領域與學與教資源的官方參考"
-          },
-          {
-            "label": "學校表現指標 (KPM)",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
-            "why": "補充課程推行、自評與學校層面跟進的參考框架"
-          },
           {
             "label": "學校活動指引",
             "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
@@ -32690,9 +31058,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -32949,16 +31315,6 @@
         ],
         "recommended_links": [
           {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
             "label": "課程發展指引",
             "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
             "why": "補充課程架構、學習領域與學與教資源的官方參考"
@@ -32967,6 +31323,11 @@
             "label": "學校表現指標 (KPM)",
             "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校財務管理",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
+            "why": "補充撥款運用、財務安排及校內批核的官方參考"
           },
           {
             "label": "學校發展津貼的參考資料",
@@ -32984,9 +31345,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -33250,9 +31609,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -33585,25 +31942,9 @@
       "knowledge_review": {
         "terminology_review": [],
         "missing_points": [
-          "補回 finance 類通告的撥款用途、文件要求及收支存檔提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
         ],
         "recommended_links": [
-          {
-            "label": "學校財務管理（供應商視角）",
-            "url": "https://www.edb.gov.hk/tc/sch-admin/fin-management/about-fin-management/index.html",
-            "why": "補充學校採購、利益衝突及供應商溝通的標準參考"
-          },
-          {
-            "label": "廉政公署採購參考資料",
-            "url": "https://www.icac.org.hk/icac/pb/tc/reference.html",
-            "why": "補充防貪及採購誠信要求"
-          },
-          {
-            "label": "學校發展津貼的參考資料",
-            "url": "http://www.edb.gov.hk/tc/sch-admin/fin-management/subsidy-info/ref-capacity-enhancement-grant/index.html",
-            "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
-          },
           {
             "label": "學校活動指引",
             "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
@@ -33615,9 +31956,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
