@@ -206,6 +206,7 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 20 | K1 Public JSON Prompt Injection | 2026-04-08 | `edb_scraper.py` now fetches K1 `knowledge.json` and `guidelines.json` at analysis time, injects prompt-ready facts and guideline links with graceful fallback, and tolerates both the older entry-list facts schema and the current live role-bucket facts schema. |
 | 21 | K1 Topic Slimming Guard | 2026-04-08 | K1 topic supplementation is now capped and prioritized to reduce cross-topic contamination: at most 3 topics, 4 facts per topic / 12 total, 2 guidelines per topic / 6 total, and `general` only falls back when no clearer topic is selected. |
 | 22 | K1 Public Schema v1.3.1 Adoption | 2026-04-09 | Circular System now consumes the public K1 role-bucket schema as documented in `K1_API_SPEC.md`:主任層 facts are assembled from `subject_head` + `panel_chair` + `all_roles`; public `department_head` is no longer assumed in K1 fetch logic. |
+| 23 | Deterministic Review Raw-signal Gating | 2026-04-09 | Second-pass procurement / finance enrichment now keys off raw circular text (`title` + `official` + `pdf_text`) instead of AI-generated summary or supplier-role text, preventing supplier / finance links from leaking into curriculum / student circulars through self-amplified signals. |
 
 ---
 
@@ -243,3 +244,4 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 2026-04-08 | Codex_20260408_0001 | Integrated K1 public JSON prompt enrichment into `edb_scraper.py`: fetches live `knowledge.json` / `guidelines.json`, detects topics before LLM analysis, injects facts and guideline links into the prompt with graceful fallback, and bumped workspace version to v3.0.17. |
 | 2026-04-08 | Codex_20260408_0004 | Tightened K1 topic supplementation and prompt payload size in `edb_scraper.py`, bumped workspace version to v3.0.19, and added guards to reduce `general` / cross-topic contamination before the next publish. |
 | 2026-04-09 | Codex_20260409_0001 | Re-aligned K1 integration against the public `v1.3.1` schema and public `K1_API_SPEC.md`, switched主任層 fact assembly to `subject_head` + `panel_chair` + `all_roles`, removed public-schema `department_head` assumptions from K1 fetch logic, and bumped workspace version to v3.0.20. |
+| 2026-04-09 | Codex_20260409_0002 | Tightened deterministic knowledge-review gating to use raw circular signals for procurement / finance enrichment, preventing AI-summary / supplier-role self-amplification from leaking supplier or finance links into curriculum / student cases; bumped workspace version to v3.0.21. |

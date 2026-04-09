@@ -1,6 +1,73 @@
 # Session Log
 <!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->
 
+## 2026-04-09 Tighten deterministic review raw-signal gating (workspace v3.0.21)
+
+1. Agent & Session ID: Codex_20260409_0002
+2. Task summary: 針對 live `v3.0.20` 抽樣後仍可見的 deterministic `knowledge_review.recommended_links` cross-topic contamination，收緊 procurement / finance gating，避免 AI summary 或 supplier role 自我放大後把 supplier / finance links 漏進 curriculum / student 通告。
+3. Layer classification: Product / System Layer（deterministic review behavior change）+ Development Governance Layer（session persistence）
+4. Source triage: 問題不在 K1 public fetch，而在 second-pass deterministic review。live `k1_*` fields 已正常，但 `knowledge_review.recommended_links` 仍可能過寬。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `README.md`, `edb_scraper.py`, `edb-dashboard.html`, `dev/DOC_SYNC_CHECKLIST.md`
+6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 確認 live `v3.0.20` + school-year workflow 已完成
+   - ✅ 將 procurement / finance gating 改為依 `title + official + pdf_text` 的 raw signals 判斷
+   - ✅ 阻止僅因 AI summary 或 supplier role 文字而追加 supplier links
+   - ✅ 保留真正有 finance / procurement raw signals 的通告之相關 links
+   - ✅ 版本升至 `v3.0.21`
+8. Validation / QC:
+   - `python3 -c "ast.parse(...)"` → PASS (`PY_AST_OK`)
+   - dashboard JS compile (`new Function(script)`) → PASS (`JS_COMPILE_OK`)
+   - curriculum/student contamination guard sample → PASS (`has_supplier_links=False`)
+   - procurement/finance positive sample → PASS (`has_supplier_links=True`, `has_finance_links=True`)
+   - full OpenAI LLM regression → BLOCKED (`OPENAI_API_KEY` absent)
+9. Pending:
+   - 發布 `v3.0.21`
+   - 重跑 school-year workflow，驗證 raw-signal gating 已反映到 live records
+   - 如仍有 supplier / finance links 漏入 curriculum / student，繼續微調 deterministic review gating
+   - 等待新版 `role_facts.json`
+10. Next priorities:
+   - 發布 `v3.0.21`
+   - 重跑 workflow 並驗證 raw-signal gating
+   - 視結果再微調 deterministic review gating
+11. Risks / blockers:
+   - 本輪 gating 驗證仍以 local deterministic samples 為主，尚未做 live workflow 後對照
+   - `OPENAI_API_KEY` 不在此環境，無法真跑完整雲端 LLM regression
+   - `role_facts.json` 仍未到位
+12. Notes:
+   - 這輪修正不改 K1 fetch 路徑；只修 second-pass enrichment 的 self-amplification 問題。
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - live `k1_*` fields 已正常，但 curriculum / student 通告的 `knowledge_review.recommended_links` 仍可能帶入 supplier / finance links。
+2. Root Cause:
+   - deterministic review 之前用 `summary` 及 supplier role 文字判斷 procurement / finance，會被 AI 生成內容自我放大。
+3. Fix:
+   - 改用 raw circular text (`title` + `official` + `pdf_text`) 判斷 procurement / finance；supplier enrichment 只在真有 procurement raw signal 時觸發。
+4. Verification:
+   - curriculum/student sample 雖然 summary 故意放入「供應商採購安排」，仍不再拿到 supplier links
+   - finance/procurement positive sample 仍保留 supplier / finance links
+5. Regression / rule update:
+   - 更新 `CODEBASE_CONTEXT.md` Key Decision #23；無新增治理規則。
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | curriculum/student sample with no raw procurement cues | run `_apply_post_analysis_review()` | should keep curriculum/student links only | no supplier links added | PASS |
+| Boundary | AI summary intentionally mentions supplier/procurement | run `_apply_post_analysis_review()` | summary wording alone must not trigger procurement enrichment | `has_supplier_links=False` | PASS |
+| Error / failure path | env lacks OpenAI key | scope QC | record block clearly without faking full LLM run | `OPENAI_API_KEY` absent; full LLM regression skipped | PASS with notes |
+| Regression | sample with real finance/procurement raw cues | run `_apply_post_analysis_review()` | supplier and finance links remain present | `has_supplier_links=True`, `has_finance_links=True` | PASS |
+
+Overall: PASS with notes
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Session governance maintenance / log archive | SESSION_HANDOFF.md current state + SESSION_LOG.md current entry + archive pointer / files if rotation triggered | ✓ Done |
+
 ## 2026-04-09 Adopt K1 public schema v1.3.1 in Circular System (workspace v3.0.20)
 
 1. Agent & Session ID: Codex_20260409_0001

@@ -1417,28 +1417,35 @@ def _apply_post_analysis_review(circ: dict) -> dict:
             reviewed.get("summary", ""),
         ]
     )
-    has_procurement_signal = any(keyword in source_text for keyword in POST_REVIEW_PROCUREMENT_KEYWORDS)
+    raw_signal_text = " ".join(
+        [
+            reviewed.get("title", ""),
+            reviewed.get("official", ""),
+            reviewed.get("pdf_text", "")[:1200],
+        ]
+    )
+    procurement_keyword_hits = sum(1 for keyword in POST_REVIEW_PROCUREMENT_KEYWORDS if keyword in raw_signal_text)
+    has_procurement_signal = (
+        ("procurement" in topics and procurement_keyword_hits >= 1)
+        or procurement_keyword_hits >= 2
+    )
     has_curriculum_signal = (
         "curriculum" in topics
-        or any(keyword in source_text for keyword in POST_REVIEW_CURRICULUM_KEYWORDS)
+        or any(keyword in raw_signal_text for keyword in POST_REVIEW_CURRICULUM_KEYWORDS)
     )
-    finance_keyword_hits = sum(1 for keyword in POST_REVIEW_FINANCE_KEYWORDS if keyword in source_text)
+    finance_keyword_hits = sum(1 for keyword in POST_REVIEW_FINANCE_KEYWORDS if keyword in raw_signal_text)
     has_finance_signal = (
-        "finance" in topics
-        or reviewed.get("grant_info", {}).get("type") in {"applicable", "resource"}
+        reviewed.get("grant_info", {}).get("type") in {"applicable", "resource"}
+        or ("finance" in topics and finance_keyword_hits >= 1)
         or finance_keyword_hits >= 2
     )
 
     if isinstance(supplier, dict):
-        supplier_text = " ".join(supplier.get("pts", []) + supplier.get("acts", []))
-        if any(keyword in supplier_text for keyword in POST_REVIEW_PROCUREMENT_KEYWORDS):
-            has_procurement_signal = True
-
         if has_procurement_signal and not supplier.get("r"):
             supplier["r"] = True
             role_notes.append("偵測到採購/供應商關鍵字，將 supplier 角色標記為相關。")
 
-        if supplier.get("r"):
+        if has_procurement_signal and supplier.get("r"):
             if not supplier.get("eligibility"):
                 supplier["eligibility"] = "應按學校/招標文件列明的供應商資格、產品規格及提交條件核對。"
                 missing_points.append("補回 supplier `eligibility`，提醒需核對招標/報價資格與文件要求。")
@@ -1525,7 +1532,7 @@ def _apply_post_analysis_review(circ: dict) -> dict:
 
     has_student_signal = (
         "student" in topics
-        or any(keyword in source_text for keyword in POST_REVIEW_STUDENT_KEYWORDS)
+        or any(keyword in raw_signal_text for keyword in POST_REVIEW_STUDENT_KEYWORDS)
     )
 
     if has_student_signal:
@@ -1958,7 +1965,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.20")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.21")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

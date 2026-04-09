@@ -23,7 +23,7 @@ This system automatically scrapes Hong Kong Education Bureau (EDB) circulars, pe
 | 📊 通告總覽 | ✅ 正式版 | 統計卡片、篩選、搜尋、卡片/列表切換 |
 | 🤖 AI 智能分析 | ✅ 正式版 | gpt-5-nano 多角色分析，含摘要/行動/截止 |
 | 📄 官方原文整理版 | ✅ v3.0.12 | 清洗斷行、空白與段落，提升官方摘錄可讀性 |
-| 🧠 知識校正層 | ✅ v3.0.20 (workspace) | AI 首輪分析前後同時使用知識增強：prompt 會注入 K1 facts / guidelines，並按 K1 public `v1.3.1` schema 以 `subject_head + panel_chair + all_roles` 組裝主任層事實，同時收緊 topic 補充與 payload 上限，以減少 cross-topic contamination；分析後再對 supplier / curriculum / finance / student 類通告做補漏、補連結、降低角色飄移 |
+| 🧠 知識校正層 | ✅ v3.0.21 (workspace) | AI 首輪分析前後同時使用知識增強：prompt 會注入 K1 facts / guidelines，並按 K1 public `v1.3.1` schema 以 `subject_head + panel_chair + all_roles` 組裝主任層事實；deterministic review 現改用 raw circular signals 做 procurement / finance gating，減少 supplier / finance links 漏進 curriculum / student 通告 |
 | 👥 七角色視圖 | ✅ v3.0.16 | 校長/副校長/科主任/主任/教師/EO/供應商（兼容舊 `department_head` 資料） |
 | 📅 月曆視圖 | ✅ 正式版 | EDBC 格式通告、截止日期標記 |
 | 💰 資源申請 | ✅ 正式版 | 可申請撥款追蹤 |
@@ -143,6 +143,7 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 - `guidelines.json`：提供 topic 對應的官方指引文件，於 LLM prompt 內以 `【相關指引文件】` 注入
 - K1 public `v1.3.1` schema 現以 `subject_head`（科主任）+ `panel_chair`（主任類）+ `all_roles` 為主任層事實來源
 - K1 topic 補充現已收緊為最多 3 個 topic，並限制 facts / guidelines 注入上限，以減少 prompt 過胖及跨 topic 污染
+- deterministic `knowledge_review` 連結補充現改為以通告原始文字訊號判斷 procurement / finance，而不再依賴 AI summary / supplier role 自我放大
 - fetch 失敗時會自動降級，不會中斷通告分析
 - 目前整合的 live endpoints：
   - [knowledge.json](https://leonard-wong-git.github.io/edb-knowledge/knowledge.json)
