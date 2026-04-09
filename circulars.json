@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-09T13:07:51Z",
+  "generated_at": "2026-04-09T13:29:39Z",
   "model": "gpt-5-nano",
   "temperature": 1,
   "range": "school-year (from 2025-09-01)",
@@ -38,7 +38,7 @@
         "resource_value_hkd": null,
         "note": ""
       },
-      "summary": "本通告就京港澳學生交流夏令營（2026）之整體安排發出通知，面向校方及相關單位，聚焦跨境學生交流活動的籌辦與協作框架，旨在規範參與方的角色義務及運作程序。\n\n第二段內容摘要需以官方全文公布為準，後續的執行要求、時間表及配套措施將於正式發布時提供，學校需依指引落實相關安排。",
+      "summary": "本通告就京港澳學生交流夏令營（2026）之整體安排發出通知，面向校方及相關單位，聚焦跨境學生交流活動的籌辦與協作框架，旨在規範參與方的角色義務及運作程序。\n\n校內跟進重點包括副校長需留意學生參與條件、支援安排及活動期間的照顧需要，避免遺漏個別學生的參與支援；科主任需按學生級別、活動安排及支援需要，預早協調人手、分組、風險提示及記錄安排。",
       "roles": {
         "principal": {
           "r": false,
@@ -119,13 +119,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -323,13 +317,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum"
@@ -525,9 +513,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -848,9 +834,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -1166,9 +1150,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -1783,9 +1765,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -2082,9 +2062,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -2393,9 +2371,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -2782,9 +2758,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -3088,9 +3062,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -3405,9 +3377,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -3963,9 +3933,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -4275,9 +4243,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -4578,9 +4544,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -4897,9 +4861,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -5178,9 +5140,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -5797,9 +5757,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -6109,9 +6067,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -6500,9 +6456,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -7121,9 +7075,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -7434,9 +7386,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "hr",
@@ -7752,9 +7702,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -8051,9 +7999,7 @@
             "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -8357,9 +8303,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -8651,9 +8595,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -8965,9 +8907,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -9270,9 +9210,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -9593,9 +9531,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -9981,9 +9917,7 @@
             "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -10259,9 +10193,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -10818,9 +10750,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "it",
@@ -11182,9 +11112,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -11544,9 +11472,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -11888,9 +11814,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -12169,9 +12093,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -12991,9 +12913,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -13287,9 +13207,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -13592,9 +13510,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -13856,9 +13772,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -14510,9 +14424,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -14821,9 +14733,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -15096,9 +15006,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -15369,9 +15277,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -15760,9 +15666,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -16065,9 +15969,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -16455,9 +16357,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -16776,9 +16676,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -17635,9 +17533,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -17936,9 +17832,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -18236,9 +18130,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -18616,9 +18508,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -18928,9 +18818,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -19192,10 +19080,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -19497,9 +19382,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -19769,9 +19652,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -20382,9 +20263,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -20681,9 +20560,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -20968,9 +20845,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -21253,9 +21128,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -21531,9 +21404,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -21827,9 +21698,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -22426,9 +22295,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -22746,9 +22613,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -23044,9 +22909,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -23418,9 +23281,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -23718,9 +23579,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -24040,9 +23899,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -24360,9 +24217,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -24662,9 +24517,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -24979,9 +24832,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -25277,9 +25128,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -25598,9 +25447,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -25915,9 +25762,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -26211,9 +26056,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -26529,9 +26372,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -26835,9 +26676,7 @@
             "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -27126,9 +26965,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -27406,9 +27243,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -27728,9 +27563,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -27982,9 +27815,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -28302,9 +28133,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "hr",
@@ -28612,9 +28441,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -28888,9 +28715,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -29189,9 +29014,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -29505,9 +29328,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -29814,9 +29635,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -30100,9 +29919,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -30414,9 +30231,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -30759,9 +30574,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -31073,9 +30886,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -31386,9 +31197,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -31681,9 +31490,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -31968,9 +31775,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -32300,9 +32105,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -32663,9 +32466,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -32973,9 +32774,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -33289,9 +33088,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -33581,9 +33378,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -33868,9 +33663,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -34176,9 +33969,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -34474,9 +34265,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -34779,9 +34568,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -35100,9 +34887,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -35405,9 +35190,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -35789,9 +35572,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
