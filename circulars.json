@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-08T18:50:37Z",
+  "generated_at": "2026-04-09T00:03:26Z",
   "model": "gpt-5-nano",
   "temperature": 1,
-  "range": "school-year (from 2025-09-01)",
+  "range": "past 3 days (from 2026-04-06)",
   "date_from": "2025-09-01",
   "date_to": "2026-04-08",
-  "days": 30,
+  "days": 3,
   "count": 117,
   "circulars": [
     {
@@ -1691,7 +1691,7 @@
       "number": "EDBCM042/2026",
       "type": "EDBCM",
       "date": "2026-04-01",
-      "isNew": true,
+      "isNew": false,
       "title": "申請參加學生教育活動及比賽 (二零二六年四月)",
       "official": "",
       "impact": "mid",
