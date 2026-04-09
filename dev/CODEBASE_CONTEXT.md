@@ -63,6 +63,7 @@ EDB-Circular-AI-analysis-system/
     │   ├── parse_row.py            # Circular row parser
     │   ├── parse_structure.py      # DOM structure analyzer
     │   ├── simulate_post_analysis_review.py  # Prototype: post-analysis knowledge review simulation
+    │   ├── summary_action_audit.py # Local audit gate for summary/action regressions on circulars.json
     │   └── test_llm.py             # LLM API diagnostics
     └── init_backup/                # AGENTS.md install backups
 ```
@@ -215,6 +216,8 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 29 | Sparse Summary Follow-up Fallback | 2026-04-09 | When a circular is sparse but the analysis already has clear role-based follow-up work, summary may append one concise second paragraph that highlights at most two highest-signal internal follow-up points, avoiding both empty placeholder prose and full role-by-role expansion. |
 | 30 | Local Knowledge Generator Split-role Alignment | 2026-04-09 | `fetch_knowledge.py` remains a maintained support generator for local knowledge artifacts, so its role lists and generated indexes/docs now align to the split-role contract (`subject_head` + `panel_chair` + `eo_admin=EO`). Remaining `department_head` references in the repo are legacy compatibility only, not active K1 generation logic. |
 | 31 | Sparse Action Synthesis Fallback | 2026-04-09 | If a sparse circular has no top-level `actions` but role-level `acts` are present, the pipeline may synthesize up to three top-level actions from the highest-signal roles so the dashboard still shows an actionable checklist without inventing new work items. |
+| 32 | Sparse Action Synthesis Must Run After Role Enrichment | 2026-04-09 | Sparse-action synthesis depends on deterministic curriculum/student/finance role enrichments. It must run at the end of `_apply_post_analysis_review()`; otherwise live sparse circulars can lose dashboard-visible actions even though role-level `acts` were added later in the same pass. |
+| 33 | Summary and Action Responsibilities Must Stay Separate | 2026-04-09 | `summary` is limited to a concise circular synopsis only. It may borrow knowledge-base vocabulary for terminology normalization, but it must not carry role work, action lists, or knowledge-base explainers; those belong to top-level `actions` and `roles.*`. |
 
 ---
 
@@ -262,3 +265,6 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 2026-04-09 | Codex_20260409_0009 | Added a sparse-summary fallback so role/action signals can supply one concise follow-up paragraph when the summary would otherwise be too empty; workspace version is now v3.0.27 pending publish. |
 | 2026-04-09 | Codex_20260409_0010 | Audited `fetch_knowledge.py` as an active support-generation path, removed stale `department_head` assumptions from its maintained role lists/index labels, and refreshed maintained local knowledge artifacts to the split-role contract while preserving product-side legacy compatibility elsewhere. |
 | 2026-04-09 | Codex_20260409_0011 | Added sparse action synthesis so circulars with empty top-level `actions` can promote up to three existing role-level `acts` into the dashboard-visible action list; workspace version is now v3.0.28 pending publish. |
+| 2026-04-09 | Codex_20260409_0013 | Fixed the v3.0.28 sparse-action regression by moving sparse action synthesis to the end of deterministic role enrichment and strengthening summary filler cleanup markers; workspace version is now v3.0.29 pending publish. |
+| 2026-04-09 | Codex_20260409_0014 | Added `dev/tools/summary_action_audit.py` so summary/action changes can be screened against the current `circulars.json` locally before another long school-year workflow is triggered. |
+| 2026-04-09 | Codex_20260409_0015 | Re-scoped summary generation so it only describes the circular itself, may borrow K1 vocabulary but not K1 content, and no longer appends sparse follow-up work items; workspace version is now v3.0.30 pending audit review / publish decision. |

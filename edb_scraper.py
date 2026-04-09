@@ -466,16 +466,15 @@ diff（版本比較）：
 1. 日期格式必須為 YYYY-MM-DD
 2. 金額單位為港元（HKD），只填數字不加逗號
 3. tags 最多 5 個，用 2-6 字中文描述
-4. summary 中文摘要 120-260 字，優先分 2 段；只有資訊明確且較多時才分 3 段：
+4. summary 中文摘要約 120-250 字，以 1-2 段短段落為主：
    - 第 1 段：概述通告主旨、對象或安排重點
-   - 第 2 段：概述主要要求、跟進事項
-   - 第 3 段（僅在需要時）：概述截止/配套/重要提醒
-   - 只總結通告本身已知內容，不得把知識庫一般規則、角色常識、延伸管理建議當成通告內容
+   - 第 2 段（如需要）：概述主要要求、期限或重要安排
+   - summary 只做通告簡介，不要寫角色工作、行動清單或知識庫延伸說明
+   - 可參考知識庫詞彙統一用字，但不得把知識庫一般規則、角色常識、延伸管理建議當成通告內容
    - 只寫通告已明示或可直接從官方摘要/PDF讀出的內容；資訊不足時直接略去，不要描述「未提供什麼」
    - 不得使用「可推斷」「初步判讀」「根據標題可判斷」等方法說明或保留語氣
    - 不得使用「若有……將另行通知」「目前尚未披露」「等待後續公告」等低信息模板句填充摘要
    - 除非通告本身明確逐一分派角色責任，否則不要在 summary 逐個角色展開
-   - 如官方內容較少，但分析中已有明確而具體的跟進工作，可在第 2 段簡述 1-2 個最重要的校內跟進點；不要逐個角色平鋪列出
 5. 如無截止日期，deadlines 為空數組 []
 6. 如無撥款，grant_info.type = "none"，其餘欄填 null / ""
 """
@@ -1281,14 +1280,14 @@ class LLMAnalyzer:
             f"通告類型：{circ.get('type', 'EDBCM')}",
             "",
             "【摘要寫作要求】",
-            "- summary 優先用兩段中文短段落撰寫；只有資訊明確且較多時才可用三段。",
+            "- summary 只作通告簡介，約 120-250 字，以 1-2 段中文短段落撰寫。",
             "- 第一段只交代通告主旨、對象與核心安排。",
-            "- 第二段只交代主要要求、跟進事項。",
-            "- 第三段只在有需要時交代截止、配套或重要提醒。",
+            "- 第二段只在有需要時交代主要要求、期限或重要安排。",
             "- 不要把知識庫一般規則、角色百科、延伸管理建議寫進 summary。",
+            "- 可以借用知識庫詞彙去統一用字，但不可把知識庫內容寫成通告內容。",
             "- 只寫通告已明示或可直接從官方摘要/PDF讀出的內容；資訊不足時直接略去，不要描述『未提供什麼』。",
             "- 除非通告本身明確逐一分派角色責任，否則不要在 summary 逐個角色展開。",
-            "- 如官方內容較少，但分析中已有明確而具體的跟進工作，可在第 2 段簡述 1-2 個最重要的校內跟進點；不要逐個角色平鋪列出。",
+            "- 不要在 summary 寫角色工作、行動清單或跟進分工；這些內容留給 actions 與 roles。",
             "- 不要寫「可推斷」「初步判讀」「根據標題可判斷」等自我說明語氣。",
             "- 不要寫「若有……將另行通知」「目前尚未披露」「等待後續公告」等低信息模板句。",
             "",
@@ -1586,13 +1585,20 @@ SUMMARY_BANNED_PHRASES = [
 
 SUMMARY_BANNED_MARKERS = [
     "第二段內容摘要",
+    "根據可得的知識庫",
+    "根據經審核知識庫",
+    "依照經審核知識庫",
+    "知識庫",
     "若有",
     "如有",
     "目前尚未",
+    "未披露",
     "未提供",
     "未包含",
     "未有",
     "未見",
+    "以正式發布的公告全文為準",
+    "此通告未逐一分派角色責任",
     "等待教育局後續公告",
     "請校方留意日後更新",
     "截至現時",
@@ -1640,38 +1646,6 @@ SUMMARY_ROLE_LABELS = {
     "eo_admin": "EO",
     "supplier": "供應商",
 }
-
-
-def _build_sparse_summary_followup(reviewed: dict) -> str:
-    roles = reviewed.get("roles") or {}
-    snippets = []
-    seen = set()
-
-    for role_key in SUMMARY_ROLE_PRIORITY:
-        role = roles.get(role_key)
-        if not isinstance(role, dict) or not role.get("r"):
-            continue
-        candidates = []
-        for text in (role.get("acts") or []):
-            if text:
-                candidates.append(text.strip())
-        for text in (role.get("pts") or []):
-            if text:
-                candidates.append(text.strip())
-        chosen = next((c for c in candidates if c and c not in seen), None)
-        if not chosen:
-            continue
-        seen.add(chosen)
-        chosen = re.sub(r"[。；，、：]+$", "", chosen)
-        snippets.append(f"{SUMMARY_ROLE_LABELS[role_key]}需{chosen}")
-        if len(snippets) >= 2:
-            break
-
-    if not snippets:
-        return ""
-    sentence = "；".join(snippets)
-    sentence = re.sub(r"[；，、：]+$", "", sentence)
-    return f"校內跟進重點包括{sentence}。"
 
 
 def _synthesize_sparse_actions(reviewed: dict) -> list[dict]:
@@ -1728,8 +1702,8 @@ def _normalize_summary_text(text: str) -> str:
         return ""
 
     paragraphs = [p.strip() for p in cleaned.split("\n\n") if p.strip()]
-    if len(paragraphs) >= 2:
-        kept = paragraphs[:3]
+    if len(paragraphs) >= 1:
+        kept = paragraphs[:2]
         normalized = []
         for p in kept:
             sents = [s.strip() for s in re.split(r"(?<=[。！？])", p) if s.strip()]
@@ -1738,7 +1712,7 @@ def _normalize_summary_text(text: str) -> str:
             if para:
                 normalized.append(_dedupe_summary_phrases(para))
         if normalized:
-            return "\n\n".join(normalized[:3])
+            return "\n\n".join(normalized[:2])
 
     sentences = [s.strip() for s in re.split(r"(?<=[。！？])", cleaned) if s.strip()]
     sentences = _filter_summary_sentences(sentences)
@@ -1747,12 +1721,7 @@ def _normalize_summary_text(text: str) -> str:
     if len(sentences) <= 2:
         return "\n\n".join(_dedupe_summary_phrases(s) for s in sentences)
 
-    if len(sentences) >= 5:
-        groups = [sentences[:2], sentences[2:4], sentences[4:]]
-    elif len(sentences) >= 3:
-        groups = [sentences[:1], sentences[1:]]
-    else:
-        groups = [sentences]
+    groups = [sentences[:1], sentences[1:3]]
 
     paragraphs = []
     for group in groups:
@@ -1761,7 +1730,7 @@ def _normalize_summary_text(text: str) -> str:
         if para:
             paragraphs.append(para)
 
-    return "\n\n".join(paragraphs[:3])
+    return "\n\n".join(paragraphs[:2])
 
 
 def _apply_post_analysis_review(circ: dict) -> dict:
@@ -1786,14 +1755,6 @@ def _apply_post_analysis_review(circ: dict) -> dict:
 
     for action in reviewed.get("actions", []):
         action["text"] = _replace_terms(action.get("text", ""), applied_rules)
-
-    summary_paragraphs = [p.strip() for p in (reviewed.get("summary") or "").split("\n\n") if p.strip()]
-    if len(summary_paragraphs) <= 1:
-        followup = _build_sparse_summary_followup(reviewed)
-        if followup:
-            reviewed["summary"] = "\n\n".join(summary_paragraphs + [followup]) if summary_paragraphs else followup
-
-    reviewed["actions"] = _synthesize_sparse_actions(reviewed)
 
     supplier = roles.get("supplier")
     source_text = " ".join(
@@ -1971,6 +1932,7 @@ def _apply_post_analysis_review(circ: dict) -> dict:
         "recommended_links": _merge_link_lists(added_links),
         "role_notes": role_notes,
     }
+    reviewed["actions"] = _synthesize_sparse_actions(reviewed)
     return reviewed
 
 
@@ -2380,7 +2342,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.28")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.30")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")
