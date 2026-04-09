@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-09T16:49:14Z",
+  "generated_at": "2026-04-09T23:34:54Z",
   "model": "gpt-5-nano",
   "temperature": 1,
-  "range": "school-year (from 2025-09-01)",
+  "range": "past 3 days (from 2026-04-06)",
   "date_from": "2025-09-01",
   "date_to": "2026-04-08",
-  "days": 30,
+  "days": 3,
   "count": 117,
   "circulars": [
     {
@@ -20,13 +20,16 @@
       "compliance": "informational",
       "urgency": "low",
       "scope": "all",
-      "topics": [],
+      "topics": [
+        "student",
+        "activity",
+        "safety"
+      ],
       "tags": [
-        "跨境夏令營",
-        "學生交流",
-        "京港澳",
-        "學校管理",
-        "活動安排"
+        "跨區交流",
+        "夏令營",
+        "學生",
+        "港澳交流"
       ],
       "grant_info": {
         "type": "none",
@@ -35,7 +38,7 @@
         "resource_value_hkd": null,
         "note": ""
       },
-      "summary": "",
+      "summary": "本通告公告京港澳學生交流夏令營（2026），旨在促進京港澳地區學生之跨區交流與學習經驗，建立穩健的跨區教育活動框架。就目前公開內容而言，僅公布活動名稱及年度性質，請各校留意官方渠道後續發布的具體指引。",
       "roles": {
         "principal": {
           "r": false,
@@ -137,31 +140,82 @@
           "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
         ]
       },
-      "k1_topics": [],
-      "k1_facts": [],
-      "k1_guidelines": [],
+      "k1_topics": [
+        "student",
+        "activity"
+      ],
+      "k1_facts": [
+        "學校須設立機制處理學生缺課個案，連續缺課 7 天須向教育局呈報",
+        "學校須制訂反欺凌政策，建立通報和處理機制，並定期進行預防教育",
+        "學校須按「全校參與」模式支援有特殊教育需要（SEN）學生的學習",
+        "[特殊教育統籌主任] 負責統籌全校 SEN 識別、評估及支援計劃，並向副校長匯報",
+        "境外活動須事前獲校長批准，並向教育局呈報行程及參加者資料",
+        "校外活動前須完成風險評估，包括場地安全、交通安排、天氣應變和醫療支援",
+        "全方位學習津貼須用於組織校外體驗活動，促進五種基要學習經歷",
+        "[活動主任] 負責統籌全年校本課外活動計劃，確保涵蓋五種基要學習經歷"
+      ],
+      "k1_guidelines": [
+        {
+          "id": "g16",
+          "title": "學生訓育工作指引",
+          "titleShort": "訓育工作指引",
+          "url": "https://www.edb.gov.hk/tc/teacher/student-guidance-discipline-services/principles-guidelines/guidelines-on-student-discipline/index.html",
+          "year": "2017",
+          "format": "HTML/PDF"
+        },
+        {
+          "id": "g17",
+          "title": "理念與指引（訓育及輔導）",
+          "titleShort": "訓輔理念與指引",
+          "url": "https://www.edb.gov.hk/tc/teacher/student-guidance-discipline-services/principles-guidelines/index.html",
+          "year": "2011",
+          "format": "HTML"
+        },
+        {
+          "id": "g03",
+          "title": "全方位學習津貼運用指引",
+          "titleShort": "全方位學習津貼指引",
+          "url": "https://www.edb.gov.hk/tc/curriculum-development/curriculum-area/life-wide-learning/resource-and-support/doc-and-guidelines.html",
+          "year": "2024",
+          "format": "HTML"
+        },
+        {
+          "id": "g20",
+          "title": "學校活動指引",
+          "titleShort": "學校活動指引",
+          "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/",
+          "year": "2020",
+          "format": "HTML"
+        }
+      ],
       "role_fact_topics": [
-        "general"
+        "student",
+        "activity"
       ],
       "role_facts": {
         "all_roles": [
-          "學校須按《公開資料守則》處理公眾索取資料要求，除有合理理由外應盡快提供",
-          "法團校董會為學校最高管治機構，負責制訂學校政策及監察學校運作"
+          "學校須設立機制處理學生缺課個案，連續缺課 7 天須向教育局呈報",
+          "學校須制訂反欺凌政策，建立通報和處理機制，並定期進行預防教育"
         ],
         "principal": [
-          "校長為學校的首席行政人員，負責學校日常運作及向法團校董會負責",
-          "校長須每年向法團校董會提交學校周年計劃和自評報告"
+          "校長須確保學校已制訂完善的危機處理程序，包括意外、傳染病和自然災害應變方案",
+          "校長須確保學校訓輔政策兼顧獎懲，培養學生正面行為和自律精神"
         ],
         "vice_principal": [
-          "副校長協助校長管理學校日常事務，校長不在時代行校長職務",
-          "統籌學校自評（SSE）相關範疇，向校長匯報評估進度及改善建議"
+          "副校長及訓輔主任負責監察學生訓輔工作，協調班主任、輔導人員和社工的支援服務",
+          "副校長協助統籌全校校外活動安排，確保活動與課程目標和學習經歷對應"
         ],
         "panel_chair": [
-          "[訓導及輔導主任] 負責統籌校本支援服務的使用數據，定期向校方提交分析報告",
-          "負責巡查、紀錄、申報學校設施及維修工程需求"
+          "[特殊教育統籌主任] 負責統籌全校 SEN 識別、評估及支援計劃，並向副校長匯報",
+          "[訓導及輔導主任] 統籌全校訓育及輔導工作，建立跨部門個案轉介及跟進機制"
+        ],
+        "teacher": [
+          "教師發現學生有特殊教育需要（SEN）跡象時，須盡早轉介予學校支援組跟進",
+          "班主任須每日記錄學生出席情況，發現異常缺課須即日聯絡家長了解原因"
         ],
         "eo_admin": [
-          "EO負責學校日常行政運作，包括文書處理、檔案管理和校舍維修協調"
+          "EO負責維護學生出席記錄系統，定期匯報缺課數據予校長和教育局",
+          "EO負責校外活動的行政支援，包括保險購買、交通安排和家長通知書"
         ]
       },
       "pdf_urls": [
@@ -553,9 +607,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum"
