@@ -466,7 +466,11 @@ diff（版本比較）：
 1. 日期格式必須為 YYYY-MM-DD
 2. 金額單位為港元（HKD），只填數字不加逗號
 3. tags 最多 5 個，用 2-6 字中文描述
-4. summary 詳細中文摘要 300-600 字，包括背景、主要要求、注意事項
+4. summary 中文摘要 120-220 字，分 2 段：
+   - 第 1 段：概述通告主旨、對象或安排重點
+   - 第 2 段：概述主要要求、跟進事項、截止/配套（如適用）
+   - 只總結通告本身已知內容，不得把知識庫一般規則、角色常識、延伸管理建議當成通告內容
+   - 不得使用「可推斷」「初步判讀」「根據標題可判斷」等方法說明或保留語氣
 5. 如無截止日期，deadlines 為空數組 []
 6. 如無撥款，grant_info.type = "none"，其餘欄填 null / ""
 """
@@ -1271,6 +1275,13 @@ class LLMAnalyzer:
             f"發佈日期：{circ.get('date', '?')}",
             f"通告類型：{circ.get('type', 'EDBCM')}",
             "",
+            "【摘要寫作要求】",
+            "- summary 必須用兩段中文短段落撰寫。",
+            "- 第一段只交代通告主旨、對象與核心安排。",
+            "- 第二段只交代主要要求、跟進事項、截止或配套安排（如適用）。",
+            "- 不要把知識庫一般規則、角色百科、延伸管理建議寫進 summary。",
+            "- 不要寫「可推斷」「初步判讀」「根據標題可判斷」等自我說明語氣。",
+            "",
         ]
         if facts:
             lines += ["【經審核知識庫 (相關事實對照)】", "\n".join(f"- {f}" for f in facts), ""]
@@ -1300,7 +1311,7 @@ class LLMAnalyzer:
         if circ.get("pdf_text"):
             lines += ["【通告全文（PDF 提取）】", circ["pdf_text"]]
         elif not circ.get("official"):
-            lines.append("（注意：未能提取通告全文，請根據標題及通告號作合理推斷）")
+            lines.append("【資料限制】僅可按已知標題、日期與可得資料整理摘要；不要補充未明示的背景常識或角色百科。")
         return "\n".join(lines)
 
 
@@ -1548,6 +1559,66 @@ def _merge_link_lists(*groups: list[dict]) -> list[dict]:
     return merged
 
 
+SUMMARY_META_PHRASES = [
+    "根據標題可判斷",
+    "初步判讀",
+    "可推斷",
+    "推定本通告",
+    "依據知識庫",
+    "依據edb學校管理知識中心",
+    "edb學校管理知識中心的通則",
+    "知識中心的通則",
+    "的通則",
+    "未能提取通告全文",
+    "未提供完整的通告全文",
+    "雖僅以標題與通告號推測內容",
+]
+
+
+def _normalize_summary_text(text: str) -> str:
+    text = (text or "").strip()
+    if not text:
+        return ""
+    cleaned = re.sub(r"\s+", "", text)
+    sentences = [s.strip() for s in re.split(r"(?<=[。！？])", cleaned) if s.strip()]
+    normalized_sentences = []
+    for sentence in sentences:
+        updated = sentence
+        for phrase in SUMMARY_META_PHRASES:
+            updated = re.sub(re.escape(phrase), "", updated, flags=re.IGNORECASE)
+        updated = re.sub(r"^[，、；：\s]+", "", updated)
+        updated = re.sub(r"[，、；：]{2,}", "，", updated)
+        updated = re.sub(r"^本通告以", "本通告", updated)
+        updated = re.sub(r"^本通告[「\"]?(.+?)[」\"]?為主旨，?", r"本通告涉及「\1」。", updated)
+        updated = re.sub(r"^本通告涉及「(.+?)」。涉及", r"本通告涉及「\1」", updated)
+        updated = updated.strip()
+        if updated and updated not in {"。", "！", "？"}:
+            normalized_sentences.append(updated)
+    if normalized_sentences:
+        sentences = normalized_sentences
+
+    kept = []
+    total_len = 0
+    for sentence in sentences:
+        if len(kept) >= 5:
+            break
+        projected = total_len + len(sentence)
+        if kept and projected > 220:
+            break
+        kept.append(sentence)
+        total_len = projected
+    if not kept:
+        kept = sentences[:3]
+
+    if len(kept) <= 2:
+        return "\n\n".join(kept)
+
+    first_para_count = 2 if len(kept) >= 4 else 1
+    para1 = "".join(kept[:first_para_count]).strip()
+    para2 = "".join(kept[first_para_count:]).strip()
+    return "\n\n".join(part for part in [para1, para2] if part)
+
+
 def _apply_post_analysis_review(circ: dict) -> dict:
     """Second-pass deterministic knowledge review after primary analysis."""
     reviewed = _normalize_roles_payload(circ)
@@ -1556,7 +1627,7 @@ def _apply_post_analysis_review(circ: dict) -> dict:
     role_notes: list[str] = []
     added_links: list[dict] = []
 
-    reviewed["summary"] = _replace_terms(reviewed.get("summary", ""), applied_rules)
+    reviewed["summary"] = _normalize_summary_text(_replace_terms(reviewed.get("summary", ""), applied_rules))
 
     roles = reviewed.get("roles", {})
     topics = reviewed.get("topics", []) or []
@@ -2156,7 +2227,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.22")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.23")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

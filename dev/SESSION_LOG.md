@@ -67,6 +67,69 @@ Overall: PASS with notes
 | Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
 | Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |
 
+## 2026-04-09 Summary A-style refinement for circular-first summaries
+
+1. Agent & Session ID: Codex_20260409_0005
+2. Task summary: 收斂 AI `summary` 風格，採用較短、兩段式、以通告本身為主的 A 版本，減少 K1 / role-facts 常識侵入摘要主體。
+3. Layer classification: Product / System Layer（analysis pipeline behavior change）+ Development Governance Layer（session persistence）
+4. Source triage: 非 bug fix；屬 prompt / output-quality refinement。根因是既有 summary 規則要求 300-600 字，且 prompt 注入 K1 / role-facts 後，模型容易把知識庫一般規則寫成通告摘要。
+5. Files read: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `dev/DOC_SYNC_CHECKLIST.md`
+6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ `SYSTEM_PROMPT` 的 summary 規則改為 120-220 字、兩段式
+   - ✅ `_build_prompt()` 新增 `【摘要寫作要求】` 區塊，明確禁止把知識庫一般規則與角色百科寫進 summary
+   - ✅ `_normalize_summary_text()` 新增後處理，清理「可推斷 / 初步判讀 / 根據標題可判斷」等 meta 語氣並嘗試收斂成兩段
+   - ✅ 版本升至 `v3.0.23`
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - dashboard JS compile → PASS
+   - summary helper sample check → PASS（`EDBCM053/2026` 長摘要樣本已收斂為兩段，總長約 128 字）
+9. Pending:
+   - 發布 `v3.0.23`
+   - 重跑 school-year workflow，驗證 live 摘要已轉成 A 風格
+   - 抽樣檢查 K1 / role-facts 仍然幫助 roles / actions，但不再主導 summary
+10. Next priorities:
+   - 發布 `v3.0.23`
+   - 重跑 workflow 並驗證 live summary 風格
+   - 視結果再決定是否微調 summary normalizer
+11. Risks / blockers:
+   - 本機仍缺 `OPENAI_API_KEY`，未做完整雲端 LLM 端到端回歸
+   - summary normalizer 目前是保守的字句清理與分段，不應替代 prompt 本身的主約束
+   - 真正效果仍需看 live 重生後的通告樣本
+12. Notes:
+   - 前端本身已支援 `\n\n` 分段顯示，這輪重點是把後端輸出改得更像正式摘要，而不是改 UI。
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - live 摘要過長，且混入 K1 / role-facts 一般知識，像管理百科而不是通告簡介。
+2. Root Cause:
+   - summary 被要求寫成 300-600 字，且 prompt 允許知識增強材料與「合理推斷」影響摘要主體。
+3. Fix:
+   - 把 summary 收斂成兩段式 A 風格，縮短字數，新增摘要寫作約束，並在後處理清理 meta / disclaimer 語氣。
+4. Verification:
+   - py_compile PASS
+   - dashboard JS compile PASS
+   - `EDBCM053/2026` 長摘要樣本經 helper 收斂為兩段、128 字
+5. Regression / rule update:
+   - `CODEBASE_CONTEXT.md` Key Decision #25 added: summary must stay circular-first and shorter, with K1/role knowledge kept out of the main summary body.
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | summary 由 LLM 生成 | 套用新 prompt 規則 | 摘要應為兩段、較短、以通告本身為主 | prompt 明確要求兩段式、120-220 字 | PASS |
+| Boundary | 現有 summary 為單大段且過長 | 執行 `_normalize_summary_text()` | 收斂為較短的 1-2 段，不保留 meta/disclaimer 語氣 | `EDBCM053/2026` 樣本收斂為兩段、128 字 | PASS |
+| Error / failure path | 無 `OPENAI_API_KEY` | 做本地語法與 helper 檢查 | 不阻塞本地 QC；雲端回歸標記未做 | local QC passed; end-to-end cloud call skipped | PASS with notes |
+| Regression | 前端已支援摘要分段 | 保留 dashboard summary rendering | UI 無需改邏輯，只需版本同步 | dashboard JS compile PASS | PASS |
+
+Overall: PASS with notes
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |
+
 ## 2026-04-09 Workflow fix for circulars.json commit conflict
 
 1. Agent & Session ID: Codex_20260409_0004
