@@ -1,6 +1,70 @@
 # Session Log
 <!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->
 
+## 2026-04-09 Circular-first summary rewrite (workspace v3.0.26)
+
+1. Agent & Session ID: Codex_20260409_0008
+2. Task summary: 將摘要生成策略從「再補丁式清模板句」提升為整體重整：summary 只寫通告已知內容，不再敘述缺失資訊或把 K1/角色常識寫成主體。
+3. Layer classification: Product / System Layer（analysis pipeline behavior change）+ Development Governance Layer（session persistence）
+4. Source triage: user-visible output quality issue。live `v3.0.25` 已證明模板句清理仍不足，根因是摘要生成方式本身過於依賴補位和概括式空話，因此需要重寫 summary 規則，而不是再逐條 regex 補洞。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `edb_scraper.py`, `README.md`, live `edb-dashboard.html`, live `circulars.json`
+6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 將 summary 規則改為 `120-260` 字，優先兩段、只有資訊明確且較多時才三段
+   - ✅ prompt 明確要求：只寫已知內容；資訊不足時直接略去，不要描述「未提供什麼」
+   - ✅ prompt 明確限制：除非通告本身逐一分派角色，否則不要在 summary 展開角色百科
+   - ✅ 後處理只保留 very light cleanup，並將 `本公告` 正規化為 `本通告`
+   - ✅ 版本升至 `v3.0.26`
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - dashboard JS compile (`node` + `new Function`) → PASS
+   - summary helper regression → PASS
+9. Pending:
+   - 發布 `v3.0.26`
+   - 重跑 school-year workflow
+   - 驗證 live `049/050/053` 及其他抽樣通告摘要已改為通告本位風格
+10. Next priorities:
+   - 發布 `v3.0.26`
+   - 重跑 workflow 並驗 live summary
+   - 視結果再決定是否需要更細的 topic-specific summary guidance
+11. Risks / blockers:
+   - 本機仍缺 `OPENAI_API_KEY`，未做完整雲端 LLM 端到端回歸
+   - 真正的摘要品質仍主要取決於 prompt 對模型的約束，後處理只作輕量保護
+   - `v3.0.26` 尚未發布，live 仍是 `v3.0.25`
+12. Notes:
+   - 這輪的重點是把 summary 從「不知道也要寫一段」改成「不知道就不寫」。
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - 使用者反映不只單一通告，整體 AI 摘要都不理想，常流於空話、模板句、或知識庫延伸式說明。
+2. Root Cause:
+   - 先前版本仍允許模型把資訊不足寫成一段話，並在摘要內補一般管理背景；summary 任務定義沒有真正回到「通告本身講什麼」。
+3. Fix:
+   - 把 summary 改成 circular-first 規則：只寫明示/可直接讀出的內容，缺資料直接略去；限制角色百科化敘述；保留 very light cleanup。
+4. Verification:
+   - `049` / `050` helper 輸出仍保持差異
+   - `053` helper 輸出只保留明確已知句子
+   - 泛用樣本 `本通告旨在向學校說明有關安排...` 不再自動補「後續通知」模板句
+5. Regression / rule update:
+   - `CODEBASE_CONTEXT.md` Key Decision #28 added: summary must be circular-first and omit missing areas instead of narrating them.
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | course circular with explicit requirements | run `_normalize_summary_text()` | retain circular-specific 2-paragraph summary | `049` keeps distinct course content | PASS |
+| Boundary | survey circular with long second paragraph | run `_normalize_summary_text()` | keep specific details without dangling filler ending | `050` keeps distinct details and no filler clause | PASS |
+| Error / failure path | no `OPENAI_API_KEY` in env | local syntax/helper checks only | local QC valid; cloud regression explicitly skipped | local QC passed; cloud run skipped | PASS with notes |
+| Regression | sparse circular with previously filler-heavy summary | run `_normalize_summary_text()` | output should omit absent-info narration and keep only explicit known sentence(s) | `053` reduced to one explicit sentence | PASS |
+
+Overall: PASS with notes
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |
+
 ## 2026-04-09 Summary paragraph flexibility + filler cleanup (workspace v3.0.25)
 
 1. Agent & Session ID: Codex_20260409_0007

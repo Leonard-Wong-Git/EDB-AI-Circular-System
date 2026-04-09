@@ -1,18 +1,18 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **live v3.0.24 / workspace v3.0.25** (2026-04-09) ← **GitHub Pages + live `circulars.json` 已確認帶出 `k1_*` 與 `role_fact_*` 欄位；workspace 目前正準備發布摘要段落規則修正版**
+1. Version: **live v3.0.25 / workspace v3.0.26** (2026-04-09) ← **GitHub Pages + live `circulars.json` 已確認帶出 `k1_*` 與 `role_fact_*` 欄位；workspace 目前正準備發布通告本位摘要規則版**
 2. Core commands / features:
-   - `edb-dashboard.html` — workspace v3.0.25（版本同步待發佈）
-   - `edb_scraper.py` — workspace v3.0.25（K1 prompt injection 與 `v1.3.1` schema consume 已 live；本地 `role_facts.json` 已 live；workspace 修正 summary 段落規則與低信息模板句問題）
+   - `edb-dashboard.html` — workspace v3.0.26（版本同步待發佈）
+   - `edb_scraper.py` — workspace v3.0.26（K1 prompt injection 與 `v1.3.1` schema consume 已 live；本地 `role_facts.json` 已 live；workspace 將 summary 重整為通告本位規則，只寫已知內容）
    - `circulars.json` — EDB 通告 + gpt-5-nano AI 分析（live 已由 school-year workflow 重生並帶出 `k1_*` / `role_fact_*` 欄位）
    - `knowledge.json` — 從 edb-knowledge 獲取的語義事實來源（v1.3.1，107 facts ✅）
    - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具
    - `requirements.txt` — Python 依賴清單
    - `dev/knowledge/role_facts.json` — K1 基線知識庫（新版已到位；workspace 已接入，待發布後回填 live data）
    - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 接口合約規格（已對齊至 v2.0.0 角色契約）
-3. Regression baseline: `python3 -m py_compile edb_scraper.py` PASS；dashboard JS compile PASS；summary helper PASS（`EDBCM049/2026` 與 `EDBCM050/2026` 保持差異；`EDBCM053/2026` 不再重複 `供應商`，且不再被切成「後續通知」模板）；workspace version markers PASS at v3.0.25；live Pages latest known PASS at `v3.0.24`
-4. Release / merge status: **live site is currently `v3.0.24`; next publish target is workspace `v3.0.25` summary paragraph/filler cleanup**
+3. Regression baseline: `python3 -m py_compile edb_scraper.py` PASS；dashboard JS compile PASS；summary helper PASS（`EDBCM049/2026` 與 `EDBCM050/2026` 保持差異；`EDBCM053/2026` 只保留已知內容，不再輸出「後續通知」式空話）；workspace version markers PASS at v3.0.26；live Pages latest known PASS at `v3.0.25`
+4. Release / merge status: **live site is currently `v3.0.25`; next publish target is workspace `v3.0.26` circular-first summary rewrite**
 5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -72,8 +72,8 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 發布 workspace `v3.0.25`，再重跑 school-year workflow，驗證 live 摘要已改為優先兩段、必要時三段，且不再出現「若有…將另行通知」等模板句
-2. **[重要]** 抽樣檢查 3–5 份 live 通告，確認摘要既保留差異性，也不會因清理器過度處理而變成過短殘句
+1. **[下一步 ⭐]** 發布 workspace `v3.0.26`，再重跑 school-year workflow，驗證 live 摘要已改為通告本位、優先兩段、必要時三段，且不再輸出「若有…將另行通知」等模板句
+2. **[重要]** 抽樣檢查 5 份以上 live 通告，確認摘要既保留差異性，也不會再寫「未提供什麼」這類空話
 3. **[重要]** 針對 `subject_head` vs `panel_chair` 的 role-facts 命中質素做抽樣檢查，必要時微調 local role-facts topic / role routing
 4. **[其後]** 再視需要回頭處理低優先的 deterministic finance residual contamination（資料層清潔項）
 6. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
@@ -142,8 +142,8 @@ git checkout v2.1.0-dashboard
    - 在此修正發布前，再次手動跑 school-year 仍可能重現同類失敗
 13. **⚠️ Summary quality watch（2026-04-09 更新）：**
    - `v3.0.24` 已修好「不同通告被壓成同模板」與重複 supplier 術語問題
-   - 但 live 仍可見「若有…將另行通知」「目前尚未披露」等低信息模板句
-   - workspace `v3.0.25` 已改為優先兩段、必要時三段，並在 summary 後處理中清理這些模板句
+   - `v3.0.25` live 仍可見「若有…將另行通知」「目前尚未披露」等低信息模板句
+   - workspace `v3.0.26` 已改為通告本位摘要規則：只寫已知內容，缺資料時直接略去，不描述「未提供什麼」
 
 ## Regression / Verification Notes
 1. v2.1.0 QC: 24/24 structural checks 通過；JS syntax check 通過
@@ -177,25 +177,25 @@ Do not close a session with code changes without completing the version bump.
 
 ## Last Session Record
 1. UTC date: 2026-04-09
-2. Session ID: Codex_20260409_0007
+2. Session ID: Codex_20260409_0008
 3. Completed:
-   - ✅ 驗證 live `v3.0.24` 已上線，`generated_at = 2026-04-09T12:23:32Z`
-   - ✅ 確認 `049/050` 摘要不再完全相同，`053` 不再重複 `供應商`
-   - ✅ 發現新殘留問題：summary 仍含低信息模板句與「後續通知」式空話
-   - ✅ workspace `v3.0.25` 已改成優先兩段、必要時三段，並加入 summary filler cleanup
+   - ✅ 驗證 live `v3.0.25` 已上線，`generated_at = 2026-04-09T12:43:31Z`
+   - ✅ 確認 `049/050` 雖保持差異，但 live 摘要整體仍普遍不理想，屬摘要生成策略問題
+   - ✅ workspace `v3.0.26` 已把 summary 改成通告本位規則：只寫已知內容，不再描述缺失資訊
+   - ✅ 本地 helper 顯示 `053` 與泛用樣本已不再輸出「目前尚未披露 / 等待後續公告 / 若有…另行通知」式空話
 4. Pending:
-   - 發布 `v3.0.25`
-   - 重跑 school-year workflow，驗證 live 摘要已去掉低信息模板句
-   - 抽樣檢查其他通告是否仍有過短殘句或占位式語氣
+   - 發布 `v3.0.26`
+   - 重跑 school-year workflow，驗證 live 摘要已去掉低信息模板句與「未提供什麼」式空話
+   - 抽樣檢查更多通告，確認新規則沒有把摘要壓得過短
 5. Next priorities (max 3):
-   - 發布 `v3.0.25`
+   - 發布 `v3.0.26`
    - 重跑 workflow 並驗證 live 摘要
-   - 視結果再決定是否只需 prompt 微調
+   - 視結果再決定是否需要更細的 topic-specific summary guidance
 6. Risks / blockers:
    - 本機缺 `OPENAI_API_KEY`，所以這輪未做完整雲端 LLM 端到端回歸
    - summary 品質仍受 LLM 原始輸出影響；後處理只應做輕量收口，不能替代 prompt 本身
-   - `v3.0.25` 尚未發布，live 仍是 `v3.0.24`
+   - `v3.0.26` 尚未發布，live 仍是 `v3.0.25`
 7. Files materially changed:
    - `edb_scraper.py`、`edb-dashboard.html`、`README.md`、`dev/CODEBASE_CONTEXT.md`、`dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
-8. Validation summary: live `v3.0.24` verification PASS；local `v3.0.25` py_compile PASS；dashboard JS compile PASS；summary helper regression PASS（`049/050` 差異保留；`053` 不再出現後續通知模板）
+8. Validation summary: live `v3.0.25` verification PASS；local `v3.0.26` py_compile PASS；dashboard JS compile PASS；summary helper regression PASS（`049/050` 差異保留；`053` 與泛用樣本不再出現後續通知/未披露空話）
 9. Git commits: workspace only; publish pending

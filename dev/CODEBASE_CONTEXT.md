@@ -211,6 +211,7 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 25 | Summary A-style Guardrail | 2026-04-09 | Summary generation is now constrained to a shorter two-paragraph format focused on the circular itself; prompt rules explicitly prevent K1/general role knowledge from dominating the summary, and a lightweight post-review normalizer strips meta/disclaimer phrasing while preserving the circular's main point. |
 | 26 | Summary Normalizer Light-touch Rule | 2026-04-09 | The summary post-processor must remain light-touch: preserve circular-specific content, avoid collapsing different circulars into the same template, and only dedupe obvious repeated terminology such as duplicated supplier labels. |
 | 27 | Summary Paragraph Flex + Filler Cleanup | 2026-04-09 | Summary formatting now prefers two paragraphs but may use three when the circular contains enough concrete detail; low-information filler such as “若有…將另行通知” or “目前尚未披露” must be removed so the summary stays circular-first without placeholder prose. |
+| 28 | Circular-first Summary Rule | 2026-04-09 | Summary generation must describe only what the circular explicitly says or what can be read directly from official text/PDF. When information is sparse, omit the missing area instead of describing what is not provided; K1 and role facts must not turn the summary into a general management explainer. |
 
 ---
 
@@ -254,3 +255,4 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 2026-04-09 | Codex_20260409_0005 | Tightened summary generation into an A-style two-paragraph format in `edb_scraper.py`, added a summary normalizer that strips meta/disclaimer phrasing, and bumped workspace version to v3.0.23 pending publish. |
 | 2026-04-09 | Codex_20260409_0006 | Relaxed the summary normalizer to preserve circular-specific wording, fixed repeated `供應商／承辦商` expansion in summaries, and bumped workspace version to v3.0.24 pending publish. |
 | 2026-04-09 | Codex_20260409_0007 | Adjusted summary rules to prefer two paragraphs but allow three when needed, added sentence-level filler cleanup for low-information placeholder phrases, and bumped workspace version to v3.0.25 pending publish. |
+| 2026-04-09 | Codex_20260409_0008 | Reworked summary guidance into a circular-first rule set: only explicit circular content should appear in summary, missing details should be omitted rather than narrated, and workspace version is now v3.0.26 pending publish. |

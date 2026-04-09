@@ -466,13 +466,15 @@ diff（版本比較）：
 1. 日期格式必須為 YYYY-MM-DD
 2. 金額單位為港元（HKD），只填數字不加逗號
 3. tags 最多 5 個，用 2-6 字中文描述
-4. summary 中文摘要 160-320 字，優先分 2 段；如資訊較多可分 3 段：
+4. summary 中文摘要 120-260 字，優先分 2 段；只有資訊明確且較多時才分 3 段：
    - 第 1 段：概述通告主旨、對象或安排重點
    - 第 2 段：概述主要要求、跟進事項
    - 第 3 段（僅在需要時）：概述截止/配套/重要提醒
    - 只總結通告本身已知內容，不得把知識庫一般規則、角色常識、延伸管理建議當成通告內容
+   - 只寫通告已明示或可直接從官方摘要/PDF讀出的內容；資訊不足時直接略去，不要描述「未提供什麼」
    - 不得使用「可推斷」「初步判讀」「根據標題可判斷」等方法說明或保留語氣
    - 不得使用「若有……將另行通知」「目前尚未披露」「等待後續公告」等低信息模板句填充摘要
+   - 除非通告本身明確逐一分派角色責任，否則不要在 summary 逐個角色展開
 5. 如無截止日期，deadlines 為空數組 []
 6. 如無撥款，grant_info.type = "none"，其餘欄填 null / ""
 """
@@ -1278,11 +1280,13 @@ class LLMAnalyzer:
             f"通告類型：{circ.get('type', 'EDBCM')}",
             "",
             "【摘要寫作要求】",
-            "- summary 優先用兩段中文短段落撰寫；如資訊較多可用三段。",
+            "- summary 優先用兩段中文短段落撰寫；只有資訊明確且較多時才可用三段。",
             "- 第一段只交代通告主旨、對象與核心安排。",
             "- 第二段只交代主要要求、跟進事項。",
             "- 第三段只在有需要時交代截止、配套或重要提醒。",
             "- 不要把知識庫一般規則、角色百科、延伸管理建議寫進 summary。",
+            "- 只寫通告已明示或可直接從官方摘要/PDF讀出的內容；資訊不足時直接略去，不要描述『未提供什麼』。",
+            "- 除非通告本身明確逐一分派角色責任，否則不要在 summary 逐個角色展開。",
             "- 不要寫「可推斷」「初步判讀」「根據標題可判斷」等自我說明語氣。",
             "- 不要寫「若有……將另行通知」「目前尚未披露」「等待後續公告」等低信息模板句。",
             "",
@@ -1581,6 +1585,10 @@ SUMMARY_BANNED_MARKERS = [
     "若有",
     "如有",
     "目前尚未",
+    "未提供",
+    "未包含",
+    "未有",
+    "未見",
     "等待教育局後續公告",
     "請校方留意日後更新",
     "截至現時",
@@ -1617,13 +1625,22 @@ def _normalize_summary_text(text: str) -> str:
     cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
     cleaned = _strip_summary_filler(cleaned)
     cleaned = _dedupe_summary_phrases(cleaned)
+    cleaned = cleaned.replace("本公告", "本通告")
     if not cleaned:
         return ""
 
     paragraphs = [p.strip() for p in cleaned.split("\n\n") if p.strip()]
     if len(paragraphs) >= 2:
         kept = paragraphs[:3]
-        return "\n\n".join(_dedupe_summary_phrases(p) for p in kept)
+        normalized = []
+        for p in kept:
+            sents = [s.strip() for s in re.split(r"(?<=[。！？])", p) if s.strip()]
+            sents = _filter_summary_sentences(sents)
+            para = "".join(sents).strip() if sents else ""
+            if para:
+                normalized.append(_dedupe_summary_phrases(para))
+        if normalized:
+            return "\n\n".join(normalized[:3])
 
     sentences = [s.strip() for s in re.split(r"(?<=[。！？])", cleaned) if s.strip()]
     sentences = _filter_summary_sentences(sentences)
@@ -2257,7 +2274,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.25")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.26")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

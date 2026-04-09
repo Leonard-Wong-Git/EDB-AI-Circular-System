@@ -226,6 +226,7 @@ Supplementary rules:
 3. `PROJECT_MASTER_SPEC.md` represents "long-term stable rules and the complete authoritative reference".
 4. If the current state is inconsistent with an older specification, defer to the handoff/log first, and remediate specification drift during the PERSIST phase.
 5. If `SESSION_LOG.md` contains a latest `Next Session Handoff Prompt (Verbatim)` block, treat it as operational seed context, but do not let it override higher-priority current-state facts in `SESSION_HANDOFF.md` / latest log facts.
+6. When a user instruction conflicts with a rule in this document: (a) state which rule is in conflict, (b) explain the risk of overriding, (c) if user confirms override — comply and record the override in `SESSION_LOG.md`.
 
 ---
 
@@ -244,6 +245,8 @@ Before source classification is complete:
 1. Do not make large-scale code changes
 2. Do not arbitrarily revert files
 3. Do not equate a single error message directly with the root cause
+
+Note: Targeted file reads for the purpose of determining issue source are permitted during triage. This does not substitute for the full §2c read coverage required before entering CHANGE.
 
 ---
 
@@ -266,7 +269,16 @@ Hard rules:
 Every task must follow this workflow and clearly label each phase in the response:
 
 1. PLAN
-   - Objective, scope, risks, acceptance criteria
+   - Objective, scope, acceptance criteria
+   - State explicitly: "My understanding: [1-sentence restatement of user intent]", "Impact scope: [files/modules to be modified]", "Assumptions and risks: [list inferences not stated by user, flag which are uncertain, and note at least one way this approach could be wrong]"
+   - Risk level — assess HIGH or LOW using these criteria (any one = HIGH):
+     (a) Likely affects ≥3 files
+     (b) User instruction does not specify target files, target behavior, or expected end state
+     (c) Involves deletion, rename, or irreversible operations
+     (d) Involves external systems (API calls, deploy, publish)
+     (e) Modifies governance rules (AGENTS.md, INIT.md, or similar)
+   - If HIGH: present PLAN and **wait for user confirmation** before proceeding to READ
+   - If LOW: present PLAN and proceed to READ
    - If task meets §3d trigger conditions: define test scenario matrix before proceeding to READ
 
 2. READ
@@ -274,6 +286,7 @@ Every task must follow this workflow and clearly label each phase in the respons
 
 3. CHANGE
    - Minimal necessary modifications, no unrelated refactoring
+   - If execution diverges from PLAN (unexpected state, wrong assumptions, scope change needed): stop, report the divergence to the user, and wait for direction rather than attempting self-correction
 
 4. QC
    - Run tests / checks, list results (test/check commands and key outcomes)
@@ -398,6 +411,8 @@ Each closeout must record at minimum:
 5. Next priorities (max 3 — SESSION_LOG summary field only; full prioritized list lives in `dev/SESSION_HANDOFF.md` Open Priorities)
 6. Risks or blockers
 
+**Session log entry format:** Use lean key-value style (see `dev/SESSION_LOG.md` template). Target ~20-30 lines per entry excluding the Handoff Prompt block. Omit conditional sections (Fix Record, Consolidation) when they have no content — do not write empty blocks. Do not record "Files read" — it has no value for future sessions.
+
 **Open Priorities regeneration** (mandatory at every closeout):
 The `Open Priorities` section of `dev/SESSION_HANDOFF.md` must be regenerated at every closeout — not copy-pasted forward:
 1. Remove any item completed this session
@@ -489,7 +504,7 @@ Closeout Visual Cue - Style C
 Before writing the new session entry to `dev/SESSION_LOG.md` during closeout, check the following trigger conditions:
 
 **Trigger (either condition):**
-1. `dev/SESSION_LOG.md` exceeds 800 lines
+1. `dev/SESSION_LOG.md` exceeds 400 lines
 2. The oldest session entry in `dev/SESSION_LOG.md` is dated more than 30 days ago
 
 **If neither condition is met:** proceed with writing the new session entry normally.
@@ -498,7 +513,7 @@ Before writing the new session entry to `dev/SESSION_LOG.md` during closeout, ch
 
 1. Create `dev/archive/` directory if it does not exist
 2. Identify entries to archive:
-   - Line-count trigger: archive oldest entries until `dev/SESSION_LOG.md` ≤ 350 lines; always retain the 2 most recent session entries regardless of size
+   - Line-count trigger: archive oldest entries until `dev/SESSION_LOG.md` ≤ 200 lines; always retain the 2 most recent session entries regardless of size
    - Date trigger: archive all entries older than 30 days; always retain the 2 most recent session entries regardless of date
 3. Determine the archive filename by year and quarter of the archived entries:
    - Format: `dev/archive/SESSION_LOG_YYYY_QN.md` (e.g., `SESSION_LOG_2026_Q1.md` for Jan–Mar 2026)
@@ -506,7 +521,7 @@ Before writing the new session entry to `dev/SESSION_LOG.md` during closeout, ch
    - If the target archive file already exists, append to it (do not overwrite)
 4. Move the identified entries from `dev/SESSION_LOG.md` into the archive file(s)
 5. Add or update an archive pointer comment immediately after the file header in `dev/SESSION_LOG.md`:
-   `<!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->`
+   `<!-- Archives: dev/archive/ — entries moved when >400 lines or oldest entry >30 days -->`
 6. Proceed with writing the new session entry to the now-trimmed `dev/SESSION_LOG.md`
 
 **First-run auto-transition:**
@@ -647,6 +662,8 @@ Hard rules:
 2. Do not allow SOPs to expand without limit
 3. Each time a new long-term rule is added, check whether old rules can be integrated or retired
 
+Reconciling §8 and §8b: §8 ensures lessons are captured; §8b prevents overreaction. When §8 triggers (e.g. first-time user-visible error) but §8b criteria suggest no promotion: record the full lesson in `SESSION_LOG.md` and mark as `monitoring — promote to rule if recurrence is observed`.
+
 ---
 
 ## 9) Toolchain / Policy Compatibility (Conditional Mandatory)
@@ -694,12 +711,14 @@ Do not use alternative names such as `SPEC.md`, `MASTER_SPEC.md`, `ARCHITECTURE.
 ---
 
 ## 11) Output Contract
-Every AI response must include at minimum:
+Every AI response that includes a CHANGE or PERSIST phase must include at minimum:
 
 1. What was done
 2. Why it was done that way
 3. Verification results
 4. Next-step recommendations (if any)
+
+Responses that contain only clarifying questions, status updates, or simple information lookups are not bound by this contract but should remain clear and useful.
 
 ---
 
@@ -766,13 +785,14 @@ Rule if exists: skip, do not overwrite.
 ## Mandatory Start Checklist
 1. Read `dev/SESSION_HANDOFF.md`
 2. Read `dev/SESSION_LOG.md`
-3. Read `dev/PROJECT_MASTER_SPEC.md` (if exists)
-4. Confirm working tree / file status
-5. Run baseline checks:
-6. Confirm environment / dependency state:
-7. Confirm whether external platform alignment is required:
-8. Search for related SSOT / spec / runbook before change:
-9. Search for duplicate rule / duplicate term / prior related fixes:
+3. Read `dev/CODEBASE_CONTEXT.md` (if exists)
+4. Read `dev/PROJECT_MASTER_SPEC.md` (if exists)
+5. Confirm working tree / file status
+6. Run baseline checks:
+7. Confirm environment / dependency state:
+8. Confirm whether external platform alignment is required:
+9. Search for related SSOT / spec / runbook before change:
+10. Search for duplicate rule / duplicate term / prior related fixes:
 
 ## Open Priorities
 1.
@@ -820,39 +840,25 @@ Rule if exists: skip, do not overwrite.
 # Session Log
 
 ## <YYYY-MM-DD>
-1. Agent & Session ID:
-2. Task summary:
-3. Layer classification:
-4. Source triage:
-5. Files read:
-6. Files changed:
-7. Completed:
-8. Validation / QC:
-9. Pending:
-10. Next priorities:
-11. Risks / blockers:
-12. Notes:
+- **ID:** <AgentName>_<YYYYMMDD>_<HHMM>
+- **Summary:** <one-sentence task description including layer if non-obvious>
+- **Changed:** <files modified, comma-separated>
+- **Done:** <completed items, semicolon-separated>
+- **QC:** <key verification results, semicolon-separated>
+- **Pending:** <open items>
+- **Next:** <max 3 priorities>
+- **Risks:** <blockers or cautions>
 
-### Problem -> Root Cause -> Fix -> Verification
-1. Problem:
-2. Root Cause:
-3. Fix:
-4. Verification:
-5. Regression / rule update:
+### Fix Record (only if bug/issue was resolved — omit entire section otherwise)
+- Problem:
+- Root cause:
+- Fix:
+- Verified:
 
-### Consolidation / Retirement Record
-1. Duplicate / drift found:
-2. Single source of truth chosen:
-3. What was merged:
-4. What was retired / superseded:
-5. Why consolidation was needed:
-
-### Test Scenarios (if §3d applies)
-| Scenario | Precondition | Action / input | Expected | Actual | Result |
-|---|---|---|---|---|---|
-| | | | | | |
-
-Overall: PASS / PASS with notes / FAIL
+### Consolidation Record (only if consolidation was performed — omit entire section otherwise)
+- Merged:
+- Retired:
+- Why:
 
 ### Next Session Handoff Prompt (Verbatim)
 <paste the exact closeout Section 2 block content here, including its fenced text block>
