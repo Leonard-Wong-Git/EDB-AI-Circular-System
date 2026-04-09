@@ -754,3 +754,68 @@ Validation status: py_compile PASS; dashboard JS syntax PASS; legacy-role normal
 
 Post-startup first action: inspect whether the next step is deploying v3.0.16 or validating an incoming new `role_facts.json`, then use the compatibility layer as the baseline for that decision.
 ```
+
+## 2026-04-09 Local role_facts.json prompt integration
+
+1. Agent & Session ID: Codex_20260409_0003
+2. Task summary: 接入 K1 交付的本地 `dev/knowledge/role_facts.json`，將角色知識注入現有 LLM prompt 流程，並把命中結果寫回輸出 JSON，作為 K1 public facts/guidelines 之外的本地角色知識層。
+3. Layer classification: Product / System Layer（analysis pipeline behavior change）+ Development Governance Layer（session persistence）
+4. Source triage: 非 bug fix；屬外部知識整合與 prompt enrichment 擴展。現有 K1 public JSON consume 已穩定，因此本輪採最小可運行版，把 local role facts 掛到現有 topic selection / backfill flow，而非另起新分析管線。
+5. Files read: `edb_scraper.py`, `README.md`, `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/knowledge/role_facts.json`
+6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 確認新版 `dev/knowledge/role_facts.json` 已到位，`_meta.version=2.0.0`
+   - ✅ 新增 `RoleFactsClient`，載入本地 role-facts 並重用現有 topic selection 邏輯
+   - ✅ LLM prompt 新增 `【EDB學校管理知識中心角色事實】` 區塊
+   - ✅ 新增輸出欄位 `role_fact_topics` / `role_facts`
+   - ✅ Phase 3 skip-carry-forward 與 Phase 4.5 backfill 現均會處理 role-facts
+   - ✅ 版本升至 `v3.0.22`
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - dashboard JS compile check → PASS
+   - role-facts logic check → PASS
+9. Pending:
+   - 發布 `v3.0.22`
+   - 重跑 school-year workflow，驗證 live `role_fact_topics` / `role_facts`
+   - 抽樣檢查 role-facts 對 `subject_head` / `panel_chair` 命中是否合理
+10. Next priorities:
+   - 發布 `v3.0.22`
+   - 重跑 workflow 並驗證 live role-facts 回填
+   - 抽樣檢查 role-facts 對角色判斷的實際幫助
+11. Risks / blockers:
+   - 本機缺 `OPENAI_API_KEY`，未做完整雲端 LLM 端到端回歸
+   - role-facts 目前只做 local prompt / backfill 驗證，仍需 live workflow 驗證
+   - 如注入量過大，後續可能仍需再收緊 per-role facts cap
+12. Notes:
+   - 本輪刻意重用 K1 topic selection，避免 role-facts 自行再建立另一套 topic detector，降低 cross-topic 漂移風險。
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - 新版 `role_facts.json` 已交付，但 Circular System 仍只有 K1 public `knowledge.json` / `guidelines.json` consume 路徑，未能把本地角色事實注入 prompt。
+2. Root Cause:
+   - 先前只完成 public K1 JSON integration，未建立 local role-facts loader / prompt assembly / backfill path。
+3. Fix:
+   - 在 `edb_scraper.py` 新增 `RoleFactsClient`，讀取 `dev/knowledge/role_facts.json`，沿用現有 topic selection，將 role facts 分組注入 prompt，並持久化 `role_fact_topics` / `role_facts`。
+4. Verification:
+   - py_compile PASS
+   - JS compile PASS
+   - sample `student/activity/finance` 測試：`role_facts` 非空，prompt 含 `【EDB學校管理知識中心角色事實】`
+5. Regression / rule update:
+   - `CODEBASE_CONTEXT.md` Key Decision #24 added: local role-facts prompt injection is now a first-class enrichment layer with backfill support.
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | `dev/knowledge/role_facts.json` present and valid | Load client and fetch facts for `student/activity/finance` sample | Returns non-empty role facts and prompt block | topics=`['student','activity','finance']`, `role_facts` non-empty, prompt block present | PASS |
+| Boundary | Some roles absent in a topic | Build grouped role facts | Only roles with facts should appear | output omits empty roles, keeps `all_roles` and populated role keys only | PASS |
+| Error / failure path | No `OPENAI_API_KEY` in environment | Run local integration checks only | Syntax / prompt checks still possible; end-to-end cloud call skipped | local checks passed; cloud call not run | PASS with notes |
+| Regression | Existing K1 public JSON enrich path must remain intact | Keep K1 client + prompt sections unchanged while adding role facts | `k1_facts` / `k1_guidelines` logic remains alongside role facts | code path preserved; prompt builder now appends role block after K1 sections | PASS |
+
+Overall: PASS
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |

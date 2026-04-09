@@ -1,18 +1,18 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **live v3.0.20 / workspace v3.0.21** (2026-04-09) ← **GitHub Pages + live `circulars.json` 已確認帶出 K1 fields；workspace 已再收緊 deterministic review gating，避免 supplier / finance links 由 AI summary 或 supplier role 自我放大後漏進 curriculum / student 通告**
+1. Version: **live v3.0.21 / workspace v3.0.22** (2026-04-09) ← **GitHub Pages + live `circulars.json` 已確認帶出 K1 fields；workspace 現已再接入本地 `dev/knowledge/role_facts.json`，把角色事實注入 prompt 並輸出 `role_fact_topics` / `role_facts`**
 2. Core commands / features:
-   - `edb-dashboard.html` — workspace v3.0.21（版本同步待發佈）
-   - `edb_scraper.py` — workspace v3.0.21（K1 prompt injection 與 `v1.3.1` schema consume 已 live；workspace 再把 deterministic review procurement / finance gating 改為 raw-signal 判斷）
+   - `edb-dashboard.html` — workspace v3.0.22（版本同步待發佈）
+   - `edb_scraper.py` — workspace v3.0.22（K1 prompt injection 與 `v1.3.1` schema consume 已 live；workspace 再接入本地 `role_facts.json` 角色事實注入）
    - `circulars.json` — EDB 通告 + gpt-5-nano AI 分析（live 已由 school-year workflow 重生並帶出 `k1_*` 欄位）
    - `knowledge.json` — 從 edb-knowledge 獲取的語義事實來源（v1.3.1，107 facts ✅）
    - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具
    - `requirements.txt` — Python 依賴清單
-   - `dev/knowledge/role_facts.json` — K1 基線知識庫（目前 workspace 缺檔，待接收新版交付）
+   - `dev/knowledge/role_facts.json` — K1 基線知識庫（新版已到位；workspace 已接入，待發布後回填 live data）
    - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 接口合約規格（已對齊至 v2.0.0 角色契約）
-3. Regression baseline: scraper Python AST PASS；dashboard JS compile PASS；workspace version markers PASS at v3.0.21；live K1 public SSOT fetch PASS (`knowledge.json`, `guidelines.json`, `K1_API_SPEC.md`, all `v1.3.1`)；live Pages cache-busted 驗證 PASS at `v3.0.20`；public `circulars.json` latest verified `generated_at=2026-04-09T07:04:46Z`, `count=117`；raw-signal gating tests PASS（curriculum/student sample no longer gains procurement links from AI summary wording）
-4. Release / merge status: **live site is currently `v3.0.20`; next publish target is workspace `v3.0.21`**
+3. Regression baseline: `python3 -m py_compile edb_scraper.py` PASS；dashboard JS compile PASS；role-facts prompt injection logic PASS（sample topics `student/activity/finance` → non-empty `role_facts`, prompt includes `【EDB學校管理知識中心角色事實】`）；workspace version markers PASS at v3.0.22；live Pages latest known PASS at `v3.0.21`
+4. Release / merge status: **live site is currently `v3.0.21`; next publish target is workspace `v3.0.22`**
 5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -72,10 +72,10 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 發布 workspace `v3.0.21`，再重跑 school-year workflow，驗證 live `knowledge_review.recommended_links` 已不再因 AI summary / supplier role 自我放大而混入 procurement / finance links
-2. **[重要]** 針對 curriculum / student 通告抽樣檢查 cross-topic contamination 是否下降；如仍有 supplier / finance links 漏入，再微調 deterministic review gating
-3. **[其後]** 接收新版 `role_facts.json`，驗證其符合 K1 v2.0.0 契約後再接入
-4. **[其後]** 抽樣檢查 live `subject_head` vs `panel_chair` 輸出質素，必要時微調 topic-aware 分流規則
+1. **[下一步 ⭐]** 發布 workspace `v3.0.22`，再重跑 school-year workflow，驗證 live `role_fact_topics` / `role_facts` 已成功回填
+2. **[重要]** 抽樣檢查 3–5 份 live 通告，確認 `【EDB學校管理知識中心角色事實】` 的注入量適中，且沒有造成 summary / roles 漂移
+3. **[重要]** 針對 `subject_head` vs `panel_chair` 的 role-facts 命中質素做抽樣檢查，必要時微調 local role-facts topic / role routing
+4. **[其後]** 再視需要回頭處理低優先的 deterministic finance residual contamination（資料層清潔項）
 5. **[觀察]** 視需要再微調「官方原文整理版」對 metadata 行的段落整理規則
 6. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
 7. **[選做]** LLM 引擎切換機制
@@ -129,10 +129,10 @@ git checkout v2.1.0-dashboard
 9. **⚠️ Knowledge review boundary（2026-04-04 確認）：**
    - 第二輪 review 現時只針對 supplier + curriculum + finance 場景做 deterministic enrichment
    - 不應改寫 deadline、金額、編號、scope 等硬事實
-10. **⚠️ Role contract migration watch（2026-04-06 確認）：**
+10. **⚠️ Role contract migration watch（2026-04-09 更新）：**
    - K1 接口規格已更新為 `subject_head` / `panel_chair` / `eo_admin=EO`
    - 產品端已完成第一階段相容層，並已用 workflow 重生 live `circulars.json`
-   - 新版 `role_facts.json` 尚未交付；接入前仍需按 K1 v2.0.0 契約驗證
+   - 新版 `role_facts.json` 已交付並通過本地接入測試；仍需發布後用 live workflow 驗證
 11. **⚠️ K1 public schema watch（2026-04-09 確認）：**
    - public `knowledge.json` / `guidelines.json` / `K1_API_SPEC.md` 現已一致對齊到 `v1.3.1`
    - public `department_head` bucket 已移除；Circular System 必須按 `subject_head + panel_chair + all_roles` 組裝主任層 facts
@@ -170,26 +170,25 @@ Do not close a session with code changes without completing the version bump.
 
 ## Last Session Record
 1. UTC date: 2026-04-09
-2. Session ID: Codex_20260409_0002
+2. Session ID: Codex_20260409_0003
 3. Completed:
-   - ✅ 核實 live Pages 已到 `v3.0.20`，school-year workflow 已重生 `circulars.json`（`generated_at=2026-04-09T07:04:46Z`, `count=117`）
-   - ✅ live records 確認 K1 `v1.3.1` schema consume 已生效，且 K1 caps 已落地
-   - ✅ 收緊 deterministic review procurement / finance gating，改用 raw circular signals，避免 AI summary / supplier role 自我放大
-   - ✅ 版本升至 `v3.0.21`
+   - ✅ 確認新版 `dev/knowledge/role_facts.json` 已到位，schema 對齊 K1 v2.0.0
+   - ✅ 接入本地 role-facts prompt enrichment：分析時可注入 `【EDB學校管理知識中心角色事實】`
+   - ✅ 新增輸出欄位 `role_fact_topics` / `role_facts`，並補上 backfill 路徑
+   - ✅ 版本升至 `v3.0.22`
 4. Pending:
-   - 推送 / 發布 `v3.0.21`
-   - 重跑 school-year workflow，驗證 raw-signal gating 已反映到 live records
-   - 如仍有 supplier / finance links 漏入 curriculum / student，繼續微調 deterministic review gating
-   - 等待用戶提供新版 `role_facts.json`
+   - 推送 / 發布 `v3.0.22`
+   - 重跑 school-year workflow，驗證 `role_fact_topics` / `role_facts` 已反映到 live records
+   - 抽樣檢查 role-facts 注入是否對 `subject_head` / `panel_chair` 命中合理
 5. Next priorities (max 3):
-   - 發布 `v3.0.21`
-   - 重跑 workflow 並驗證 raw-signal gating
-   - 視結果再微調 deterministic review gating
+   - 發布 `v3.0.22`
+   - 重跑 workflow 並驗證 role-facts live 回填
+   - 抽樣檢查 role-facts 對角色判斷的實際幫助
 6. Risks / blockers:
-   - live HTML 目前是 `v3.0.20`；`v3.0.21` 尚未發布
-   - raw-signal gating 目前只做 local deterministic review 驗證，仍需 live workflow 後回歸驗證
-   - 等待用戶提供新版 `role_facts.json` 後，才可完成另一條 K1 role-facts 接入驗證
+   - live HTML 目前是 `v3.0.21`；`v3.0.22` 尚未發布
+   - role-facts 目前只做 local prompt injection / backfill 驗證，仍需 live workflow 後回歸驗證
+   - 本機缺 `OPENAI_API_KEY`，所以這輪未做完整雲端 LLM 端到端回歸
 7. Files materially changed:
    - `edb_scraper.py`、`edb-dashboard.html`、`README.md`、`dev/CODEBASE_CONTEXT.md`、`dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
-8. Validation summary: scraper Python AST PASS；dashboard JS compile PASS；raw-signal gating regression PASS（curriculum/student sample no longer gets supplier links; procurement/finance sample keeps procurement+finance links）；full OpenAI LLM call not run because `OPENAI_API_KEY` is absent in this environment
+8. Validation summary: `python3 -m py_compile edb_scraper.py` PASS；dashboard JS compile PASS；role-facts logic check PASS（sample topics produced non-empty `role_facts` and prompt block）；full OpenAI LLM call not run because `OPENAI_API_KEY` is absent in this environment
 9. Git commits: workspace only; publish pending

@@ -81,10 +81,27 @@ PDF_MAX_CHARS   = 8000   # cap PDF text sent to LLM
 CACHE_DIR       = Path(".edb_cache")
 K1_KNOWLEDGE_URL = "https://leonard-wong-git.github.io/edb-knowledge/knowledge.json"
 K1_GUIDELINES_URL = "https://leonard-wong-git.github.io/edb-knowledge/guidelines.json"
+ROLE_FACTS_PATH = Path("dev/knowledge/role_facts.json")
 
 # LLM — ⚠️ FIXED RULES:
 LLM_MODEL_DEFAULT = "gpt-5-nano"
 LLM_TEMPERATURE   = 1     # DO NOT CHANGE — project spec rule
+ROLE_FACTS_MAX_TOPICS = 3
+ROLE_FACTS_MAX_FACTS_PER_ROLE = 2
+ROLE_FACT_ORDER = [
+    "all_roles", "principal", "vice_principal", "subject_head",
+    "panel_chair", "teacher", "eo_admin", "supplier",
+]
+ROLE_FACT_LABELS = {
+    "all_roles": "所有角色",
+    "principal": "校長",
+    "vice_principal": "副校長",
+    "subject_head": "科主任",
+    "panel_chair": "主任",
+    "teacher": "教師",
+    "eo_admin": "EO",
+    "supplier": "供應商",
+}
 
 POST_REVIEW_PROCUREMENT_KEYWORDS = ["採購", "招標", "報價", "供應商", "承辦商", "投標"]
 POST_REVIEW_CURRICULUM_KEYWORDS = [
@@ -1025,16 +1042,130 @@ class K1KnowledgeClient:
         return docs[:K1_MAX_GUIDELINES_TOTAL]
 
 
+class RoleFactsClient:
+    """Load local role_facts.json and provide prompt-ready role knowledge."""
+
+    def __init__(self, path: Path, verbose: bool = False):
+        self.path = Path(path)
+        self.verbose = verbose
+        self.log = logging.getLogger("RoleFacts")
+        self.data = {}
+        self._load_attempted = False
+        self.topic_keywords = copy.deepcopy(K1_TOPIC_KEYWORDS)
+
+    def ensure_loaded(self):
+        if self._load_attempted:
+            return
+        self._load_attempted = True
+        try:
+            with open(self.path, encoding="utf-8") as fh:
+                self.data = json.load(fh)
+            self._refresh_topic_keywords()
+            topic_count = len([k for k in self.data if not k.startswith("_")])
+            self.log.info(f"  Loaded local role facts: {self.path} ({topic_count} topics)")
+        except Exception as exc:
+            self.log.warning(f"  Role facts load failed ({self.path}): {exc}")
+            self.data = {}
+
+    def _refresh_topic_keywords(self):
+        if not isinstance(self.data, dict):
+            return
+        for topic_id, topic_data in self.data.items():
+            if topic_id.startswith("_") or not isinstance(topic_data, dict):
+                continue
+            keywords = topic_data.get("_keywords_zh")
+            if isinstance(keywords, list) and keywords:
+                self.topic_keywords[topic_id] = [
+                    kw for kw in keywords if isinstance(kw, str) and kw.strip()
+                ]
+
+    def detect_topics(self, circ: dict, preferred_topics: list[str] | None = None) -> list[str]:
+        self.ensure_loaded()
+        if not self.data:
+            return []
+
+        valid_topics = {k for k in self.data if not k.startswith("_")}
+        selected = []
+        for topic in preferred_topics or []:
+            if topic in valid_topics and topic not in selected:
+                selected.append(topic)
+
+        for topic in circ.get("topics", []) or []:
+            mapped = ANALYSIS_TO_K1_TOPIC.get(topic)
+            if mapped in valid_topics and mapped not in selected:
+                selected.append(mapped)
+
+        text = " ".join(
+            filter(
+                None,
+                [
+                    circ.get("title", ""),
+                    circ.get("official", ""),
+                    circ.get("pdf_text", "")[:2000],
+                    circ.get("summary", ""),
+                ],
+            )
+        )
+        keyword_hits = {
+            topic: sum(1 for keyword in keywords if keyword and keyword in text)
+            for topic, keywords in self.topic_keywords.items()
+            if topic in valid_topics
+        }
+        supplements = []
+        for topic in K1_TOPIC_PRIORITY:
+            if topic not in valid_topics or topic in selected:
+                continue
+            if keyword_hits.get(topic, 0) >= K1_TOPIC_SUPPLEMENT_MIN_HITS.get(topic, 2):
+                supplements.append((keyword_hits[topic], topic))
+
+        supplements.sort(key=lambda item: (-item[0], K1_TOPIC_PRIORITY.index(item[1])))
+        for _, topic in supplements:
+            if len(selected) >= ROLE_FACTS_MAX_TOPICS:
+                break
+            selected.append(topic)
+
+        if not selected and "general" in valid_topics:
+            selected.append("general")
+
+        return selected[:ROLE_FACTS_MAX_TOPICS]
+
+    def fetch_role_facts(self, topics: list[str]) -> dict[str, list[str]]:
+        self.ensure_loaded()
+        if not self.data:
+            return {}
+
+        grouped = {role_key: [] for role_key in ROLE_FACT_ORDER}
+        for topic in topics:
+            topic_data = self.data.get(topic)
+            if not isinstance(topic_data, dict):
+                continue
+            for role_key in ROLE_FACT_ORDER:
+                facts = topic_data.get(role_key, [])
+                if not isinstance(facts, list):
+                    continue
+                grouped[role_key].extend(
+                    fact.strip() for fact in facts if isinstance(fact, str) and fact.strip()
+                )
+
+        trimmed = {}
+        for role_key in ROLE_FACT_ORDER:
+            deduped = _dedupe_strings(grouped[role_key])[:ROLE_FACTS_MAX_FACTS_PER_ROLE]
+            if deduped:
+                trimmed[role_key] = deduped
+        return trimmed
+
+
 class LLMAnalyzer:
     """Wraps gpt-5-nano Structured Output analysis."""
 
-    def __init__(self, client: "OpenAI", model: str = LLM_MODEL_DEFAULT, verbose: bool = False, knowledge_engine: KnowledgeStore = None, k1_client: K1KnowledgeClient = None):
+    def __init__(self, client: "OpenAI", model: str = LLM_MODEL_DEFAULT, verbose: bool = False, knowledge_engine: KnowledgeStore = None, k1_client: K1KnowledgeClient = None, role_facts_client: RoleFactsClient = None):
         self.client  = client
         self.model   = model
         self.verbose = verbose
         self.log     = logging.getLogger("LLM")
         self.kn      = knowledge_engine
         self.k1      = k1_client
+        self.role_facts = role_facts_client
 
     def analyze(self, circ: dict) -> Optional[dict]:
         """
@@ -1052,6 +1183,8 @@ class LLMAnalyzer:
         k1_topics = []
         k1_facts = []
         k1_guidelines = []
+        role_fact_topics = []
+        role_facts = {}
         if self.k1:
             k1_topics = self.k1.detect_topics(circ)
             try:
@@ -1060,11 +1193,20 @@ class LLMAnalyzer:
             except Exception as exc:
                 self.log.warning(f"  K1 enrichment skipped: {exc}")
                 k1_topics, k1_facts, k1_guidelines = [], [], []
+        if self.role_facts:
+            try:
+                role_fact_topics = self.role_facts.detect_topics(circ, preferred_topics=k1_topics)
+                role_facts = self.role_facts.fetch_role_facts(role_fact_topics)
+            except Exception as exc:
+                self.log.warning(f"  Role-facts enrichment skipped: {exc}")
+                role_fact_topics, role_facts = [], {}
         circ["k1_topics"] = k1_topics
         circ["k1_facts"] = k1_facts
         circ["k1_guidelines"] = k1_guidelines
+        circ["role_fact_topics"] = role_fact_topics
+        circ["role_facts"] = role_facts
 
-        prompt = self._build_prompt(circ, relevant_facts, k1_facts, k1_guidelines)
+        prompt = self._build_prompt(circ, relevant_facts, k1_facts, k1_guidelines, role_facts)
 
         self.log.info(f"  → LLM ({self.model}, temp={LLM_TEMPERATURE})")
         try:
@@ -1102,6 +1244,17 @@ class LLMAnalyzer:
                         circ["k1_guidelines"] = self.k1.fetch_guidelines(k1_topics_post)
                     except Exception as exc:
                         self.log.warning(f"  K1 post-LLM re-detect failed: {exc}")
+            if self.role_facts:
+                enriched = {**circ, "topics": result.get("topics", [])}
+                try:
+                    role_fact_topics_post = self.role_facts.detect_topics(
+                        enriched,
+                        preferred_topics=circ.get("k1_topics", []),
+                    )
+                    circ["role_fact_topics"] = role_fact_topics_post
+                    circ["role_facts"] = self.role_facts.fetch_role_facts(role_fact_topics_post)
+                except Exception as exc:
+                    self.log.warning(f"  Role-facts post-LLM re-detect failed: {exc}")
             return result
         except json.JSONDecodeError as exc:
             self.log.error(f"  LLM returned invalid JSON: {exc}")
@@ -1110,7 +1263,7 @@ class LLMAnalyzer:
             self.log.error(f"  LLM API error: {exc}")
             return None
 
-    def _build_prompt(self, circ: dict, facts: list[str] = None, k1_facts: list[str] = None, k1_guidelines: list[dict] = None) -> str:
+    def _build_prompt(self, circ: dict, facts: list[str] = None, k1_facts: list[str] = None, k1_guidelines: list[dict] = None, role_facts: dict[str, list[str]] = None) -> str:
         """Build user prompt for LLM."""
         lines = [
             f"通告號：{circ.get('number', '?')}",
@@ -1131,6 +1284,16 @@ class LLMAnalyzer:
                 suffix = f"（{year}）" if year and year not in title else ""
                 doc_lines.append(f"- {title}{suffix}: {doc.get('url', '')}")
             lines += ["【相關指引文件】", "\n".join(doc_lines), ""]
+        if role_facts:
+            role_lines = []
+            for role_key in ROLE_FACT_ORDER:
+                role_entries = role_facts.get(role_key, [])
+                if not role_entries:
+                    continue
+                role_lines.append(f"- {ROLE_FACT_LABELS[role_key]}：")
+                role_lines.extend(f"  - {fact}" for fact in role_entries)
+            if role_lines:
+                lines += ["【EDB學校管理知識中心角色事實】", "\n".join(role_lines), ""]
         
         if circ.get("official"):
             lines += ["【官方摘要 / 網頁文字】", circ["official"], ""]
@@ -1620,6 +1783,7 @@ def run_pipeline(args) -> int:
     client = None
     kn = None
     k1 = None
+    role_facts_client = None
     analyzer = None
     if not args.dry_run:
         if not HAS_OPENAI:
@@ -1641,9 +1805,18 @@ def run_pipeline(args) -> int:
         else:
             kn.load(kn_url)
         k1 = K1KnowledgeClient(verbose=args.verbose)
+        if ROLE_FACTS_PATH.exists():
+            role_facts_client = RoleFactsClient(ROLE_FACTS_PATH, verbose=args.verbose)
             
         try:
-            analyzer = LLMAnalyzer(client, model=args.model, verbose=args.verbose, knowledge_engine=kn, k1_client=k1)
+            analyzer = LLMAnalyzer(
+                client,
+                model=args.model,
+                verbose=args.verbose,
+                knowledge_engine=kn,
+                k1_client=k1,
+                role_facts_client=role_facts_client,
+            )
             log.info(f"LLM ready: {args.model}  temperature={LLM_TEMPERATURE} (fixed)")
         except RuntimeError as exc:
             log.error(str(exc))
@@ -1747,9 +1920,9 @@ def run_pipeline(args) -> int:
                     if key not in circ:
                         circ[key] = existing[num].get(key)
                 # Carry forward k1 fields from existing record (if previously enriched)
-                for k1_key in ("k1_topics", "k1_facts", "k1_guidelines"):
+                for k1_key in ("k1_topics", "k1_facts", "k1_guidelines", "role_fact_topics", "role_facts"):
                     if k1_key not in circ:
-                        circ[k1_key] = existing[num].get(k1_key, [])
+                        circ[k1_key] = existing[num].get(k1_key, [] if k1_key != "role_facts" else {})
                 circ = _normalize_roles_payload(circ)
                 circ = _apply_post_analysis_review(circ)
                 raw[idx] = circ
@@ -1827,6 +2000,22 @@ def run_pipeline(args) -> int:
         if k1_backfilled:
             log.info(f"  K1 backfill: {k1_backfilled} records enriched")
 
+    if not args.dry_run and role_facts_client:
+        role_facts_backfilled = 0
+        for circ in merged_sorted:
+            if circ.get("role_fact_topics") and circ.get("role_facts"):
+                continue
+            role_topics_bf = role_facts_client.detect_topics(
+                circ,
+                preferred_topics=circ.get("k1_topics", []),
+            )
+            circ["role_fact_topics"] = role_topics_bf
+            circ["role_facts"] = role_facts_client.fetch_role_facts(role_topics_bf) if role_topics_bf else {}
+            if circ["role_facts"]:
+                role_facts_backfilled += 1
+        if role_facts_backfilled:
+            log.info(f"  Role-facts backfill: {role_facts_backfilled} records enriched")
+
     output_list = []
     for idx, circ in enumerate(merged_sorted):
         circ = _normalize_roles_payload(circ)
@@ -1867,6 +2056,8 @@ def run_pipeline(args) -> int:
             "k1_topics":  circ.get("k1_topics", []),
             "k1_facts":   circ.get("k1_facts", []),
             "k1_guidelines": circ.get("k1_guidelines", []),
+            "role_fact_topics": circ.get("role_fact_topics", []),
+            "role_facts":  circ.get("role_facts", {}),
             "pdf_urls":   pdf_urls,   # [C.pdf, E.pdf, S.pdf] — sorted TC/EN/SC
         }
         output_list.append(record)
@@ -1965,7 +2156,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.21")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.22")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

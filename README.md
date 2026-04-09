@@ -23,7 +23,7 @@ This system automatically scrapes Hong Kong Education Bureau (EDB) circulars, pe
 | 📊 通告總覽 | ✅ 正式版 | 統計卡片、篩選、搜尋、卡片/列表切換 |
 | 🤖 AI 智能分析 | ✅ 正式版 | gpt-5-nano 多角色分析，含摘要/行動/截止 |
 | 📄 官方原文整理版 | ✅ v3.0.12 | 清洗斷行、空白與段落，提升官方摘錄可讀性 |
-| 🧠 知識校正層 | ✅ v3.0.21 (workspace) | AI 首輪分析前後同時使用知識增強：prompt 會注入 K1 facts / guidelines，並按 K1 public `v1.3.1` schema 以 `subject_head + panel_chair + all_roles` 組裝主任層事實；deterministic review 現改用 raw circular signals 做 procurement / finance gating，減少 supplier / finance links 漏進 curriculum / student 通告 |
+| 🧠 知識校正層 | ✅ v3.0.22 (workspace) | AI 首輪分析前後同時使用知識增強：prompt 會注入 K1 facts / guidelines，並按 K1 public `v1.3.1` schema 以 `subject_head + panel_chair + all_roles` 組裝主任層事實；本地 `role_facts.json` 亦會按 topic 取角色事實注入 `【EDB學校管理知識中心角色事實】` 區塊；deterministic review 現改用 raw circular signals 做 procurement / finance gating，減少 supplier / finance links 漏進 curriculum / student 通告 |
 | 👥 七角色視圖 | ✅ v3.0.16 | 校長/副校長/科主任/主任/教師/EO/供應商（兼容舊 `department_head` 資料） |
 | 📅 月曆視圖 | ✅ 正式版 | EDBC 格式通告、截止日期標記 |
 | 💰 資源申請 | ✅ 正式版 | 可申請撥款追蹤 |
@@ -95,7 +95,7 @@ EDB-AI-Circular-System/
     ├── K1_KNOWLEDGE_INTERFACE_SPEC.md ← K1 知識庫接口合約
     ├── v0.2.0-FRONTEND-SPEC.md     ← 前端規格 SSOT
     └── knowledge/
-        └── role_facts.json         ← K1 基線知識庫（角色契約以 K1 spec 為準；公開 API 另由 live K1 endpoints 注入）
+        └── role_facts.json         ← 本地角色知識庫（角色契約以 K1 spec 為準；分析時直接注入 prompt）
 ```
 
 ---
@@ -142,6 +142,7 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 - `knowledge.json`：提供 topic / role 對應的政策事實，於 LLM prompt 內以 `【相關政策事實】` 注入
 - `guidelines.json`：提供 topic 對應的官方指引文件，於 LLM prompt 內以 `【相關指引文件】` 注入
 - K1 public `v1.3.1` schema 現以 `subject_head`（科主任）+ `panel_chair`（主任類）+ `all_roles` 為主任層事實來源
+- `dev/knowledge/role_facts.json`：提供本地角色知識，按 topic 抽取 `all_roles` + 各角色 facts，於 LLM prompt 內以 `【EDB學校管理知識中心角色事實】` 注入
 - K1 topic 補充現已收緊為最多 3 個 topic，並限制 facts / guidelines 注入上限，以減少 prompt 過胖及跨 topic 污染
 - deterministic `knowledge_review` 連結補充現改為以通告原始文字訊號判斷 procurement / finance，而不再依賴 AI summary / supplier role 自我放大
 - fetch 失敗時會自動降級，不會中斷通告分析
