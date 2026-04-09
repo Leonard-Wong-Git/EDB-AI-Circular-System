@@ -1,18 +1,18 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **live v3.0.23 / workspace v3.0.24** (2026-04-09) ← **GitHub Pages + live `circulars.json` 已確認帶出 `k1_*` 與 `role_fact_*` 欄位；workspace 目前正準備發布摘要 A 風格 bugfix 版**
+1. Version: **live v3.0.24 / workspace v3.0.25** (2026-04-09) ← **GitHub Pages + live `circulars.json` 已確認帶出 `k1_*` 與 `role_fact_*` 欄位；workspace 目前正準備發布摘要段落規則修正版**
 2. Core commands / features:
-   - `edb-dashboard.html` — workspace v3.0.24（版本同步待發佈）
-   - `edb_scraper.py` — workspace v3.0.24（K1 prompt injection 與 `v1.3.1` schema consume 已 live；本地 `role_facts.json` 已 live；workspace 修正 summary 被壓成同模板及重複術語問題）
+   - `edb-dashboard.html` — workspace v3.0.25（版本同步待發佈）
+   - `edb_scraper.py` — workspace v3.0.25（K1 prompt injection 與 `v1.3.1` schema consume 已 live；本地 `role_facts.json` 已 live；workspace 修正 summary 段落規則與低信息模板句問題）
    - `circulars.json` — EDB 通告 + gpt-5-nano AI 分析（live 已由 school-year workflow 重生並帶出 `k1_*` / `role_fact_*` 欄位）
    - `knowledge.json` — 從 edb-knowledge 獲取的語義事實來源（v1.3.1，107 facts ✅）
    - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具
    - `requirements.txt` — Python 依賴清單
    - `dev/knowledge/role_facts.json` — K1 基線知識庫（新版已到位；workspace 已接入，待發布後回填 live data）
    - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 接口合約規格（已對齊至 v2.0.0 角色契約）
-3. Regression baseline: `python3 -m py_compile edb_scraper.py` PASS；dashboard JS compile PASS；summary bugfix helper PASS（`EDBCM053/2026` 不再重複 `供應商`；`049/050` 類摘要不再被壓成同一模板）；workspace version markers PASS at v3.0.24；live Pages latest known PASS at `v3.0.23`
-4. Release / merge status: **live site is currently `v3.0.23`; next publish target is workspace `v3.0.24` summary bugfix**
+3. Regression baseline: `python3 -m py_compile edb_scraper.py` PASS；dashboard JS compile PASS；summary helper PASS（`EDBCM049/2026` 與 `EDBCM050/2026` 保持差異；`EDBCM053/2026` 不再重複 `供應商`，且不再被切成「後續通知」模板）；workspace version markers PASS at v3.0.25；live Pages latest known PASS at `v3.0.24`
+4. Release / merge status: **live site is currently `v3.0.24`; next publish target is workspace `v3.0.25` summary paragraph/filler cleanup**
 5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -72,8 +72,8 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 發布 workspace `v3.0.24`，再重跑 school-year workflow，驗證 live 摘要不再出現同模板與重複術語
-2. **[重要]** 抽樣檢查 3–5 份 live 通告，確認 A 風格摘要保留差異性，且字數不會被壓得過短
+1. **[下一步 ⭐]** 發布 workspace `v3.0.25`，再重跑 school-year workflow，驗證 live 摘要已改為優先兩段、必要時三段，且不再出現「若有…將另行通知」等模板句
+2. **[重要]** 抽樣檢查 3–5 份 live 通告，確認摘要既保留差異性，也不會因清理器過度處理而變成過短殘句
 3. **[重要]** 針對 `subject_head` vs `panel_chair` 的 role-facts 命中質素做抽樣檢查，必要時微調 local role-facts topic / role routing
 4. **[其後]** 再視需要回頭處理低優先的 deterministic finance residual contamination（資料層清潔項）
 6. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
@@ -140,6 +140,10 @@ git checkout v2.1.0-dashboard
    - `Commit updated circulars.json` step 若直接在 CI 內 `git pull --rebase origin main`，容易因遠端同時有新 commit 而在 `circulars.json` 衝突
    - workspace 已改為：保存新 JSON → `git fetch origin main` → `git reset --hard origin/main` → 還原 JSON → commit/push
    - 在此修正發布前，再次手動跑 school-year 仍可能重現同類失敗
+13. **⚠️ Summary quality watch（2026-04-09 更新）：**
+   - `v3.0.24` 已修好「不同通告被壓成同模板」與重複 supplier 術語問題
+   - 但 live 仍可見「若有…將另行通知」「目前尚未披露」等低信息模板句
+   - workspace `v3.0.25` 已改為優先兩段、必要時三段，並在 summary 後處理中清理這些模板句
 
 ## Regression / Verification Notes
 1. v2.1.0 QC: 24/24 structural checks 通過；JS syntax check 通過
@@ -173,26 +177,25 @@ Do not close a session with code changes without completing the version bump.
 
 ## Last Session Record
 1. UTC date: 2026-04-09
-2. Session ID: Codex_20260409_0004
+2. Session ID: Codex_20260409_0007
 3. Completed:
-   - ✅ 查明 school-year workflow error 的根因：失敗在 `Commit updated circulars.json`
-   - ✅ 對應到 workflow 中的 `git pull --rebase origin main`
-   - ✅ 將 workflow 改為保存新 JSON → 同步最新遠端 → 還原 JSON → commit/push
-   - ✅ 確認較新的 workflow run `#135` 已成功，Node.js 20 warning 非主因
+   - ✅ 驗證 live `v3.0.24` 已上線，`generated_at = 2026-04-09T12:23:32Z`
+   - ✅ 確認 `049/050` 摘要不再完全相同，`053` 不再重複 `供應商`
+   - ✅ 發現新殘留問題：summary 仍含低信息模板句與「後續通知」式空話
+   - ✅ workspace `v3.0.25` 已改成優先兩段、必要時三段，並加入 summary filler cleanup
 4. Pending:
-   - 推送 / 發布 workflow conflict fix
-   - 重跑 school-year workflow，驗證 `role_fact_topics` / `role_facts` 已反映到 live records
-   - 之後再做 summary prompt 收斂（A 風格、兩段式）
+   - 發布 `v3.0.25`
+   - 重跑 school-year workflow，驗證 live 摘要已去掉低信息模板句
+   - 抽樣檢查其他通告是否仍有過短殘句或占位式語氣
 5. Next priorities (max 3):
-   - 發布 workflow fix
-   - 重跑 workflow 並驗證 role-facts live 回填
-   - 之後調整摘要風格為兩段式 A 版本
+   - 發布 `v3.0.25`
+   - 重跑 workflow 並驗證 live 摘要
+   - 視結果再決定是否只需 prompt 微調
 6. Risks / blockers:
-   - live HTML 目前是 `v3.0.21`；含 workflow fix 的最新 workspace 尚未發布
-   - role-facts 目前只做 local prompt injection / backfill 驗證，仍需 live workflow 後回歸驗證
    - 本機缺 `OPENAI_API_KEY`，所以這輪未做完整雲端 LLM 端到端回歸
-   - 在 workflow fix 發布前，再次手動跑 school-year 仍可能因 CI conflict 失敗
+   - summary 品質仍受 LLM 原始輸出影響；後處理只應做輕量收口，不能替代 prompt 本身
+   - `v3.0.25` 尚未發布，live 仍是 `v3.0.24`
 7. Files materially changed:
-   - `.github/workflows/update-circulars.yml`、`dev/CODEBASE_CONTEXT.md`、`dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
-8. Validation summary: workflow root-cause triage PASS（failed run `#134` identified at `Commit updated circulars.json`）；workflow file inspection PASS；newer run `#135` success confirmed；full workflow re-run not yet performed under the patched file
+   - `edb_scraper.py`、`edb-dashboard.html`、`README.md`、`dev/CODEBASE_CONTEXT.md`、`dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
+8. Validation summary: live `v3.0.24` verification PASS；local `v3.0.25` py_compile PASS；dashboard JS compile PASS；summary helper regression PASS（`049/050` 差異保留；`053` 不再出現後續通知模板）
 9. Git commits: workspace only; publish pending

@@ -466,11 +466,13 @@ diff（版本比較）：
 1. 日期格式必須為 YYYY-MM-DD
 2. 金額單位為港元（HKD），只填數字不加逗號
 3. tags 最多 5 個，用 2-6 字中文描述
-4. summary 中文摘要 150-280 字，分 2 段：
+4. summary 中文摘要 160-320 字，優先分 2 段；如資訊較多可分 3 段：
    - 第 1 段：概述通告主旨、對象或安排重點
-   - 第 2 段：概述主要要求、跟進事項、截止/配套（如適用）
+   - 第 2 段：概述主要要求、跟進事項
+   - 第 3 段（僅在需要時）：概述截止/配套/重要提醒
    - 只總結通告本身已知內容，不得把知識庫一般規則、角色常識、延伸管理建議當成通告內容
    - 不得使用「可推斷」「初步判讀」「根據標題可判斷」等方法說明或保留語氣
+   - 不得使用「若有……將另行通知」「目前尚未披露」「等待後續公告」等低信息模板句填充摘要
 5. 如無截止日期，deadlines 為空數組 []
 6. 如無撥款，grant_info.type = "none"，其餘欄填 null / ""
 """
@@ -1276,11 +1278,13 @@ class LLMAnalyzer:
             f"通告類型：{circ.get('type', 'EDBCM')}",
             "",
             "【摘要寫作要求】",
-            "- summary 必須用兩段中文短段落撰寫。",
+            "- summary 優先用兩段中文短段落撰寫；如資訊較多可用三段。",
             "- 第一段只交代通告主旨、對象與核心安排。",
-            "- 第二段只交代主要要求、跟進事項、截止或配套安排（如適用）。",
+            "- 第二段只交代主要要求、跟進事項。",
+            "- 第三段只在有需要時交代截止、配套或重要提醒。",
             "- 不要把知識庫一般規則、角色百科、延伸管理建議寫進 summary。",
             "- 不要寫「可推斷」「初步判讀」「根據標題可判斷」等自我說明語氣。",
+            "- 不要寫「若有……將另行通知」「目前尚未披露」「等待後續公告」等低信息模板句。",
             "",
         ]
         if facts:
@@ -1568,39 +1572,81 @@ def _dedupe_summary_phrases(text: str) -> str:
     return text
 
 
+SUMMARY_BANNED_PHRASES = [
+    "若有截止日期、配套安排或其他實施要點，將於後續通知。",
+    "如有截止日、配套安排將另行通知。",
+]
+
+SUMMARY_BANNED_MARKERS = [
+    "若有",
+    "如有",
+    "目前尚未",
+    "等待教育局後續公告",
+    "請校方留意日後更新",
+    "截至現時",
+]
+
+
+def _strip_summary_filler(text: str) -> str:
+    if not text:
+        return text
+    cleaned = text
+    for phrase in SUMMARY_BANNED_PHRASES:
+        cleaned = cleaned.replace(phrase, "")
+    cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
+    return cleaned.strip()
+
+
+def _filter_summary_sentences(sentences: list[str]) -> list[str]:
+    filtered = []
+    for sentence in sentences:
+        if any(marker in sentence for marker in SUMMARY_BANNED_MARKERS):
+            continue
+        sentence = sentence.strip()
+        sentence = re.sub(r"[；，、：]+$", "。", sentence)
+        if sentence:
+            filtered.append(sentence)
+    return filtered
+
+
 def _normalize_summary_text(text: str) -> str:
     text = (text or "").strip()
     if not text:
         return ""
     cleaned = re.sub(r"[ \t\r\f\v]+", "", text)
     cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
+    cleaned = _strip_summary_filler(cleaned)
     cleaned = _dedupe_summary_phrases(cleaned)
+    if not cleaned:
+        return ""
 
     paragraphs = [p.strip() for p in cleaned.split("\n\n") if p.strip()]
     if len(paragraphs) >= 2:
-        kept = paragraphs[:2]
+        kept = paragraphs[:3]
         return "\n\n".join(_dedupe_summary_phrases(p) for p in kept)
 
     sentences = [s.strip() for s in re.split(r"(?<=[。！？])", cleaned) if s.strip()]
+    sentences = _filter_summary_sentences(sentences)
+    if not sentences:
+        return _dedupe_summary_phrases(cleaned)
     if len(sentences) <= 2:
         return "\n\n".join(_dedupe_summary_phrases(s) for s in sentences)
 
-    first_para_count = 2 if len(sentences) >= 4 else 1
-    para1 = "".join(sentences[:first_para_count]).strip()
-    para2 = "".join(sentences[first_para_count:]).strip()
-    para2 = _dedupe_summary_phrases(para2)
-    if len(para2) > 180:
-        para2_sentences = [s.strip() for s in re.split(r"(?<=[。！？])", para2) if s.strip()]
-        trimmed = []
-        total = 0
-        for sentence in para2_sentences:
-            projected = total + len(sentence)
-            if trimmed and projected > 180:
-                break
-            trimmed.append(sentence)
-            total = projected
-        para2 = "".join(trimmed) if trimmed else para2
-    return "\n\n".join(part for part in [_dedupe_summary_phrases(para1), para2] if part)
+    if len(sentences) >= 5:
+        groups = [sentences[:2], sentences[2:4], sentences[4:]]
+    elif len(sentences) >= 3:
+        groups = [sentences[:1], sentences[1:]]
+    else:
+        groups = [sentences]
+
+    paragraphs = []
+    for group in groups:
+        para = "".join(group).strip()
+        para = _dedupe_summary_phrases(_strip_summary_filler(para))
+        if para:
+            paragraphs.append(para)
+
+    return "\n\n".join(paragraphs[:3])
 
 
 def _apply_post_analysis_review(circ: dict) -> dict:
@@ -2211,7 +2257,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.24")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.25")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

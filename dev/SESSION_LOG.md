@@ -1,6 +1,70 @@
 # Session Log
 <!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->
 
+## 2026-04-09 Summary paragraph flexibility + filler cleanup (workspace v3.0.25)
+
+1. Agent & Session ID: Codex_20260409_0007
+2. Task summary: 進一步修正 A 風格摘要，從固定兩段改為「優先兩段、必要時三段」，並清除 `若有…將另行通知`、`目前尚未披露`、`等待後續公告` 這類低信息模板句，避免 live 摘要雖已分段但仍顯得空泛。
+3. Layer classification: Product / System Layer（analysis pipeline behavior change）+ Development Governance Layer（session persistence）
+4. Source triage: user-visible output quality issue。`v3.0.24` 已解決「049=050」與重複 supplier 術語，但 live 摘要仍常以後續通知式模板句收尾；這屬 prompt / summary post-process 邊界問題，不是 K1 integration bug。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `edb_scraper.py`, `README.md`, live `edb-dashboard.html`, live `circulars.json`
+6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 將 summary 規則改為 `160-320` 字，優先兩段、必要時三段
+   - ✅ 在 prompt 中加入禁止低信息模板句的要求
+   - ✅ 新增 sentence-level filler cleanup，移除 `若有…將另行通知`、`目前尚未披露`、`等待後續公告` 等句子
+   - ✅ 保留 `049/050` 差異，並讓 `053` 不再以「後續通知」式空話主導摘要
+   - ✅ 版本升至 `v3.0.25`
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - dashboard JS compile (`node` + `new Function`) → PASS
+   - summary helper regression → PASS
+9. Pending:
+   - 發布 `v3.0.25`
+   - 重跑 school-year workflow
+   - 驗證 live `049/050/053` 等摘要已去掉低信息模板句，且沒有新殘句
+10. Next priorities:
+   - 發布 `v3.0.25`
+   - 重跑 workflow 並驗 live summary
+   - 視結果再決定是否還要微調 prompt
+11. Risks / blockers:
+   - 本機仍缺 `OPENAI_API_KEY`，未做完整雲端 LLM 端到端回歸
+   - 摘要品質仍主要受 LLM 原始輸出影響，後處理只應做輕量收口
+   - `v3.0.25` 尚未發布，live 仍是 `v3.0.24`
+12. Notes:
+   - 這輪不再嘗試句內大幅刪字，而是改成整句過濾，避免把有效內容切成殘句。
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - `v3.0.24` live 摘要雖已兩段，但仍常帶有 `若有…將另行通知`、`目前尚未披露` 等低信息模板句，令內容顯得空泛。
+2. Root Cause:
+   - prompt 仍過度鼓勵固定兩段式收尾，而 summary 後處理沒有清理這些佔位句；部分句內刪字還會留下殘句。
+3. Fix:
+   - 改成優先兩段、必要時三段；在 prompt 明確禁止低信息模板句；在 summary post-process 改為整句級過濾這些 filler。
+4. Verification:
+   - `049` 與 `050` helper 輸出仍保持差異
+   - `050` 不再留下句尾分號
+   - `053` helper 輸出不再帶「後續通知」模板句
+5. Regression / rule update:
+   - `CODEBASE_CONTEXT.md` Key Decision #27 added: summary 可兩段或三段，但必須避免低信息 filler prose。
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | curriculum circular with concrete requirements | run `_normalize_summary_text()` | retain meaningful 2-paragraph summary without filler | `049` keeps distinct content and no placeholder ending | PASS |
+| Boundary | survey circular with long second paragraph | run `_normalize_summary_text()` | keep distinct details, remove trailing filler, no broken punctuation | `050` keeps distinct details and no dangling `；` | PASS |
+| Error / failure path | no `OPENAI_API_KEY` in env | local helper/syntax checks only | local QC still valid; cloud regression explicitly skipped | local QC passed, cloud run skipped | PASS with notes |
+| Regression | sparse circular previously ending in “後續通知” boilerplate | run `_normalize_summary_text()` | summary should stay concise without placeholder prose | `053` now reduces to the explicit known sentence only | PASS |
+
+Overall: PASS with notes
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |
+
 ## 2026-04-09 Tighten deterministic review raw-signal gating (workspace v3.0.21)
 
 1. Agent & Session ID: Codex_20260409_0002

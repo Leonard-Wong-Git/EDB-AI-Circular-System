@@ -210,6 +210,7 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 24 | Local Role-Facts Prompt Injection | 2026-04-09 | `dev/knowledge/role_facts.json` is now loaded as a local role knowledge layer. It reuses the K1 topic selection path, injects grouped role facts into the LLM prompt, persists `role_fact_topics` / `role_facts` in output JSON, and backfills older records when the fields are missing. |
 | 25 | Summary A-style Guardrail | 2026-04-09 | Summary generation is now constrained to a shorter two-paragraph format focused on the circular itself; prompt rules explicitly prevent K1/general role knowledge from dominating the summary, and a lightweight post-review normalizer strips meta/disclaimer phrasing while preserving the circular's main point. |
 | 26 | Summary Normalizer Light-touch Rule | 2026-04-09 | The summary post-processor must remain light-touch: preserve circular-specific content, avoid collapsing different circulars into the same template, and only dedupe obvious repeated terminology such as duplicated supplier labels. |
+| 27 | Summary Paragraph Flex + Filler Cleanup | 2026-04-09 | Summary formatting now prefers two paragraphs but may use three when the circular contains enough concrete detail; low-information filler such as “若有…將另行通知” or “目前尚未披露” must be removed so the summary stays circular-first without placeholder prose. |
 
 ---
 
@@ -252,3 +253,4 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 2026-04-09 | Codex_20260409_0004 | Fixed GitHub Actions `Commit updated circulars.json` conflict handling: workflow now saves the freshly generated JSON, syncs to latest `origin/main`, restores the JSON, and only then commits/pushes, avoiding `git pull --rebase` conflicts in CI. |
 | 2026-04-09 | Codex_20260409_0005 | Tightened summary generation into an A-style two-paragraph format in `edb_scraper.py`, added a summary normalizer that strips meta/disclaimer phrasing, and bumped workspace version to v3.0.23 pending publish. |
 | 2026-04-09 | Codex_20260409_0006 | Relaxed the summary normalizer to preserve circular-specific wording, fixed repeated `供應商／承辦商` expansion in summaries, and bumped workspace version to v3.0.24 pending publish. |
+| 2026-04-09 | Codex_20260409_0007 | Adjusted summary rules to prefer two paragraphs but allow three when needed, added sentence-level filler cleanup for low-information placeholder phrases, and bumped workspace version to v3.0.25 pending publish. |
