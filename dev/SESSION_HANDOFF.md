@@ -1,18 +1,18 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **live v3.0.25 / workspace v3.0.26** (2026-04-09) ← **GitHub Pages + live `circulars.json` 已確認帶出 `k1_*` 與 `role_fact_*` 欄位；workspace 目前正準備發布通告本位摘要規則版**
+1. Version: **live v3.0.26 / workspace v3.0.27** (2026-04-09) ← **GitHub Pages + live `circulars.json` 已確認帶出 `k1_*` 與 `role_fact_*` 欄位；workspace 目前正準備發布 sparse-summary follow-up 版**
 2. Core commands / features:
-   - `edb-dashboard.html` — workspace v3.0.26（版本同步待發佈）
-   - `edb_scraper.py` — workspace v3.0.26（K1 prompt injection 與 `v1.3.1` schema consume 已 live；本地 `role_facts.json` 已 live；workspace 將 summary 重整為通告本位規則，只寫已知內容）
+   - `edb-dashboard.html` — workspace v3.0.27（版本同步待發佈）
+   - `edb_scraper.py` — workspace v3.0.27（K1 prompt injection 與 `v1.3.1` schema consume 已 live；本地 `role_facts.json` 已 live；workspace 為 sparse circular 加入精簡 follow-up 第二段）
    - `circulars.json` — EDB 通告 + gpt-5-nano AI 分析（live 已由 school-year workflow 重生並帶出 `k1_*` / `role_fact_*` 欄位）
    - `knowledge.json` — 從 edb-knowledge 獲取的語義事實來源（v1.3.1，107 facts ✅）
-   - `fetch_knowledge.py` — EDB / ICAC 知識庫抓取工具
+   - `fetch_knowledge.py` — EDB / ICAC 知識支援產生器（仍屬維護中的 support path；2026-04-09 已對齊 split-role contract）
    - `requirements.txt` — Python 依賴清單
    - `dev/knowledge/role_facts.json` — K1 基線知識庫（新版已到位；workspace 已接入，待發布後回填 live data）
    - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 接口合約規格（已對齊至 v2.0.0 角色契約）
-3. Regression baseline: `python3 -m py_compile edb_scraper.py` PASS；dashboard JS compile PASS；summary helper PASS（`EDBCM049/2026` 與 `EDBCM050/2026` 保持差異；`EDBCM053/2026` 只保留已知內容，不再輸出「後續通知」式空話）；workspace version markers PASS at v3.0.26；live Pages latest known PASS at `v3.0.25`
-4. Release / merge status: **live site is currently `v3.0.25`; next publish target is workspace `v3.0.26` circular-first summary rewrite**
+3. Regression baseline: `python3 -m py_compile edb_scraper.py` PASS；dashboard JS compile PASS；summary helper PASS（`EDBCM049/2026` 與 `EDBCM050/2026` 保持差異；`EDBCM053/2026` 會補回精簡 follow-up 第二段）；workspace version markers PASS at v3.0.27；live Pages latest known PASS at `v3.0.26`
+4. Release / merge status: **live site is currently `v3.0.26`; next publish target is workspace `v3.0.27` sparse-summary follow-up refinement**
 5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -72,8 +72,8 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 發布 workspace `v3.0.26`，再重跑 school-year workflow，驗證 live 摘要已改為通告本位、優先兩段、必要時三段，且不再輸出「若有…將另行通知」等模板句
-2. **[重要]** 抽樣檢查 5 份以上 live 通告，確認摘要既保留差異性，也不會再寫「未提供什麼」這類空話
+1. **[下一步 ⭐]** 發布 workspace `v3.0.27`，再重跑 school-year workflow，驗證像 `EDBCM053/2026` 這類 sparse 通告會補回精簡而實用的第二段
+2. **[重要]** 抽樣檢查 5 份以上 live 通告，確認摘要既保留差異性，也不會回退成角色百科
 3. **[重要]** 針對 `subject_head` vs `panel_chair` 的 role-facts 命中質素做抽樣檢查，必要時微調 local role-facts topic / role routing
 4. **[其後]** 再視需要回頭處理低優先的 deterministic finance residual contamination（資料層清潔項）
 6. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
@@ -136,6 +136,7 @@ git checkout v2.1.0-dashboard
    - public `knowledge.json` / `guidelines.json` / `K1_API_SPEC.md` 現已一致對齊到 `v1.3.1`
    - public `department_head` bucket 已移除；Circular System 必須按 `subject_head + panel_chair + all_roles` 組裝主任層 facts
    - 不應再以 K1 repo 的 local export / backup artifact 當 API truth
+   - `fetch_knowledge.py` 與維護中的 `dev/knowledge/*.md` / `ROLE_KNOWLEDGE_INDEX.md` 已同步清除 active-path `department_head` 假設；repo 內其餘 `department_head` 只應留在 legacy compatibility path（如 `edb_scraper.py` normalization、舊 `circulars.json`、archived mockup）
 12. **⚠️ Workflow conflict watch（2026-04-09 確認）：**
    - `Commit updated circulars.json` step 若直接在 CI 內 `git pull --rebase origin main`，容易因遠端同時有新 commit 而在 `circulars.json` 衝突
    - workspace 已改為：保存新 JSON → `git fetch origin main` → `git reset --hard origin/main` → 還原 JSON → commit/push
@@ -143,7 +144,8 @@ git checkout v2.1.0-dashboard
 13. **⚠️ Summary quality watch（2026-04-09 更新）：**
    - `v3.0.24` 已修好「不同通告被壓成同模板」與重複 supplier 術語問題
    - `v3.0.25` live 仍可見「若有…將另行通知」「目前尚未披露」等低信息模板句
-   - workspace `v3.0.26` 已改為通告本位摘要規則：只寫已知內容，缺資料時直接略去，不描述「未提供什麼」
+   - `v3.0.26` live 已壓掉空話，但像 `EDBCM053/2026` 這類 sparse 通告會過度保守，缺少實用工作點
+   - workspace `v3.0.27` 已為 sparse circular 加入精簡 follow-up 第二段，僅摘 1-2 個最高訊號的校內跟進點
 
 ## Regression / Verification Notes
 1. v2.1.0 QC: 24/24 structural checks 通過；JS syntax check 通過
@@ -177,25 +179,33 @@ Do not close a session with code changes without completing the version bump.
 
 ## Last Session Record
 1. UTC date: 2026-04-09
-2. Session ID: Codex_20260409_0008
+2. Session ID: Codex_20260409_0009
 3. Completed:
-   - ✅ 驗證 live `v3.0.25` 已上線，`generated_at = 2026-04-09T12:43:31Z`
-   - ✅ 確認 `049/050` 雖保持差異，但 live 摘要整體仍普遍不理想，屬摘要生成策略問題
-   - ✅ workspace `v3.0.26` 已把 summary 改成通告本位規則：只寫已知內容，不再描述缺失資訊
-   - ✅ 本地 helper 顯示 `053` 與泛用樣本已不再輸出「目前尚未披露 / 等待後續公告 / 若有…另行通知」式空話
+   - ✅ 驗證 live `v3.0.26` 已上線，`generated_at = 2026-04-09T13:07:51Z`
+   - ✅ 對照 `EDBCM048/2026` 與 `EDBCM053/2026`，確認 sparse 通告摘要過度保守，缺少已存在於 roles/actions 的實用工作點
+   - ✅ workspace `v3.0.27` 已加入 sparse-summary fallback：當摘要太空但 roles/actions 已有明確工作時，自動補一段精簡 follow-up
+   - ✅ 本地 helper 顯示 `053` 會補回 1-2 個校內跟進重點，而不是空框架句
 4. Pending:
-   - 發布 `v3.0.26`
-   - 重跑 school-year workflow，驗證 live 摘要已去掉低信息模板句與「未提供什麼」式空話
-   - 抽樣檢查更多通告，確認新規則沒有把摘要壓得過短
+   - 發布 `v3.0.27`
+   - 重跑 school-year workflow，驗證 live sparse 通告摘要已補回精簡 follow-up
+   - 抽樣檢查更多通告，確認 sparse fallback 沒有回退成角色百科
 5. Next priorities (max 3):
-   - 發布 `v3.0.26`
-   - 重跑 workflow 並驗證 live 摘要
-   - 視結果再決定是否需要更細的 topic-specific summary guidance
+   - 發布 `v3.0.27`
+   - 重跑 workflow 並驗證 live sparse summaries
+   - 視結果再決定是否需要 topic-specific sparse guidance
 6. Risks / blockers:
    - 本機缺 `OPENAI_API_KEY`，所以這輪未做完整雲端 LLM 端到端回歸
    - summary 品質仍受 LLM 原始輸出影響；後處理只應做輕量收口，不能替代 prompt 本身
-   - `v3.0.26` 尚未發布，live 仍是 `v3.0.25`
+   - `v3.0.27` 尚未發布，live 仍是 `v3.0.26`
 7. Files materially changed:
    - `edb_scraper.py`、`edb-dashboard.html`、`README.md`、`dev/CODEBASE_CONTEXT.md`、`dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
-8. Validation summary: live `v3.0.25` verification PASS；local `v3.0.26` py_compile PASS；dashboard JS compile PASS；summary helper regression PASS（`049/050` 差異保留；`053` 與泛用樣本不再出現後續通知/未披露空話）
+8. Validation summary: live `v3.0.26` verification PASS；local `v3.0.27` py_compile PASS；dashboard JS compile PASS；summary helper regression PASS（`053` 會補回精簡校內跟進重點）
 9. Git commits: workspace only; publish pending
+
+## In-Progress Note (2026-04-09 UTC)
+1. `fetch_knowledge.py` 已確認不是主產品 runtime，但仍是 README 可見且會生成本地知識檔的維護腳本，因此視為 active support path。
+2. 該腳本與其維護中的輸出 (`dev/knowledge/ROLE_KNOWLEDGE_INDEX.md`, `dev/knowledge/*.md`) 已完成 split-role cleanup：
+   - 不再把新 K1 交付寫成 `department_head`
+   - 主任層改為 `subject_head + panel_chair`
+   - `eo_admin` 對外標示改為 `EO`
+3. repo 內剩餘 `department_head` 目前只應存在於 legacy compatibility path；下一次若再清理，需先確認不會破壞舊 `circulars.json` 與 archived/mockup 資料。

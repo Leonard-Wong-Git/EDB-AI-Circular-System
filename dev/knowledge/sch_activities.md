@@ -2,7 +2,7 @@
 
 **來源 URL：** https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html
 **抓取時間：** 2026-03-09 20:47 UTC
-**適用角色：** principal, vice_principal, department_head, teacher, eo_admin
+**適用角色：** principal, vice_principal, subject_head, panel_chair, teacher, eo_admin
 
 ---
 

@@ -1,6 +1,131 @@
 # Session Log
 <!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->
 
+## 2026-04-09 K1 split-role cleanup for local knowledge generator
+
+1. Agent & Session ID: Codex_20260409_0010
+2. Task summary: 清理 EDB 端仍殘留的 K1 split-role stale contract usage，聚焦 `fetch_knowledge.py` 與其維護中的本地知識輸出，避免新的 K1 交付再被寫回 `department_head`。
+3. Layer classification: Product / System Layer（local knowledge support generation / contract cleanup）+ Development Governance Layer（session persistence）
+4. Source triage: stale contract / documentation drift issue。主產品 runtime `edb_scraper.py` 已採 split-role contract，但 `fetch_knowledge.py` 與其生成的本地知識檔仍保留 `department_head` / `行政主任` 舊寫法，屬支援產生路徑與維護型文檔不同步，而非主分析流程故障。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md`, `dev/DOC_SYNC_CHECKLIST.md`, `README.md`, `fetch_knowledge.py`, `edb_scraper.py`, `dev/knowledge/ROLE_KNOWLEDGE_INDEX.md`, `dev/knowledge/sch_admin_guide.md`, `dev/knowledge/fin_management.md`, `dev/knowledge/sch_activities.md`, `dev/knowledge/press_releases.md`, `dev/knowledge/curriculum_guides.md`, `dev/knowledge/kpm.md`
+6. Files changed: `fetch_knowledge.py`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/knowledge/ROLE_KNOWLEDGE_INDEX.md`, `dev/knowledge/sch_admin_guide.md`, `dev/knowledge/fin_management.md`, `dev/knowledge/sch_activities.md`, `dev/knowledge/press_releases.md`, `dev/knowledge/curriculum_guides.md`, `dev/knowledge/kpm.md`
+7. Completed:
+   - ✅ 確認 `fetch_knowledge.py` 不是主產品 runtime，但仍是 README 可見、會生成本地知識檔的 maintained support path
+   - ✅ 將 `fetch_knowledge.py` 內 active role lists 由 `department_head` 改為 `subject_head + panel_chair`
+   - ✅ 更新 `write_index()` role labels：新增 `科主任` / `主任`，並把 `eo_admin` 對外標示改為 `EO`
+   - ✅ 同步修正 `ROLE_KNOWLEDGE_INDEX.md` 與維護中的 `dev/knowledge/*.md` header role wording，不再呈現 stale `department_head`
+   - ✅ 保留主產品 flow 的 legacy compatibility，不移除 `edb_scraper.py` 對舊 `department_head` data 的 normalization
+8. Validation / QC:
+   - `python3 -m py_compile fetch_knowledge.py` → PASS
+   - `rg -n "department_head" fetch_knowledge.py dev/knowledge/ROLE_KNOWLEDGE_INDEX.md dev/knowledge/sch_admin_guide.md dev/knowledge/fin_management.md dev/knowledge/sch_activities.md dev/knowledge/press_releases.md dev/knowledge/curriculum_guides.md dev/knowledge/kpm.md` → no matches (expected)
+   - repo-wide grep still finds `department_head` only in justified legacy compatibility locations (`edb_scraper.py`, `README.md` legacy note, `circulars.json`, `edb-dashboard-mockup.html`) → PASS with notes
+9. Pending:
+   - 視需要重新執行 `fetch_knowledge.py` 完整生成流程，確認沒有其他未列出的 generated artifact 仍殘留舊角色字眼
+   - 持續觀察未來是否可安全清理產品端 legacy `department_head` compatibility
+10. Next priorities:
+   - 發布 `v3.0.27`
+   - 重跑 workflow 並驗證 live sparse summaries
+   - 視需要補做 `fetch_knowledge.py` 全量再生成驗證
+11. Risks / blockers:
+   - K1 public URLs 的 live browser verification 仍屬外部依賴，這輪按使用者指示不阻塞本地 cleanup
+   - `sch_admin_guide.md` 目前含 NUL byte；本次只做最小必要 header wording 修正，未重寫整個檔案
+   - repo 中仍保留 legacy `department_head` occurrences 以兼容舊 data；不可在未確認安全前一併清除
+12. Notes:
+   - 本輪任務是「清 stale contract usage」，不是切掉所有歷史兼容層。
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - `fetch_knowledge.py` 與其維護中的本地知識輸出仍使用 `department_head` / `行政主任`，與 K1 public `v1.3.1` schema 及本地 interface spec `v2.0.0` 不一致。
+2. Root Cause:
+   - 主產品 runtime 已先完成 split-role migration，但支援型知識生成腳本和既有 generated artifacts 沒有同步更新，形成 stale contract drift。
+3. Fix:
+   - 更新 `fetch_knowledge.py` active role lists 與 index labels，並最小修正其維護中的 `ROLE_KNOWLEDGE_INDEX.md` / `dev/knowledge/*.md` 角色字眼到 `subject_head + panel_chair + eo_admin=EO`。
+4. Verification:
+   - `fetch_knowledge.py` syntax check PASS
+   - targeted grep 顯示維護中的 active path 不再含 `department_head`
+   - repo-wide grep 僅剩 legacy compatibility usages，且已明確標記為保留理由
+5. Regression / rule update:
+   - `CODEBASE_CONTEXT.md` Key Decision #30 added: local knowledge generator / maintained artifacts must stay on split-role contract; remaining `department_head` is compatibility-only.
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | `fetch_knowledge.py` maintained support path | inspect + py_compile | role lists and labels align to split-role contract; script still parses | active role lists now use `subject_head + panel_chair`; py_compile PASS | PASS |
+| Boundary | maintained generated docs with stale role headers | patch maintained headers/index | docs no longer present active `department_head` wording | targeted docs/index now show `subject_head / panel_chair` | PASS |
+| Error / failure path | binary-ish `sch_admin_guide.md` contains NUL | minimal patch only | avoid broad rewrite; update only necessary wording | header role wording updated without full file rewrite | PASS with notes |
+| Regression | main product legacy data compatibility must remain | repo-wide grep review | legacy `department_head` may remain only in justified compatibility paths | remaining hits limited to `edb_scraper.py`, `README.md` note, `circulars.json`, archived mockup | PASS |
+
+Overall: PASS with notes
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Session governance maintenance / log archive | SESSION_HANDOFF.md current state + SESSION_LOG.md current entry + archive pointer / files if rotation triggered | ✓ Done |
+
+## 2026-04-09 Sparse summary follow-up fallback (workspace v3.0.27)
+
+1. Agent & Session ID: Codex_20260409_0009
+2. Task summary: 針對 sparse circular 摘要過度保守的問題，加入精簡 follow-up 第二段。當摘要只剩框架句，但 `roles/actions` 已有明確工作點時，補回最多 1-2 個最高訊號的校內跟進重點。
+3. Layer classification: Product / System Layer（analysis pipeline behavior change）+ Development Governance Layer（session persistence）
+4. Source triage: user-visible output quality issue。`v3.0.26` 已成功壓掉空話，但像 `EDBCM053/2026` 這種 sparse 通告會被收得過空；問題不在 K1 或 workflow，而在 summary 對 sparse cases 太保守。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `dev/DOC_SYNC_CHECKLIST.md`, `edb_scraper.py`, live `circulars.json`
+6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ prompt 補充 sparse case guidance：若官方內容少但已有明確工作點，可在第 2 段簡述 1-2 個最重要的校內跟進點
+   - ✅ 新增 `_build_sparse_summary_followup()`，只從最高訊號 roles 中抽最多 2 個 follow-up
+   - ✅ 封掉 `第二段內容摘要需以官方全文公布為準...` 這類 prompt leakage
+   - ✅ 版本升至 `v3.0.27`
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - dashboard JS compile (`node` + `new Function`) → PASS
+   - sparse helper regression → PASS
+9. Pending:
+   - 發布 `v3.0.27`
+   - 重跑 school-year workflow
+   - 驗證 live `EDBCM053/2026` 等 sparse 通告摘要已補回精簡而實用的第二段
+10. Next priorities:
+   - 發布 `v3.0.27`
+   - 重跑 workflow 並驗 live sparse summaries
+   - 視結果再決定是否需要 topic-specific sparse summary rules
+11. Risks / blockers:
+   - 本機仍缺 `OPENAI_API_KEY`，未做完整雲端 LLM 端到端回歸
+   - sparse fallback 若過度放寬，可能再次滑向角色百科；目前已限制最多 2 個 follow-up points
+   - `v3.0.27` 尚未發布，live 仍是 `v3.0.26`
+12. Notes:
+   - 這輪不是讓 summary 重新展開所有角色，而是只在必要時補一段短短的工作重點。
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - `EDBCM053/2026` 這類 sparse circular 在 live `v3.0.26` 中摘要過度保守，只剩框架句，沒有已存在於 roles/actions 的實用工作點。
+2. Root Cause:
+   - circular-first summary rule 成功消除了空話，但對資訊較少的通告沒有保留一個合理的 follow-up 第二段出口。
+3. Fix:
+   - 新增 sparse-summary fallback：當 summary 僅剩單段而 roles/actions 已有明確內容時，自動補一段精簡 follow-up，最多摘 2 個最高訊號的校內跟進點。
+4. Verification:
+   - local helper 顯示 `EDBCM053/2026` 類摘要可補成兩段，第二段為「校內跟進重點包括…」
+   - 句尾標點已收斂，不再出現 `。；` 之類重疊
+5. Regression / rule update:
+   - `CODEBASE_CONTEXT.md` Key Decision #29 added: sparse summaries may append one concise follow-up paragraph from role/action signals.
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | sparse circular with meaningful role/action signals | apply sparse fallback | add one concise second paragraph with at most 2 follow-up points | `053` helper now adds concise follow-up paragraph | PASS |
+| Boundary | sparse circular with repeated role action text | apply sparse fallback | dedupe repeated follow-up text and avoid role encyclopedia | helper kept max 2 concise points | PASS |
+| Error / failure path | no `OPENAI_API_KEY` in env | local helper/syntax checks only | local QC valid; cloud regression explicitly skipped | local QC passed; cloud run skipped | PASS with notes |
+| Regression | rich circulars already have detailed summary | sparse fallback should not trigger | existing 2-3 paragraph summaries remain primary | logic only triggers when summary has <=1 paragraph | PASS |
+
+Overall: PASS with notes
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |
+
 ## 2026-04-09 Circular-first summary rewrite (workspace v3.0.26)
 
 1. Agent & Session ID: Codex_20260409_0008

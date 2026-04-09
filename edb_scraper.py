@@ -475,6 +475,7 @@ diff（版本比較）：
    - 不得使用「可推斷」「初步判讀」「根據標題可判斷」等方法說明或保留語氣
    - 不得使用「若有……將另行通知」「目前尚未披露」「等待後續公告」等低信息模板句填充摘要
    - 除非通告本身明確逐一分派角色責任，否則不要在 summary 逐個角色展開
+   - 如官方內容較少，但分析中已有明確而具體的跟進工作，可在第 2 段簡述 1-2 個最重要的校內跟進點；不要逐個角色平鋪列出
 5. 如無截止日期，deadlines 為空數組 []
 6. 如無撥款，grant_info.type = "none"，其餘欄填 null / ""
 """
@@ -1287,6 +1288,7 @@ class LLMAnalyzer:
             "- 不要把知識庫一般規則、角色百科、延伸管理建議寫進 summary。",
             "- 只寫通告已明示或可直接從官方摘要/PDF讀出的內容；資訊不足時直接略去，不要描述『未提供什麼』。",
             "- 除非通告本身明確逐一分派角色責任，否則不要在 summary 逐個角色展開。",
+            "- 如官方內容較少，但分析中已有明確而具體的跟進工作，可在第 2 段簡述 1-2 個最重要的校內跟進點；不要逐個角色平鋪列出。",
             "- 不要寫「可推斷」「初步判讀」「根據標題可判斷」等自我說明語氣。",
             "- 不要寫「若有……將另行通知」「目前尚未披露」「等待後續公告」等低信息模板句。",
             "",
@@ -1579,9 +1581,11 @@ def _dedupe_summary_phrases(text: str) -> str:
 SUMMARY_BANNED_PHRASES = [
     "若有截止日期、配套安排或其他實施要點，將於後續通知。",
     "如有截止日、配套安排將另行通知。",
+    "第二段內容摘要需以官方全文公布為準，後續的執行要求、時間表及配套措施將於正式發布時提供，學校需依指引落實相關安排。",
 ]
 
 SUMMARY_BANNED_MARKERS = [
+    "第二段內容摘要",
     "若有",
     "如有",
     "目前尚未",
@@ -1615,6 +1619,59 @@ def _filter_summary_sentences(sentences: list[str]) -> list[str]:
         if sentence:
             filtered.append(sentence)
     return filtered
+
+
+SUMMARY_ROLE_PRIORITY = [
+    "principal",
+    "vice_principal",
+    "subject_head",
+    "panel_chair",
+    "teacher",
+    "eo_admin",
+    "supplier",
+]
+
+SUMMARY_ROLE_LABELS = {
+    "principal": "校長",
+    "vice_principal": "副校長",
+    "subject_head": "科主任",
+    "panel_chair": "主任",
+    "teacher": "教師",
+    "eo_admin": "EO",
+    "supplier": "供應商",
+}
+
+
+def _build_sparse_summary_followup(reviewed: dict) -> str:
+    roles = reviewed.get("roles") or {}
+    snippets = []
+    seen = set()
+
+    for role_key in SUMMARY_ROLE_PRIORITY:
+        role = roles.get(role_key)
+        if not isinstance(role, dict) or not role.get("r"):
+            continue
+        candidates = []
+        for text in (role.get("acts") or []):
+            if text:
+                candidates.append(text.strip())
+        for text in (role.get("pts") or []):
+            if text:
+                candidates.append(text.strip())
+        chosen = next((c for c in candidates if c and c not in seen), None)
+        if not chosen:
+            continue
+        seen.add(chosen)
+        chosen = re.sub(r"[。；，、：]+$", "", chosen)
+        snippets.append(f"{SUMMARY_ROLE_LABELS[role_key]}需{chosen}")
+        if len(snippets) >= 2:
+            break
+
+    if not snippets:
+        return ""
+    sentence = "；".join(snippets)
+    sentence = re.sub(r"[；，、：]+$", "", sentence)
+    return f"校內跟進重點包括{sentence}。"
 
 
 def _normalize_summary_text(text: str) -> str:
@@ -1688,6 +1745,12 @@ def _apply_post_analysis_review(circ: dict) -> dict:
 
     for action in reviewed.get("actions", []):
         action["text"] = _replace_terms(action.get("text", ""), applied_rules)
+
+    summary_paragraphs = [p.strip() for p in (reviewed.get("summary") or "").split("\n\n") if p.strip()]
+    if len(summary_paragraphs) <= 1:
+        followup = _build_sparse_summary_followup(reviewed)
+        if followup:
+            reviewed["summary"] = "\n\n".join(summary_paragraphs + [followup]) if summary_paragraphs else followup
 
     supplier = roles.get("supplier")
     source_text = " ".join(
@@ -2274,7 +2337,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.26")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.27")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

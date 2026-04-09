@@ -17,7 +17,7 @@
 | CI/CD | GitHub Actions | `update-circulars.yml` — cron 3×/day (days-3) + manual (school-year) |
 | Hosting | GitHub Pages | Root deploy; `index.html` redirects to `edb-dashboard.html` |
 | Data | `circulars.json` | Tracked in git (required for Pages); output of `edb_scraper.py` |
-| Knowledge | `dev/knowledge/knowledge.json` | Vetted knowledge from edb-knowledge repo; 107 facts in v1.2.2 |
+| Knowledge | `dev/knowledge/knowledge.json` + `dev/knowledge/role_facts.json` | K1-aligned knowledge inputs; public facts/guidelines use v1.3.1 split-role schema, local role facts use v2.0.0 contract |
 
 ---
 
@@ -36,7 +36,7 @@ EDB-Circular-AI-analysis-system/
 ├── edb-dashboard-mockup.html       # Legacy v0.1.0 mockup (archived)
 ├── index.html                      # GitHub Pages redirect → edb-dashboard.html
 ├── edb_scraper.py                  # ★ Backend pipeline (scrape + AI + R1-v2 postprocess; PHASE 4 merge fix)
-├── fetch_knowledge.py              # EDB/ICAC knowledge fetcher
+├── fetch_knowledge.py              # EDB/ICAC knowledge support generator (maintained support path; split-role aligned)
 ├── requirements.txt                # Python deps (requests, bs4, PyMuPDF, openai, lxml)
 ├── circulars.json                  # ★ AI analysis output (incremental merge; school-year full data)
 │
@@ -212,6 +212,8 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 26 | Summary Normalizer Light-touch Rule | 2026-04-09 | The summary post-processor must remain light-touch: preserve circular-specific content, avoid collapsing different circulars into the same template, and only dedupe obvious repeated terminology such as duplicated supplier labels. |
 | 27 | Summary Paragraph Flex + Filler Cleanup | 2026-04-09 | Summary formatting now prefers two paragraphs but may use three when the circular contains enough concrete detail; low-information filler such as “若有…將另行通知” or “目前尚未披露” must be removed so the summary stays circular-first without placeholder prose. |
 | 28 | Circular-first Summary Rule | 2026-04-09 | Summary generation must describe only what the circular explicitly says or what can be read directly from official text/PDF. When information is sparse, omit the missing area instead of describing what is not provided; K1 and role facts must not turn the summary into a general management explainer. |
+| 29 | Sparse Summary Follow-up Fallback | 2026-04-09 | When a circular is sparse but the analysis already has clear role-based follow-up work, summary may append one concise second paragraph that highlights at most two highest-signal internal follow-up points, avoiding both empty placeholder prose and full role-by-role expansion. |
+| 30 | Local Knowledge Generator Split-role Alignment | 2026-04-09 | `fetch_knowledge.py` remains a maintained support generator for local knowledge artifacts, so its role lists and generated indexes/docs now align to the split-role contract (`subject_head` + `panel_chair` + `eo_admin=EO`). Remaining `department_head` references in the repo are legacy compatibility only, not active K1 generation logic. |
 
 ---
 
@@ -256,3 +258,5 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 2026-04-09 | Codex_20260409_0006 | Relaxed the summary normalizer to preserve circular-specific wording, fixed repeated `供應商／承辦商` expansion in summaries, and bumped workspace version to v3.0.24 pending publish. |
 | 2026-04-09 | Codex_20260409_0007 | Adjusted summary rules to prefer two paragraphs but allow three when needed, added sentence-level filler cleanup for low-information placeholder phrases, and bumped workspace version to v3.0.25 pending publish. |
 | 2026-04-09 | Codex_20260409_0008 | Reworked summary guidance into a circular-first rule set: only explicit circular content should appear in summary, missing details should be omitted rather than narrated, and workspace version is now v3.0.26 pending publish. |
+| 2026-04-09 | Codex_20260409_0009 | Added a sparse-summary fallback so role/action signals can supply one concise follow-up paragraph when the summary would otherwise be too empty; workspace version is now v3.0.27 pending publish. |
+| 2026-04-09 | Codex_20260409_0010 | Audited `fetch_knowledge.py` as an active support-generation path, removed stale `department_head` assumptions from its maintained role lists/index labels, and refreshed maintained local knowledge artifacts to the split-role contract while preserving product-side legacy compatibility elsewhere. |
