@@ -1,7 +1,7 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **live v3.0.21 / workspace v3.0.22** (2026-04-09) ← **GitHub Pages + live `circulars.json` 已確認帶出 K1 fields；workspace 現已再接入本地 `dev/knowledge/role_facts.json`，把角色事實注入 prompt 並輸出 `role_fact_topics` / `role_facts`**
+1. Version: **live v3.0.21 / workspace v3.0.22 + workflow fix pending publish** (2026-04-09) ← **GitHub Pages + live `circulars.json` 已確認帶出 K1 fields；workspace 現已再接入本地 `dev/knowledge/role_facts.json`，並修正 GitHub Actions `Commit updated circulars.json` 的 conflict handling**
 2. Core commands / features:
    - `edb-dashboard.html` — workspace v3.0.22（版本同步待發佈）
    - `edb_scraper.py` — workspace v3.0.22（K1 prompt injection 與 `v1.3.1` schema consume 已 live；workspace 再接入本地 `role_facts.json` 角色事實注入）
@@ -11,8 +11,8 @@
    - `requirements.txt` — Python 依賴清單
    - `dev/knowledge/role_facts.json` — K1 基線知識庫（新版已到位；workspace 已接入，待發布後回填 live data）
    - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 接口合約規格（已對齊至 v2.0.0 角色契約）
-3. Regression baseline: `python3 -m py_compile edb_scraper.py` PASS；dashboard JS compile PASS；role-facts prompt injection logic PASS（sample topics `student/activity/finance` → non-empty `role_facts`, prompt includes `【EDB學校管理知識中心角色事實】`）；workspace version markers PASS at v3.0.22；live Pages latest known PASS at `v3.0.21`
-4. Release / merge status: **live site is currently `v3.0.21`; next publish target is workspace `v3.0.22`**
+3. Regression baseline: `python3 -m py_compile edb_scraper.py` PASS；dashboard JS compile PASS；role-facts prompt injection logic PASS（sample topics `student/activity/finance` → non-empty `role_facts`, prompt includes `【EDB學校管理知識中心角色事實】`）；workflow root-cause triage PASS（run `#134` failed at `Commit updated circulars.json`; newer run `#135` succeeded）；workspace version markers PASS at v3.0.22；live Pages latest known PASS at `v3.0.21`
+4. Release / merge status: **live site is currently `v3.0.21`; next publish target is workspace `v3.0.22` + workflow conflict fix**
 5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -72,11 +72,11 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 發布 workspace `v3.0.22`，再重跑 school-year workflow，驗證 live `role_fact_topics` / `role_facts` 已成功回填
+1. **[下一步 ⭐]** 發布目前 workspace（含 workflow conflict fix），再重跑 school-year workflow，驗證 live `role_fact_topics` / `role_facts` 已成功回填
 2. **[重要]** 抽樣檢查 3–5 份 live 通告，確認 `【EDB學校管理知識中心角色事實】` 的注入量適中，且沒有造成 summary / roles 漂移
 3. **[重要]** 針對 `subject_head` vs `panel_chair` 的 role-facts 命中質素做抽樣檢查，必要時微調 local role-facts topic / role routing
-4. **[其後]** 再視需要回頭處理低優先的 deterministic finance residual contamination（資料層清潔項）
-5. **[觀察]** 視需要再微調「官方原文整理版」對 metadata 行的段落整理規則
+4. **[其後]** school-year 驗證完成後，開始調整 summary prompt：採用較短、兩段式、以通告本身為主的 A 風格摘要
+5. **[其後]** 再視需要回頭處理低優先的 deterministic finance residual contamination（資料層清潔項）
 6. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
 7. **[選做]** LLM 引擎切換機制
 
@@ -137,6 +137,10 @@ git checkout v2.1.0-dashboard
    - public `knowledge.json` / `guidelines.json` / `K1_API_SPEC.md` 現已一致對齊到 `v1.3.1`
    - public `department_head` bucket 已移除；Circular System 必須按 `subject_head + panel_chair + all_roles` 組裝主任層 facts
    - 不應再以 K1 repo 的 local export / backup artifact 當 API truth
+12. **⚠️ Workflow conflict watch（2026-04-09 確認）：**
+   - `Commit updated circulars.json` step 若直接在 CI 內 `git pull --rebase origin main`，容易因遠端同時有新 commit 而在 `circulars.json` 衝突
+   - workspace 已改為：保存新 JSON → `git fetch origin main` → `git reset --hard origin/main` → 還原 JSON → commit/push
+   - 在此修正發布前，再次手動跑 school-year 仍可能重現同類失敗
 
 ## Regression / Verification Notes
 1. v2.1.0 QC: 24/24 structural checks 通過；JS syntax check 通過
@@ -170,25 +174,26 @@ Do not close a session with code changes without completing the version bump.
 
 ## Last Session Record
 1. UTC date: 2026-04-09
-2. Session ID: Codex_20260409_0003
+2. Session ID: Codex_20260409_0004
 3. Completed:
-   - ✅ 確認新版 `dev/knowledge/role_facts.json` 已到位，schema 對齊 K1 v2.0.0
-   - ✅ 接入本地 role-facts prompt enrichment：分析時可注入 `【EDB學校管理知識中心角色事實】`
-   - ✅ 新增輸出欄位 `role_fact_topics` / `role_facts`，並補上 backfill 路徑
-   - ✅ 版本升至 `v3.0.22`
+   - ✅ 查明 school-year workflow error 的根因：失敗在 `Commit updated circulars.json`
+   - ✅ 對應到 workflow 中的 `git pull --rebase origin main`
+   - ✅ 將 workflow 改為保存新 JSON → 同步最新遠端 → 還原 JSON → commit/push
+   - ✅ 確認較新的 workflow run `#135` 已成功，Node.js 20 warning 非主因
 4. Pending:
-   - 推送 / 發布 `v3.0.22`
+   - 推送 / 發布 workflow conflict fix
    - 重跑 school-year workflow，驗證 `role_fact_topics` / `role_facts` 已反映到 live records
-   - 抽樣檢查 role-facts 注入是否對 `subject_head` / `panel_chair` 命中合理
+   - 之後再做 summary prompt 收斂（A 風格、兩段式）
 5. Next priorities (max 3):
-   - 發布 `v3.0.22`
+   - 發布 workflow fix
    - 重跑 workflow 並驗證 role-facts live 回填
-   - 抽樣檢查 role-facts 對角色判斷的實際幫助
+   - 之後調整摘要風格為兩段式 A 版本
 6. Risks / blockers:
-   - live HTML 目前是 `v3.0.21`；`v3.0.22` 尚未發布
+   - live HTML 目前是 `v3.0.21`；含 workflow fix 的最新 workspace 尚未發布
    - role-facts 目前只做 local prompt injection / backfill 驗證，仍需 live workflow 後回歸驗證
    - 本機缺 `OPENAI_API_KEY`，所以這輪未做完整雲端 LLM 端到端回歸
+   - 在 workflow fix 發布前，再次手動跑 school-year 仍可能因 CI conflict 失敗
 7. Files materially changed:
-   - `edb_scraper.py`、`edb-dashboard.html`、`README.md`、`dev/CODEBASE_CONTEXT.md`、`dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
-8. Validation summary: `python3 -m py_compile edb_scraper.py` PASS；dashboard JS compile PASS；role-facts logic check PASS（sample topics produced non-empty `role_facts` and prompt block）；full OpenAI LLM call not run because `OPENAI_API_KEY` is absent in this environment
+   - `.github/workflows/update-circulars.yml`、`dev/CODEBASE_CONTEXT.md`、`dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`
+8. Validation summary: workflow root-cause triage PASS（failed run `#134` identified at `Commit updated circulars.json`）；workflow file inspection PASS；newer run `#135` success confirmed；full workflow re-run not yet performed under the patched file
 9. Git commits: workspace only; publish pending

@@ -118,18 +118,26 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add circulars.json
           # 只有在有實際變更時才 commit（避免空 commit）
-          if git diff --staged --quiet; then
+          if git diff --quiet -- circulars.json; then
             echo "No changes to circulars.json — skipping commit"
           else
             TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
             COUNT=$(python3 -c "import json; d=json.load(open('circulars.json')); print(d.get('count',0))")
-            git commit -m "chore: auto-update circulars.json [$TIMESTAMP] ($COUNT circulars)"
-            # Pull rebase 以防遠端在 workflow 執行期間有新 commit（例如本機 push）
-            git pull --rebase origin main
-            git push
-            echo "Committed and pushed: $COUNT circulars"
+            # 避免 workflow 執行期間遠端有新 commit 時，對 circulars.json 直接 rebase 造成衝突。
+            # 先保存新生成檔，再同步到最新 origin/main，最後把新檔複回來 commit。
+            cp circulars.json /tmp/circulars.json
+            git fetch origin main
+            git reset --hard origin/main
+            cp /tmp/circulars.json circulars.json
+            git add circulars.json
+            if git diff --staged --quiet; then
+              echo "No changes after syncing latest origin/main — skipping commit"
+            else
+              git commit -m "chore: auto-update circulars.json [$TIMESTAMP] ($COUNT circulars)"
+              git push
+              echo "Committed and pushed: $COUNT circulars"
+            fi
           fi
 
       # ── 7. 上傳 Pages artifact ────────────────────────────

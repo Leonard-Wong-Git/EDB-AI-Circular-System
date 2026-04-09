@@ -66,6 +66,68 @@ Overall: PASS with notes
 |---|---|---|
 | Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
 | Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |
+
+## 2026-04-09 Workflow fix for circulars.json commit conflict
+
+1. Agent & Session ID: Codex_20260409_0004
+2. Task summary: 針對 school-year workflow error 做根因調查與修正。確認失敗發生在 GitHub Actions 的 `Commit updated circulars.json` step，然後把 workflow 從 `git pull --rebase` 策略改成保存新 JSON → 同步最新遠端 → 還原 JSON → commit/push。
+3. Layer classification: Product / System Layer（CI / deployment workflow behavior）+ Development Governance Layer（session persistence）
+4. Source triage: 屬 CI / external platform behavior issue，不是 scraper / OpenAI / K1 邏輯錯誤。失敗根因在 workflow 的 git conflict handling，而不是分析程式本身。
+5. Files read: `.github/workflows/update-circulars.yml`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`
+6. Files changed: `.github/workflows/update-circulars.yml`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 查明失敗 run `#134` 的 error 發生在 `Commit updated circulars.json`
+   - ✅ 對回 workflow，失敗點是 `git pull --rebase origin main`
+   - ✅ 將 workflow 改成：保存新 `circulars.json` → `git fetch origin main` → `git reset --hard origin/main` → 還原 JSON → `git add/commit/push`
+   - ✅ 確認較新的 run `#135` 已成功；Node.js 20 warning 為次要警告，非主因
+8. Validation / QC:
+   - GitHub Actions public run-page inspection → PASS
+   - failed run root-cause identification → PASS
+   - workflow step mapping to `.github/workflows/update-circulars.yml` → PASS
+9. Pending:
+   - 發布 workflow conflict fix
+   - 重跑 school-year workflow，驗證 `role_fact_topics` / `role_facts` 已回填 live
+   - 其後再開始摘要風格收斂（A 風格、兩段式）
+10. Next priorities:
+   - 發布 workflow fix
+   - 重跑 workflow 並驗證 live role-facts 回填
+   - 之後調整 summary prompt 為兩段式 A 版本
+11. Risks / blockers:
+   - 修正尚未發布；在此之前手動跑 school-year 仍可能再撞同類 CI conflict
+   - public log inspection 可定位 step 與 annotation，但未直接取得完整 private step log
+   - Node.js 20 deprecation warning 仍存在，但不是本次失敗主因
+12. Notes:
+   - 這次 workflow 修正其實讓 CI 策略重新對齊 `CODEBASE_CONTEXT.md` 已記錄的 Key Decision #7（fetch+reset conflict strategy）。
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - school-year workflow 出現 error，無法穩定提交新生成的 `circulars.json`。
+2. Root Cause:
+   - workflow 在 commit `circulars.json` 後直接執行 `git pull --rebase origin main`，若執行期間遠端同時出現新 commit，便可能在 `circulars.json` 衝突並失敗。
+3. Fix:
+   - 將 workflow 改為先保存新 JSON，再同步到最新 `origin/main`，然後把 JSON 複回來後才 commit / push，避免直接 rebase 衝突。
+4. Verification:
+   - public failed run `#134` annotation 顯示失敗在 `Commit updated circulars.json`
+   - workflow file line mapping confirmed the risky command
+   - newer run `#135` 已成功，說明不是整條 workflow 或外部服務全面故障
+5. Regression / rule update:
+   - 無新增長期治理規則；是把現有 CI conflict strategy 正式落實到 workflow。
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | workflow 生成新的 `circulars.json` | Commit step syncs latest origin before commit | 不因 rebase 衝突而失敗 | new strategy saved in workflow file | PASS |
+| Boundary | 遠端在 workflow 執行期間新增 commit | Commit step handles latest origin state | 保留新生成 JSON，避免 `git pull --rebase` 衝突 | strategy now uses save + fetch/reset + restore | PASS |
+| Error / failure path | public logs only, no `gh` CLI available | inspect public GitHub Actions HTML | 仍可定位 failing run / step / annotation | failed run `#134`, step `Commit updated circulars.json` identified | PASS |
+| Regression | Scraper / deploy steps unchanged | only replace commit conflict handling | 其他 workflow step names and ordering stay intact | only commit strategy block changed | PASS |
+
+Overall: PASS
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
 | Session governance maintenance / log archive | SESSION_HANDOFF.md current state + SESSION_LOG.md current entry + archive pointer / files if rotation triggered | ✓ Done |
 
 ## 2026-04-09 Adopt K1 public schema v1.3.1 in Circular System (workspace v3.0.20)
