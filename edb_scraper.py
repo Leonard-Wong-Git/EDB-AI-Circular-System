@@ -466,7 +466,7 @@ diff（版本比較）：
 1. 日期格式必須為 YYYY-MM-DD
 2. 金額單位為港元（HKD），只填數字不加逗號
 3. tags 最多 5 個，用 2-6 字中文描述
-4. summary 中文摘要 120-220 字，分 2 段：
+4. summary 中文摘要 150-280 字，分 2 段：
    - 第 1 段：概述通告主旨、對象或安排重點
    - 第 2 段：概述主要要求、跟進事項、截止/配套（如適用）
    - 只總結通告本身已知內容，不得把知識庫一般規則、角色常識、延伸管理建議當成通告內容
@@ -1559,64 +1559,48 @@ def _merge_link_lists(*groups: list[dict]) -> list[dict]:
     return merged
 
 
-SUMMARY_META_PHRASES = [
-    "根據標題可判斷",
-    "初步判讀",
-    "可推斷",
-    "推定本通告",
-    "依據知識庫",
-    "依據edb學校管理知識中心",
-    "edb學校管理知識中心的通則",
-    "知識中心的通則",
-    "的通則",
-    "未能提取通告全文",
-    "未提供完整的通告全文",
-    "雖僅以標題與通告號推測內容",
-]
+def _dedupe_summary_phrases(text: str) -> str:
+    if not text:
+        return text
+    text = re.sub(r"(供應商／)+供應商／承辦商", "供應商／承辦商", text)
+    text = re.sub(r"(供應商／承辦商)(?:／承辦商)+", "供應商／承辦商", text)
+    text = re.sub(r"(供應商／承辦商)(?:／供應商)+", "供應商／承辦商", text)
+    return text
 
 
 def _normalize_summary_text(text: str) -> str:
     text = (text or "").strip()
     if not text:
         return ""
-    cleaned = re.sub(r"\s+", "", text)
+    cleaned = re.sub(r"[ \t\r\f\v]+", "", text)
+    cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
+    cleaned = _dedupe_summary_phrases(cleaned)
+
+    paragraphs = [p.strip() for p in cleaned.split("\n\n") if p.strip()]
+    if len(paragraphs) >= 2:
+        kept = paragraphs[:2]
+        return "\n\n".join(_dedupe_summary_phrases(p) for p in kept)
+
     sentences = [s.strip() for s in re.split(r"(?<=[。！？])", cleaned) if s.strip()]
-    normalized_sentences = []
-    for sentence in sentences:
-        updated = sentence
-        for phrase in SUMMARY_META_PHRASES:
-            updated = re.sub(re.escape(phrase), "", updated, flags=re.IGNORECASE)
-        updated = re.sub(r"^[，、；：\s]+", "", updated)
-        updated = re.sub(r"[，、；：]{2,}", "，", updated)
-        updated = re.sub(r"^本通告以", "本通告", updated)
-        updated = re.sub(r"^本通告[「\"]?(.+?)[」\"]?為主旨，?", r"本通告涉及「\1」。", updated)
-        updated = re.sub(r"^本通告涉及「(.+?)」。涉及", r"本通告涉及「\1」", updated)
-        updated = updated.strip()
-        if updated and updated not in {"。", "！", "？"}:
-            normalized_sentences.append(updated)
-    if normalized_sentences:
-        sentences = normalized_sentences
+    if len(sentences) <= 2:
+        return "\n\n".join(_dedupe_summary_phrases(s) for s in sentences)
 
-    kept = []
-    total_len = 0
-    for sentence in sentences:
-        if len(kept) >= 5:
-            break
-        projected = total_len + len(sentence)
-        if kept and projected > 220:
-            break
-        kept.append(sentence)
-        total_len = projected
-    if not kept:
-        kept = sentences[:3]
-
-    if len(kept) <= 2:
-        return "\n\n".join(kept)
-
-    first_para_count = 2 if len(kept) >= 4 else 1
-    para1 = "".join(kept[:first_para_count]).strip()
-    para2 = "".join(kept[first_para_count:]).strip()
-    return "\n\n".join(part for part in [para1, para2] if part)
+    first_para_count = 2 if len(sentences) >= 4 else 1
+    para1 = "".join(sentences[:first_para_count]).strip()
+    para2 = "".join(sentences[first_para_count:]).strip()
+    para2 = _dedupe_summary_phrases(para2)
+    if len(para2) > 180:
+        para2_sentences = [s.strip() for s in re.split(r"(?<=[。！？])", para2) if s.strip()]
+        trimmed = []
+        total = 0
+        for sentence in para2_sentences:
+            projected = total + len(sentence)
+            if trimmed and projected > 180:
+                break
+            trimmed.append(sentence)
+            total = projected
+        para2 = "".join(trimmed) if trimmed else para2
+    return "\n\n".join(part for part in [_dedupe_summary_phrases(para1), para2] if part)
 
 
 def _apply_post_analysis_review(circ: dict) -> dict:
@@ -2227,7 +2211,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.23")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.24")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

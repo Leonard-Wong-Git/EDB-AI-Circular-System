@@ -67,6 +67,67 @@ Overall: PASS with notes
 | Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
 | Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |
 
+## 2026-04-09 Summary bugfix: preserve differences + dedupe repeated supplier term
+
+1. Agent & Session ID: Codex_20260409_0006
+2. Task summary: 修正 `v3.0.23` 摘要後處理副作用，避免不同通告被壓成過於相似的模板，同時清除 `供應商／供應商／供應商／承辦商` 這類重複術語。
+3. Layer classification: Product / System Layer（analysis pipeline behavior change）+ Development Governance Layer（session persistence）
+4. Source triage: user-visible output regression。根因不是模型本身，而是 summary normalizer 過度刪句與改寫，令 049 / 050 這類課程通告被收斂得過於相似；另外 terminology 替換在 summary 內未完全收斂重複 supplier 字樣。
+5. Files read: `edb_scraper.py`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ summary 字數要求放寬到 `150-280`
+   - ✅ `_normalize_summary_text()` 降級為 light-touch，保留原句差異，只做分段與輕量裁切
+   - ✅ 新增 `_dedupe_summary_phrases()`，收斂重複 `供應商／承辦商`
+   - ✅ 版本升至 `v3.0.24`
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - dashboard JS compile → PASS
+   - helper regression checks → PASS
+9. Pending:
+   - 發布 `v3.0.24`
+   - 重跑 school-year workflow
+   - 驗證 live `049/050/053` 摘要已保留差異且不再重複 supplier 術語
+10. Next priorities:
+   - 發布 `v3.0.24`
+   - 重跑 workflow 並驗 live summary
+   - 視結果再決定是否只靠 prompt、進一步弱化後處理
+11. Risks / blockers:
+   - 本機仍缺 `OPENAI_API_KEY`，未做完整雲端端到端回歸
+   - 摘要最終品質仍以 LLM 原始輸出為主，後處理只應做輕量整理
+12. Notes:
+   - 這輪不再嘗試刪除太多 meta 片語，因為那會傷到通告本身差異性。
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - `049` 和 `050` 類摘要被壓成過於相似，且 `053` 出現重複 `供應商` 字樣。
+2. Root Cause:
+   - `v3.0.23` 的 summary normalizer 過度刪句與重寫，破壞原有差異；supplier terminology 在 summary 中未完全去重。
+3. Fix:
+   - 把 summary normalizer 改為 light-touch，只做分段與輕量裁切；新增 summary 專用術語去重 helper。
+4. Verification:
+   - `053` 樣本輸出已恢復為 `供應商／承辦商`
+   - `049` 與 `050` 樣本輸出不再被壓成同一句型
+5. Regression / rule update:
+   - `CODEBASE_CONTEXT.md` Key Decision #26 added: summary post-processing must preserve circular-specific differences and stay light-touch.
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | 兩段式摘要已由 LLM 產出 | 套用新的 `_normalize_summary_text()` | 保留原句差異，只整理分段與長度 | 049/050 helper 輸出保留不同內容 | PASS |
+| Boundary | summary 含重複 `供應商／...` | 套用 `_dedupe_summary_phrases()` | 收斂為單一 `供應商／承辦商` | 053 helper 輸出正常 | PASS |
+| Error / failure path | 無 `OPENAI_API_KEY` | 做本地 helper / syntax 檢查 | 可完成本地回歸，雲端回歸留待 workflow | local checks passed | PASS with notes |
+| Regression | dashboard 前端未改 summary rendering 邏輯 | JS compile | 前端仍可正常顯示兩段式 summary | dashboard JS compile PASS | PASS |
+
+Overall: PASS with notes
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |
+
 ## 2026-04-09 Summary A-style refinement for circular-first summaries
 
 1. Agent & Session ID: Codex_20260409_0005
