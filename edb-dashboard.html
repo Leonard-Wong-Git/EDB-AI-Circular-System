@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDB 通告智能分析系統 v3.0.18</title>
+<title>EDB 通告智能分析系統 v3.0.20</title>
 <style>
 /* ============================================================
    PALETTES (accent colours only — theme-independent)
@@ -938,7 +938,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
     </div>
     <div class="dev-card">
       <div class="dev-card-title">ℹ️ 版本資訊</div>
-      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v3.0.18</span></div>
+      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v3.0.20</span></div>
       <div class="dev-row"><span>Build Date</span><span>2026-03-16</span></div>
       <div class="dev-row"><span>知識庫更新</span><span>2026-03-09 20:48 UTC</span></div>
       <div class="dev-row"><span>資料筆數</span><span id="devCount">—</span></div>
@@ -975,7 +975,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
 <header class="header">
   <div class="brand" onclick="switchTab('home',document.getElementById('tabHome'))" style="cursor:pointer;" title="返回首頁">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="13" x2="12" y2="17"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
-    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v3.0.18</span></span>
+    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v3.0.20</span></span>
   </div>
 
   <select class="role-select" id="roleSelect" onchange="setRole(this.value)">
@@ -1360,7 +1360,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
         </div>
         <div class="setting-row">
           <div class="setting-info"><div class="setting-lbl">版本</div></div>
-          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v3.0.18</span>
+          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v3.0.20</span>
         </div>
       </div>
 
@@ -1477,14 +1477,14 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
      ============================================================ -->
 <footer class="site-footer">
   <div>⚠️ <strong>免責聲明：</strong>本系統資料來源於<a href="https://www.edb.gov.hk" target="_blank" rel="noopener">香港特別行政區政府教育局（EDB）</a>官方網站，僅供參考及輔助管理用途，一切以教育局官方公告為準。本系統並非教育局官方產品。</div>
-  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v3.0.18 &nbsp;|&nbsp; &copy; 2026</div>
+  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v3.0.20 &nbsp;|&nbsp; &copy; 2026</div>
 </footer>
 
 <script>
 /* ============================================================
    VERSION
    ============================================================ */
-const VERSION = 'v3.0.18';
+const VERSION = 'v3.0.20';
 
 /* ============================================================
    MOCK DATA
@@ -1502,7 +1502,7 @@ const MOCK = [
     roles:{
       principal:{r:true,pts:["需授權並簽署所有申請表格（附件A/B/C）","確保學校SEN政策與申請一致","了解潛在撥款金額以作預算規劃"],acts:["3月10日前召開SEN統籌會議","審閱並簽署所有表格"]},
       vice_principal:{r:true,pts:["負責統籌各科SEN學生數據收集","協調特殊教育統籌主任準備文件"],acts:["分配數據收集任務至各主任"]},
-      department_head:{r:true,pts:["提供本科SEN學生名單及支援記錄","確認學科調適措施文件化"],acts:["整理本科SEN學生支援記錄，3月9日前交副校長"]},
+      panel_chair:{r:true,pts:["提供本科SEN學生名單及支援記錄","確認學科調適措施文件化"],acts:["整理本科SEN學生支援記錄，3月9日前交副校長"]},
       teacher:{r:true,pts:["需提供個別學生的學習支援觀察記錄"],acts:["提交SEN學生課堂支援觀察記錄"]},
       eo_admin:{r:true,pts:["負責透過「教師易」系統提交申請","需備存提交確認截圖"],acts:["登入edb.gov.hk/teachers，3月12日17:00前完成提交"]},
       supplier:{r:false,pts:["本通告主要針對學校直接申請，供應商暫不受影響"],acts:[]}
@@ -1513,7 +1513,7 @@ const MOCK = [
     ],
     actions:[
       {text:"登入「教師易」系統下載附件A/B/C表格",role:"eo_admin",dl:"2026-03-08",note:"使用學校帳號登入"},
-      {text:"各主任統計本科SEN學生人數及已提供支援措施",role:"department_head",dl:"2026-03-09",note:""},
+      {text:"各主任統計本科SEN學生人數及已提供支援措施",role:"panel_chair",dl:"2026-03-09",note:""},
       {text:"特殊教育統籌主任匯整全校SEN數據並填寫附件A",role:"vice_principal",dl:"2026-03-10",note:""},
       {text:"校長審閱並簽署附件A、B、C",role:"principal",dl:"2026-03-10",note:"確保數據準確無誤"},
       {text:"行政人員透過「教師易」系統正式提交並保存確認編號",role:"eo_admin",dl:"2026-03-12",note:"截止時間為下午5時"}
@@ -1532,7 +1532,7 @@ const MOCK = [
     roles:{
       principal:{r:true,pts:["需確保教師CPD計劃配合學校發展需要","統籌學校整體報名安排"],acts:["審批教師報名申請","確保各科均有教師報名"]},
       vice_principal:{r:true,pts:["統籌各科教師的培訓報名","追蹤教師CPD記錄是否達標（建議150小時/年）"],acts:["整理各科教師培訓需求，3月15日前提交報名表"]},
-      department_head:{r:true,pts:["根據科組發展需要為教師選擇合適課程"],acts:["安排本科教師報讀相關課程"]},
+      panel_chair:{r:true,pts:["根據科組發展需要為教師選擇合適課程"],acts:["安排本科教師報讀相關課程"]},
       teacher:{r:true,pts:["可選報最多兩項課程","建議選擇與個人專業發展計劃相符的課程","完成培訓可計入CPD記錄"],acts:["3月17日前向主任提交課程選擇"]},
       eo_admin:{r:false,pts:["行政支援：協助收集及整理報名表格"],acts:[]},
       supplier:{r:false,pts:["本通告與供應商無直接關係"],acts:[]}
@@ -1559,7 +1559,7 @@ const MOCK = [
     roles:{
       principal:{r:true,pts:["全面負責確保學校符合新版安全指引","需授權更新學校安全政策及程序","需確保所有教職員完成相關培訓"],acts:["更新學校安全政策文件","安排全體教職員培訓","4月15日前向教育局報備"]},
       vice_principal:{r:true,pts:["統籌各安全管理範疇的更新工作","監察消防演習及緊急應變演練"],acts:["制定學期內消防演習時間表","更新緊急聯絡樹"]},
-      department_head:{r:true,pts:["確保本科活動符合新版安全評估要求","更新本科戶外活動風險評估表格"],acts:["審閱並更新本科活動安全程序"]},
+      panel_chair:{r:true,pts:["確保本科活動符合新版安全評估要求","更新本科戶外活動風險評估表格"],acts:["審閱並更新本科活動安全程序"]},
       teacher:{r:true,pts:["必須完成新版安全管理培訓","高風險活動須重新提交風險評估"],acts:["完成安全管理培訓（4月10日前）","更新所有戶外活動風險評估"]},
       eo_admin:{r:true,pts:["負責整理及提交學校安全報備表格","追蹤培訓完成記錄"],acts:["4月15日前提交安全管理報備表格"]},
       supplier:{r:false,pts:["如供應商進行校園工程，須遵守校園保安進場程序"],acts:[]}
@@ -1597,7 +1597,7 @@ const MOCK = [
     roles:{
       principal:{r:true,pts:["需了解學校認可供應商名單的更新","可提名有意報名的供應商"],acts:["如有特定需求，可向教育局提交意見"]},
       vice_principal:{r:false,pts:["本通告主要與學校採購決策有關"],acts:[]},
-      department_head:{r:false,pts:["如有特定供應商推薦，可透過校長渠道反映"],acts:[]},
+      panel_chair:{r:false,pts:["如有特定供應商推薦，可透過校長渠道反映"],acts:[]},
       teacher:{r:false,pts:["本通告與教師日常工作關係不大"],acts:[]},
       eo_admin:{r:true,pts:["協助整理學校現有供應商記錄","了解認可供應商申請流程"],acts:["核對現有供應商是否需要更新資格"]},
       supplier:{r:true,pts:["須提交預資格評審申請以成為認可供應商","必須附上廉潔承諾書","財務狀況須符合要求（最近三年核數報告）"],acts:["於3月31日前提交完整申請表及所需文件","確保附上廉潔承諾書（ICAC格式）","準備公司財務報告及過往服務記錄"]}

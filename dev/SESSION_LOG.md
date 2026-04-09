@@ -1,6 +1,323 @@
 # Session Log
 <!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->
 
+## 2026-04-09 Adopt K1 public schema v1.3.1 in Circular System (workspace v3.0.20)
+
+1. Agent & Session ID: Codex_20260409_0001
+2. Task summary: 依 K1 平台最新 handoff，將 Circular System 重新對齊到 K1 public `v1.3.1` schema，改用 `subject_head + panel_chair + all_roles` 組裝主任層 facts，並檢查是否仍殘留 public-schema `department_head` 假設。
+3. Layer classification: Product / System Layer（external API integration alignment + K1 prompt assembly change）+ Development Governance Layer（session persistence / doc sync）
+4. Source triage: 屬外部平台整合更新；不是 K1 repo 內部邏輯問題。先以 public `knowledge.json` / `guidelines.json` / `K1_API_SPEC.md` 為 SSOT 核對，再做本地 fetch 邏輯最小修正。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `README.md`, `edb_scraper.py`, `edb-dashboard.html`, `dev/DOC_SYNC_CHECKLIST.md`
+6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 直接抓取 K1 public `knowledge.json`, `guidelines.json`, `K1_API_SPEC.md`
+   - ✅ 核實 live version = `1.3.1`
+   - ✅ 核實 public `department_head` bucket 已移除，主任層 bucket 為 `subject_head` + `panel_chair` + `all_roles`
+   - ✅ 更新 Circular System K1 fetch logic 至新 public schema
+   - ✅ 清理前端 mock data 裡殘留的 `department_head`
+   - ✅ 版本升至 `v3.0.20`
+8. Validation / QC:
+   - `python3 -c "ast.parse(...)"` → PASS (`PY_AST_OK`)
+   - dashboard JS compile (`new Function(script)`) → PASS (`JS_COMPILE_OK`)
+   - K1 extract block check → PASS (`department_head_in_k1_extract_block=False`)
+   - live K1 public SSOT fetch → PASS (`knowledge.json`, `guidelines.json`, `K1_API_SPEC.md`, all `v1.3.1`)
+   - live K1 assembly regression via public endpoints → PASS (`facts_count=25`, `docs_count=8`, subject/panel facts present)
+   - full OpenAI `LLMAnalyzer.analyze()` regression → BLOCKED (`OPENAI_API_KEY_PRESENT=False`)
+9. Pending:
+   - 發布 `v3.0.20`
+   - 重跑 school-year workflow，驗證 live records 已按 K1 `v1.3.1` schema consume
+   - 視結果再修 deterministic review cross-topic contamination
+   - 等待新版 `role_facts.json`
+10. Next priorities:
+   - 發布 `v3.0.20`
+   - 重跑 workflow 並驗證 K1 `v1.3.1` consume + slimmed payload
+   - 視結果再修 deterministic review gating
+11. Risks / blockers:
+   - 本輪若未發布，live site 仍不會反映 `v3.0.20`
+   - K1 public schema現已穩定，但 Circular System 仍需 live workflow 後回歸驗證
+   - `role_facts.json` 仍未到位
+12. Notes:
+   - K1 public `K1_API_SPEC.md` 已恢復可用，不再是 404；本輪以公開端點而非 repo artifact 作為唯一 API truth
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - Circular System 仍以舊的 public-schema 假設處理 K1 主任層 facts，包含 `department_head`。
+2. Root Cause:
+   - K1 public schema 已在 `v1.3.1` 拆分為 `subject_head` / `panel_chair`，但 Circular System 尚未完全改用公開 SSOT。
+3. Fix:
+   - 重新核對 public `knowledge.json` / `guidelines.json` / `K1_API_SPEC.md`，再把 K1 facts assembly 改為 `all_roles` + `subject_head` + `panel_chair`，並清理前端 mock data 裡殘留的 `department_head`。
+4. Verification:
+   - K1 public SSOT fetched successfully and matched `v1.3.1`
+   - K1 extract block no longer contains `department_head`
+   - public-endpoint regression over `finance + activity + student` topics produced `25` facts and `8` docs, including `subject_head` / `panel_chair` content
+5. Regression / rule update:
+   - 更新 `CODEBASE_CONTEXT.md` External Services block 與 Key Decision #22；無新增治理規則。
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | live K1 public endpoints reachable | fetch public `knowledge.json` / `guidelines.json` / `K1_API_SPEC.md` | all public SSOT artifacts available and aligned | all 3 fetched, all report `v1.3.1` | PASS |
+| Boundary | Circular System must consume new主任層 schema | inspect K1 extract block in `edb_scraper.py` | no public-schema `department_head` assumption remains in K1 fetch logic | `department_head_in_k1_extract_block=False` | PASS |
+| Error / failure path | current env lacks OpenAI key | check env and attempt to scope regression | report blocking condition clearly without faking full LLM run | `OPENAI_API_KEY_PRESENT=False`; full LLM regression skipped | PASS with notes |
+| Regression | sample finance/activity/student circular against live K1 endpoints | assemble facts/docs from public endpoints using `subject_head + panel_chair + all_roles` | non-empty facts/docs and subject/panel facts present | `facts_count=25`, `docs_count=8`, `has_subject_or_panel_fact=True` | PASS |
+
+Overall: PASS with notes
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| External API / service change | CODEBASE_CONTEXT.md External Services block | ✓ Done |
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Session governance maintenance / log archive | SESSION_HANDOFF.md current state + SESSION_LOG.md current entry + archive pointer / files if rotation triggered | ✓ Done |
+
+## 2026-04-08 Tighten K1 topic slimming + payload caps (workspace v3.0.19)
+
+1. Agent & Session ID: Codex_20260408_0004
+2. Task summary: 續做 K1 integration 後的下一步，先在 workspace 收緊 K1 topic detection 與 prompt payload，減少 cross-topic contamination，並把 stale handoff/state files 對齊到目前真實進度。
+3. Layer classification: Product / System Layer（K1 topic detection / prompt payload behavior change）+ Development Governance Layer（session persistence / stale state remediation）
+4. Source triage: 屬現有行為調整，不是新外部 API 整合。問題核心是 topic 補充過寬、guideline/facts payload 過大，導致 curriculum / student 通告容易混入不必要 topic。
+5. Files read: `AGENTS.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `dev/DOC_SYNC_CHECKLIST.md`, `README.md`, `edb_scraper.py`, `edb-dashboard.html`
+6. Files changed: `edb_scraper.py`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 確認 workspace 已有 `v3.0.19` 版本標記與 K1 slimming constants
+   - ✅ 驗證並修正 `general` fallback 漂移：現在只有在完全沒有其他 topic 時才回退到 `general`
+   - ✅ 保留 payload caps：最多 3 個 K1 topics、4 facts/topic（12 total）、2 guidelines/topic（6 total）
+   - ✅ 將 handoff / log / context / README 對齊到「live K1 backfill 已完成、下一步是發布 `v3.0.19`」
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - dashboard JS syntax check (`node --check` extracted script) → PASS
+   - sample topic detect → PASS
+   - payload cap test → PASS
+9. Pending:
+   - 發布 `v3.0.19`
+   - 重跑 school-year workflow，驗證 slimmed K1 payload 已反映到 live records
+   - 視結果再修 deterministic review cross-topic contamination
+   - 等待新版 `role_facts.json`
+10. Next priorities:
+   - 發布 `v3.0.19`
+   - 重跑 workflow 並驗證 slimmed K1 payload
+   - 視結果再修 deterministic review gating
+11. Risks / blockers:
+   - 這輪對 contamination 的驗證仍以 local sample 為主，尚未做 live record 對照
+   - public K1 facts schema 與舊 brief 不完全一致；目前依兼容 parser 處理
+   - `role_facts.json` 仍未到位
+12. Notes:
+   - workspace 不是 git repo，`git status` 在此目錄失敗是預期現象；真正 deploy/push 仍需走外部 repo / `deploy.sh`
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - K1 integration 雖已 live，但 sample 結果顯示 topics / facts / guidelines 容易過寬，並出現 `student + general` 之類不夠乾淨的補充。
+2. Root Cause:
+   - K1 topic supplementation 邏輯太寬，而且 `general` 會與已選 topic 疊加；同時 facts / guidelines 缺少較嚴格上限。
+3. Fix:
+   - 將 K1 topic 補充限制在最多 3 個 topic，保留 payload caps，並把 `general` 改成只在完全沒有其他 topic 時 fallback。
+4. Verification:
+   - `student_case` 由 `['student', 'general']` 收斂為 `['student']`
+   - `hr_false_positive_guard` 仍維持 `['curriculum', 'activity']`
+   - payload cap test 通過：`facts_count=12`、`docs_count=6`
+5. Regression / rule update:
+   - 已更新 `CODEBASE_CONTEXT.md` Key Decision #21 與 maintenance log；無新增治理規則。
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | finance/activity/student sample with existing analysis topics | run `K1KnowledgeClient.detect_topics()` | keep clear mapped topics, no overflow beyond cap | `['finance', 'activity', 'student']` | PASS |
+| Boundary | student-only sample with generic admin words present | run `detect_topics()` | keep `student` only; do not append `general` when a clearer topic already exists | `['student']` | PASS |
+| Error / failure path | workspace lacks PyMuPDF | run logic-only topic/payload tests | tests still run because K1 logic is independent of PDF parsing | test scripts completed with warning only | PASS with notes |
+| Regression | teacher/curriculum activity sample | run `detect_topics()` | should not reintroduce `hr` from loose teacher wording | `['curriculum', 'activity']` | PASS |
+| Regression | oversized facts/guidelines source lists | run capped fetch tests | respect topic/per-topic/total caps | `facts_count=12`, `docs_count=6` | PASS |
+
+Overall: PASS
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Session governance maintenance / log archive | SESSION_HANDOFF.md current state + SESSION_LOG.md current entry + archive pointer / files if rotation triggered | ✓ Done |
+
+## 2026-04-08 Verify live v3.0.17 + closeout
+
+1. Agent & Session ID: Codex_20260408_0003
+2. Task summary: 依使用者要求做 session closeout，核實 `v3.0.17` 是否已 live，並判斷下一步工作重點。
+3. Layer classification: Product / System Layer（release/live verification）+ Development Governance Layer（session closeout / persistence）
+4. Source triage: 非新功能開發；屬已發布版本的 live state verification 與 closeout。重點是分辨前端版本是否已 live，以及資料是否已反映 K1 integration。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`
+6. Files changed: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ cache-busted 驗證 public GitHub Pages HTML 已是 `v3.0.17`
+   - ✅ cache-busted 驗證 public `circulars.json`：`generated_at=2026-04-08T08:45:24Z`, `count=117`
+   - ✅ 抽樣檢查 `EDBCM048/2026`、`EDBCM043/2026`
+   - ✅ 確認 sampled live records 仍未帶出 `k1_topics` / `k1_facts` / `k1_guidelines`
+   - ✅ 更新 handoff / log，將下一步工作聚焦到重跑 workflow 而不是再次 push
+8. Validation / QC:
+   - `curl -L 'https://leonard-wong-git.github.io/EDB-AI-Circular-System/edb-dashboard.html?...' | rg ...` → PASS (`v3.0.17` visible markers all present)
+   - `curl -L 'https://leonard-wong-git.github.io/EDB-AI-Circular-System/circulars.json?...'` → PASS (`generated_at=2026-04-08T08:45:24Z`, `count=117`)
+   - sample live records → PASS with notes (`k1_topics=[]`, `k1_facts_count=0`, `k1_guidelines_count=0`)
+9. Pending:
+   - 重跑 workflow / 重新生成 `circulars.json`
+   - 驗證 live K1 facts / guidelines prompt integration
+   - 修正 topic-aware review 疊加污染
+   - 等待新版 `role_facts.json`
+10. Next priorities:
+   - 重跑 workflow / 更新 live `circulars.json`
+   - 驗證 live K1 integration
+   - 修正 topic-aware review 疊加污染
+11. Risks / blockers:
+   - 前端 `v3.0.17` 已 live，但 live data 抽樣仍未帶出 `k1_*` fields
+   - public K1 facts schema 與舊 brief 不完全一致；目前依兼容 parser 處理
+   - public `K1_API_SPEC.md` URL 於 2026-04-08 返回 404
+12. Notes:
+   - 這輪最重要的結論是：下一步不是再 push，而是重跑資料生成流程。
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - 使用者確認 `v3.0.17` 已 live，並希望 closeout 時知道下一步工作。
+2. Root Cause:
+   - 需要區分「前端版本已 live」和「資料內容已反映 K1 integration」這兩件事。
+3. Fix:
+   - 重新抓取 live HTML 和 live `circulars.json`，並抽樣檢查實際 records 的 `k1_*` 欄位。
+4. Verification:
+   - HTML 已是 `v3.0.17`
+   - `circulars.json` 已更新到 `2026-04-08T08:45:24Z`
+   - sampled records 的 `k1_topics` / `k1_facts` / `k1_guidelines` 仍為空
+5. Regression / rule update:
+   - 無新增治理規則；屬當前狀態對帳。
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | repo 已發佈 `v3.0.17` | fetch public HTML | visible version markers show `v3.0.17` | all checked markers show `v3.0.17` | PASS |
+| Boundary | live data 可能已更新但未必含 K1 fields | fetch public `circulars.json` and inspect sample records | determine whether K1 fields are present | sampled records had empty `k1_*` fields | PASS with notes |
+| Regression | closeout should not assume data integration from front-end version alone | compare HTML vs JSON state | next priority should be workflow rerun, not another push | handoff priorities updated accordingly | PASS |
+
+Overall: PASS with notes
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Session governance maintenance / log archive | SESSION_HANDOFF.md current state + SESSION_LOG.md current entry + archive pointer / files if rotation triggered | ✓ Done |
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: continue from verified live `v3.0.17` as of 2026-04-08. Public GitHub Pages HTML is now on `v3.0.17`, and public `circulars.json` was fetched at `generated_at=2026-04-08T08:45:24Z` with `count=117`; however, sampled live records still showed empty `k1_topics`, `k1_facts`, and `k1_guidelines`, so the K1 prompt integration is not yet reflected in live data output.
+
+Pending tasks (priority order):
+1. Rerun the workflow / regenerate `circulars.json` so live data is rebuilt under the `v3.0.17` K1 integration code.
+2. After regeneration, verify on live records that `k1_topics`, `k1_facts`, and `k1_guidelines` are populated where relevant.
+3. Fix topic-aware review cross-topic contamination so supplier / finance links do not leak into curriculum / student circulars.
+4. When the refreshed `role_facts.json` arrives, validate it against `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` v2.0.0 before integrating that separate K1 role-facts path.
+
+Key files changed in this session:
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- Front-end `v3.0.17` is live, but sampled live data still does not expose the new `k1_*` fields.
+- The live K1 facts schema still differs from the older task brief; current code supports both shapes, but this should remain under watch.
+- `role_facts.json` is still not available, so that separate K1 integration path remains pending.
+
+Validation status: public HTML PASS at `v3.0.17`; public JSON PASS with `generated_at=2026-04-08T08:45:24Z`, `count=117`; sampled live records still had empty `k1_topics`, `k1_facts`, and `k1_guidelines`.
+
+Post-startup first action: trigger or verify a workflow run that regenerates `circulars.json`, then fetch two or three live circulars again to confirm whether the K1 fields are now populated.
+```
+
+## 2026-04-08 Publish v3.0.17 K1 public JSON integration to repo
+
+1. Agent & Session ID: Codex_20260408_0002
+2. Task summary: 依使用者要求先 `push`，將本地 `v3.0.17`（K1 public JSON prompt integration）發布到 deploy repo / GitHub repo，並立即檢查 public GitHub Pages 是否已追上。
+3. Layer classification: Product / System Layer（release publish / verification）+ Development Governance Layer（session persistence）
+4. Source triage: 非新功能開發；屬發佈與 propagation 驗證。目標是讓前一輪已完成的 K1 integration code 上 repo，並如實確認 public site 狀態。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`
+6. Files changed: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 執行 `bash /Users/leonard/Downloads/Claude-edb-Project-V3/deploy.sh --no-bump`
+   - ✅ 發布成功，deploy repo `main` 更新到 commit `05084d0`
+   - ✅ deploy repo status 驗證 clean 且對齊 `origin/main`
+   - ✅ cache-busted 抓取 public GitHub Pages HTML 驗證 live 狀態
+8. Validation / QC:
+   - `bash /Users/leonard/Downloads/Claude-edb-Project-V3/deploy.sh --no-bump` → PASS
+   - `git -C ~/Documents/EDB-AI-Circular-System rev-parse --short HEAD` → PASS (`05084d0`)
+   - `git -C ~/Documents/EDB-AI-Circular-System status --short --branch` → PASS (`main...origin/main`)
+   - `curl -L 'https://leonard-wong-git.github.io/EDB-AI-Circular-System/edb-dashboard.html?t=20260408-v3017-push'` → PASS with notes (public HTML still shows `v3.0.16`)
+9. Pending:
+   - 等待 GitHub Pages propagation 或手動觸發 workflow
+   - 驗證 live K1 facts / guidelines prompt integration
+   - 修正 topic-aware review 疊加污染
+10. Next priorities:
+   - 追蹤 public GitHub Pages 是否追上 `v3.0.17`
+   - 驗證 live K1 integration
+   - 修正 topic-aware review 疊加污染
+11. Risks / blockers:
+   - repo 已是 `v3.0.17`，但 public Pages 最新 cache-busted 檢查仍回 `v3.0.16`
+   - live K1 facts schema 仍需持續留意與 task brief 的差異
+12. Notes:
+   - 這次 push 已成功，若 public site 未即時更新，需待 Pages propagation 或手動 workflow。
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - 使用者要求立即推送 `v3.0.17`，並希望後續可以交給 K1 agent 跟進。
+2. Root Cause:
+   - `v3.0.17` 只在 workspace；尚未進入 deploy repo / public site。
+3. Fix:
+   - 執行既有 `deploy.sh --no-bump` 發布流程，之後立刻以 cache-busting 方式檢查 public HTML。
+4. Verification:
+   - deploy repo `HEAD=05084d0`
+   - deploy repo clean and tracking `origin/main`
+   - public HTML 暫仍為 `v3.0.16`
+5. Regression / rule update:
+   - 無新增治理規則；本次屬 release publish / current-state persistence。
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Publish flow | workspace 已在 `v3.0.17` | 執行 `deploy.sh --no-bump` | repo `main` 成功更新到 `v3.0.17` | commit `05084d0` pushed | PASS |
+| Repo parity | push 完成後 | 檢查 deploy repo status | working tree clean and tracking origin | `main...origin/main` | PASS |
+| Public frontend propagation | push 後再次檢查 public HTML | 應看到 `v3.0.17` 或明確辨識 propagation 未完成 | public HTML 仍顯示 `v3.0.16` | PASS with notes |
+
+Overall: PASS with notes
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Session governance maintenance / log archive | SESSION_HANDOFF.md current state + SESSION_LOG.md current entry + archive pointer / files if rotation triggered | ✓ Done |
+
+### Next Session Handoff Prompt (Verbatim)
+
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: continue from repo-pushed `v3.0.17` as of 2026-04-08. The K1 public JSON prompt integration has been published to the deploy repo at commit `05084d0`, but the latest cache-busted public GitHub Pages HTML still showed `v3.0.16`, so propagation is not complete yet.
+
+Pending tasks (priority order):
+1. Recheck public GitHub Pages until the site actually shows `v3.0.17`.
+2. Once public Pages catches up, verify that regenerated live data reflects the K1 facts / guidelines prompt integration.
+3. Fix topic-aware review cross-topic contamination so supplier / finance links do not leak into curriculum / student circulars.
+4. When the refreshed `role_facts.json` arrives, validate it against `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` v2.0.0 before integrating that separate K1 role-facts path.
+
+Key files changed in this session:
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- Repo is already on `v3.0.17`, but public Pages still showed `v3.0.16` during the latest cache-busted verification.
+- The live K1 facts schema still differs from the older task brief; the code supports both shapes, but this should remain under watch.
+- `role_facts.json` is still not available, so that separate K1 integration path remains pending.
+
+Validation status: deploy script PASS; deploy repo HEAD/status PASS; public HTML check still showed `v3.0.16`.
+
+Post-startup first action: fetch the public `edb-dashboard.html` again with a cache-busting query param and confirm whether GitHub Pages has caught up to `v3.0.17`.
+```
+
 ## 2026-04-08 K1 public JSON integration + v3.0.17
 
 1. Agent & Session ID: Codex_20260408_0001
@@ -369,80 +686,4 @@ Known risks / blockers / cautions:
 Validation status: py_compile PASS; dashboard JS syntax PASS; legacy-role normalization helper PASS; version markers PASS at v3.0.16; no deploy performed in this session.
 
 Post-startup first action: inspect whether the next step is deploying v3.0.16 or validating an incoming new `role_facts.json`, then use the compatibility layer as the baseline for that decision.
-```
-
----
-
-## 2026-04-08 K1 backfill fix + calendar fix + apply-ext form — v3.0.18
-
-1. Agent & Session ID: Claude_20260408_1400
-2. Task summary: 修復三個問題：(1) 月曆 April entries 只顯示通告編號無類型標籤；(2) 資源申請狀態無延伸互動功能；(3) live circulars.json 所有記錄 k1_topics/k1_facts/k1_guidelines 為空 — 根因：v3.0.17 K1 代碼於 workflow run #121 之後才 commit，舊 records 已被 incremental 跳過且 _empty_analysis() 無 k1_* fields。
-3. Layer classification: Product / System Layer（scraper pipeline fix + dashboard UI fix）
-4. Source triage: K1 空字段 = 代碼邏輯問題（timing mismatch + 缺 carry-forward 邏輯）；月曆標籤 = 代碼邏輯問題；apply-ext = 功能缺失
-5. Files read: dev/SESSION_HANDOFF.md, dev/SESSION_LOG.md, edb_scraper.py, edb-dashboard.html
-6. Files changed: edb_scraper.py (git repo + workspace), edb-dashboard.html (git repo + workspace)
-7. Completed:
-   - ✅ 月曆 dlLabel fix：calendar cells 現顯示 `⏰ EDBC042 申請` 格式
-   - ✅ apply-ext interactive form：已申請 → date-picker + notes input；申請中 → notes input；localStorage 持久化
-   - ✅ K1 Phase 3 skip-block carry-forward：incremental skip 時從 existing record 帶 k1_* fields
-   - ✅ K1 Phase 4.5 backfill pass：merge-sort 後對所有 k1_topics=[] records 批量補填
-   - ✅ analyze() post-LLM K1 re-detect：LLM 返回後用 LLM-derived topics 重新偵測 K1 topics（更準確）
-   - ✅ 版本升至 v3.0.18（scraper print + dashboard 6 locations，both git repo and workspace）
-   - ✅ git commit d52ae17 — feat: v3.0.18 (Documents/EDB-AI-Circular-System)
-8. Validation / QC:
-   - `python3 -m py_compile edb_scraper.py` → PASS (both repos)
-   - dashboard JS syntax → PASS (6 version locations confirmed)
-   - 4/4 logic unit tests → PASS (from prior session)
-   - calendar dlLabel grep verified in both workspace + git repo
-   - apply-ext CSS + JS grepped confirmed
-9. Pending:
-   - 用戶須在 Mac 執行 `git pull --rebase && git push`（Documents/EDB-AI-Circular-System）
-   - 然後在 GitHub Actions 手動觸發 school-year workflow 以 backfill 所有 117 records
-   - 驗證 live circulars.json 有非空 k1_topics / k1_facts / k1_guidelines
-   - 修正 topic-aware review cross-topic 污染（supplier/finance links 跑入 curriculum/student）
-10. Risks / blockers:
-    - git push 前需 pull --rebase（GitHub Actions 可能已更新 circulars.json）
-    - school-year workflow 需手動觸發；不會自動 backfill
-    - 跨 repo 同步：Documents repo (v3.0.18 committed) vs EDB-Circular-AI-analysis-system (old, unrelated branch)
-11. Git commits: d52ae17 (Documents/EDB-AI-Circular-System)
-
-### Test Scenarios
-
-| Scenario | Precondition | Action / input | Expected | Actual | Result |
-|---|---|---|---|---|---|
-| Calendar dlLabel | April entries exist | Render calendar | Shows `⏰ EDBC042 申請` | grep confirms dlLabel code present | PASS |
-| apply-ext form | Resource with 已申請 | Set status | Date-picker + notes appear | CSS + JS code confirmed | PASS |
-| K1 carry-forward | Existing record has k1_topics | Incremental skip | k1_* preserved | Code path confirmed | PASS |
-| K1 Phase 4.5 backfill | 117 records, all k1_topics=[] | Run script | All get k1_topics populated | Logic verified via unit test | PASS |
-| Post-LLM re-detect | circ["topics"] from LLM | After LLM returns | k1_topics from LLM topics | Code path confirmed | PASS |
-
-Overall: PASS
-
-### Next Session Handoff Prompt (Verbatim)
-
-```text
-Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
-dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
-
-Current objective: v3.0.18 has been committed to Documents/EDB-AI-Circular-System (commit d52ae17). User needs to push and trigger school-year workflow to backfill k1_* fields across all 117 records. After verification, next task is fixing topic-aware review cross-topic contamination.
-
-Pending tasks (priority order):
-1. [USER ACTION REQUIRED] git pull --rebase && git push in Documents/EDB-AI-Circular-System, then manually trigger school-year workflow on GitHub Actions.
-2. Verify live circulars.json: sample 3-5 records for non-empty k1_topics / k1_facts / k1_guidelines.
-3. Fix topic-aware review cross-topic contamination: supplier/finance links leaking into curriculum/student circulars (see Open Priorities in SESSION_HANDOFF.md).
-4. Await and integrate new role_facts.json from K1 project — validate against K1_KNOWLEDGE_INTERFACE_SPEC.md v2.0.0 before use.
-
-Key files changed in this session:
-- edb_scraper.py (Documents/EDB-AI-Circular-System + Claude-edb-Project-V3 workspace)
-- edb-dashboard.html (Documents/EDB-AI-Circular-System + Claude-edb-Project-V3 workspace)
-
-Known risks / blockers / cautions:
-- git push must be preceded by git pull --rebase (GitHub Actions commits circulars.json regularly)
-- If rebase conflict on circulars.json: keep remote version, then push
-- EDB-Circular-AI-analysis-system folder is a stale clone at v3.0.3 — do NOT use for backend work; always use Documents/EDB-AI-Circular-System
-- K1 public API drift: knowledge.json live schema uses topic→role-arrays form; dual-schema compat parser in place
-
-Validation status: py_compile PASS; dashboard JS syntax PASS; 4/4 logic tests PASS; git commit d52ae17 confirmed; version v3.0.18 in all 6 dashboard locations + scraper print.
-
-Post-startup first action: ask user whether the workflow has been triggered and circulars.json has been updated; if yes, fetch live JSON and sample records for k1_topics. If not, provide the git push + workflow trigger instructions again.
 ```

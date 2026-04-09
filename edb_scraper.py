@@ -187,13 +187,29 @@ STUDENT_RECOMMENDED_LINKS = [
 
 K1_TOPIC_KEYWORDS = {
     "finance": ["採購", "財務", "津貼", "撥款", "資助", "金額", "招標", "報價", "經費"],
-    "hr": ["教師", "CPD", "培訓", "聘任", "薪酬", "專業發展", "教職員"],
+    "hr": ["CPD", "培訓", "聘任", "薪酬", "專業發展", "教職員"],
     "curriculum": ["課程", "科目", "評估", "學習", "教學", "課時", "學與教", "教材"],
     "activity": ["活動", "考察", "旅行", "比賽", "境外", "交流", "參觀", "展覽"],
     "student": ["學生", "意外", "安全", "健康", "SEN", "欺凌", "家長", "校外活動"],
     "it": ["資訊科技", "電腦", "設備", "IT", "AI", "網絡", "系統", "平台"],
     "general": ["行政", "安排", "指引", "程序", "通知"],
 }
+
+K1_TOPIC_PRIORITY = ["finance", "curriculum", "student", "activity", "hr", "it"]
+K1_TOPIC_SUPPLEMENT_MIN_HITS = {
+    "finance": 2,
+    "hr": 2,
+    "curriculum": 2,
+    "activity": 2,
+    "student": 2,
+    "it": 2,
+    "general": 2,
+}
+K1_MAX_TOPICS = 3
+K1_MAX_FACTS_PER_TOPIC = 4
+K1_MAX_FACTS_TOTAL = 12
+K1_MAX_GUIDELINES_PER_TOPIC = 2
+K1_MAX_GUIDELINES_TOTAL = 6
 
 ANALYSIS_TO_K1_TOPIC = {
     "finance": "finance",
@@ -906,6 +922,10 @@ class K1KnowledgeClient:
                 ],
             )
         )
+        keyword_hits = {
+            topic: sum(1 for keyword in keywords if keyword and keyword in text)
+            for topic, keywords in self.topic_keywords.items()
+        }
         topics = []
 
         for topic in circ.get("topics", []) or []:
@@ -913,17 +933,31 @@ class K1KnowledgeClient:
             if mapped and mapped not in topics:
                 topics.append(mapped)
 
-        for topic, keywords in self.topic_keywords.items():
-            if topic == "general":
+        selected = []
+        for topic in topics:
+            if topic not in selected:
+                selected.append(topic)
+
+        supplements = []
+        for topic in K1_TOPIC_PRIORITY:
+            if topic in selected:
                 continue
-            if any(keyword and keyword in text for keyword in keywords):
-                if topic not in topics:
-                    topics.append(topic)
+            if keyword_hits.get(topic, 0) >= K1_TOPIC_SUPPLEMENT_MIN_HITS.get(topic, 2):
+                supplements.append((keyword_hits[topic], topic))
 
-        if not topics and any(keyword in text for keyword in self.topic_keywords.get("general", [])):
-            topics.append("general")
+        supplements.sort(key=lambda item: (-item[0], K1_TOPIC_PRIORITY.index(item[1])))
+        for _, topic in supplements:
+            if len(selected) >= K1_MAX_TOPICS:
+                break
+            selected.append(topic)
 
-        return topics
+        if not selected and keyword_hits.get("general", 0) >= K1_TOPIC_SUPPLEMENT_MIN_HITS["general"]:
+            selected.append("general")
+
+        if len(selected) > K1_MAX_TOPICS:
+            selected = selected[:K1_MAX_TOPICS]
+
+        return selected
 
     def fetch_facts(self, topics: list[str]) -> list[str]:
         self.ensure_loaded()
@@ -931,10 +965,15 @@ class K1KnowledgeClient:
         for topic in topics:
             topic_data = (self.knowledge or {}).get(topic)
             if isinstance(topic_data, list):
-                facts.extend(self._extract_legacy_facts(topic_data))
+                topic_facts = self._extract_legacy_facts(topic_data)
             elif isinstance(topic_data, dict):
-                facts.extend(self._extract_role_bucket_facts(topic_data))
-        return _dedupe_strings(facts)
+                topic_facts = self._extract_role_bucket_facts(topic_data)
+            else:
+                topic_facts = []
+            facts.extend(_dedupe_strings(topic_facts)[:K1_MAX_FACTS_PER_TOPIC])
+            if len(facts) >= K1_MAX_FACTS_TOTAL:
+                break
+        return _dedupe_strings(facts)[:K1_MAX_FACTS_TOTAL]
 
     def _extract_legacy_facts(self, entries: list[dict]) -> list[str]:
         facts = []
@@ -946,7 +985,7 @@ class K1KnowledgeClient:
             roles = entry.get("roles", {})
             if not isinstance(roles, dict):
                 continue
-            if not any(roles.get(role_key) for role_key in ("all_roles", "department_head", "panel_chair", "subject_head")):
+            if not any(roles.get(role_key) for role_key in ("all_roles", "subject_head", "panel_chair")):
                 continue
             fact = entry.get("fact")
             if isinstance(fact, str) and fact.strip():
@@ -955,7 +994,7 @@ class K1KnowledgeClient:
 
     def _extract_role_bucket_facts(self, topic_data: dict) -> list[str]:
         facts = []
-        for role_key in ("all_roles", "department_head", "panel_chair", "subject_head"):
+        for role_key in ("all_roles", "subject_head", "panel_chair"):
             role_facts = topic_data.get(role_key, [])
             if not isinstance(role_facts, list):
                 continue
@@ -969,6 +1008,7 @@ class K1KnowledgeClient:
         docs = []
         seen = set()
         for topic in topics:
+            topic_docs = []
             for doc in (self.guidelines or {}).get(topic, []) or []:
                 if not isinstance(doc, dict):
                     continue
@@ -976,8 +1016,13 @@ class K1KnowledgeClient:
                 if not url or url in seen:
                     continue
                 seen.add(url)
-                docs.append(doc)
-        return docs
+                topic_docs.append(doc)
+                if len(topic_docs) >= K1_MAX_GUIDELINES_PER_TOPIC:
+                    break
+            docs.extend(topic_docs)
+            if len(docs) >= K1_MAX_GUIDELINES_TOTAL:
+                break
+        return docs[:K1_MAX_GUIDELINES_TOTAL]
 
 
 class LLMAnalyzer:
@@ -1913,7 +1958,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.18")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.20")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

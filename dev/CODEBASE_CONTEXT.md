@@ -160,22 +160,22 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 
 ### K1 Knowledge Public JSON API
 - Base URL: https://leonard-wong-git.github.io/edb-knowledge/
-- Version: live payload `_meta.version` = `1.2.2`
+- Version: live payload `_meta.version` = `1.3.1`
 - Auth: None (public GitHub Pages JSON)
 - Required params:
   - `knowledge.json`: no query params; returns topic-keyed knowledge payload
   - `guidelines.json`: no query params; returns topic-keyed guideline document lists
 - Forbidden params:
   - none documented
-  - do not assume `K1_API_SPEC.md` is publicly available on GitHub Pages; the public URL returned 404 during 2026-04-08 verification
+  - do not use local exports / backup artifacts from the K1 repo as API truth; public SSOT is `knowledge.json`, `guidelines.json`, and `K1_API_SPEC.md`
 - Response path:
-  - `knowledge.json`: current live shape is `topic_id -> object` with `_keywords_zh` plus role arrays (`all_roles`, `department_head`, etc.); integration code also tolerates the older entry-list shape described in the user-provided task brief
+  - `knowledge.json`: current live shape is `topic_id -> object` with `_keywords_zh` plus role arrays (`all_roles`, `principal`, `vice_principal`, `subject_head`, `panel_chair`, `teacher`, `eo_admin`, optional `supplier` for finance); public `department_head` bucket has been removed as of `v1.3.1`
   - `guidelines.json`: `topic_id -> [ { id, title, titleShort, url, year, format, ... } ]`
-- Official docs: unavailable on public Pages as of 2026-04-08 (`K1_API_SPEC.md` URL returned 404); implementation aligned against the user-provided integration brief plus live endpoint payload verification
-- Doc-reviewed: 2026-04-08 (Codex_20260408_0001)
-- Test-verified: 2026-04-08 (Codex_20260408_0001 — fetched live `knowledge.json` and `guidelines.json`, verified `_meta.version=1.2.2`)
+- Official docs: https://leonard-wong-git.github.io/edb-knowledge/K1_API_SPEC.md
+- Doc-reviewed: 2026-04-09 (Codex_20260409_0001)
+- Test-verified: 2026-04-09 (Codex_20260409_0001 — fetched live `knowledge.json`, `guidelines.json`, and `K1_API_SPEC.md`, verified `_meta.version=1.3.1`)
 - Notes:
-  - prompt injection filters facts by detected topics plus role relevance (`all_roles`, `department_head`, and forward-compatible `panel_chair` / `subject_head` buckets)
+  - prompt injection now assembles主任層 facts from `all_roles` + `subject_head` + `panel_chair`
   - guideline links are attached for every detected topic
   - fetch failure must degrade gracefully and continue LLM analysis without K1 context
 
@@ -204,6 +204,8 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 18 | K1 Role Contract Alignment Target | 2026-04-06 | The agreed next-step contract for knowledge exchange is `subject_head` = 科主任, `panel_chair` = 主任, `eo_admin` = EO; product code still requires a compatibility refactor before fully adopting these keys end-to-end. |
 | 19 | Role Compatibility Layer Before Full Schema Cutover | 2026-04-06 | Product code now normalizes legacy `department_head` data into `panel_chair` while accepting the new `subject_head` / `panel_chair` contract, so old `circulars.json` remains readable during the migration window. |
 | 20 | K1 Public JSON Prompt Injection | 2026-04-08 | `edb_scraper.py` now fetches K1 `knowledge.json` and `guidelines.json` at analysis time, injects prompt-ready facts and guideline links with graceful fallback, and tolerates both the older entry-list facts schema and the current live role-bucket facts schema. |
+| 21 | K1 Topic Slimming Guard | 2026-04-08 | K1 topic supplementation is now capped and prioritized to reduce cross-topic contamination: at most 3 topics, 4 facts per topic / 12 total, 2 guidelines per topic / 6 total, and `general` only falls back when no clearer topic is selected. |
+| 22 | K1 Public Schema v1.3.1 Adoption | 2026-04-09 | Circular System now consumes the public K1 role-bucket schema as documented in `K1_API_SPEC.md`:主任層 facts are assembled from `subject_head` + `panel_chair` + `all_roles`; public `department_head` is no longer assumed in K1 fetch logic. |
 
 ---
 
@@ -239,3 +241,5 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 2026-04-06 | Codex_20260406_0010 | Updated the K1 interface contract to v2.0.0 so knowledge exchange aligns on `subject_head` / `panel_chair` / `eo_admin=EO`, while documenting that product code still needs a compatibility-layer refactor before full schema adoption. |
 | 2026-04-06 | Codex_20260406_0011 | Implemented the first product-side compatibility layer for the new role contract: scraper output now uses `subject_head` / `panel_chair`, legacy `department_head` is normalized to `panel_chair`, dashboard UI exposes 7 roles, and workspace version is now v3.0.16 pending deploy. |
 | 2026-04-08 | Codex_20260408_0001 | Integrated K1 public JSON prompt enrichment into `edb_scraper.py`: fetches live `knowledge.json` / `guidelines.json`, detects topics before LLM analysis, injects facts and guideline links into the prompt with graceful fallback, and bumped workspace version to v3.0.17. |
+| 2026-04-08 | Codex_20260408_0004 | Tightened K1 topic supplementation and prompt payload size in `edb_scraper.py`, bumped workspace version to v3.0.19, and added guards to reduce `general` / cross-topic contamination before the next publish. |
+| 2026-04-09 | Codex_20260409_0001 | Re-aligned K1 integration against the public `v1.3.1` schema and public `K1_API_SPEC.md`, switched主任層 fact assembly to `subject_head` + `panel_chair` + `all_roles`, removed public-schema `department_head` assumptions from K1 fetch logic, and bumped workspace version to v3.0.20. |
