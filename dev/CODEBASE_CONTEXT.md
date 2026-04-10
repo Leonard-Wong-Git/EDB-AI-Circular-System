@@ -274,4 +274,5 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 2026-04-09 | Codex_20260409_0017 | Verified live `v3.0.30`, then prepared `v3.0.31` to filter role-work sentences out of summary and add empty-summary fallback. |
 | 2026-04-09 | Codex_20260409_0018 | Refined the summary cleanup again: strip speculative prefixes while keeping concrete content, improve sparse fallback detail using title/tags, and bump workspace version to v3.0.32 pending publish. |
 | 2026-04-10 | Codex_20260410_0001 | Added source-based activity summary fallback so正文充足的通告可直接抽出主辦、日期、名額及截止等硬資訊； workspace version is now v3.0.33 pending publish. |
+| 2026-04-10 | Codex_20260410_0003 | Adjusted dashboard top-level action-list rendering so the role badge and main action text appear on the same line, and bumped workspace version to v3.0.34 pending publish decision. |
 | 2026-04-09 | Codex_20260409_0017 | After verifying live `v3.0.30`, tightened summary normalization again so role-work sentences are filtered out of summary and empty summaries fall back to a title-based circular synopsis; workspace version is now v3.0.31 pending publish. |

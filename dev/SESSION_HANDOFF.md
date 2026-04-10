@@ -1,18 +1,18 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **live v3.0.30 / repo-pushed v3.0.30 / workspace v3.0.33** (2026-04-10) ← **已確認 live `v3.0.30`（`generated_at=2026-04-09T16:49:14Z`）；workspace `v3.0.33` 進一步把 `053` 類正文充足通告改為直接從 `official/pdf_text` 抽主辦、日期、名額與截止**
+1. Version: **live verification pending / repo-pushed v3.0.33 / workspace v3.0.34** (2026-04-10) ← **使用者已確認 `v3.0.33` commit `ae2b24a` 已推上 GitHub，且 school-year workflow 已完成；本 VM 尚未重新核實 live HTML / `circulars.json`。workspace 另有未發佈的 `v3.0.34`，只調整 dashboard 行動清單讓角色標籤與主動作同一行顯示**
 2. Core commands / features:
-   - `edb-dashboard.html` — live/repo v3.0.30；workspace v3.0.33（待發布）
-   - `edb_scraper.py` — live/repo v3.0.30；workspace v3.0.33（K1 prompt injection 與 `v1.3.1` schema consume 已 live；本地 `role_facts.json` 已 live；summary/action 已分工，現正把 source-rich 通告摘要改得更貼近正文）
+   - `edb-dashboard.html` — repo-pushed v3.0.33；workspace v3.0.34（未發佈 display tweak：top-level 行動清單把角色標籤與主動作放在同一行）
+   - `edb_scraper.py` — repo-pushed/workspace v3.0.33→v3.0.34 banner sync（K1 prompt injection 與 `v1.3.1` schema consume 已 live；本地 `role_facts.json` 已 live；summary/action 已分工，現已把 source-rich 通告摘要改得更貼近正文）
    - `circulars.json` — EDB 通告 + gpt-5-nano AI 分析（live 已由 school-year workflow 重生並帶出 `k1_*` / `role_fact_*` 欄位）
    - `knowledge.json` — 從 edb-knowledge 獲取的語義事實來源（v1.3.1，107 facts ✅）
    - `fetch_knowledge.py` — EDB / ICAC 知識支援產生器（仍屬維護中的 support path；2026-04-09 已對齊 split-role contract）
    - `requirements.txt` — Python 依賴清單
    - `dev/knowledge/role_facts.json` — K1 基線知識庫（新版已到位；workspace 已接入，待發布後回填 live data）
    - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 接口合約規格（已對齊至 v2.0.0 角色契約）
-3. Regression baseline: `python3 -m py_compile edb_scraper.py` PASS；dashboard JS compile PASS；summary helper PASS（`048` 類 rich case 會保留更具體內容但濾走角色工作句；`053` 類 source-rich sample 會抽出主辦、日期、名額與截止；summary/action audit tool PASS；repo push PASS at `047d6ba`；live latest known PASS at `v3.0.30` (`generated_at=2026-04-09T16:49:14Z`)
-4. Release / merge status: **`v3.0.30` 已 live；workspace `v3.0.33` 尚未發布**
+3. Regression baseline: `python3 -m py_compile edb_scraper.py` PASS；dashboard JS compile PASS；summary helper PASS（`048` 類 rich case 會保留更具體內容但濾走角色工作句；`053` 類 source-rich sample 會抽出主辦、日期、名額與截止）；top-level action display tweak local JS compile PASS；summary/action audit tool PASS；last known live data before this session = `generated_at=2026-04-09T16:49:14Z`
+4. Release / merge status: **`v3.0.33` 已由使用者確認推上 GitHub 並已跑 workflow；`v3.0.34` 仍在 workspace，尚未決定是否發佈**
 5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -72,8 +72,8 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 決定是否發布 `v3.0.33`：此版只修 summary，目標是讓 `053` 類正文充足通告更貼正文，同時維持 `048` 的 rich summary 改善
-2. **[重要]** 如發布 `v3.0.33`，重點驗 `EDBCM053/2026`、`EDBCM048/2026`、`EDBCM049/2026`、`EDBCM050/2026` 與另外至少 2 份 live 通告，確認 summary 已回到通告本位
+1. **[下一步 ⭐]** 核實 live `v3.0.33`：確認 GitHub Pages HTML 與 `circulars.json` 是否已更新，並重點驗 `EDBCM053/2026`、`EDBCM048/2026`、`EDBCM049/2026`、`EDBCM050/2026` 與另外至少 2 份通告
+2. **[重要]** 若 live `v3.0.33` summary 已達可接受線，再決定是否發佈 workspace `v3.0.34` 的 dashboard-only action-list inline 顯示修正
 3. **[重要]** 針對 `subject_head` vs `panel_chair` 的 role-facts 命中質素做抽樣檢查，必要時微調 local role-facts topic / role routing
 4. **[其後]** 再視需要回頭處理低優先的 deterministic finance residual contamination（資料層清潔項）
 6. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）

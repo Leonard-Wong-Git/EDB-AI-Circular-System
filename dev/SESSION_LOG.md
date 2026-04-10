@@ -1,6 +1,115 @@
 # Session Log
 <!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->
 
+## 2026-04-10 Dashboard action-list inline role label (workspace v3.0.34)
+
+1. Agent & Session ID: Codex_20260410_0003
+2. Task summary: 使用者在 school-year workflow 完成後要求調整 dashboard top-level `行動清單` 顯示，讓每項 action 的角色標籤與主動作同一行呈現，而不是固定拆成兩行。
+3. Layer classification: Product / System Layer（frontend display behavior change）+ Development Governance Layer（session persistence）
+4. Source triage: user-visible display issue。問題不在資料內容，而在 `edb-dashboard.html` 的 action-item rendering 結構：`action-text` 固定在第一行，role badge 固定在第二行 meta 區，因此每項行動視覺上必然分成兩行。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `dev/DOC_SYNC_CHECKLIST.md`, `README.md`, `edb-dashboard.html`, `edb_scraper.py`
+6. Files changed: `edb-dashboard.html`, `edb_scraper.py`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 新增 `.action-main` 容器，讓 role badge 與 action text 在 top-level action list 同一行排列
+   - ✅ `action-meta` 只保留 deadline / note，不再重複渲染角色標籤
+   - ✅ 版本升至 `v3.0.34`
+8. Validation / QC:
+   - `node -e "..."` dashboard JS compile → PASS
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - local structure review → PASS（top-level 行動清單 HTML 已改為 badge + text 同行）
+9. Pending:
+   - 核實 live `v3.0.33` workflow 結果
+   - 決定是否發佈 `v3.0.34` 的 display-only tweak
+10. Next priorities:
+   - 驗 live `v3.0.33` summaries
+   - 視驗證結果決定是否發 `v3.0.34`
+   - 如發佈，再驗 action-list inline 顯示
+11. Risks / blockers:
+   - 此 VM 仍無法直接核實 GitHub Pages / workflow 最終結果
+   - 這輪只修前端顯示，不會改變 `circulars.json` 內 actions 資料本身
+12. Notes:
+   - `edb_scraper.py` 只同步 banner version 到 `v3.0.34`，沒有產品邏輯改動
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | top-level `actions` has role + text + deadline | render detail panel | role badge and action text appear on the same first line | HTML now renders badge inside `.action-main` next to `.action-text` | PASS |
+| Boundary | long action text wraps | render detail panel | wrapped text should continue under the same action block without breaking badge placement | flex layout with `.action-main` keeps badge anchored and text wraps inside same row group | PASS |
+| Error / failure path | no live workflow verification available in VM | local QC only | local compile checks pass; live validation deferred | local checks passed; live deferred | PASS with notes |
+| Regression | deadline and note meta still present | render detail panel | deadline/note remain in second line meta area | role badge removed from meta, deadline/note still rendered | PASS |
+
+Overall: PASS with notes
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Session governance maintenance / log archive | SESSION_HANDOFF.md current state + SESSION_LOG.md current entry + archive pointer / files if rotation triggered | ✓ Done |
+
+## 2026-04-10 Session closeout after preparing v3.0.33 push
+
+1. Agent & Session ID: Codex_20260410_0002
+2. Task summary: 完成 `v3.0.33` summary/source-fallback 調整與 deploy repo 發佈準備；closeout 時唯一未完成項是把已準備好的 deploy repo commit 推上 GitHub。
+3. Layer classification: Product / System Layer（release-state tracking）+ Development Governance Layer（session closeout）
+4. Source triage: closeout / release-state consolidation。需要把真實狀態寫清楚：workspace 與 deploy repo 本地都已是 `v3.0.33`，但 push 受 GitHub HTTPS 憑證阻塞。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, deploy repo git status / log, publish output
+6. Files changed: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 記錄 `v3.0.33` 已在 deploy repo 本地完成發佈準備，commit 為 `ae2b24a`
+   - ✅ 更新 baseline 為 `live v3.0.30 / deploy-repo-local v3.0.33 / workspace v3.0.33`
+   - ✅ 重排 open priorities，將「完成有憑證的 push」列為下一步
+   - ✅ 寫入最新 next-session handoff prompt（verbatim）
+8. Validation / QC:
+   - `wc -l dev/SESSION_LOG.md` → `592` lines (no archive rotation needed)
+   - `git -C ~/Documents/EDB-AI-Circular-System status --short --branch` → `## main...origin/main [ahead 1]`
+   - `git -C ~/Documents/EDB-AI-Circular-System log --oneline -3` → top commit `ae2b24a chore: publish v3.0.33`
+9. Pending:
+   - 用有 GitHub 憑證的 terminal 完成 `git push origin main`
+   - push 後重跑 `school-year` workflow
+   - 驗 live `053 / 048 / 049 / 050`
+10. Next priorities:
+   - 完成 `v3.0.33` push
+   - rerun workflow
+   - 驗 live summaries
+11. Risks / blockers:
+   - sandbox / current shell 無法讀取 GitHub HTTPS credentials，`git push` 失敗訊息為 `could not read Username for 'https://github.com': Device not configured`
+   - closeout 時 live 仍停留在 `v3.0.30`
+12. Notes:
+   - `deploy.sh --no-bump` 已完成 sync 與 rebase；失敗只在最後 push 步驟，因此 deploy repo 本地已是可推送狀態。
+
+### Next Session Handoff Prompt (Verbatim)
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: continue from local deploy-ready `v3.0.33` as of 2026-04-10. Live public GitHub Pages is still only verified up to `v3.0.30` (`generated_at=2026-04-09T16:49:14Z`), but the deploy repo at `~/Documents/EDB-AI-Circular-System` is already prepared at commit `ae2b24a` (`chore: publish v3.0.33`) and is `ahead 1` of `origin/main`. `v3.0.33` improves summary generation for source-rich circulars like `EDBCM053/2026` by extracting organizers, dates, quotas, nomination limits, and deadlines from `official/pdf_text`, while keeping the earlier rich-summary cleanup for `EDBCM048/2026`.
+
+Pending tasks (priority order):
+1. In a terminal with working GitHub credentials, run `git -C ~/Documents/EDB-AI-Circular-System push origin main` to publish the already-prepared `v3.0.33` commit.
+2. After push succeeds, trigger or wait for the `school-year` workflow and verify live `edb-dashboard.html` / `circulars.json`.
+3. Inspect live `EDBCM053/2026`, `EDBCM048/2026`, `EDBCM049/2026`, and `EDBCM050/2026`, plus at least 2 more circulars, to confirm summaries remain circular-first and information-dense without role-work leakage.
+4. Only if live results still show summary issues, decide whether further refinement is needed.
+
+Key files changed in this session:
+- `edb_scraper.py`
+- `edb-dashboard.html`
+- `README.md`
+- `dev/CODEBASE_CONTEXT.md`
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- `v3.0.33` is not yet on GitHub because the current shell cannot read GitHub HTTPS credentials; the deploy repo is ready locally and only needs a successful push.
+- Live public data is still `v3.0.30`, so no claims should be made yet about live `v3.0.33` behavior.
+- The environment still lacks `OPENAI_API_KEY`, so no full cloud end-to-end regression was run locally.
+
+Validation status: `python3 -m py_compile edb_scraper.py` PASS; dashboard JS compile PASS; source-rich `053` summary fallback sample PASS; `048` rich summary helper regression PASS; deploy repo local status PASS (`ahead 1`, commit `ae2b24a` ready to push).
+
+Post-startup first action: confirm whether `git -C ~/Documents/EDB-AI-Circular-System push origin main` has already been run successfully; if not, provide that exact command first, then verify live only after the push and workflow complete.
+```
+
 ## 2026-04-09 Live v3.0.30 verification + summary fallback/rich-guard fix (workspace v3.0.31)
 
 1. Agent & Session ID: Codex_20260409_0017

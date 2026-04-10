@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDB 通告智能分析系統 v3.0.33</title>
+<title>EDB 通告智能分析系統 v3.0.34</title>
 <style>
 /* ============================================================
    PALETTES (accent colours only — theme-independent)
@@ -555,11 +555,12 @@ a{color:var(--accent);text-decoration:none;}
   border-radius:9px;padding:11px;
 }
 .action-row1{display:flex;gap:9px;align-items:flex-start;margin-bottom:6px;}
+.action-main{display:flex;gap:7px;align-items:flex-start;flex:1;min-width:0;flex-wrap:wrap;}
 .action-idx{
   width:21px;height:21px;border-radius:50%;background:var(--accent);color:white;
   font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
-.action-text{font-size:12px;color:var(--text);line-height:1.5;}
+.action-text{font-size:12px;color:var(--text);line-height:1.5;flex:1;min-width:0;}
 .action-meta{display:flex;gap:7px;font-size:11px;color:var(--text-muted);flex-wrap:wrap;}
 .a-role{padding:2px 6px;background:var(--surface);border:1px solid var(--border);border-radius:4px;}
 .a-dl-urgent{color:var(--red);font-weight:700;}
@@ -938,7 +939,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
     </div>
     <div class="dev-card">
       <div class="dev-card-title">ℹ️ 版本資訊</div>
-      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v3.0.33</span></div>
+      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v3.0.34</span></div>
       <div class="dev-row"><span>Build Date</span><span>2026-03-16</span></div>
       <div class="dev-row"><span>知識庫更新</span><span>2026-03-09 20:48 UTC</span></div>
       <div class="dev-row"><span>資料筆數</span><span id="devCount">—</span></div>
@@ -975,7 +976,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
 <header class="header">
   <div class="brand" onclick="switchTab('home',document.getElementById('tabHome'))" style="cursor:pointer;" title="返回首頁">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="13" x2="12" y2="17"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
-    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v3.0.33</span></span>
+    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v3.0.34</span></span>
   </div>
 
   <select class="role-select" id="roleSelect" onchange="setRole(this.value)">
@@ -1360,7 +1361,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
         </div>
         <div class="setting-row">
           <div class="setting-info"><div class="setting-lbl">版本</div></div>
-          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v3.0.33</span>
+          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v3.0.34</span>
         </div>
       </div>
 
@@ -1477,14 +1478,14 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
      ============================================================ -->
 <footer class="site-footer">
   <div>⚠️ <strong>免責聲明：</strong>本系統資料來源於<a href="https://www.edb.gov.hk" target="_blank" rel="noopener">香港特別行政區政府教育局（EDB）</a>官方網站，僅供參考及輔助管理用途，一切以教育局官方公告為準。本系統並非教育局官方產品。</div>
-  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v3.0.33 &nbsp;|&nbsp; &copy; 2026</div>
+  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v3.0.34 &nbsp;|&nbsp; &copy; 2026</div>
 </footer>
 
 <script>
 /* ============================================================
    VERSION
    ============================================================ */
-const VERSION = 'v3.0.33';
+const VERSION = 'v3.0.34';
 
 /* ============================================================
    MOCK DATA
@@ -2772,10 +2773,12 @@ function openDetail(id){
     return `<div class="action-item" style="${isCurrentRole?'border-color:var(--accent);background:rgba(59,130,246,.04)':''}">
       <div class="action-row1">
         <div class="action-idx" style="${isCurrentRole?'background:var(--green)':''}">${i+1}</div>
-        <div class="action-text">${a.text}</div>
+        <div class="action-main">
+          <span class="a-role" style="${isCurrentRole?'border-color:var(--accent);color:var(--accent);background:rgba(59,130,246,.1)':''}">${rn[a.role]||a.role}</span>
+          <div class="action-text">${a.text}</div>
+        </div>
       </div>
       <div class="action-meta">
-        <span class="a-role" style="${isCurrentRole?'border-color:var(--accent);color:var(--accent);background:rgba(59,130,246,.1)':''}">${rn[a.role]||a.role}</span>
         ${a.dl?`<span class="${dlCls}">📅 ${a.dl}${days!==null?` (${days<0?'已過期':days+'天後'})`:''}</span>`:''}
         ${a.note?`<span style="font-style:italic;color:var(--text-muted)">${a.note}</span>`:''}
       </div>
