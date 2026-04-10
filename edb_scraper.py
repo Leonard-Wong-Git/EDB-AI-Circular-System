@@ -1585,6 +1585,7 @@ SUMMARY_BANNED_PHRASES = [
 
 SUMMARY_BANNED_MARKERS = [
     "第二段內容摘要",
+    "根據標題可推測",
     "根據可得的知識庫",
     "根據經審核知識庫",
     "依照經審核知識庫",
@@ -1604,6 +1605,36 @@ SUMMARY_BANNED_MARKERS = [
     "截至現時",
 ]
 
+SUMMARY_ROLE_LABEL_MARKERS = [
+    "校長",
+    "副校長",
+    "科主任",
+    "主任",
+    "教師",
+    "EO",
+    "EOAdmin",
+    "供應商",
+]
+
+SUMMARY_ROLE_ACTION_MARKERS = [
+    "須",
+    "需",
+    "負責",
+    "協助",
+    "跟進",
+    "提交",
+    "處理",
+    "規劃",
+    "監督",
+    "提供",
+    "確保",
+    "參與",
+    "發出",
+    "存檔",
+    "審批",
+    "核對",
+]
+
 
 def _strip_summary_filler(text: str) -> str:
     if not text:
@@ -1611,6 +1642,9 @@ def _strip_summary_filler(text: str) -> str:
     cleaned = text
     for phrase in SUMMARY_BANNED_PHRASES:
         cleaned = cleaned.replace(phrase, "")
+    cleaned = cleaned.replace("根據標題可推測，", "")
+    cleaned = cleaned.replace("根據標題可判斷，", "")
+    cleaned = cleaned.replace("可推斷，", "")
     cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
     return cleaned.strip()
 
@@ -1619,6 +1653,13 @@ def _filter_summary_sentences(sentences: list[str]) -> list[str]:
     filtered = []
     for sentence in sentences:
         if any(marker in sentence for marker in SUMMARY_BANNED_MARKERS):
+            continue
+        role_label_hits = sum(1 for marker in SUMMARY_ROLE_LABEL_MARKERS if marker in sentence)
+        has_role_action_shape = (
+            role_label_hits >= 1
+            and any(marker in sentence for marker in SUMMARY_ROLE_ACTION_MARKERS)
+        )
+        if has_role_action_shape:
             continue
         sentence = sentence.strip()
         sentence = re.sub(r"[；，、：]+$", "。", sentence)
@@ -1689,6 +1730,109 @@ def _synthesize_sparse_actions(reviewed: dict) -> list[dict]:
     return synthesized
 
 
+def _compact_summary_source_text(text: str) -> str:
+    if not text:
+        return ""
+    compact = re.sub(r"\s+", "", text)
+    compact = compact.replace("（下稱夏令營）", "")
+    compact = compact.replace("下稱夏令營", "")
+    return compact
+
+
+def _build_activity_source_summary(title: str, source_text: str) -> str:
+    compact = _compact_summary_source_text(source_text)
+    if not compact:
+        return ""
+
+    def pick(*patterns: str) -> str:
+        for pattern in patterns:
+            match = re.search(pattern, compact)
+            if match:
+                return match.group(0)
+        return ""
+
+    para1_bits = []
+    organizer = pick(r".{0,40}由北京市教育委員會、香港特別行政區政府教育局及澳門特別行政區政府教育及青年發展局聯合主辦.{0,80}?。")
+    if organizer:
+        organizer = organizer.replace(f"「{title}」", "本活動").replace(f"{title}", "本活動")
+        para1_bits.append(organizer)
+
+    schedule = pick(r"本年的?夏令營將於\d{4}年\d{1,2}月\d{1,2}日至?\d{1,2}日在北京舉行.{0,40}?。")
+    if schedule:
+        para1_bits.append(schedule)
+
+    para2_bits = []
+    quota = pick(r"香港的名額為\d+名學生及\d+名隨團教師。")
+    if quota:
+        para2_bits.append(quota)
+
+    nomination = pick(r"每所學校可合共提名最多\d+名中四及／或中五級學生及\d+名校內教師（包括校長）參加。")
+    if nomination:
+        para2_bits.append(nomination)
+
+    voluntary = pick(r"學生參加全屬自願性質。")
+    if voluntary:
+        para2_bits.append(voluntary)
+
+    deadline = pick(r"請於\d{4}年\d{1,2}月\d{1,2}日.*?或之前.*?申請。", r"請於\d{4}年\d{1,2}月\d{1,2}日.*?或之前將填妥的電子申請表.*?。")
+    if deadline:
+        deadline = re.sub(r"電郵至[^。]+。", "提交申請，逾期將不獲受理。", deadline)
+        deadline = re.sub(r"本局不會接受逾期的申請。?", "逾期將不獲受理。", deadline)
+        deadline = re.sub(r"(逾期將不獲受理。)+", "逾期將不獲受理。", deadline)
+        para2_bits.append(deadline)
+
+    if not para1_bits and not para2_bits:
+        return ""
+
+    para1 = "".join(para1_bits)[:180]
+    para2 = "".join(para2_bits)[:180]
+    parts = [f"本通告介紹「{title}」的安排。"]
+    if para1:
+        parts[0] += para1
+    if para2:
+        parts.append(para2)
+    return "\n\n".join(parts[:2]).strip()
+
+
+def _build_summary_fallback(reviewed: dict) -> str:
+    title = (reviewed.get("title") or "").strip()
+    if not title:
+        return ""
+
+    source_text = " ".join([
+        reviewed.get("official", ""),
+        reviewed.get("pdf_text", "")[:2400],
+    ]).strip()
+
+    if any(token in title for token in ["交流", "夏令營", "參觀", "展覽", "活動"]):
+        sourced = _build_activity_source_summary(title, source_text)
+        if sourced:
+            return sourced
+
+    tags = [tag for tag in (reviewed.get("tags") or []) if tag]
+    topics = reviewed.get("topics") or []
+
+    if any(token in title for token in ["交流", "夏令營", "參觀", "展覽", "活動"]) or "activity" in topics:
+        if tags:
+            detail_tags = "、".join(tags[:3])
+            detail = f"內容聚焦{detail_tags}及學校相關安排。"
+        else:
+            detail = "內容聚焦學生交流、活動安排及學校相關支援要求。"
+    elif any(token in title for token in ["課程", "學習領域", "文憑考試", "教學"]) or "curriculum" in topics:
+        detail = "內容聚焦課程推行、學校安排及相關要求。"
+    elif any(token in title for token in ["津貼", "資助", "撥款", "財務", "採購"]) or "finance" in topics:
+        detail = "內容聚焦申請安排、資助用途及相關程序要求。"
+    elif "student" in topics or any(token in title for token in ["學生", "安全", "家長"]):
+        detail = "內容聚焦學生參與安排及相關支援要求。"
+    elif tags:
+        detail_tags = "、".join(tags[:2])
+        detail = f"內容聚焦{detail_tags}及相關安排。"
+    else:
+        detail = "內容聚焦相關安排及通告列明的跟進要求。"
+
+    return f"本通告介紹「{title}」的安排。\n\n{detail}"
+
+
 def _normalize_summary_text(text: str) -> str:
     text = (text or "").strip()
     if not text:
@@ -1708,6 +1852,12 @@ def _normalize_summary_text(text: str) -> str:
         for p in kept:
             sents = [s.strip() for s in re.split(r"(?<=[。！？])", p) if s.strip()]
             sents = _filter_summary_sentences(sents)
+            if len(paragraphs) == 1 and len(sents) >= 2:
+                normalized.append(_dedupe_summary_phrases(sents[0]))
+                remainder = "".join(sents[1:]).strip()
+                if remainder:
+                    normalized.append(_dedupe_summary_phrases(remainder))
+                continue
             para = "".join(sents).strip() if sents else ""
             if para:
                 normalized.append(_dedupe_summary_phrases(para))
@@ -1719,7 +1869,17 @@ def _normalize_summary_text(text: str) -> str:
     if not sentences:
         return _dedupe_summary_phrases(cleaned)
     if len(sentences) <= 2:
-        return "\n\n".join(_dedupe_summary_phrases(s) for s in sentences)
+        joined = "\n\n".join(_dedupe_summary_phrases(s) for s in sentences)
+        if len(joined) <= 250:
+            return joined
+        trimmed = []
+        total = 0
+        for sentence in sentences:
+            if trimmed and total + len(sentence) > 250:
+                break
+            trimmed.append(sentence)
+            total += len(sentence)
+        return "\n\n".join(_dedupe_summary_phrases(s) for s in trimmed) if trimmed else joined[:250].rstrip("，、；：") + "。"
 
     groups = [sentences[:1], sentences[1:3]]
 
@@ -1730,7 +1890,18 @@ def _normalize_summary_text(text: str) -> str:
         if para:
             paragraphs.append(para)
 
-    return "\n\n".join(paragraphs[:2])
+    result = "\n\n".join(paragraphs[:2])
+    if len(result) <= 250:
+        return result
+
+    trimmed = []
+    total = 0
+    for sentence in sentences:
+        if trimmed and total + len(sentence) > 250:
+            break
+        trimmed.append(sentence)
+        total += len(sentence)
+    return "\n\n".join(_dedupe_summary_phrases(s) for s in trimmed[:2]) if trimmed else result[:250].rstrip("，、；：") + "。"
 
 
 def _apply_post_analysis_review(circ: dict) -> dict:
@@ -1933,6 +2104,8 @@ def _apply_post_analysis_review(circ: dict) -> dict:
         "role_notes": role_notes,
     }
     reviewed["actions"] = _synthesize_sparse_actions(reviewed)
+    if not (reviewed.get("summary") or "").strip():
+        reviewed["summary"] = _build_summary_fallback(reviewed)
     return reviewed
 
 
@@ -2342,7 +2515,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.30")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.33")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

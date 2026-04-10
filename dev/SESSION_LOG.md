@@ -1,6 +1,152 @@
 # Session Log
 <!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->
 
+## 2026-04-09 Live v3.0.30 verification + summary fallback/rich-guard fix (workspace v3.0.31)
+
+1. Agent & Session ID: Codex_20260409_0017
+2. Task summary: 先驗 live `v3.0.30` 真實效果，再做一個窄修版 `v3.0.31`，只處理 summary 的兩個 residual 問題：rich circular 仍殘留角色工作句，以及 sparse circular 可能被清理成空摘要。
+3. Layer classification: Product / System Layer（analysis pipeline behavior change）+ Development Governance Layer（session persistence）
+4. Source triage: live-verified regression。問題不是 K1/action 邏輯本身，而是 live `v3.0.30` 的 summary 後處理仍不足：`EDBCM048/2026` 仍像角色百科文；`EDBCM053/2026` 因 summary 全被 marker 濾掉而變成空字串。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `README.md`, `edb_scraper.py`, `edb-dashboard.html`, live `edb-dashboard.html`, live `circulars.json`
+6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 驗證 live `v3.0.30` 已上線（dashboard `v3.0.30`, `generated_at=2026-04-09T16:49:14Z`, `count=117`）
+   - ✅ 在 summary sentence filter 中加入 role-work sentence guard，濾走 rich circular 內的角色工作句
+   - ✅ 新增 title/tag/topic-based summary fallback，避免 sparse circular 被清理成空摘要
+   - ✅ 版本升至 `v3.0.31`
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - dashboard JS compile (`node` + `new Function`) → PASS
+   - targeted helper regression on live samples → PASS（`048` 會保留通告主體句、去掉角色工作句；`053` 空摘要會回退為標題摘要）
+   - live verification → PASS with notes（`v3.0.30` live，但 summary 品質仍未達標，因此產生 `v3.0.31`）
+9. Pending:
+   - 決定是否發布 `v3.0.31`
+   - 如發布，重跑 school-year workflow 並驗 live `048 / 049 / 050 / 053`
+10. Next priorities:
+   - 先本地看 `v3.0.31` helper 輸出是否值得發布
+   - 再決定是否 push / rerun workflow
+   - 發布後重點驗 `053` 空摘要是否修好，以及 `048` 是否不再像角色百科文
+11. Risks / blockers:
+   - 本機仍缺 `OPENAI_API_KEY`，所以沒有完整雲端 LLM 端到端回歸
+   - rich circular summary 仍依賴 LLM 原始句子品質；這輪只能後收口，不是重寫模型內容
+12. Notes:
+   - `v3.0.30` 已證實 filler 句大致清掉、sparse actions 已保住；所以這輪刻意不再碰 K1 或 action 規則，只修 summary。
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | rich circular summary contains intro + role-work sentences (`EDBCM048/2026`-style) | normalize summary | keep circular intro, drop role-work expansion | helper kept通告主體句，濾走角色工作句 | PASS |
+| Boundary | sparse circular summary collapses to empty after filler filtering (`EDBCM053/2026`-style) | apply post-analysis review | fallback to a short title-based synopsis | helper produced a short title-based two-paragraph summary | PASS |
+| Error / failure path | no `OPENAI_API_KEY` in env | local QC only | local checks valid; cloud regression explicitly skipped | local checks passed; cloud run skipped | PASS with notes |
+| Regression | sparse action synthesis already fixed in `v3.0.29+` | apply post-analysis review | action synthesis remains unchanged while summary is repaired | top-level actions path untouched | PASS |
+
+Overall: PASS with notes
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Session governance maintenance / log archive | SESSION_HANDOFF.md current state + SESSION_LOG.md current entry + archive pointer / files if rotation triggered | ✓ Done |
+
+## 2026-04-09 Summary information-density refinement (workspace v3.0.32)
+
+1. Agent & Session ID: Codex_20260409_0018
+2. Task summary: 根據使用者對 sample 的判斷，進一步調整 summary 的信息密度：`053` 類 sparse 通告不能太空，`048` 類 rich 通告可保留更多具體內容，但仍不可滑回角色百科。
+3. Layer classification: Product / System Layer（analysis pipeline behavior change）+ Development Governance Layer（session persistence）
+4. Source triage: targeted product-quality refinement。問題不是 summary 邊界本身，而是 `v3.0.31` sample 仍有兩個偏差：sparse fallback 太泛，rich summary 在刪掉方法語氣時連具體內容也一併刪掉。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `README.md`, `edb_scraper.py`, `edb-dashboard.html`, live sample data from `circulars.json`
+6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ `根據標題可推測` / `可推斷` 改成先剝前綴、保留句內具體內容
+   - ✅ sparse summary fallback 改為使用 title + tags 組更具體的第二段
+   - ✅ summary 保持不寫角色工作，但 rich circular 可保留更多通告具體資訊
+   - ✅ 版本升至 `v3.0.32`
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - dashboard JS compile (`node` + `new Function`) → PASS
+   - targeted helper regression on live samples → PASS
+     - `EDBCM053/2026` → `本通告介紹「京港澳學生交流夏令營（2026）」的安排。 / 內容聚焦跨境夏令營、學生交流、京港澳及學校相關安排。`
+     - `EDBCM048/2026` → 保留資助方案與核心框架內容，不再出現角色百科段落
+9. Pending:
+   - 決定是否發布 `v3.0.32`
+   - 如發布，重跑 school-year workflow 並驗 live `048 / 049 / 050 / 053`
+10. Next priorities:
+   - 先看 `v3.0.32` sample 是否足夠接近產品期待
+   - 如接受，再 push / rerun workflow
+   - 發布後重點驗 rich/sparse summary 都不再失衡
+11. Risks / blockers:
+   - 本機仍缺 `OPENAI_API_KEY`，所以沒有完整雲端 LLM 端到端回歸
+   - `049/050` 目前只做 local helper 驗證，最終仍要以 live workflow 結果為準
+12. Notes:
+   - 這輪仍然只動 summary；K1 / actions / role-facts 均未修改
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | `EDBCM048/2026` rich summary contains speculative prefix + usable content | `_apply_post_analysis_review()` | strip speculative prefix but keep useful content | summary now keeps 資助方案內容與核心要求 | PASS |
+| Boundary | `EDBCM053/2026` empty summary | `_apply_post_analysis_review()` | fallback should be short but concrete, not generic | title/tag fallback now mentions 跨境夏令營、學生交流、京港澳 | PASS |
+| Regression | `EDBCM049/2026` and `EDBCM050/2026` should keep circular-first summaries | `_apply_post_analysis_review()` | remain circular-first without action loss | summaries preserved; action counts unchanged | PASS |
+| Error / failure path | no `OPENAI_API_KEY` in env | local QC only | local checks valid; cloud regression explicitly skipped | local checks passed; cloud run skipped | PASS with notes |
+
+Overall: PASS with notes
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Session governance maintenance / log archive | SESSION_HANDOFF.md current state + SESSION_LOG.md current entry + archive pointer / files if rotation triggered | ✓ Done |
+
+## 2026-04-10 Source-rich summary fallback for activity circulars (workspace v3.0.33)
+
+1. Agent & Session ID: Codex_20260410_0001
+2. Task summary: 根據使用者對 `EDBCM053/2026` 的明確目標摘要，為正文充足的活動類通告加入 source-based fallback：直接從 `official/pdf_text` 抽主辦、日期、名額、提名上限與截止等硬資訊，而不再退回 generic title/tag 摘要。
+3. Layer classification: Product / System Layer（analysis pipeline behavior change）+ Development Governance Layer（session persistence）
+4. Source triage: targeted product-quality refinement。問題不是 summary 邊界，而是 `053` 這類通告實際正文已很豐富，但 generic fallback 只寫成「有活動安排」，資訊密度不足。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `README.md`, `edb_scraper.py`, `edb-dashboard.html`, user-provided `053` circular detail excerpt
+6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 新增 `_compact_summary_source_text()` 與 `_build_activity_source_summary()`
+   - ✅ 對活動/夏令營/交流類通告，若 `official/pdf_text` 足夠，先從正文抽主辦、日期、名額、提名上限及截止
+   - ✅ 版本升至 `v3.0.33`
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - 以使用者提供的 `053` 詳情 sample 驗證 `_build_summary_fallback()` → PASS
+   - `048` rich summary helper regression → PASS（保持 rich circular 改善，不回到角色百科）
+9. Pending:
+   - 決定是否發布 `v3.0.33`
+   - 如發布，重跑 school-year workflow 並驗 live `053 / 048 / 049 / 050`
+10. Next priorities:
+   - 先看 `053` sample 是否已足夠接近產品期待
+   - 如接受，再 push / rerun workflow
+   - 發布後驗 source-rich 與 sparse/rich summaries 是否一併穩定
+11. Risks / blockers:
+   - 這輪 source-based fallback 目前主要針對活動/交流類摘要；其他通告類型仍以一般 summary 規則為主
+   - 本機仍缺 `OPENAI_API_KEY`，沒有完整雲端 LLM 端到端回歸
+12. Notes:
+   - `053` sample 現會輸出接近「主辦 + 日期 + 名額 + 截止」的結構，但仍保留通告本位，不寫角色工作。
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | user-provided `053` detail text available in `pdf_text` | `_build_summary_fallback()` | summary should extract organizers, schedule, quota, nomination limit, deadline | sample output now includes主辦、日期、名額、提名上限與截止 | PASS |
+| Boundary | same `053` sample contains irregular spacing from PDF text | `_build_summary_fallback()` | spacing should be compacted before extraction | extraction still succeeds on spaced text | PASS |
+| Regression | live-like `048` rich summary | `_apply_post_analysis_review()` | rich summary keeps useful content, not role百科 | helper output remains circular-first and concrete | PASS |
+| Error / failure path | no `OPENAI_API_KEY` in env | local QC only | local checks valid; cloud regression explicitly skipped | local checks passed; cloud run skipped | PASS with notes |
+
+Overall: PASS with notes
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Session governance maintenance / log archive | SESSION_HANDOFF.md current state + SESSION_LOG.md current entry + archive pointer / files if rotation triggered | ✓ Done |
+
 ## 2026-04-09 Summary responsibility rewrite (workspace v3.0.30)
 
 1. Agent & Session ID: Codex_20260409_0015
@@ -64,6 +210,68 @@ Overall: PASS with notes
 | Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
 | Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |
 | Session governance maintenance / log archive | SESSION_HANDOFF.md current state + SESSION_LOG.md current entry + archive pointer / files if rotation triggered | ✓ Done |
+
+## 2026-04-09 Session closeout after v3.0.30 push
+
+1. Agent & Session ID: Codex_20260409_0016
+2. Task summary: 完成 `v3.0.30` push 後的 session closeout，將 handoff 狀態更新為 repo 已發佈、live workflow 待驗。
+3. Layer classification: Product / System Layer（release-state tracking）+ Development Governance Layer（session closeout）
+4. Source triage: closeout / release-state consolidation。需要把本輪 summary 規格重寫、audit gate、新版 push 收斂成可接手狀態。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, publish output
+6. Files changed: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 記錄 `v3.0.30` 已 push 到 repo commit `047d6ba`
+   - ✅ 更新 baseline 成 `live v3.0.28 / repo-pushed v3.0.30 / workspace v3.0.30`
+   - ✅ 重排 open priorities，聚焦於驗證 `v3.0.30` live 結果
+   - ✅ 寫入最新 next-session handoff prompt（verbatim）
+8. Validation / QC:
+   - deploy script `bash /Users/leonard/Downloads/Claude-edb-Project-V3/deploy.sh --no-bump` → PASS
+   - repo push PASS at `047d6ba`
+   - `wc -l dev/SESSION_LOG.md` → 384 lines (no archive rotation needed)
+9. Pending:
+   - 跑 / 驗 `school-year` workflow
+   - 驗證 live `v3.0.30` 是否真正改善 summary 並保留 action 可見性
+10. Next priorities:
+   - 驗 live `v3.0.30`
+   - 核對 `048 / 049 / 050 / 053`
+   - 視結果再決定是否需要下一輪調整
+11. Risks / blockers:
+   - closeout 時 live 仍是 `v3.0.28`
+   - 本機仍缺 `OPENAI_API_KEY`，無完整雲端回歸
+12. Notes:
+   - 本輪已 push，但不宣稱 live 已更新；需以 workflow 結果為準。
+
+### Next Session Handoff Prompt (Verbatim)
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: continue from repo-pushed `v3.0.30` as of 2026-04-09. The deploy repo is now at commit `047d6ba`; this version re-scopes summary so it only describes the circular itself, may borrow K1 vocabulary but not K1 content, and no longer lets summary carry role work or action lists. At closeout, public GitHub Pages / live `circulars.json` were still only verified up to `v3.0.28`.
+
+Pending tasks (priority order):
+1. Verify whether the `school-year` workflow for `v3.0.30` has completed and whether live HTML / live `circulars.json` have caught up.
+2. Check `EDBCM053/2026`, `EDBCM048/2026`, `EDBCM049/2026`, and `EDBCM050/2026` on live data and confirm summary is now circular-first while action visibility remains acceptable.
+3. Compare at least 2 additional live circulars to ensure `v3.0.30` did not over-shorten rich circular summaries or hide useful role/action information.
+4. Only if the above passes, decide whether any further summary/action refinement is needed.
+
+Key files changed in this session:
+- `edb_scraper.py`
+- `edb-dashboard.html`
+- `dev/tools/summary_action_audit.py`
+- `README.md`
+- `dev/CODEBASE_CONTEXT.md`
+- `dev/SESSION_HANDOFF.md`
+- `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- `v3.0.30` has been pushed successfully, but closeout happened before live workflow verification.
+- The local audit tool validates current `circulars.json`, but it cannot prove live `v3.0.30` behavior until the workflow regenerates data.
+- The environment still lacks `OPENAI_API_KEY`, so no full cloud end-to-end regression was run locally.
+
+Validation status: `python3 -m py_compile edb_scraper.py` PASS; dashboard JS compile PASS; summary helper PASS; `python3 dev/tools/summary_action_audit.py --input ./circulars.json --max-examples 2` PASS; deploy script PASS; repo push PASS at `047d6ba`.
+
+Post-startup first action: fetch live `edb-dashboard.html` and `circulars.json`, confirm whether `v3.0.30` is live, then inspect `EDBCM053/2026`, `EDBCM048/2026`, `EDBCM049/2026`, and `EDBCM050/2026` before making any further summary/action changes.
+```
 
 ## 2026-04-09 Local summary/action audit gate tool
 

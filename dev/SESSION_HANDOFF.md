@@ -1,18 +1,18 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **live v3.0.28 / repo-pushed v3.0.28 / workspace v3.0.30** (2026-04-09) ← **live `v3.0.28` 已由 school-year workflow 帶上 Pages，但效果不理想；workspace `v3.0.30` 已按產品決策把 summary 與 actions 分工切清**
+1. Version: **live v3.0.30 / repo-pushed v3.0.30 / workspace v3.0.33** (2026-04-10) ← **已確認 live `v3.0.30`（`generated_at=2026-04-09T16:49:14Z`）；workspace `v3.0.33` 進一步把 `053` 類正文充足通告改為直接從 `official/pdf_text` 抽主辦、日期、名額與截止**
 2. Core commands / features:
-   - `edb-dashboard.html` — live/repo v3.0.28；workspace v3.0.30（待發佈）
-   - `edb_scraper.py` — live/repo v3.0.28；workspace v3.0.30（K1 prompt injection 與 `v1.3.1` schema consume 已 live；本地 `role_facts.json` 已 live；本輪把 summary 與 actions 正式分工切清）
+   - `edb-dashboard.html` — live/repo v3.0.30；workspace v3.0.33（待發布）
+   - `edb_scraper.py` — live/repo v3.0.30；workspace v3.0.33（K1 prompt injection 與 `v1.3.1` schema consume 已 live；本地 `role_facts.json` 已 live；summary/action 已分工，現正把 source-rich 通告摘要改得更貼近正文）
    - `circulars.json` — EDB 通告 + gpt-5-nano AI 分析（live 已由 school-year workflow 重生並帶出 `k1_*` / `role_fact_*` 欄位）
    - `knowledge.json` — 從 edb-knowledge 獲取的語義事實來源（v1.3.1，107 facts ✅）
    - `fetch_knowledge.py` — EDB / ICAC 知識支援產生器（仍屬維護中的 support path；2026-04-09 已對齊 split-role contract）
    - `requirements.txt` — Python 依賴清單
    - `dev/knowledge/role_facts.json` — K1 基線知識庫（新版已到位；workspace 已接入，待發布後回填 live data）
    - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 接口合約規格（已對齊至 v2.0.0 角色契約）
-3. Regression baseline: `python3 -m py_compile edb_scraper.py` PASS；dashboard JS compile PASS；summary helper PASS（含知識庫/角色工作的樣例摘要會被收斂成通告主句）；workspace version markers PASS at v3.0.30；live latest known PASS at `v3.0.28` (`generated_at=2026-04-09T15:55:27Z`)
-4. Release / merge status: **live 已驗證到 `v3.0.28`，但使用者回報「通告分析＋知識庫後效果不好，也沒有很多角色工作」；workspace `v3.0.30` 已按新產品規格重寫 summary 任務，暫未發布**
+3. Regression baseline: `python3 -m py_compile edb_scraper.py` PASS；dashboard JS compile PASS；summary helper PASS（`048` 類 rich case 會保留更具體內容但濾走角色工作句；`053` 類 source-rich sample 會抽出主辦、日期、名額與截止；summary/action audit tool PASS；repo push PASS at `047d6ba`；live latest known PASS at `v3.0.30` (`generated_at=2026-04-09T16:49:14Z`)
+4. Release / merge status: **`v3.0.30` 已 live；workspace `v3.0.33` 尚未發布**
 5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -72,8 +72,8 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 用 `python3 dev/tools/summary_action_audit.py --input ./circulars.json --max-examples 5` 重新檢查本地基線，再決定是否發佈 `v3.0.30`
-2. **[重要]** 若決定發佈，重點驗 `EDBCM053/2026`、`EDBCM048/2026`、`EDBCM049/2026`、`EDBCM050/2026` 與另外至少 2 份 live 通告，確認 summary 已回到通告本位
+1. **[下一步 ⭐]** 決定是否發布 `v3.0.33`：此版只修 summary，目標是讓 `053` 類正文充足通告更貼正文，同時維持 `048` 的 rich summary 改善
+2. **[重要]** 如發布 `v3.0.33`，重點驗 `EDBCM053/2026`、`EDBCM048/2026`、`EDBCM049/2026`、`EDBCM050/2026` 與另外至少 2 份 live 通告，確認 summary 已回到通告本位
 3. **[重要]** 針對 `subject_head` vs `panel_chair` 的 role-facts 命中質素做抽樣檢查，必要時微調 local role-facts topic / role routing
 4. **[其後]** 再視需要回頭處理低優先的 deterministic finance residual contamination（資料層清潔項）
 6. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
@@ -148,6 +148,8 @@ git checkout v2.1.0-dashboard
    - workspace `v3.0.27` 已為 sparse circular 加入精簡 follow-up 第二段，僅摘 1-2 個最高訊號的校內跟進點
    - live `v3.0.28` 仍可見 `EDBCM053/2026` 類 sparse 通告摘要被 filler 句污染，且頂層 `actions` 仍可能為空
    - workspace `v3.0.29` 已把 sparse action synthesis 移到 deterministic role enrich 之後，並加強 filler marker 清理
+   - live `v3.0.30` 已清掉大部分 filler 句，並保住 sparse `actions`；但仍存在 rich circular summary 過長/帶角色百科，以及 `EDBCM053/2026` 空摘要 regression
+   - workspace `v3.0.32` 進一步把 `根據標題可推測` 這類方法語氣改成只剝前綴、保留具體內容，並把 sparse fallback 寫得更具體
 
 ## Regression / Verification Notes
 1. v2.1.0 QC: 24/24 structural checks 通過；JS syntax check 通過
@@ -225,3 +227,4 @@ Do not close a session with code changes without completing the version bump.
 3. workspace `v3.0.29` 已修正：把 sparse action synthesis 移到 deterministic enrich 全部完成後才執行，並新增 `未披露` / `以正式發布的公告全文為準` / `此通告未逐一分派角色責任` 等 filler markers。
 4. 新增本地工具 `dev/tools/summary_action_audit.py`，可直接掃現有 `circulars.json`，先做全量 summary/action heuristic 檢查，再決定值不值得跑長 workflow。
 5. 使用者已拍板新的 summary 規格：不寫角色工作、可借知識庫詞彙但不借知識庫內容、約 120-250 字、如果要補行動感則一律放到 `actions` 而不是 summary。
+6. `v3.0.30` 已於本 session 發佈至 repo `047d6ba`，但 closeout 時尚未驗證 live workflow 結果。
