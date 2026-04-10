@@ -1,6 +1,100 @@
 # Session Log
 <!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->
 
+## 2026-04-10 Wide 3-column layout override fix (workspace v3.0.36)
+
+1. Agent & Session ID: Codex_20260410_0005
+2. Task summary: 使用者指出「顯示設定 → 佈局 → 寬屏 3列」未能成功顯示。本輪只修 layout selector 的實際生效問題。
+3. Layer classification: Product / System Layer（frontend display behavior change）+ Development Governance Layer（session persistence）
+4. Source triage: frontend CSS override issue。根因是 `@media(min-width:768px) and (max-width:1023px)` 把 `.cards-grid` 一律強制成 `repeat(2,1fr)!important`，覆蓋了 `data-layout="wide"` 的三列設定。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `dev/DOC_SYNC_CHECKLIST.md`, `README.md`, `edb-dashboard.html`, `edb_scraper.py`
+6. Files changed: `edb-dashboard.html`, `edb_scraper.py`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 把 768–1023px media query 改成依 `data-layout` 分流
+   - ✅ `wide` 於該區間現可維持 3 列
+   - ✅ 版本升至 `v3.0.36`
+8. Validation / QC:
+   - `node -e "..."` dashboard JS compile → PASS
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - version grep (`v3.0.36`) → PASS
+9. Pending:
+   - 決定是否發佈 `v3.0.36`
+   - 發佈後驗 live layout setting
+10. Next priorities:
+   - 驗 live `v3.0.34` summaries
+   - 如 OK，再發 `v3.0.36`
+   - 發佈後驗 wide 3-column layout
+11. Risks / blockers:
+   - 這輪只修 layout CSS，不改資料或 summary
+   - live verification 仍需發佈後確認
+12. Notes:
+   - `edb_scraper.py` 仍只同步 banner version，沒有邏輯改動
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | desktop/tablet width 768–1023px + `wide` layout | render cards grid | 3-column layout | media query now respects `[data-layout="wide"]` | PASS |
+| Boundary | same width + `compact` layout | render cards grid | 1-column layout | media query now respects `[data-layout="compact"]` | PASS |
+| Regression | same width + `standard` layout | render cards grid | 2-column layout unchanged | `[data-layout="standard"]` remains 2 columns | PASS |
+| Error / failure path | live page not yet rechecked | local QC only | local compile checks pass; live deferred | local checks passed; live deferred | PASS with notes |
+
+Overall: PASS with notes
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Session governance maintenance / log archive | SESSION_HANDOFF.md current state + SESSION_LOG.md current entry + archive pointer / files if rotation triggered | ✓ Done |
+
+## 2026-04-10 Dashboard action-list badge visual cleanup (workspace v3.0.35)
+
+1. Agent & Session ID: Codex_20260410_0004
+2. Task summary: 使用者回報 top-level 行動清單中的角色 badge 「非常核突」。本輪只修 action-list badge 的視覺：移除 emoji、縮細字、淡化底色與邊框，保留 badge inline 顯示。
+3. Layer classification: Product / System Layer（frontend display behavior change）+ Development Governance Layer（session persistence）
+4. Source triage: user-visible UI issue。問題不在資料或 summary，而在 action-list badge 直接重用 `ROLE_NAMES`（含 emoji）且樣式過重，令畫面顯得突兀。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `dev/DOC_SYNC_CHECKLIST.md`, `README.md`, `edb-dashboard.html`, `edb_scraper.py`
+6. Files changed: `edb-dashboard.html`, `edb_scraper.py`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 新增 `ROLE_ACTION_LABELS`，action-list 改用無 emoji 的角色短標籤
+   - ✅ `.a-role` 改為更細、更淡、更圓角的 compact pill
+   - ✅ 版本升至 `v3.0.35`
+8. Validation / QC:
+   - `node -e "..."` dashboard JS compile → PASS
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - version grep (`v3.0.35`) → PASS
+9. Pending:
+   - 決定是否發佈 `v3.0.35`
+   - 發佈後驗 live action-list 視覺
+10. Next priorities:
+   - 驗 live `v3.0.34` summaries
+   - 如 OK，再發 `v3.0.35`
+   - 發佈後驗 badge 視覺是否改善
+11. Risks / blockers:
+   - 這輪只修 action-list 外觀，不改資料內容
+   - live verification 仍需在 GitHub Pages 更新後檢視
+12. Notes:
+   - `edb_scraper.py` 仍只同步 banner version，沒有邏輯改動
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | action-list has role badge | render detail panel | compact text-only badge, no emoji | action-list now uses `ROLE_ACTION_LABELS` | PASS |
+| Boundary | current-role highlight active | render detail panel | current role still highlighted, but lighter | inline style still applies accent override on compact pill | PASS |
+| Regression | other role displays use `ROLE_NAMES` | render detail panel + role cards | other areas keep original emoji role labels | only action-list switched to `ROLE_ACTION_LABELS` | PASS |
+| Error / failure path | live page not yet rechecked | local QC only | local compile checks pass; live deferred | local checks passed; live deferred | PASS with notes |
+
+Overall: PASS with notes
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Session governance maintenance / log archive | SESSION_HANDOFF.md current state + SESSION_LOG.md current entry + archive pointer / files if rotation triggered | ✓ Done |
+
 ## 2026-04-10 Dashboard action-list inline role label (workspace v3.0.34)
 
 1. Agent & Session ID: Codex_20260410_0003
