@@ -221,6 +221,7 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 34 | Summary Needs Fallback + Role-work Filtering | 2026-04-09 | Even after the v3.0.30 summary rewrite, live output showed two residual failures: sparse circulars could end up with an empty summary, and rich circulars could still leak role-work sentences into summary. Summary normalization now filters role-work shaped sentences and falls back to a title-based circular synopsis when the model output collapses to empty. |
 | 35 | Summary Should Preserve Concrete Content While Removing Meta Phrasing | 2026-04-09 | When a summary sentence contains usable circular content plus weak speculative phrasing such as `根據標題可推測`, normalization should strip the speculative prefix but keep the concrete content. Sparse fallback summaries should also use title/tag detail so they remain informative rather than overly generic. |
 | 36 | Source-rich Circulars Should Use Source-rich Summaries | 2026-04-10 | If a circular has enough `official` / `pdf_text`, summary fallback should extract hard facts such as organizers, dates, quotas, nomination limits, and deadlines from source text instead of collapsing to a generic title/tag synopsis. |
+| 37 | Summary Should Refresh from Source When Model Output Is Generic | 2026-04-11 | If the normalized summary is still too short, too long, single-paragraph, or contains official-sounding filler such as `就目前公開內容而言` / `推斷性說明`, the pipeline should prefer a source-based summary rebuilt from `official` / `pdf_text` rather than preserving the generic model wording. |
 
 ---
 
@@ -278,3 +279,4 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 2026-04-10 | Codex_20260410_0004 | Simplified action-list role badges into compact text-only pills for cleaner visual hierarchy and bumped workspace version to v3.0.35 pending publish decision. |
 | 2026-04-10 | Codex_20260410_0005 | Fixed the 768–1023px responsive override so `wide` layout can truly render 3 columns, and bumped workspace version to v3.0.36 pending publish decision. |
 | 2026-04-09 | Codex_20260409_0017 | After verifying live `v3.0.30`, tightened summary normalization again so role-work sentences are filtered out of summary and empty summaries fall back to a title-based circular synopsis; workspace version is now v3.0.31 pending publish. |
+| 2026-04-11 | Codex_20260411_0001 | Tightened summary generation again: added source-priority refresh for generic/official-sounding summaries, strengthened filler stripping (`就目前公開內容而言` / `推斷性說明`), and bumped workspace version to v3.0.37 pending publish. |

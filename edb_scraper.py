@@ -1283,6 +1283,7 @@ class LLMAnalyzer:
             "- summary 只作通告簡介，約 120-250 字，以 1-2 段中文短段落撰寫。",
             "- 第一段只交代通告主旨、對象與核心安排。",
             "- 第二段只在有需要時交代主要要求、期限或重要安排。",
+            "- 如通告正文已提供主辦、日期、地點、名額、對象、截止日或提交方式，應優先寫出這些硬資訊。",
             "- 不要把知識庫一般規則、角色百科、延伸管理建議寫進 summary。",
             "- 可以借用知識庫詞彙去統一用字，但不可把知識庫內容寫成通告內容。",
             "- 只寫通告已明示或可直接從官方摘要/PDF讀出的內容；資訊不足時直接略去，不要描述『未提供什麼』。",
@@ -1290,6 +1291,7 @@ class LLMAnalyzer:
             "- 不要在 summary 寫角色工作、行動清單或跟進分工；這些內容留給 actions 與 roles。",
             "- 不要寫「可推斷」「初步判讀」「根據標題可判斷」等自我說明語氣。",
             "- 不要寫「若有……將另行通知」「目前尚未披露」「等待後續公告」等低信息模板句。",
+            "- 避免以「作出說明」「內容聚焦」「整體重點在於」等空泛官式句作為摘要主體，應以具體事實為主。",
             "",
         ]
         if facts:
@@ -1603,6 +1605,11 @@ SUMMARY_BANNED_MARKERS = [
     "等待教育局後續公告",
     "請校方留意日後更新",
     "截至現時",
+    "就目前公開內容而言",
+    "官方渠道後續發布",
+    "後續發布具體指引",
+    "推斷性說明",
+    "整體重點在於",
 ]
 
 SUMMARY_ROLE_LABEL_MARKERS = [
@@ -1645,6 +1652,9 @@ def _strip_summary_filler(text: str) -> str:
     cleaned = cleaned.replace("根據標題可推測，", "")
     cleaned = cleaned.replace("根據標題可判斷，", "")
     cleaned = cleaned.replace("可推斷，", "")
+    cleaned = cleaned.replace("就目前公開內容而言，", "")
+    cleaned = cleaned.replace("整體重點在於", "重點包括")
+    cleaned = cleaned.replace("作出推斷性說明", "作出說明")
     cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
     return cleaned.strip()
 
@@ -1739,6 +1749,36 @@ def _compact_summary_source_text(text: str) -> str:
     return compact
 
 
+def _extract_source_summary_sentences(source_text: str) -> list[str]:
+    compact = _compact_summary_source_text(source_text)
+    if not compact:
+        return []
+    sentences = [s.strip() for s in re.split(r"(?<=[。！？])", compact) if s.strip()]
+    picked = []
+    seen = set()
+    for sentence in sentences:
+        if len(sentence) < 12:
+            continue
+        if any(marker in sentence for marker in SUMMARY_BANNED_MARKERS):
+            continue
+        role_label_hits = sum(1 for marker in SUMMARY_ROLE_LABEL_MARKERS if marker in sentence)
+        has_role_action_shape = (
+            role_label_hits >= 1
+            and any(marker in sentence for marker in SUMMARY_ROLE_ACTION_MARKERS)
+        )
+        if has_role_action_shape:
+            continue
+        sentence = _strip_summary_filler(sentence)
+        sentence = re.sub(r"[；，、：]+$", "。", sentence).strip()
+        if not sentence or sentence in seen:
+            continue
+        seen.add(sentence)
+        picked.append(sentence)
+        if len(picked) >= 4:
+            break
+    return picked
+
+
 def _build_activity_source_summary(title: str, source_text: str) -> str:
     compact = _compact_summary_source_text(source_text)
     if not compact:
@@ -1794,6 +1834,44 @@ def _build_activity_source_summary(title: str, source_text: str) -> str:
     return "\n\n".join(parts[:2]).strip()
 
 
+def _build_generic_source_summary(title: str, source_text: str) -> str:
+    sentences = _extract_source_summary_sentences(source_text)
+    if not sentences:
+        return ""
+
+    para1 = sentences[0]
+    if not para1.startswith("本通告") and title and title not in para1:
+        para1 = f"本通告介紹「{title}」的安排。{para1}"
+
+    remainder = "".join(sentences[1:3]).strip()
+    if remainder:
+        summary = f"{para1}\n\n{remainder}"
+        if len(summary) <= 280:
+            return summary
+        remainder = remainder[: max(0, 280 - len(para1) - 2)].rstrip("，、；：")
+        if remainder:
+            return f"{para1}\n\n{remainder}。"
+    return para1[:250].rstrip("，、；：") + ("。" if not para1.endswith(("。", "！", "？")) else "")
+
+
+def _build_source_priority_summary(reviewed: dict) -> str:
+    title = (reviewed.get("title") or "").strip()
+    source_text = " ".join([
+        reviewed.get("official", ""),
+        reviewed.get("pdf_text", "")[:3200],
+    ]).strip()
+    if not title or not source_text:
+        return ""
+
+    topics = reviewed.get("topics") or []
+    if any(token in title for token in ["交流", "夏令營", "參觀", "展覽", "活動"]) or "activity" in topics:
+        sourced = _build_activity_source_summary(title, source_text)
+        if sourced:
+            return sourced
+
+    return _build_generic_source_summary(title, source_text)
+
+
 def _build_summary_fallback(reviewed: dict) -> str:
     title = (reviewed.get("title") or "").strip()
     if not title:
@@ -1831,6 +1909,40 @@ def _build_summary_fallback(reviewed: dict) -> str:
         detail = "內容聚焦相關安排及通告列明的跟進要求。"
 
     return f"本通告介紹「{title}」的安排。\n\n{detail}"
+
+
+def _summary_needs_source_refresh(reviewed: dict) -> bool:
+    summary = (reviewed.get("summary") or "").strip()
+    if not summary:
+        return True
+
+    source_text = " ".join([
+        reviewed.get("official", ""),
+        reviewed.get("pdf_text", "")[:3200],
+    ]).strip()
+    if not source_text:
+        return False
+
+    if any(marker in summary for marker in [
+        "就目前公開內容而言",
+        "官方渠道後續發布",
+        "後續發布具體指引",
+        "作出推斷性說明",
+        "根據標題可推測",
+        "根據標題可判斷",
+        "可推斷",
+        "整體重點在於",
+    ]):
+        return True
+
+    paragraphs = [p.strip() for p in summary.split("\n\n") if p.strip()]
+    if len(summary) < 80:
+        return True
+    if len(paragraphs) <= 1 and len(summary) > 180:
+        return True
+    if len(summary) > 280:
+        return True
+    return False
 
 
 def _normalize_summary_text(text: str) -> str:
@@ -1913,6 +2025,10 @@ def _apply_post_analysis_review(circ: dict) -> dict:
     added_links: list[dict] = []
 
     reviewed["summary"] = _normalize_summary_text(_replace_terms(reviewed.get("summary", ""), applied_rules))
+    if _summary_needs_source_refresh(reviewed):
+        source_summary = _build_source_priority_summary(reviewed)
+        if source_summary:
+            reviewed["summary"] = _normalize_summary_text(source_summary)
 
     roles = reviewed.get("roles", {})
     topics = reviewed.get("topics", []) or []
@@ -2515,7 +2631,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.36")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.37")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

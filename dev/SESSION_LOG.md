@@ -1,6 +1,104 @@
 # Session Log
 <!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->
 
+## 2026-04-11 Summary tone cleanup for generic / official-sounding outputs
+
+1. Agent & Session ID: Codex_20260411_0001
+2. Task summary: 使用者回報 live AI summary 仍然「太官腔、太空泛」。本輪只修 summary 生成與後處理，不碰 K1、actions、roles；重點解 `053` 類過空、`042` 類推斷語氣、以及 rich circular 單段過長問題。
+3. Layer classification: Product / System Layer（summary generation quality）+ Development Governance Layer（session persistence）
+4. Source triage: user-visible output quality issue。問題來源主要在 summary prompt 與 post-review 正規化／fallback 邏輯，而不是 live data 故障或 K1 接入故障。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `README.md`, `dev/DOC_SYNC_CHECKLIST.md`, `edb_scraper.py`
+6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `README.md`, `dev/CODEBASE_CONTEXT.md`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ summary prompt 新增「硬資訊優先」規則：若正文已有主辦、日期、地點、名額、對象、截止或提交方式，應優先寫出
+   - ✅ 補強 summary filler 清理：新增 `就目前公開內容而言`、`官方渠道後續發布`、`推斷性說明`、`整體重點在於` 等官式/空泛 marker
+   - ✅ 新增 source-priority summary refresh：若 normalized summary 仍過短、過長、單段或帶官式 marker，優先改用 `official/pdf_text` 重組摘要
+   - ✅ `v3.0.37` sample 已對齊方向：`053` 類會抽出主辦、日期、名額與截止；`042` 類會自然化；`048` 類保留具體內容但不回到角色百科
+8. Validation / QC:
+   - `python3 -m py_compile edb_scraper.py` → PASS
+   - dashboard JS compile → PASS
+   - helper regression → PASS
+9. Pending:
+   - 決定是否發布 `v3.0.37`
+   - 若發布，重跑 workflow 後重點驗 `053 / 042 / 043 / 048`
+10. Next priorities:
+   - 決定是否發布 `v3.0.37`
+   - 若發布，驗 live summary 是否由官腔轉為硬資訊優先
+   - 視結果再決定是否仍需個別 rich-summary 收口
+11. Risks / blockers:
+   - 本機缺 `OPENAI_API_KEY`，未做完整雲端回歸
+   - 本地 `circulars.json` 仍是舊 114 份資料，helper 只能驗規則方向，不能代替 live workflow 後最終結果
+12. Notes:
+   - 這輪刻意不再動 K1 / action synthesis，避免把 summary 問題和其他層混在一起。
+
+### Problem -> Root Cause -> Fix -> Verification
+1. Problem:
+   - live summary 仍常見官式句、推斷語氣、資訊空泛，像 `053` 類只有活動安排空句，`042` 類仍見「推斷性說明」。
+2. Root Cause:
+   - 現有 normalizer 只能移除部分 filler，但當模型輸出仍偏 generic 時，不一定會觸發 source-based fallback；同時 prompt 對「硬資訊優先」要求不夠明確。
+3. Fix:
+   - 補強 prompt 與 filler markers，並在 summary 過短/過長/單段或帶官式 marker 時，自動改用 `official/pdf_text` 的 source-priority summary。
+4. Verification:
+   - `053` helper 會輸出主辦、日期、名額、提名上限與截止
+   - `042` helper 會去掉「推斷性說明」並自然化成兩段
+   - `048` helper 仍保留具體內容，但不再洩漏角色工作
+5. Regression / rule update:
+   - `CODEBASE_CONTEXT.md` Key Decision #37 added: generic / official-sounding summaries should refresh from source rather than preserving weak model wording.
+
+### Test Scenarios
+| Scenario | Precondition | Action / input | Expected | Actual | Result |
+|---|---|---|---|---|---|
+| Normal flow | source-rich activity circular summary still generic | apply post-analysis review | summary rebuilt from source with organizer/date/quota/deadline | `053` helper rebuilt into 2-paragraph hard-info summary | PASS |
+| Boundary | generic one-paragraph summary with推斷語氣 but no source text | normalize summary | remove推斷語氣 and keep concrete content | `042` helper became 2 short paragraphs with `重點包括...` | PASS |
+| Error / failure path | local env missing PyMuPDF / OPENAI key | run local helper only | local QC still works; cloud verification skipped | helper printed PyMuPDF warning only; QC unaffected | PASS with notes |
+| Regression | rich circular with role-work leakage | apply post-analysis review | keep circular-first content, remove role-work sentence | `048` helper kept plan details and removed role-work sentence | PASS |
+
+Overall: PASS
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Analysis pipeline behavior change | CODEBASE_CONTEXT.md Key Decisions / maintenance log; README if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Frontend display behavior change | README.md if user-visible; SESSION_LOG.md entry | ✓ Done |
+| Session governance maintenance / log archive | SESSION_HANDOFF.md current state + SESSION_LOG.md current entry + archive pointer / files if rotation triggered | ✓ Done |
+
+## 2026-04-10 Live circulars disappearance hotfix
+
+1. Agent & Session ID: Codex_20260410_0006
+2. Task summary: 使用者回報「更新後，通告不見了很多」。經核實，問題不是單純數量變少，而是 live `circulars.json` 同時出現了兩層故障：最新 auto-update commit `fd78c0a` 把資料縮成 `3` 份，其後 publish commit `2448f16` 又把 merge conflict marker 一併推上去，令 public JSON 直接失效。
+3. Layer classification: Product / System Layer（live data hotfix）+ Development Governance Layer（session persistence）
+4. Source triage: user-visible release incident。屬資料層 / deploy 層故障，不是前端 UI 或 summary 本身問題。
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, live `circulars.json`, `/Users/leonard/Documents/EDB-AI-Circular-System/circulars.json`, deploy repo git log / status
+6. Files changed: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 確認 live `circulars.json` 含 conflict markers (`<<<<<<< HEAD`)
+   - ✅ 確認 `8664c3c` 的 `circulars.json` 為最後正常版本（`117` 份）
+   - ✅ 將 deploy repo `circulars.json` 還原到 `8664c3c` 版本
+   - ✅ 推送 hotfix commit `442b9c3`：`hotfix: restore circulars.json to last known-good 117-record state`
+8. Validation / QC:
+   - local deploy repo `circulars.json` parse → PASS (`count=117`)
+   - deploy repo status after push → PASS (`main...origin/main`)
+   - live fetch immediately after push → still served old broken JSON with conflict markers
+9. Pending:
+   - 等 GitHub Pages propagation / cache 更新
+   - propagation 後重新驗 live `circulars.json` 是否回復 `117`
+10. Next priorities:
+   - 驗 live hotfix 是否生效
+   - 再查 `fd78c0a` 為何把資料縮成 `3` 份
+   - 再決定是否發 `v3.0.36`
+11. Risks / blockers:
+   - hotfix 已推送，但 GitHub Pages 暫時仍回傳舊壞檔
+   - `days-3` / auto-update path 可能重新引入 `3 circulars` regression，需後續追根因
+12. Notes:
+   - 這輪先救 live；未觸碰 summary/K1 邏輯
+
+### Doc Sync
+
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Session governance maintenance / log archive | SESSION_HANDOFF.md current state + SESSION_LOG.md current entry + archive pointer / files if rotation triggered | ✓ Done |
+
 ## 2026-04-10 Wide 3-column layout override fix (workspace v3.0.36)
 
 1. Agent & Session ID: Codex_20260410_0005
