@@ -1608,6 +1608,9 @@ SUMMARY_BANNED_MARKERS = [
     "就目前公開內容而言",
     "官方渠道後續發布",
     "後續發布具體指引",
+    "後續協調的依據",
+    "請學校留意後續更新",
+    "校方公告中公布",
     "推斷性說明",
     "整體重點在於",
 ]
@@ -1655,6 +1658,7 @@ def _strip_summary_filler(text: str) -> str:
     cleaned = cleaned.replace("就目前公開內容而言，", "")
     cleaned = cleaned.replace("整體重點在於", "重點包括")
     cleaned = cleaned.replace("作出推斷性說明", "作出說明")
+    cleaned = cleaned.replace("供校方、師生及相關單位作為參考與後續協調的依據，", "")
     cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
     return cleaned.strip()
 
@@ -1893,13 +1897,13 @@ def _build_summary_fallback(reviewed: dict) -> str:
     if any(token in title for token in ["交流", "夏令營", "參觀", "展覽", "活動"]) or "activity" in topics:
         if tags:
             detail_tags = "、".join(tags[:3])
-            detail = f"內容聚焦{detail_tags}及學校相關安排。"
+            detail = f"內容聚焦{detail_tags}及活動的基本安排。"
         else:
-            detail = "內容聚焦學生交流、活動安排及學校相關支援要求。"
+            detail = "內容聚焦學生交流、活動安排及參與要求。"
     elif any(token in title for token in ["課程", "學習領域", "文憑考試", "教學"]) or "curriculum" in topics:
         detail = "內容聚焦課程推行、學校安排及相關要求。"
     elif any(token in title for token in ["津貼", "資助", "撥款", "財務", "採購"]) or "finance" in topics:
-        detail = "內容聚焦申請安排、資助用途及相關程序要求。"
+        detail = "內容聚焦計劃安排、資助用途及相關程序要求。"
     elif "student" in topics or any(token in title for token in ["學生", "安全", "家長"]):
         detail = "內容聚焦學生參與安排及相關支援要求。"
     elif tags:
@@ -1908,7 +1912,12 @@ def _build_summary_fallback(reviewed: dict) -> str:
     else:
         detail = "內容聚焦相關安排及通告列明的跟進要求。"
 
-    return f"本通告介紹「{title}」的安排。\n\n{detail}"
+    date_text = (reviewed.get("date") or "").strip()
+    if date_text:
+        lead = f"本通告於{date_text}發布，介紹「{title}」的安排。"
+    else:
+        lead = f"本通告介紹「{title}」的安排。"
+    return f"{lead}\n\n{detail}"
 
 
 def _summary_needs_source_refresh(reviewed: dict) -> bool:
@@ -2631,7 +2640,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.37")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.38")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

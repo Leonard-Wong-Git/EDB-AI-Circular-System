@@ -222,6 +222,7 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 35 | Summary Should Preserve Concrete Content While Removing Meta Phrasing | 2026-04-09 | When a summary sentence contains usable circular content plus weak speculative phrasing such as `根據標題可推測`, normalization should strip the speculative prefix but keep the concrete content. Sparse fallback summaries should also use title/tag detail so they remain informative rather than overly generic. |
 | 36 | Source-rich Circulars Should Use Source-rich Summaries | 2026-04-10 | If a circular has enough `official` / `pdf_text`, summary fallback should extract hard facts such as organizers, dates, quotas, nomination limits, and deadlines from source text instead of collapsing to a generic title/tag synopsis. |
 | 37 | Summary Should Refresh from Source When Model Output Is Generic | 2026-04-11 | If the normalized summary is still too short, too long, single-paragraph, or contains official-sounding filler such as `就目前公開內容而言` / `推斷性說明`, the pipeline should prefer a source-based summary rebuilt from `official` / `pdf_text` rather than preserving the generic model wording. |
+| 38 | Source-less Circulars Need Concrete Fallback Wording | 2026-04-11 | When `official` and `pdf_text` are both empty, summary fallback must avoid placeholders like `後續更新` or `後續協調依據`; it should use available date/title/tag/topic facts to produce a concise but concrete synopsis instead. |
 
 ---
 
@@ -280,3 +281,4 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 2026-04-10 | Codex_20260410_0005 | Fixed the 768–1023px responsive override so `wide` layout can truly render 3 columns, and bumped workspace version to v3.0.36 pending publish decision. |
 | 2026-04-09 | Codex_20260409_0017 | After verifying live `v3.0.30`, tightened summary normalization again so role-work sentences are filtered out of summary and empty summaries fall back to a title-based circular synopsis; workspace version is now v3.0.31 pending publish. |
 | 2026-04-11 | Codex_20260411_0001 | Tightened summary generation again: added source-priority refresh for generic/official-sounding summaries, strengthened filler stripping (`就目前公開內容而言` / `推斷性說明`), and bumped workspace version to v3.0.37 pending publish. |
+| 2026-04-11 | Codex_20260411_0002 | Added a concrete fallback path for source-less circulars so generic summaries refresh to date/title/tag-based wording without `後續更新` / `後續協調` style filler; workspace version is now v3.0.38 pending publish. |
