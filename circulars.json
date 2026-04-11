@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-11T09:51:47Z",
+  "generated_at": "2026-04-11T13:26:11Z",
   "model": "gpt-5-nano",
   "temperature": 1,
   "range": "school-year (from 2025-09-01)",
@@ -164,9 +164,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -916,9 +914,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -1079,10 +1075,12 @@
         "panel_chair": {
           "r": true,
           "pts": [
-            "留意學生參與條件、支援安排及活動期間的照顧需要，避免遺漏個別學生的參與支援。"
+            "留意學生參與條件、支援安排及活動期間的照顧需要，避免遺漏個別學生的參與支援。",
+            "如涉及校本計劃或資源申請，應先對應實施目的、預算依據及預期成效。"
           ],
           "acts": [
-            "按學生級別、活動安排及支援需要，預早協調人手、分組、風險提示及記錄安排。"
+            "按學生級別、活動安排及支援需要，預早協調人手、分組、風險提示及記錄安排。",
+            "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。"
           ]
         },
         "teacher": {
@@ -1173,9 +1171,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -1518,7 +1514,9 @@
         "eo_admin": {
           "r": true,
           "pts": [
-            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。",
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
           ],
           "acts": [
             "整理學生名單、家長通知、回覆記錄及相關支援文件，並保留校內存檔。"
@@ -1586,14 +1584,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -2117,7 +2108,9 @@
         "eo_admin": {
           "r": true,
           "pts": [
-            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。",
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
           ],
           "acts": [
             "整理學生名單、家長通知、回覆記錄及相關支援文件，並保留校內存檔。"
@@ -2185,11 +2178,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -2544,13 +2533,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -3013,13 +2996,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity"
@@ -3210,14 +3187,7 @@
       ],
       "diff": null,
       "knowledge_review": {
-        "terminology_review": [
-          {
-            "priority": 5,
-            "from": "學與教資源",
-            "to": "學與教資源／課程相關材料",
-            "reason": "統一 curriculum 類通告用語，突出課程應用場景"
-          }
-        ],
+        "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
           "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
@@ -3872,7 +3842,9 @@
         "eo_admin": {
           "r": true,
           "pts": [
-            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。",
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
           ],
           "acts": [
             "整理學生名單、家長通知、回覆記錄及相關支援文件，並保留校內存檔。"
@@ -3940,13 +3912,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -4401,14 +4367,7 @@
       ],
       "diff": null,
       "knowledge_review": {
-        "terminology_review": [
-          {
-            "priority": 5,
-            "from": "學與教資源",
-            "to": "學與教資源／課程相關材料",
-            "reason": "統一 curriculum 類通告用語，突出課程應用場景"
-          }
-        ],
+        "terminology_review": [],
         "missing_points": [
           "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
         ],
@@ -4424,12 +4383,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -4650,13 +4604,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -4914,9 +4862,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -5318,13 +5264,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -5544,13 +5484,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "hr",
@@ -5752,13 +5686,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "it",
@@ -5993,9 +5921,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "hr",
@@ -6503,7 +6429,9 @@
         "eo_admin": {
           "r": true,
           "pts": [
-            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。",
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
           ],
           "acts": [
             "整理學生名單、家長通知、回覆記錄及相關支援文件，並保留校內存檔。"
@@ -6571,14 +6499,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -6818,9 +6739,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -6997,7 +6916,9 @@
         "eo_admin": {
           "r": true,
           "pts": [
-            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。",
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
           ],
           "acts": [
             "整理學生名單、家長通知、回覆記錄及相關支援文件，並保留校內存檔。"
@@ -7065,14 +6986,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -7311,13 +7225,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -7525,13 +7433,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -8071,7 +7973,9 @@
         "eo_admin": {
           "r": true,
           "pts": [
-            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。",
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
           ],
           "acts": [
             "整理學生名單、家長通知、回覆記錄及相關支援文件，並保留校內存檔。"
@@ -8139,14 +8043,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -8379,13 +8276,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -8575,7 +8466,9 @@
         "eo_admin": {
           "r": true,
           "pts": [
-            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。",
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
           ],
           "acts": [
             "整理學生名單、家長通知、回覆記錄及相關支援文件，並保留校內存檔。"
@@ -8643,12 +8536,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -8850,7 +8738,9 @@
         "eo_admin": {
           "r": true,
           "pts": [
-            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。",
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
           ],
           "acts": [
             "整理學生名單、家長通知、回覆記錄及相關支援文件，並保留校內存檔。"
@@ -8918,14 +8808,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -9522,7 +9405,9 @@
         "eo_admin": {
           "r": true,
           "pts": [
-            "核對申請資格、截止日期、所需證明文件及收支記錄要求，並保留佐證以備查核。"
+            "核對申請資格、截止日期、所需證明文件及收支記錄要求，並保留佐證以備查核。",
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
           ],
           "acts": [
             "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。"
@@ -9584,14 +9469,7 @@
             "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 finance 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -9824,11 +9702,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -9998,7 +9872,9 @@
         "eo_admin": {
           "r": true,
           "pts": [
-            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。",
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
           ],
           "acts": [
             "整理學生名單、家長通知、回覆記錄及相關支援文件，並保留校內存檔。"
@@ -10066,14 +9942,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -10311,13 +10180,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -10535,9 +10398,7 @@
             "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
-        "role_notes": [
-          "偵測到 finance 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "hr",
@@ -10816,9 +10677,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -11046,13 +10905,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -11267,13 +11120,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -11761,11 +11608,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -12009,9 +11852,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -12203,7 +12044,9 @@
         "eo_admin": {
           "r": true,
           "pts": [
-            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。",
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
           ],
           "acts": [
             "整理學生名單、家長通知、回覆記錄及相關支援文件，並保留校內存檔。"
@@ -12271,14 +12114,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -12414,7 +12250,7 @@
         "resource_value_hkd": null,
         "note": ""
       },
-      "summary": "本通告就高中學生的多元學習津貼，聚焦以印地語作為額外語言的安排，適用於2025/26學年，對象為在校高中學生。公告內容旨在說明該津貼的定位及受惠範圍，與學校在落實政策方面的配合要點。",
+      "summary": "本通告就高中學生的多元學習津貼，聚焦以印地語作為額外語言的安排，適用於2025/26學年，對象為在校高中學生。\n\n公告內容旨在說明該津貼的定位及受惠範圍，與學校在落實政策方面的配合要點。",
       "roles": {
         "principal": {
           "r": true,
@@ -12472,7 +12308,8 @@
           "r": true,
           "pts": [
             "核對申請資格、截止日期、所需證明文件及收支記錄要求，並保留佐證以備查核。",
-            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。",
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。"
           ],
           "acts": [
             "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。",
@@ -12552,14 +12389,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 finance 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -12784,11 +12614,7 @@
             "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
-        "role_notes": [
-          "偵測到 finance 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 finance 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 finance 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -13142,12 +12968,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -13647,11 +13468,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student"
@@ -13979,13 +13796,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -14225,11 +14036,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student"
@@ -14410,13 +14217,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "it",
@@ -14907,7 +14708,9 @@
         "eo_admin": {
           "r": true,
           "pts": [
-            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。",
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
           ],
           "acts": [
             "整理學生名單、家長通知、回覆記錄及相關支援文件，並保留校內存檔。"
@@ -14975,14 +14778,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -15192,13 +14988,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -15454,9 +15244,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -15660,13 +15448,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum"
@@ -15855,13 +15637,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -16067,12 +15843,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum"
@@ -16465,13 +16236,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -16703,12 +16468,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -16948,9 +16708,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -17178,13 +16936,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -17591,7 +17343,9 @@
         "eo_admin": {
           "r": true,
           "pts": [
-            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。",
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
           ],
           "acts": [
             "整理學生名單、家長通知、回覆記錄及相關支援文件，並保留校內存檔。"
@@ -17659,10 +17413,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "hr",
@@ -17861,7 +17612,9 @@
         "eo_admin": {
           "r": true,
           "pts": [
-            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。",
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
           ],
           "acts": [
             "整理學生名單、家長通知、回覆記錄及相關支援文件，並保留校內存檔。"
@@ -17939,14 +17692,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -18169,13 +17915,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -18417,10 +18157,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -18614,11 +18351,7 @@
             "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
-        "role_notes": [
-          "偵測到 finance 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 finance 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 finance 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance"
@@ -18811,13 +18544,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [],
       "k1_facts": [],
@@ -18970,13 +18697,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -19150,7 +18871,9 @@
         "eo_admin": {
           "r": true,
           "pts": [
-            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。",
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
           ],
           "acts": [
             "整理學生名單、家長通知、回覆記錄及相關支援文件，並保留校內存檔。"
@@ -19218,14 +18941,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -19458,11 +19174,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -19656,11 +19368,7 @@
             "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
-        "role_notes": [
-          "偵測到 finance 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 finance 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 finance 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance"
@@ -20114,11 +19822,7 @@
             "why": "補充津貼基本原則、申請/發放安排及會計處理要求"
           }
         ],
-        "role_notes": [
-          "偵測到 finance 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 finance 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 finance 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -20713,13 +20417,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student"
@@ -20904,13 +20602,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity"
@@ -21088,13 +20780,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [],
       "k1_facts": [],
@@ -21252,13 +20938,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -21430,7 +21110,9 @@
         "eo_admin": {
           "r": true,
           "pts": [
-            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。",
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
           ],
           "acts": [
             "整理學生名單、家長通知、回覆記錄及相關支援文件，並保留校內存檔。"
@@ -21498,14 +21180,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -21698,9 +21373,33 @@
         "recommended_links": [],
         "role_notes": []
       },
-      "k1_topics": [],
-      "k1_facts": [],
-      "k1_guidelines": [],
+      "k1_topics": [
+        "general"
+      ],
+      "k1_facts": [
+        "學校須按《公開資料守則》處理公眾索取資料要求，除有合理理由外應盡快提供",
+        "法團校董會為學校最高管治機構，負責制訂學校政策及監察學校運作",
+        "[訓導及輔導主任] 負責統籌校本支援服務的使用數據，定期向校方提交分析報告",
+        "負責巡查、紀錄、申報學校設施及維修工程需求"
+      ],
+      "k1_guidelines": [
+        {
+          "id": "g24",
+          "title": "學校行政手冊（2025年11月版）",
+          "titleShort": "學校行政手冊",
+          "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
+          "year": "2025",
+          "format": "PDF"
+        },
+        {
+          "id": "g25",
+          "title": "幼稚園相關指引及須知",
+          "titleShort": "幼稚園指引",
+          "url": "https://www.edb.gov.hk/tc/edu-system/preprimary-kindergarten/about-preprimary-kindergarten/guidelines.html",
+          "year": "2025",
+          "format": "HTML"
+        }
+      ],
       "role_fact_topics": [
         "general"
       ],
@@ -22347,10 +22046,12 @@
         "panel_chair": {
           "r": true,
           "pts": [
-            "留意學生參與條件、支援安排及活動期間的照顧需要，避免遺漏個別學生的參與支援。"
+            "留意學生參與條件、支援安排及活動期間的照顧需要，避免遺漏個別學生的參與支援。",
+            "如涉及校本計劃或資源申請，應先對應實施目的、預算依據及預期成效。"
           ],
           "acts": [
-            "按學生級別、活動安排及支援需要，預早協調人手、分組、風險提示及記錄安排。"
+            "按學生級別、活動安排及支援需要，預早協調人手、分組、風險提示及記錄安排。",
+            "按通告要求整理申請／報告文件，跟進發放時序、收支結算及校內存檔安排。"
           ]
         },
         "teacher": {
@@ -22427,12 +22128,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 finance 類訊號，將 `eo_admin` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "finance",
@@ -22647,13 +22343,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [],
       "k1_facts": [],
@@ -22853,10 +22543,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -23207,13 +22894,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -23457,9 +23138,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -23629,7 +23308,9 @@
         "eo_admin": {
           "r": true,
           "pts": [
-            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。",
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
           ],
           "acts": [
             "整理學生名單、家長通知、回覆記錄及相關支援文件，並保留校內存檔。"
@@ -23697,14 +23378,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -23975,12 +23649,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity",
@@ -24216,9 +23885,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -24361,7 +24028,7 @@
         "resource_value_hkd": null,
         "note": ""
       },
-      "summary": "本通告涉及2025/26年度的省外行──香港中學生內地交流計劃，面向香港中學生，核心安排為在內地開展交流活動，促進跨境學習與文化交流。旨在規範校方在境外交流中的審批與資料呈報流程，確保參與學生的安全與學校行政要求得以同步落實。",
+      "summary": "本通告涉及2025/26年度的省外行──香港中學生內地交流計劃，面向香港中學生，核心安排為在內地開展交流活動，促進跨境學習與文化交流。\n\n旨在規範校方在境外交流中的審批與資料呈報流程，確保參與學生的安全與學校行政要求得以同步落實。",
       "roles": {
         "principal": {
           "r": true,
@@ -24486,9 +24153,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student",
@@ -24864,10 +24529,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 curriculum 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
@@ -25103,11 +24765,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "student"
@@ -25623,13 +25281,7 @@
             "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
           }
         ],
-        "role_notes": [
-          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
-          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "activity"
