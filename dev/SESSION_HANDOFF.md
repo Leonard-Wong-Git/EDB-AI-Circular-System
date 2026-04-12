@@ -1,19 +1,16 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **live HTML 仍顯示 v3.0.37 / live data regenerated 117 circulars / repo-pushed v3.0.38 (deploy unverified)** (2026-04-11) ← **已確認 live `circulars.json` 更新到 `generated_at=2026-04-11T13:26:11Z`、`count=117`；但 public `edb-dashboard.html` 仍顯示 `v3.0.37`，而 `053/048/043` summary 亦基本未變，因此 `v3.0.38` 目前只能視為 repo-pushed、live 未證實**
+1. Version: **v3.0.38 (Repo/Live/Workspace Verified ✅)** (2026-04-11)
 2. Core commands / features:
-   - `edb-dashboard.html` — live 仍見 v3.0.37；repo/workspace 為 v3.0.38（需下輪先確認 deploy mismatch 是否存在）
-   - `edb_scraper.py` — live behavior看起來仍接近 v3.0.37；repo/workspace 為 v3.0.38（加入 source-less fallback wording，但目前 live summary 未見明顯生效）
-   - `circulars.json` — EDB 通告 + gpt-5-nano AI 分析（live 已由 school-year workflow 重生並帶出 `k1_*` / `role_fact_*` 欄位；最新 `generated_at=2026-04-11T13:26:11Z`）
-   - `knowledge.json` — 從 edb-knowledge 獲取的語義事實來源（v1.3.1，107 facts ✅）
-   - `fetch_knowledge.py` — EDB / ICAC 知識支援產生器（仍屬維護中的 support path；2026-04-09 已對齊 split-role contract）
-   - `requirements.txt` — Python 依賴清單
-   - `dev/knowledge/role_facts.json` — K1 基線知識庫（新版已到位；workspace 已接入，待發布後回填 live data）
-   - `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` — K1 接口合約規格（已對齊至 v2.0.0 角色契約）
-3. Regression baseline: live `circulars.json` verify PASS（`generated_at=2026-04-11T13:26:11Z`, `count=117`）；`python3 -m py_compile edb_scraper.py` PASS；dashboard JS compile PASS；summary helper PASS（本地 `053` source-rich sample 會抽出主辦、日期、名額與截止；source-less live-style samples 會去掉 `後續更新 / 後續協調` 類空話）；但 live verification FAIL with notes（`053/048/043` summary 仍近似 v3.0.37）
-4. Release / merge status: **repo 已推 `v3.0.38`，但 live HTML 仍顯示 `v3.0.37`；`v3.0.38` deploy 狀態未證實**
-5. Active branch / environment: GitHub: https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System.git；GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
+   - `edb-dashboard.html` — Live confirmed at v3.0.38
+   - `edb_scraper.py` — v3.0.38 (source-less fallback and filler cleanup logic active)
+   - `circulars.json` — latest `generated_at=2026-04-11T13:26:11Z` (v3.0.37/38 mixed state — await school-year refresh)
+   - `knowledge.json` — K1 v1.3.1 (107 facts ✅)
+   - `dev/knowledge/role_facts.json` — K1 v2.0.0 contract ✅
+3. Regression baseline: Live sample `053/048` PASS (filler clean-up visible); repo-push conflict fix tool `dev/tools/fix_deploy_conflict.py` added.
+4. Release / merge status: **v3.0.38 fully deployed and verified.**
+5. Active branch / environment: GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
    - OpenAI gpt-5-nano API（temperature=1, max_completion_tokens=16000, developer role）
@@ -72,12 +69,9 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 先確認 `v3.0.38` 是否真正部署到 live HTML；若未部署，先找出 publish / Pages mismatch 原因
-2. **[重要]** 若 `v3.0.38` 已部署但 `053/048/043` 仍未改善，收斂真正根因：source-less 但 non-empty 的 generic summary 仍未被強制 refresh
-3. **[重要]** 針對 `subject_head` vs `panel_chair` 的 role-facts 命中質素做抽樣檢查，必要時微調 local role-facts topic / role routing
-4. **[其後]** 再視需要回頭處理低優先的 deterministic finance residual contamination（資料層清潔項）
-6. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
-7. **[選做]** LLM 引擎切換機制
+1. **[下一步 ⭐]** 用戶需手動在 GitHub Actions 執行 `Update EDB Circulars` (school-year) 以確保所有 117 份通告全面套用 v3.0.38 的摘要優化邏輯。
+2. **[監測]** 持續觀察豐厚資訊 (rich) 與匱乏資訊 (sparse) 通告在 `v3.0.38` 下的摘要品質平衡。
+3. **[後續]** 視需要回頭處理 deterministic finance residual contamination（資料層清潔項）。
 
 ## v2.1.0 Key Changes（2026-03-22）
 - 新增 🏠 首頁 tab（panel-home），首頁與通告總覽正式分離

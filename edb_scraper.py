@@ -81,7 +81,9 @@ PDF_MAX_CHARS   = 8000   # cap PDF text sent to LLM
 CACHE_DIR       = Path(".edb_cache")
 K1_KNOWLEDGE_URL = "https://leonard-wong-git.github.io/edb-knowledge/knowledge.json"
 K1_GUIDELINES_URL = "https://leonard-wong-git.github.io/edb-knowledge/guidelines.json"
-ROLE_FACTS_PATH = Path("dev/knowledge/role_facts.json")
+# Priority: 1. Sibling repo-root (Claude-edb-knowledge), 2. Local fallback
+_sibling_kn = Path("../Claude-edb-knowledge/role_facts.json")
+ROLE_FACTS_PATH = _sibling_kn if _sibling_kn.exists() else Path("dev/knowledge/role_facts.json")
 
 # LLM — ⚠️ FIXED RULES:
 LLM_MODEL_DEFAULT = "gpt-5-nano"
@@ -1613,6 +1615,9 @@ SUMMARY_BANNED_MARKERS = [
     "校方公告中公布",
     "推斷性說明",
     "整體重點在於",
+    "若有更新",
+    "相關細則與申請程序的變更",
+    "供校方、師生及相關單位作為參考",
 ]
 
 SUMMARY_ROLE_LABEL_MARKERS = [
@@ -1659,6 +1664,7 @@ def _strip_summary_filler(text: str) -> str:
     cleaned = cleaned.replace("整體重點在於", "重點包括")
     cleaned = cleaned.replace("作出推斷性說明", "作出說明")
     cleaned = cleaned.replace("供校方、師生及相關單位作為參考與後續協調的依據，", "")
+    cleaned = cleaned.replace("若有更新，學校應注意相關細則與申請程序的變更。", "")
     cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
     return cleaned.strip()
 
@@ -1929,8 +1935,6 @@ def _summary_needs_source_refresh(reviewed: dict) -> bool:
         reviewed.get("official", ""),
         reviewed.get("pdf_text", "")[:3200],
     ]).strip()
-    if not source_text:
-        return False
 
     if any(marker in summary for marker in [
         "就目前公開內容而言",
@@ -1941,6 +1945,9 @@ def _summary_needs_source_refresh(reviewed: dict) -> bool:
         "根據標題可判斷",
         "可推斷",
         "整體重點在於",
+        "若有更新",
+        "相關細則與申請程序的變更",
+        "供校方、師生及相關單位作為參考",
     ]):
         return True
 
@@ -2640,7 +2647,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.38")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.39")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

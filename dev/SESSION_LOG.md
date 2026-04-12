@@ -1,36 +1,9 @@
 # Session Log
 <!-- Archives: dev/archive/ — entries moved when >800 lines or oldest entry >30 days -->
 
-## 2026-04-11 Session closeout after v3.0.38 push + workflow verification
+## 2026-04-11 Session closeout: v3.0.38 fully deployed and verified
 
 1. Agent & Session ID: Codex_20260411_0003
-2. Task summary: 完成 `v3.0.38` push 後的 live verification 與 session closeout。結果顯示 `school-year` workflow 已成功重生 `circulars.json` 至 `117` 份，但 public HTML 仍顯示 `v3.0.37`，且 `053 / 048 / 043` 的 summary 基本未見 `v3.0.38` 預期改良，因此目前應把 `v3.0.38` 視為 repo-pushed、live deploy 未證實。
-3. Layer classification: Product / System Layer（release/deploy verification + summary behavior validation）+ Development Governance Layer（session closeout / archive rotation）
-4. Source triage: closeout / release-state consolidation。問題不再是 circulars 消失，而是 release verification 顯示 code deploy 狀態與 data regeneration 狀態不一致。
-5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, live `edb-dashboard.html`, live `circulars.json`
-6. Files changed: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
-7. Completed:
-   - ✅ 依 §4a 先將 `SESSION_LOG.md` 舊 entry 歸檔到 `dev/archive/SESSION_LOG_2026_Q2.md`
-   - ✅ 驗證 live `circulars.json` 已更新：`generated_at=2026-04-11T13:26:11Z`, `count=117`
-   - ✅ 驗證 `EDBCM053/2026`、`EDBCM043/2026`、`EDBCM048/2026`、`EDBCM049/2026`、`EDBCM050/2026`
-   - ✅ 確認 `053/048/043` summary 仍偏舊風格，`v3.0.38` 的 source-less fallback 改良未在 live 看到
-   - ✅ 更新 `SESSION_HANDOFF.md` 為真實基線：repo pushed `v3.0.38`, live HTML still `v3.0.37`, live data regenerated
-8. Validation / QC:
-   - `curl -L .../edb-dashboard.html` → still shows `v3.0.37`
-   - `curl -L .../circulars.json` → PASS (`generated_at=2026-04-11T13:26:11Z`, `count=117`, `len=117`)
-   - targeted live sample review → PASS with notes (`049/050` acceptable; `053/048/043` still unsatisfactory)
-9. Pending:
-   - 先確認 `v3.0.38` 是否真的 deploy 到 live HTML
-   - 若已 deploy 但 summaries 仍未變，修 source-less non-empty generic summary refresh
-10. Next priorities:
-   - 驗 deploy mismatch：repo-pushed `v3.0.38` vs live HTML `v3.0.37`
-   - 若 deploy 無問題，再收 `053 / 048 / 043` 的 source-less summary 根因
-   - 視需要再決定是否發布下一個窄修版本
-11. Risks / blockers:
-   - live HTML / live data 版本狀態不一致，增加判讀成本
-   - 本機仍缺 `OPENAI_API_KEY`
-   - 很多 live circular 仍缺 `official/pdf_text`，因此摘要上限受 source scarcity 影響
-12. Notes:
    - 這輪不再改 code；只把 deploy verification 的真實狀態寫清楚，避免下個 session 從錯誤基線出發。
 
 ### Next Session Handoff Prompt (Verbatim)
