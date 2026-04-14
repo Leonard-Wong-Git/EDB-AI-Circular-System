@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-14T06:54:49Z",
+  "generated_at": "2026-04-14T09:48:51Z",
   "model": "gpt-5-nano",
   "temperature": 1,
-  "range": "past 3 days (from 2026-04-11)",
+  "range": "school-year (from 2025-09-01)",
   "date_from": "2025-09-01",
   "date_to": "2026-04-14",
-  "days": 3,
+  "days": 30,
   "count": 118,
   "circulars": [
     {
@@ -35,7 +35,7 @@
         "resource_value_hkd": null,
         "note": ""
       },
-      "summary": "本通告編號EDBCM055/2026，標題為「私立學校名冊」，於2026-04-14公布，屬於EDBCM類型的教育公告。\n\n摘要內容展示編號、標題與發布日期等硬資訊。",
+      "summary": "本通告於2026-04-14發布，介紹「私立學校名冊」的安排。\n\n內容聚焦私立學校名冊、公開資料守則及相關安排。",
       "roles": {
         "principal": {
           "r": true,
