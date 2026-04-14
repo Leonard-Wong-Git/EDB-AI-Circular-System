@@ -2001,7 +2001,7 @@ def _normalize_summary_text(text: str) -> str:
     sentences = [s.strip() for s in re.split(r"(?<=[。！？])", cleaned) if s.strip()]
     sentences = _filter_summary_sentences(sentences)
     if not sentences:
-        return _dedupe_summary_phrases(cleaned)
+        return ""
     if len(sentences) <= 2:
         joined = "\n\n".join(_dedupe_summary_phrases(s) for s in sentences)
         if len(joined) <= 250:
