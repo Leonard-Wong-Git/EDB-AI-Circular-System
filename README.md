@@ -49,6 +49,29 @@ python3 dev/tools/summary_action_audit.py --input ./circulars.json --max-example
 - 找出 `roles.*.acts` 有內容但頂層 `actions` 仍為空的通告
 - 先做全量 heuristic gate，再決定值不值得發版和跑長 workflow
 
+## 🧪 K1 Backend Smoke Test
+
+如要檢查 K1 backend semantic integration 是否健康，可用：
+
+```bash
+python3 /Users/leonard/Downloads/Claude-edb-Project-V3/dev/tools/test_k1_smoke.py --skip-llm
+```
+
+用途：
+- 驗 `role_facts.json` contract / topic keys
+- 驗 K1 public `knowledge.json` / `guidelines.json` fetch
+- 驗 topic detect、prompt 內 `【相關政策事實】` / `【相關指引文件】` / `【EDB學校管理知識中心角色事實】`
+
+若本機已設定 `OPENAI_API_KEY`，可直接跑完整版：
+
+```bash
+PYTHONPATH=/Users/leonard/Downloads/Claude-edb-Project-V3 python3 /Users/leonard/Downloads/Claude-edb-Project-V3/dev/tools/test_k1_smoke.py
+```
+
+完整版會額外驗：
+- semantic retrieval（0.45 threshold）
+- full analyze() end-to-end output
+
 ## 🏗️ 系統架構
 
 ```

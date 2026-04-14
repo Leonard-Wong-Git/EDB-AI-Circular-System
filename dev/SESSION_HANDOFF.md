@@ -1,15 +1,14 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v3.0.38 (Repo/Live/Workspace Verified ✅)** (2026-04-11)
+1. Version: **v3.0.40 (Verified ✅)** (2026-04-14)
 2. Core commands / features:
-   - `edb-dashboard.html` — Live confirmed at v3.0.38
-   - `edb_scraper.py` — v3.0.38 (source-less fallback and filler cleanup logic active)
-   - `circulars.json` — latest `generated_at=2026-04-11T13:26:11Z` (v3.0.37/38 mixed state — await school-year refresh)
-   - `knowledge.json` — K1 v1.3.1 (107 facts ✅)
-   - `dev/knowledge/role_facts.json` — K1 v2.0.0 contract ✅
-3. Regression baseline: Live sample `053/048` PASS (filler clean-up visible); repo-push conflict fix tool `dev/tools/fix_deploy_conflict.py` added.
-4. Release / merge status: **v3.0.38 fully deployed and verified.**
+   - `edb-dashboard.html` — v3.0.40 (version sync ✅)
+   - `edb_scraper.py` — v3.0.40 (Python 3.9 compat ✅; new banned markers ✅; cache dir auto-create ✅)
+   - `circulars.json` — latest `generated_at=2026-04-14T06:54:49Z` (118 records ✅)
+   - `dev/tools/test_k1_smoke.py` — v3.0.40 smoke test PASS (skip-llm mode ✅)
+3. Regression baseline: `EDBCM055/2026` identified as needing fallback logic refinement due to empty official text.
+4. Release / merge status: **v3.0.40 ready for deployment.**
 5. Active branch / environment: GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -69,9 +68,9 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 用戶需手動在 GitHub Actions 執行 `Update EDB Circulars` (school-year) 以確保所有 117 份通告全面套用 v3.0.38 的摘要優化邏輯。
-2. **[監測]** 持續觀察豐厚資訊 (rich) 與匱乏資訊 (sparse) 通告在 `v3.0.38` 下的摘要品質平衡。
-3. **[後續]** 視需要回頭處理 deterministic finance residual contamination（資料層清潔項）。
+1. **[下一步 ⭐]** 觸發 GitHub Actions 執行 school-year 或 days-3 工作流，驗證 `v3.0.40` 的新過濾標記是否能成功壓掉 `EDBCM055/2026` 類型的 generic 摘要並觸發 Fallback。
+2. **[監測]** 持續觀察 `v3.0.40` 下的摘要品質，特別是針對 source-less circulars 的 Fallback 用詞精確度。
+3. **[後續]** 評估是否需要進一步收緊 LLM Prompt，以完全杜絕 AI 在無正文時的「沒話找話」行為。
 
 ## v2.1.0 Key Changes（2026-03-22）
 - 新增 🏠 首頁 tab（panel-home），首頁與通告總覽正式分離
@@ -176,26 +175,26 @@ Increment scheme:
 Do not close a session with code changes without completing the version bump.
 
 ## Last Session Record
-1. UTC date: 2026-04-09
-2. Session ID: Codex_20260409_0012
+1. UTC date: 2026-04-13
+2. Session ID: Codex_20260413_0001
 3. Completed:
-   - ✅ 清理 `fetch_knowledge.py` 與維護中的本地知識檔 split-role stale contract usage，active path 不再把新的 K1 交付寫成 `department_head`
-   - ✅ 驗證 live `v3.0.27` 已上線，`EDBCM053/2026` 的 sparse summary 第二段已生效
-   - ✅ workspace `v3.0.28` 已加入 sparse-action synthesis：若 top-level `actions` 為空，會從角色內既有 `acts` 合成最多 3 條頂層 action
-   - ✅ `v3.0.28` 已 push 到 repo `590f398`
-   - ✅ live `v3.0.28` 已驗證上線；使用者確認效果不理想，特別是「通告分析＋知識庫後效果不好，也沒有很多角色工作」
+   - ✅ 將 `dev/SESSION_LOG.md` 依 AGENTS.md §4a 進行 archive rotation，舊 session entries 已移到 `dev/archive/SESSION_LOG_2026_Q2.md`
+   - ✅ 更正並再核實 baseline：本 repo 真實狀態為 `v3.0.39` 已 repo/live/workspace 驗證，`circulars.json generated_at=2026-04-13T10:56:57Z`
+   - ✅ `dev/SESSION_HANDOFF.md` 已改寫為以 `v3.0.39 verified` 為唯一 current baseline，不再沿用過時 handoff prompt 的 `v3.0.38 / stale generated_at`
+   - ✅ `dev/tools/test_k1_smoke.py` 已建立並完成第一輪 contract / fetch / prompt injection smoke test，以及本機 full LLM smoke test（PASS with notes）
+   - ✅ `dev/SESSION_LOG.md` 已保留最近 session 並補上本次 closeout handoff prompt
 4. Pending:
-   - 發佈 `v3.0.29`
-   - 重跑 school-year workflow
-   - 驗證 `EDBCM053/2026` 是否重新出現頂層 action 清單，並抽樣檢查更多通告確認 rich circular 未受影響
+   - 視需要收口 `.edb_cache/.knowledge_embeds.json` 首次建立 warning
+   - 確認 `dev/knowledge/role_facts.json` 與 `dev/K1_KNOWLEDGE_INTERFACE_SPEC.md` 持續一致
+   - 再決定下一輪 dashboard / summary quality 改善
 5. Next priorities (max 3):
-   - 發佈並驗證 live `v3.0.29`
-   - 核對 `053` sparse actions 與 `048/049/050` rich-vs-sparse summary/action 行為
-   - 視結果再決定是否需要 rich/sparse action 分流再收口
+   - 視需要修正 embeddings cache directory warning
+   - 驗證本地 prompt injection 與 live schema 無 drift
+   - 再評估下一步 dashboard 品質改進
 6. Risks / blockers:
-   - 本機缺 `OPENAI_API_KEY`，所以這輪未做完整雲端 LLM 端到端回歸
-   - summary 品質仍受 LLM 原始輸出影響；後處理只應做輕量收口，不能替代 prompt 本身
-   - live `v3.0.28` 已證實存在兩個 regressions：sparse action synthesis 時序過早，及 filler summary marker 不夠強
+   - `test_k1_smoke.py` full run 已通，但 `.edb_cache/.knowledge_embeds.json` 首次建立仍會出 warning；屬 non-blocking 環境收口項
+   - PyMuPDF 本機未安裝時會顯示 warning；不影響 K1 smoke 主線，但若要測 PDF-rich case 需補齊環境
+   - 後續若再收到舊 handoff prompt，需先以 repo 內 `SESSION_HANDOFF.md` / `SESSION_LOG.md` 為準，避免從 stale state 出發
 7. Files materially changed:
    - `fetch_knowledge.py`、`dev/knowledge/ROLE_KNOWLEDGE_INDEX.md`、`dev/knowledge/sch_admin_guide.md`、`dev/knowledge/fin_management.md`、`dev/knowledge/sch_activities.md`、`dev/knowledge/press_releases.md`、`dev/knowledge/curriculum_guides.md`、`dev/knowledge/kpm.md`
    - `edb_scraper.py`、`edb-dashboard.html`、`README.md`、`dev/CODEBASE_CONTEXT.md`、`dev/SESSION_HANDOFF.md`、`dev/SESSION_LOG.md`

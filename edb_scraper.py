@@ -41,7 +41,7 @@ import sys
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union, Any
 
 # ── optional deps ────────────────────────────────────────────────────────────
 try:
@@ -802,6 +802,7 @@ class KnowledgeStore:
         self.client  = client
         self.verbose = verbose
         self.log     = logging.getLogger("Knowledge")
+        CACHE_DIR.mkdir(exist_ok=True)
         self.data    = {}
         self.facts   = []      # List of strings: "Fact content"
         self.embeds  = []      # List of lists: [0.1, -0.2, ...]
@@ -1089,7 +1090,7 @@ class RoleFactsClient:
                     kw for kw in keywords if isinstance(kw, str) and kw.strip()
                 ]
 
-    def detect_topics(self, circ: dict, preferred_topics: list[str] | None = None) -> list[str]:
+    def detect_topics(self, circ: dict, preferred_topics: Optional[list[str]] = None) -> list[str]:
         self.ensure_loaded()
         if not self.data:
             return []
@@ -1455,7 +1456,7 @@ def _dedupe_strings(items: list[str]) -> list[str]:
     return output
 
 
-def _merge_role_obj(base: dict | None, incoming: dict | None) -> dict:
+def _merge_role_obj(base: Optional[dict], incoming: Optional[dict]) -> dict:
     merged = copy.deepcopy(base or {"r": False, "pts": [], "acts": []})
     if not isinstance(incoming, dict):
         return merged
@@ -1618,6 +1619,11 @@ SUMMARY_BANNED_MARKERS = [
     "若有更新",
     "相關細則與申請程序的變更",
     "供校方、師生及相關單位作為參考",
+    "摘要內容展示",
+    "等硬資訊",
+    "屬於EDBCM類型的教育公告",
+    "屬於EDBC類型的教育公告",
+    "屬於教育公告",
 ]
 
 SUMMARY_ROLE_LABEL_MARKERS = [
@@ -2647,7 +2653,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.39")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.40")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

@@ -64,6 +64,7 @@ EDB-Circular-AI-analysis-system/
     │   ├── parse_structure.py      # DOM structure analyzer
     │   ├── simulate_post_analysis_review.py  # Prototype: post-analysis knowledge review simulation
     │   ├── summary_action_audit.py # Local audit gate for summary/action regressions on circulars.json
+    │   ├── test_k1_smoke.py        # K1 backend smoke test (schema / topic detect / prompt injection / optional LLM)
     │   └── test_llm.py             # LLM API diagnostics
     └── init_backup/                # AGENTS.md install backups
 ```
@@ -282,3 +283,4 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 2026-04-09 | Codex_20260409_0017 | After verifying live `v3.0.30`, tightened summary normalization again so role-work sentences are filtered out of summary and empty summaries fall back to a title-based circular synopsis; workspace version is now v3.0.31 pending publish. |
 | 2026-04-11 | Codex_20260411_0001 | Tightened summary generation again: added source-priority refresh for generic/official-sounding summaries, strengthened filler stripping (`就目前公開內容而言` / `推斷性說明`), and bumped workspace version to v3.0.37 pending publish. |
 | 2026-04-11 | Codex_20260411_0002 | Added a concrete fallback path for source-less circulars so generic summaries refresh to date/title/tag-based wording without `後續更新` / `後續協調` style filler; workspace version is now v3.0.38 pending publish. |
+| 2026-04-13 | Codex_20260413_0002 | Added `dev/tools/test_k1_smoke.py` to smoke-test K1 backend integration (contract, topic detect, public knowledge/guidelines fetch, prompt injection, optional LLM analyze) and documented it in README / SESSION files. |
