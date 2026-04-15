@@ -1624,6 +1624,10 @@ SUMMARY_BANNED_MARKERS = [
     "屬於EDBCM類型的教育公告",
     "屬於EDBC類型的教育公告",
     "屬於教育公告",
+    "發佈日期為",
+    "通告類型為",
+    "發布日期為",
+    "文件類型為",
 ]
 
 SUMMARY_ROLE_LABEL_MARKERS = [
@@ -1954,6 +1958,10 @@ def _summary_needs_source_refresh(reviewed: dict) -> bool:
         "若有更新",
         "相關細則與申請程序的變更",
         "供校方、師生及相關單位作為參考",
+        "發佈日期為",
+        "通告類型為",
+        "發布日期為",
+        "文件類型為",
     ]):
         return True
 
@@ -2241,7 +2249,10 @@ def _apply_post_analysis_review(circ: dict) -> dict:
         "recommended_links": _merge_link_lists(added_links),
         "role_notes": role_notes,
     }
-    reviewed["actions"] = _synthesize_sparse_actions(reviewed)
+    reviewed["actions"] = [
+        a for a in _synthesize_sparse_actions(reviewed)
+        if (a.get("text") or "").strip()
+    ]
     if not (reviewed.get("summary") or "").strip():
         reviewed["summary"] = _build_summary_fallback(reviewed)
     return reviewed
@@ -2653,7 +2664,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.42")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.43")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")
