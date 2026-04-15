@@ -1,4 +1,59 @@
 
+## 2026-04-15 Cleanup + card layout fix (v3.0.41) — Claude_20260415_1347
+
+1. Agent & Session ID: Claude_20260415_1347
+2. Task summary: §1 startup；清除 21 個 macOS `* 2.*` 重複文件；修正通告卡片 layout：把 `impactBadge` 移到 card-row1 與日期同行，`card-tags` 改 `flex-wrap:nowrap` 確保合規+截止+資源申請不換行；版本升至 v3.0.41 並 push。
+3. Layer classification: Product / System Layer（dashboard UI fix）+ Development Governance Layer（session governance）
+4. Source triage: UI layout issue（date 與 impact badge 分兩行；grant chip 可能換行）
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `edb-dashboard.html`, `edb_scraper.py`
+6. Files changed: `edb-dashboard.html`, `edb_scraper.py`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ 刪除 21 個 `* 2.*` macOS Finder 重複文件
+   - ✅ `card-row1` 右側改為 `date + impactBadge` 同行顯示
+   - ✅ `card-tags` 改 `flex-wrap:nowrap`，合規+截止+資源申請不換行
+   - ✅ 版本升至 v3.0.41（dashboard 6 處 + scraper 1 處）
+   - ✅ `py_compile` PASS；JS compile PASS
+   - ✅ Push 成功 `04df72d..fc0eb68 main -> main`（rebase 後推送）
+8. Pending:
+   - 手動觸發 school-year workflow
+   - 驗 live card layout 及重點通告摘要
+9. Risks:
+   - VM proxy 封鎖 GitHub，live 驗證須靠 Mac Terminal / 瀏覽器
+
+### DOC_SYNC Matrix Scan
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Frontend display behavior change (card layout) | SESSION_LOG entry; SESSION_HANDOFF baseline | ✓ Done |
+| Version bump | edb-dashboard.html 6 locations; edb_scraper.py 1 location | ✓ Done |
+
+### Next Session Handoff Prompt (Verbatim)
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: v3.0.41 pushed to GitHub (commit `fc0eb68`, 2026-04-15). Changes: card layout fix (date+impact same row; compliance+deadline+grant no-wrap). Live circulars.json is at 2026-04-15T10:05Z (119 records). School-year workflow not yet triggered with v3.0.41 logic.
+
+Pending tasks (priority order):
+1. Trigger school-year workflow at https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System/actions to regenerate all 119 circulars with v3.0.41 analysis logic.
+2. After workflow completes, verify live dashboard card layout: date and impact badge on same row; compliance + deadline + grant chip on same row without wrapping.
+3. Inspect EDBCM055/2026, EDBCM053/2026, EDBCM048/2026, EDBCM043/2026 summaries to confirm banned-marker cleanup (v3.0.40+) is effective on fresh data.
+4. Decide if further summary or layout refinements are needed.
+
+Key files changed in this session:
+- `edb-dashboard.html` (v3.0.41 card layout + version bump)
+- `edb_scraper.py` (version string bump)
+- `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- VM proxy blocks GitHub — push and live verification must be done from Mac Terminal / browser.
+- SSH key on Mac (`~/.ssh/id_ed25519`) is set up; use `git push origin main` (no password needed).
+- No OPENAI_API_KEY in VM — no local LLM regression.
+
+Validation status: py_compile PASS; JS compile PASS; v3.0.41 pushed PASS (`fc0eb68`); live verification PENDING (school-year workflow not yet run).
+
+Post-startup first action: check latest git log to confirm no new auto-update commits have changed SESSION_HANDOFF/SESSION_LOG, then verify if school-year workflow has run since the v3.0.41 push.
+```
+
 ## 2026-04-14 Python 3.9 compatibility + Summary Quality Hardening (v3.0.40)
 
 1. Agent & Session ID: Codex_20260414_0001
