@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-15T06:56:28Z",
+  "generated_at": "2026-04-15T10:05:54Z",
   "model": "gpt-5-nano",
   "temperature": 1,
   "range": "past 3 days (from 2026-04-12)",
@@ -159,9 +159,7 @@
             "why": "補充課程推行、自評與學校層面跟進的參考框架"
           }
         ],
-        "role_notes": [
-          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。"
-        ]
+        "role_notes": []
       },
       "k1_topics": [
         "curriculum",
