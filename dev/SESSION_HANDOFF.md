@@ -1,14 +1,14 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v3.0.41 pushed ✅** (2026-04-15, commit `fc0eb68`) — **school-year workflow pending**
+1. Version: **v3.0.43 live ✅** (2026-04-15, commit `720306a`) — **school-year verified `generated_at=2026-04-15T13:28:15Z`, 119 records**
 2. Core commands / features:
-   - `edb-dashboard.html` — v3.0.41 (card layout: date+impact same row; compliance+deadline+grant no-wrap)
-   - `edb_scraper.py` — v3.0.41 (version string updated)
-   - `circulars.json` — latest auto-update `2026-04-15T10:05Z` (119 records); v3.0.41 AI logic pending school-year re-run
-   - `dev/tools/test_k1_smoke.py` — v3.0.40 smoke test PASS (skip-llm mode ✅)
-3. Regression baseline: dashboard JS compile PASS; py_compile PASS; card layout change verified in HTML. `EDBCM055/2026` summary quality pending school-year workflow verification.
-4. Release / merge status: **v3.0.41 pushed to GitHub. GitHub Pages deploy in progress. school-year workflow not yet triggered.**
+   - `edb-dashboard.html` — v3.0.43 (card layout: date+impact same row; resource table no-wrap; list view date+impact merged)
+   - `edb_scraper.py` — v3.0.43 (banned `發佈日期為`/`通告類型為` markers; empty action text filtered)
+   - `circulars.json` — live `generated_at=2026-04-15T13:28:15Z`, 119 records ✅
+   - `dev/tools/test_k1_smoke.py` — v3.0.40 smoke test PASS
+3. Regression baseline: py_compile PASS; JS compile PASS; live verification PASS — EDBCM053 para2 cleaned, EDBCM055 empty action filtered, EDBCM048/043 unchanged.
+4. Release / merge status: **v3.0.43 live and verified. No pending deploys.**
 5. Active branch / environment: GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -68,10 +68,10 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[下一步 ⭐]** 手動觸發 school-year workflow：https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System/actions — 以 v3.0.41 邏輯重生全 119 份通告
-2. **[重要]** Workflow 完成後驗 `EDBCM055/2026`、`EDBCM053/2026`、`EDBCM048/2026`、`EDBCM043/2026` 摘要品質
-3. **[監測]** 確認 v3.0.41 card layout（date+impact 同行、grant chip 不換行）在 live dashboard 上正確顯示
-4. **[後續]** 評估是否需要進一步收緊 LLM Prompt，杜絕 source-less 通告的「沒話找話」輸出
+1. **[監測]** 持續觀察 source-less 通告（`official_len=0, pdf_len=0`）的摘要品質；如有新模式的 LLM metadata 句出現，補加 banned marker
+2. **[後續]** EDBCM055/2026 現在 `actions=0`（空 action 被過濾）— 若此類通告本應有行動點，需評估是否 LLM 輸出問題還是 scraper 邏輯問題
+3. **[後續]** 評估是否需要進一步收緊 LLM prompt，杜絕 source-less 通告的「沒話找話」輸出
+4. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
 
 ## v2.1.0 Key Changes（2026-03-22）
 - 新增 🏠 首頁 tab（panel-home），首頁與通告總覽正式分離

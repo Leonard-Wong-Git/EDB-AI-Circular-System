@@ -1,4 +1,71 @@
 
+## 2026-04-15 Summary marker fix + live verification (v3.0.42–43) — Claude_20260415_1448
+
+1. Agent & Session ID: Claude_20260415_1448
+2. Task summary: 驗收 school-year workflow 結果；發現 list view 表格仍有日期/影響分欄問題及資源申請表換行問題（v3.0.42）；修復 LLM 輸出「發佈日期為/通告類型為」metadata 句未被 banned markers 攔截（v3.0.43）及空 action text 未過濾問題；觸發 school-year workflow 驗收，全部通過。
+3. Layer classification: Product / System Layer（dashboard UI + summary quality fix）+ Development Governance Layer（session close）
+4. Source triage: UI layout issue（list view 表格欄位分開）+ LLM output quality（metadata 句未攔截）+ data integrity（空 action text）
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `edb-dashboard.html`, `edb_scraper.py`, `circulars.json`
+6. Files changed: `edb-dashboard.html`, `edb_scraper.py`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ **v3.0.42**: list view 日期+影響合併同欄 (`white-space:nowrap`)；resource table th + 類型欄加 `white-space:nowrap`
+   - ✅ **v3.0.43**: `SUMMARY_BANNED_MARKERS` + `_summary_needs_source_refresh` 新增 `"發佈日期為"` / `"通告類型為"` / `"發布日期為"` / `"文件類型為"`
+   - ✅ **v3.0.43**: `_apply_post_analysis_review` 末端過濾 empty action text
+   - ✅ School-year workflow 跑完，`generated_at=2026-04-15T13:28:15Z`
+   - ✅ Live 驗收全 PASS：053 para2 cleaned，055 empty action filtered，048/043 unchanged
+8. Validation / QC:
+   - `py_compile edb_scraper.py` → PASS
+   - JS compile → PASS
+   - Live EDBCM053: `actions=2 empty=0`，para2 已清除 ✅
+   - Live EDBCM055: `actions=0 empty=0`（空 action 已過濾）✅
+   - Live EDBCM048: `actions=6 empty=0` ✅
+   - Live EDBCM043: `actions=3 empty=0` ✅
+9. Pending:
+   - 持續監測 source-less 通告摘要品質
+   - 評估 EDBCM055 `actions=0` 是否符合預期
+10. Next priorities:
+    - 監測 live 摘要品質
+    - 評估是否需進一步收緊 LLM prompt
+    - K1 第二階段（另立項目）
+11. Risks:
+    - Source-less 通告（`official_len=0, pdf_len=0`）的摘要上限受制於 LLM 對標題的理解
+    - 可能仍有其他 LLM metadata 句式未被 banned markers 覆蓋
+
+### DOC_SYNC Matrix Scan
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Dashboard UI fix (list view layout) | SESSION_LOG; SESSION_HANDOFF baseline | ✓ Done |
+| Analysis pipeline fix (banned markers + action filter) | SESSION_LOG; SESSION_HANDOFF baseline | ✓ Done |
+| Version bump (v3.0.42 → v3.0.43) | edb-dashboard.html 6 locations; edb_scraper.py 1 location | ✓ Done |
+
+### Next Session Handoff Prompt (Verbatim)
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: v3.0.43 is live and verified (2026-04-15, commit `720306a`). School-year workflow completed at `generated_at=2026-04-15T13:28:15Z` (119 records). Key fixes: list view date+impact merged column; resource table no-wrap; banned `發佈日期為`/`通告類型為` LLM metadata markers; empty action text filtered. All live checks passed.
+
+Pending tasks (priority order):
+1. Monitor live summary quality for source-less circulars — if new LLM metadata sentence patterns appear, add to SUMMARY_BANNED_MARKERS and _summary_needs_source_refresh.
+2. Evaluate EDBCM055/2026 having `actions=0` after empty action filtering — decide if this is acceptable or if LLM prompt needs tuning to produce real action points for source-less circulars.
+3. Consider whether LLM prompt needs further tightening to eliminate "沒話找話" outputs for source-less circulars.
+4. K1 Phase 2 (separate project track).
+
+Key files changed in this session:
+- `edb-dashboard.html` (v3.0.42: list view layout; v3.0.43: version bump)
+- `edb_scraper.py` (v3.0.43: banned markers + empty action filter)
+- `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+
+Known risks / blockers / cautions:
+- VM proxy blocks GitHub — push must be done from Mac Terminal using `git push origin main` (SSH key set up, no password needed).
+- Source-less circulars (official_len=0, pdf_len=0) have limited summary quality ceiling regardless of post-processing.
+- No OPENAI_API_KEY in VM — no local LLM regression.
+
+Validation status: v3.0.43 live VERIFIED; school-year workflow PASS; EDBCM053/055/048/043 all checked.
+
+Post-startup first action: check git log for any new auto-update commits since `da99c31`, then confirm live generated_at is still 2026-04-15T13:28:15Z or newer before starting any new work.
+```
+
 ## 2026-04-15 Cleanup + card layout fix (v3.0.41) — Claude_20260415_1347
 
 1. Agent & Session ID: Claude_20260415_1347
