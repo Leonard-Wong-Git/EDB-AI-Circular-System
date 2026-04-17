@@ -616,7 +616,7 @@ class EDBScraper:
             remark = cells[1].find("div", class_="circulars_result_remark")
             if not remark:
                 continue
-            num_match = re.search(r"EDB(?:CM|CL)\d{3}/\d{4}", remark.get_text())
+            num_match = re.search(r"EDBC(?:M|L)?\d{3}/\d{4}", remark.get_text())
             if not num_match:
                 continue
             num_text = num_match.group(0)
@@ -661,7 +661,12 @@ class EDBScraper:
                 return 2
             pdf_urls.sort(key=_pdf_rank)
 
-            circ_type = "EDBCM" if "CM" in num_text else "EDBCL"
+            if "EDBCM" in num_text:
+                circ_type = "EDBCM"
+            elif "EDBCL" in num_text:
+                circ_type = "EDBCL"
+            else:
+                circ_type = "EDBC"
             entry = {
                 "number":     num_text,
                 "title":      title,
@@ -2664,7 +2669,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.43")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.44")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

@@ -1,14 +1,15 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v3.0.43 live ✅** (2026-04-15, commit `720306a`) — **school-year verified `generated_at=2026-04-15T13:28:15Z`, 119 records**
+1. Version: **v3.0.44 workspace ✅** (2026-04-17) — pending push + school-year workflow to verify EDBC series fix
 2. Core commands / features:
-   - `edb-dashboard.html` — v3.0.43 (card layout: date+impact same row; resource table no-wrap; list view date+impact merged)
-   - `edb_scraper.py` — v3.0.43 (banned `發佈日期為`/`通告類型為` markers; empty action text filtered)
-   - `circulars.json` — live `generated_at=2026-04-15T13:28:15Z`, 119 records ✅
+   - `edb-dashboard.html` — v3.0.44 (version bump only)
+   - `edb_scraper.py` — v3.0.44 (EDBC series support: regex + circ_type now cover EDBCM / EDBCL / EDBC)
+   - `circulars.json` — live `generated_at=2026-04-15T13:28:15Z`, 119 records (pre-fix; EDBC003 / EDBC005 not yet included)
    - `dev/tools/test_k1_smoke.py` — v3.0.40 smoke test PASS
-3. Regression baseline: py_compile PASS; JS compile PASS; live verification PASS — EDBCM053 para2 cleaned, EDBCM055 empty action filtered, EDBCM048/043 unchanged.
-4. Release / merge status: **v3.0.43 live and verified. No pending deploys.**
+3. Regression baseline: py_compile PASS; regex unit test PASS (5/5); live verification PENDING (awaiting school-year workflow after push).
+4. Release / merge status: **v3.0.44 workspace ready — needs Mac push + school-year workflow.**
+5. ✅ **系統完成狀態（2026-04-17 確認）：** 知識庫整合已驗收，通告系統核心功能完成。日後以監測及維護模式運作。
 5. Active branch / environment: GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -68,9 +69,9 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[監測]** 持續觀察 source-less 通告（`official_len=0, pdf_len=0`）的摘要品質；如有新模式的 LLM metadata 句出現，補加 banned marker
-2. **[後續]** EDBCM055/2026 現在 `actions=0`（空 action 被過濾）— 若此類通告本應有行動點，需評估是否 LLM 輸出問題還是 scraper 邏輯問題
-3. **[後續]** 評估是否需要進一步收緊 LLM prompt，杜絕 source-less 通告的「沒話找話」輸出
+1. **[立即]** Push v3.0.44 → Mac Terminal；觸發 school-year workflow；驗收 EDBC003/2026 + EDBC005/2026 是否已出現在 circulars.json
+2. **[監測]** 持續觀察 source-less 通告（`official_len=0, pdf_len=0`）的摘要品質；如有新模式的 LLM metadata 句出現，補加 banned marker
+3. **[監測]** 若日後出現其他新系列通告（非 EDBCM / EDBCL / EDBC），視需要更新 regex
 4. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
 
 ## v2.1.0 Key Changes（2026-03-22）

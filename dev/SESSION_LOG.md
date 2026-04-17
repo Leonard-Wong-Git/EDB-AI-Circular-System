@@ -1,4 +1,74 @@
 
+## 2026-04-17 EDBC series support + system completion milestone (v3.0.44) — Claude_20260417_0800
+
+1. Agent & Session ID: Claude_20260417_0800
+2. Task summary: 發現 scraper regex 只匹配 EDBCM / EDBCL，漏掉純 EDBC 系列通告（EDBC003/2026, EDBC005/2026）；修正 regex 及 circ_type 邏輯，新增 EDBC 第三分支；版本升至 v3.0.44。同時確認通告系統核心功能完成，標示為 system complete。
+3. Layer classification: Product / System Layer（scraper parsing bug fix）+ Development Governance Layer（session governance）
+4. Source triage: Code logic issue — regex pattern `EDB(?:CM|CL)` did not match plain EDBC series
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `edb_scraper.py`, `circulars.json`
+6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ **Root cause confirmed:** `circulars.json` 有 119 筆 EDBCM/EDBCL，但 0 筆純 EDBC；regex 漏掉 EDBC 系列
+   - ✅ **Line 619 regex 修正：** `r"EDB(?:CM|CL)\d{3}/\d{4}"` → `r"EDBC(?:M|L)?\d{3}/\d{4}"`
+   - ✅ **Line 664 circ_type 修正：** 由 2-way 改為 3-way（EDBCM / EDBCL / EDBC）
+   - ✅ **py_compile PASS**
+   - ✅ **Regex unit test PASS（5/5）：** EDBCM003/2026 ✅, EDBCL007/2026 ✅, EDBC003/2026 ✅, EDBC005/2026 ✅, EDBA001/2026（不匹配）✅
+   - ✅ **版本升至 v3.0.44**（dashboard 6 處 + scraper 1 處）
+   - ✅ **系統完成狀態確認：** 知識庫整合已驗收，通告系統核心功能完成，進入監測維護模式
+8. Validation / QC:
+   - `py_compile edb_scraper.py` → PASS
+   - Regex unit test (5 cases) → PASS
+   - Live verification: PENDING（需 Mac push + school-year workflow 後確認 EDBC003 / EDBC005 出現）
+9. Pending:
+   - Mac Terminal push v3.0.44 → 觸發 school-year workflow → 驗收 EDBC003 + EDBC005
+10. Next priorities:
+    - 驗收 EDBC 系列通告首次出現
+    - 監測 live 摘要品質
+    - K1 第二階段（另立項目）
+11. Risks:
+    - EDBC 系列在 EDB 網站的 HTML 結構可能與 EDBCM 有差異（未實測）；若 PDF URL 格式不同，可能需要額外調整
+
+### Problem → Root Cause → Fix → Verification
+1. Problem: EDBC26003C / EDBC26005C 在 school-year workflow 後仍未出現在 circulars.json
+2. Root Cause: `_parse_list()` 的 regex `r"EDB(?:CM|CL)\d{3}/\d{4}"` 只匹配兩個前綴，純 EDBC 系列被 `if not num_match: continue` 靜默跳過
+3. Fix: 改為 `r"EDBC(?:M|L)?\d{3}/\d{4}"` 並新增 `elif "EDBCL"` 分支；不影響現有 EDBCM / EDBCL 處理
+4. Verification: py_compile PASS；5-case regex test PASS；live verification pending
+
+### DOC_SYNC Matrix Scan
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Analysis pipeline behavior change (new circular type support) | SESSION_LOG; SESSION_HANDOFF baseline | ✓ Done |
+| Version bump (v3.0.43 → v3.0.44) | edb-dashboard.html 6 locations; edb_scraper.py 1 location | ✓ Done |
+
+### Next Session Handoff Prompt (Verbatim)
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: v3.0.44 workspace ready (2026-04-17). Fix: EDBC series (plain, without M or L) now supported — regex updated from EDB(?:CM|CL) to EDBC(?:M|L)?, circ_type now 3-way. System marked as complete (core functionality done, entering monitoring/maintenance mode).
+
+Pending tasks (priority order):
+1. Push v3.0.44 from Mac Terminal: git -C ~/Documents/EDB-AI-Circular-System pull --rebase origin main && git -C ~/Documents/EDB-AI-Circular-System push origin main
+2. Trigger school-year workflow on GitHub Actions to pick up EDBC003/2026 and EDBC005/2026.
+3. After workflow completes, verify circulars.json contains EDBC003 and EDBC005 with proper summaries and analysis.
+4. Monitor live summary quality — add banned markers if new LLM metadata patterns appear.
+5. K1 Phase 2 (separate project track).
+
+Key files changed in this session:
+- edb_scraper.py (v3.0.44: EDBC series regex + circ_type fix)
+- edb-dashboard.html (v3.0.44: version bump)
+- dev/SESSION_HANDOFF.md, dev/SESSION_LOG.md
+
+Known risks / blockers / cautions:
+- VM proxy blocks GitHub — push must be done from Mac Terminal.
+- EDBC series HTML structure on EDB website not yet verified live; if PDF URL format differs, may need further adjustment.
+- No OPENAI_API_KEY in VM — no local LLM regression.
+
+Validation status: py_compile PASS; regex unit test 5/5 PASS; v3.0.44 workspace ready; live verification PENDING (awaiting push + school-year workflow).
+
+Post-startup first action: check git log for commits since last session (da99c31 → newer), confirm v3.0.44 was pushed, then verify school-year workflow completed and EDBC003/EDBC005 appear in live circulars.json.
+```
+
 ## 2026-04-15 Summary marker fix + live verification (v3.0.42–43) — Claude_20260415_1448
 
 1. Agent & Session ID: Claude_20260415_1448
