@@ -2,8 +2,34 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>EDB 通告智能分析系統</title>
+
+  <!-- PWA / Add to Home Screen -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#3b82f6" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#2563eb" media="(prefers-color-scheme: light)">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="EDB 通告">
+
+  <!-- iOS Safari -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="EDB 通告">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+
+  <!-- Open Graph / Share -->
+  <meta property="og:title" content="EDB 通告智能分析系統">
+  <meta property="og:description" content="AI 即時解讀教育局通告，自動提取摘要、識別截止日期與角色職責">
+  <meta property="og:type" content="website">
+
+  <!-- MS Tiles (Windows) -->
+  <meta name="msapplication-TileColor" content="#0b1221">
+  <meta name="msapplication-TileImage" content="icons/icon-192.png">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 

@@ -2,8 +2,28 @@
 <html lang="zh-HK" data-theme="light" data-palette="summer" data-layout="standard">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>EDB 通告智能分析系統 v3.0.46</title>
+
+<!-- PWA / Add to Home Screen -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#3b82f6">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="EDB 通告">
+
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="EDB 通告">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+
+<!-- MS Tiles -->
+<meta name="msapplication-TileColor" content="#0b1221">
+<meta name="msapplication-TileImage" content="icons/icon-192.png">
 <style>
 /* ============================================================
    PALETTES (accent colours only — theme-independent)
@@ -789,7 +809,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
   .search-wrap{max-width:none;}
   .hdr-actions .btn span{display:none;}
   .stats-bar{padding:8px 12px;}
-  .main{padding:12px;}
+  .main{padding:12px;padding-bottom:calc(12px + env(safe-area-inset-bottom));}
   .cards-grid{grid-template-columns:1fr!important;}
   .settings-grid{grid-template-columns:1fr;}
   .dev-grid{grid-template-columns:1fr;}
@@ -800,11 +820,35 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
   .cal-cell{min-height:52px;}
   .cal-ev{display:none;}
   .diff-pane{flex-direction:column;}
+  /* mobile: filter chips scroll horizontally instead of wrapping */
+  .filter-bar.open{max-height:400px;}
+  .filter-group{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;padding-bottom:2px;}
+  .filter-group::-webkit-scrollbar{display:none;}
+  .f-chip{flex-shrink:0;}
+  /* safe-area for iPhone notch/home bar */
+  .header{padding-left:max(12px, env(safe-area-inset-left));
+          padding-right:max(12px, env(safe-area-inset-right));}
+  .tabs{padding-left:max(10px, env(safe-area-inset-left));
+        padding-right:max(10px, env(safe-area-inset-right));}
+  /* touch targets */
+  .tab-btn{min-height:44px;display:flex;align-items:center;justify-content:center;}
+  .f-chip{min-height:36px;display:flex;align-items:center;}
+  .btn{min-height:36px;}
 }
 @media(min-width:768px) and (max-width:1023px){
   [data-layout="standard"] .cards-grid{grid-template-columns:repeat(2,1fr)!important;}
   [data-layout="wide"] .cards-grid{grid-template-columns:repeat(3,1fr)!important;}
   [data-layout="compact"] .cards-grid{grid-template-columns:1fr!important;}
+  /* tablet: filter chips scroll horizontally */
+  .filter-group{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;}
+  .filter-group::-webkit-scrollbar{display:none;}
+  .f-chip{flex-shrink:0;}
+}
+/* ── universal safe-area bottom padding (for all screen sizes) ── */
+@supports(padding-bottom:env(safe-area-inset-bottom)){
+  .main{padding-bottom:calc(18px + env(safe-area-inset-bottom));}
 }
 
 /* ============================================================
