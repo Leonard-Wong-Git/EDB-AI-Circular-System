@@ -260,7 +260,7 @@
 
     <div class="badge">
       <span class="badge-dot"></span>
-      EDB · AI 分析 · v3.0.44
+      EDB · AI 分析 · v3.0.46
     </div>
 
     <h1 class="title">EDB 通告<br>智能分析系統</h1>
@@ -414,6 +414,8 @@
   document.querySelector('.enter-btn').addEventListener('click', function (e) {
     e.preventDefault();
     const href = this.href;
+    // Mark that the user has passed through the landing page this session
+    sessionStorage.setItem('edb_visited_landing', '1');
     document.querySelector('.card').style.transition = 'opacity 0.35s ease, transform 0.35s ease';
     document.querySelector('.card').style.opacity = '0';
     document.querySelector('.card').style.transform = 'scale(0.97)';

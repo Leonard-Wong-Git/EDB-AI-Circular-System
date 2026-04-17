@@ -1,16 +1,16 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v3.0.45 workspace ✅** (2026-04-17) — pending push + school-year workflow
+1. Version: **v3.0.46 workspace ✅** (2026-04-17) — pending push + school-year workflow
 2. Core commands / features:
-   - `edb-dashboard.html` — v3.0.45 (version bump)
+   - `edb-dashboard.html` — v3.0.46 (4 dashboard fixes + landing gate + version bump)
    - `edb_scraper.py` — v3.0.45 (EDBC series support + knowledge signal detection — 暗盤回饋機制)
-   - `index.html` — 開頁（Canvas 粒子動畫 + 功能亮點 + 進入按鈕）live ✅
+   - `index.html` — v3.0.46 開頁（Canvas 粒子動畫；sessionStorage landing gate）live ✅
    - `circulars.json` — live `generated_at=2026-04-15T13:28:15Z`, 119 records
    - `dev/knowledge/policy_signals.json` — 知識庫 signal 暗盤記錄（待 workflow 後首次生成）
    - `dev/tools/test_k1_smoke.py` — v3.0.40 smoke test PASS
 3. Regression baseline: py_compile PASS; signal detection 5/5 PASS; write+dedup PASS; live verification PENDING.
-4. Release / merge status: **v3.0.45 workspace ready — needs Mac push + school-year workflow.**
+4. Release / merge status: **v3.0.46 workspace ready — needs Mac push + school-year workflow.**
 5. ✅ **系統完成狀態（2026-04-17 確認）：** 知識庫整合已驗收，通告系統核心功能完成，進入監測維護模式。
 5. Active branch / environment: GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
@@ -71,10 +71,10 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[立即]** Mac Terminal push v3.0.45 → 觸發 school-year workflow → 驗收 EDBC003/EDBC005 出現 + 確認 `dev/knowledge/policy_signals.json` 已生成（預計 3 份 strong signal）
-2. **[監測]** 持續觀察 `policy_signals.json`；每次 workflow 後如有新 pending_review，評估是否加入知識庫
-3. **[監測]** 持續觀察 source-less 通告摘要品質；如有新模式 LLM metadata 句，補加 banned marker
-4. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
+1. **[立即]** Mac Terminal push v3.0.46 → 觸發 school-year workflow → 驗收 EDBC003/EDBC005 出現 + 確認 `dev/knowledge/policy_signals.json` 已生成（預計 3 份 strong signal）
+2. **[立即]** 訪問 GitHub Pages 目視驗證：(a) 首次進入顯示 landing page；(b) 類型篩選含 EDBC；(c) 主題篩選含安全管理 + 採購；(d) 設定頁無開發者工具；(e) 系統功能說明已精簡；(f) 免責聲明版本正確 v3.0.46
+3. **[監測]** 持續觀察 `policy_signals.json`；每次 workflow 後如有新 pending_review，評估是否加入知識庫
+4. **[監測]** 持續觀察 source-less 通告摘要品質；如有新模式 LLM metadata 句，補加 banned marker
 
 ## v2.1.0 Key Changes（2026-03-22）
 - 新增 🏠 首頁 tab（panel-home），首頁與通告總覽正式分離
@@ -180,7 +180,7 @@ Do not close a session with code changes without completing the version bump.
 
 ## Last Session Record
 1. UTC date: 2026-04-17
-2. Session ID: Codex_20260413_0001
+2. Session ID: Claude_20260417_1200
 3. Completed:
    - ✅ 將 `dev/SESSION_LOG.md` 依 AGENTS.md §4a 進行 archive rotation，舊 session entries 已移到 `dev/archive/SESSION_LOG_2026_Q2.md`
    - ✅ 更正並再核實 baseline：本 repo 真實狀態為 `v3.0.39` 已 repo/live/workspace 驗證，`circulars.json generated_at=2026-04-13T10:56:57Z`

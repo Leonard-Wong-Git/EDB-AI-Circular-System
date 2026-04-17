@@ -1,4 +1,74 @@
 
+## 2026-04-17 Dashboard fixes + landing gate (v3.0.46) — Claude_20260417_1200
+
+1. Agent & Session ID: Claude_20260417_1200
+2. Task summary: 完成 4 項 dashboard 修正（v3.0.46）：(1) 移除設定頁「開發者工具」項目；(2) 重寫「系統功能說明」為 6 個精簡區塊，加入 EDBC 三類說明；(3) 免責聲明版本號 v2.0.0 → v3.0.46；(4) 類型篩選新增 EDBC chip，主題篩選新增「安全管理」（44 筆）及「採購」（43 筆）。另：修正直接訪問 edb-dashboard.html 跳過 landing page 問題，加入 sessionStorage gate。
+3. Layer classification: Product / System Layer（dashboard UI fix）
+4. Source triage: UI completeness issue（filter bar missing chips）+ data accuracy issue（version string stale）+ UX flow issue（landing gate bypass）
+5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `edb-dashboard.html` (lines 1015–1070, 1350–1450)
+6. Files changed: `edb-dashboard.html`, `index.html`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+7. Completed:
+   - ✅ **移除開發者工具：** 刪除 setting-row div (3 lines)，其他設定項不受影響
+   - ✅ **系統功能說明重寫：** 8 個區塊精簡為 6 個（移除 PDF 原文件、本機儲存兩個冗餘區塊；修正 AI 模型名稱為 gpt-4.1-nano；加入 EDBC 三類說明）
+   - ✅ **免責聲明版本修正：** v2.0.0 → v3.0.46
+   - ✅ **類型篩選 EDBC：** 新增 `<button class="f-chip" data-v="EDBC" ...>通告 (EDBC)</button>`
+   - ✅ **主題篩選補全：** 新增「安全管理」(safety) 及「採購」(procurement) 兩個 chip
+   - ✅ **版本升至 v3.0.46：** dashboard 全 6 處 + index.html badge 已更新
+   - ✅ **Landing page gate：** edb-dashboard.html 加入 sessionStorage 檢查；若無 `edb_visited_landing` flag 則跳回 index.html；index.html 按鈕點擊時設置 flag
+8. Validation / QC:
+   - 類型 filter：EDBCM / EDBCL / EDBC 三個 chip 確認存在 ✅
+   - 主題 filter：curriculum / student / finance / hr / it / activity / safety / procurement / exam 九個 chip ✅
+   - 開發者工具 setting-row：已移除，設定卡保留「快捷鍵說明」「清除本地設定」「版本」三項 ✅
+   - 免責聲明：`v3.0.46` ✅
+   - Landing gate logic trace：直接訪問 dashboard → set flag → 跳 index.html → 按鈕 set flag → 進 dashboard（不跳轉）✓；正常流程 index.html → 按鈕 set flag → 進 dashboard ✓
+   - Live 驗證：PENDING（需 Mac push）
+9. Pending:
+   - Mac Terminal push v3.0.46
+   - 目視驗證 GitHub Pages live 效果（篩選 + landing gate）
+10. Next priorities:
+    - Push + school-year workflow
+    - Landing page gate live 驗證
+    - policy_signals.json 首次生成確認
+
+### DOC_SYNC Matrix Scan
+| Change Category | Required Doc Updates | Status |
+|---|---|---|
+| Dashboard UI fix (filter chips, version, doc section) | SESSION_LOG; SESSION_HANDOFF baseline + priorities | ✓ Done |
+| Landing page gate (new UX flow) | SESSION_LOG; SESSION_HANDOFF baseline | ✓ Done |
+| Version bump (v3.0.45 → v3.0.46) | edb-dashboard.html 6 locations; index.html badge | ✓ Done |
+
+### Next Session Handoff Prompt (Verbatim)
+```text
+Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
+dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
+
+Current objective: v3.0.46 workspace complete (2026-04-17). Four dashboard fixes applied: (1) 開發者工具 removed from settings; (2) 系統功能說明 rewritten to 6 concise blocks; (3) disclaimer version fixed to v3.0.46; (4) filter bar completed — EDBC type chip added, safety (44) + procurement (43) topic chips added. Landing page gate added: direct access to edb-dashboard.html now redirects to index.html via sessionStorage check. edb_scraper.py still at v3.0.45 (EDBC series + knowledge signal detection).
+
+Pending tasks (priority order):
+1. Push v3.0.46 from Mac Terminal:
+   git -C ~/Documents/EDB-AI-Circular-System add index.html edb-dashboard.html dev/SESSION_HANDOFF.md dev/SESSION_LOG.md
+   git -C ~/Documents/EDB-AI-Circular-System commit -m "fix: dashboard v3.0.46 — filter chips, doc rewrite, landing gate"
+   git -C ~/Documents/EDB-AI-Circular-System stash  # if needed
+   git -C ~/Documents/EDB-AI-Circular-System pull --rebase origin main
+   git -C ~/Documents/EDB-AI-Circular-System push origin main
+2. Trigger school-year workflow on GitHub Actions to get EDBC003/EDBC005 + policy_signals.json.
+3. Visit GitHub Pages to visually verify: landing page gate / EDBC filter chip / safety + procurement chips / settings page (no 開發者工具) / version v3.0.46.
+
+Key files changed in this session:
+- edb-dashboard.html (v3.0.46: 4 fixes + landing gate)
+- index.html (v3.0.46: sessionStorage flag on enter button)
+- dev/SESSION_HANDOFF.md, dev/SESSION_LOG.md
+
+Known risks / blockers / cautions:
+- VM proxy blocks GitHub — all git push from Mac Terminal only.
+- sessionStorage gate uses replace() so browser back-button won't loop; but users with direct bookmarks to edb-dashboard.html will always see landing page on each new browser session (intended behavior).
+- edb_scraper.py not changed this session — still v3.0.45, needs push from previous session changes.
+
+Validation status: All 4 dashboard fixes QC'd by code inspection. Landing gate logic traced. Live verification PENDING (push not yet done).
+
+Post-startup first action: Confirm v3.0.46 files are in EDB-Circular-AI-analysis-system git folder, then provide Mac Terminal push command for user to execute.
+```
+
 ## 2026-04-17 EDBC + splash page + knowledge signal (v3.0.44–45) — Claude_20260417_0800
 
 1. Agent & Session ID: Claude_20260417_0800

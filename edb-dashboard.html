@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EDB 通告智能分析系統 v3.0.45</title>
+<title>EDB 通告智能分析系統 v3.0.46</title>
 <style>
 /* ============================================================
    PALETTES (accent colours only — theme-independent)
@@ -946,7 +946,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
     </div>
     <div class="dev-card">
       <div class="dev-card-title">ℹ️ 版本資訊</div>
-      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v3.0.45</span></div>
+      <div class="dev-row"><span>Dashboard 版本</span><span id="devVersion">v3.0.46</span></div>
       <div class="dev-row"><span>Build Date</span><span>2026-03-16</span></div>
       <div class="dev-row"><span>知識庫更新</span><span>2026-03-09 20:48 UTC</span></div>
       <div class="dev-row"><span>資料筆數</span><span id="devCount">—</span></div>
@@ -983,7 +983,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
 <header class="header">
   <div class="brand" onclick="switchTab('home',document.getElementById('tabHome'))" style="cursor:pointer;" title="返回首頁">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="13" x2="12" y2="17"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
-    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v3.0.45</span></span>
+    <span>EDB 通告智能分析系統<span class="brand-sub" id="brandVersion"> v3.0.46</span></span>
   </div>
 
   <select class="role-select" id="roleSelect" onchange="setRole(this.value)">
@@ -1022,6 +1022,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
       <button class="f-chip on" data-v="all" onclick="setFilter('type','all',this)" data-zh="全部" data-en="All">全部</button>
       <button class="f-chip" data-v="EDBCM" onclick="setFilter('type','EDBCM',this)">通告 (EDBCM)</button>
       <button class="f-chip" data-v="EDBCL" onclick="setFilter('type','EDBCL',this)">通函 (EDBCL)</button>
+      <button class="f-chip" data-v="EDBC" onclick="setFilter('type','EDBC',this)">通告 (EDBC)</button>
     </div>
     <span class="filter-label" style="margin-left:12px" data-zh="學校" data-en="School">學校</span>
     <div id="fSchool" class="filter-group">
@@ -1045,6 +1046,8 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
       <button class="f-chip" data-v="hr" onclick="setFilter('topic','hr',this)" data-zh="人事管理" data-en="HR">人事管理</button>
       <button class="f-chip" data-v="it" onclick="setFilter('topic','it',this)" data-zh="資訊科技" data-en="IT">資訊科技</button>
       <button class="f-chip" data-v="activity" onclick="setFilter('topic','activity',this)" data-zh="學校活動" data-en="Activity">學校活動</button>
+      <button class="f-chip" data-v="safety" onclick="setFilter('topic','safety',this)" data-zh="安全管理" data-en="Safety">安全管理</button>
+      <button class="f-chip" data-v="procurement" onclick="setFilter('topic','procurement',this)" data-zh="採購" data-en="Procurement">採購</button>
       <button class="f-chip" data-v="exam" onclick="setFilter('topic','exam',this)" data-zh="評估考試" data-en="Exam">評估考試</button>
     </div>
   </div>
@@ -1359,15 +1362,8 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
           <button class="btn" onclick="clearAllSettings()" style="color:var(--red)">清除</button>
         </div>
         <div class="setting-row">
-          <div class="setting-info">
-            <div class="setting-lbl">開發者工具</div>
-            <div class="setting-desc">AI 模型設定、資料來源、使用指南</div>
-          </div>
-          <button class="btn" onclick="openDevPage()">開啟</button>
-        </div>
-        <div class="setting-row">
           <div class="setting-info"><div class="setting-lbl">版本</div></div>
-          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v3.0.45</span>
+          <span id="versionLabel" style="font-size:12px;cursor:pointer;color:var(--text-muted)" onclick="devVersionClick()" title="連按5次開啟開發者工具">v3.0.46</span>
         </div>
       </div>
 
@@ -1379,56 +1375,42 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
           <div>
             <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">📊 通告總覽</div>
             <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
-              顯示所有 EDB 通告的卡片或列表視圖。紅色頂欄 = 高影響必須行動。點擊任意通告開啟右側詳情面板（含 AI 摘要、行動清單、截止日、角色分配、版本比較五個子頁）。支援多維篩選（類型、學校類別、主題、影響級別、行動類型）及全文搜尋。
+              卡片或列表模式瀏覽所有 EDB 通告（EDBCM、EDBCL、EDBC）。點擊通告開啟詳情面板，含 AI 摘要、行動清單、截止日、角色分工、PDF 連結。支援多維篩選（類型、學校類別、主題、影響級別、行動類型）及全文搜尋。紅色頂欄 = 高影響必須行動。
             </div>
           </div>
 
           <div>
             <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">⏰ 截止日追蹤</div>
             <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
-              頁頂「截止」橫列顯示未來30天內的截止項目，按緊迫度以顏色標示（🔴 3天內 / 🟠 提醒天數內 / 🟡 14天內）。月曆視圖可按月瀏覽通告發出日及截止日，點擊日期格可展開當日清單。
+              頁頂「截止」橫列即時顯示未來30天到期項目，以顏色標示緊迫度（🔴 3天內 / 🟠 7天內 / 🟡 14天內）。月曆視圖可按月瀏覽通告發出日及截止日，點擊日期格展開當日清單。
             </div>
           </div>
 
           <div>
-            <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">👥 角色視圖</div>
+            <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">👥 角色分工</div>
             <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
-              頂部下拉選單切換角色（校長／副校長／科主任／主任／教師／EO／供應商）。選擇後，詳情面板的「行動」欄會以藍色高亮當前角色的行動項；「角色」頁顯示每個角色的責任及行動清單。鍵盤 1–7 可快速切換角色。
+              頂部選單切換角色（校長／副校長／科主任／主任／教師／EO／供應商）。詳情面板「行動」欄以藍色高亮當前角色的行動項，「角色」頁顯示各職系完整責任清單。鍵盤 1–7 快速切換角色。
             </div>
           </div>
 
           <div>
-            <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">💰 資源申請</div>
+            <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">💰 資源申請追蹤</div>
             <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
-              匯總所有含撥款或資源資訊的通告。支援申請狀態追蹤（待申請 / 申請中 / 已申請 / 已截止 / 不適用），狀態儲存於本機。可匯出為 CSV 方便記錄。
+              匯總含撥款資訊的通告，支援申請狀態追蹤（待申請 / 申請中 / 已申請 / 已截止 / 不適用），狀態儲存於本機。可匯出 CSV 備存記錄。
             </div>
           </div>
 
           <div>
             <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">⭐ 收藏 &amp; 📌 常備</div>
             <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
-              ⭐ 一般收藏：標記常用通告，顯示於「收藏」頁。📌 常備參考：標記長期適用的政策通告（如整筆撥款指引），置頂於「收藏」頁首，方便隨時查閱。按 📌 釘選長期適用的通告。
+              ⭐ 收藏常用通告，顯示於「收藏」頁。📌 常備參考：釘選長期適用的政策通告（如整筆撥款指引），置頂於收藏頁首，方便隨時查閱。所有記錄儲存於本機，不需登入。
             </div>
           </div>
 
           <div>
-            <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">🔄 自動更新</div>
+            <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">🔄 自動更新機制</div>
             <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
-              數據由 GitHub Actions 自動更新：每日 HKT 07:00、13:00、17:00 各執行一次增量抓取（最近3天）。每次抓取後透過 OpenAI gpt-5-nano 進行 AI 分析。管理員可在 GitHub Actions 頁面手動觸發完整抓取（本學年 / 最近14天 / 30天 / 365天）。
-            </div>
-          </div>
-
-          <div>
-            <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">📄 PDF 原文件</div>
-            <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
-              每份通告的詳情面板底部「PDF 原文件」區域提供繁體中文、English、简体中文三個版本的 EDB 原始 PDF 連結，直接連至教育局伺服器。（注意：EDB 舊通告 PDF 連結可能已失效，以教育局官網為準。）
-            </div>
-          </div>
-
-          <div>
-            <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px">💾 本機儲存</div>
-            <div style="font-size:12px;color:var(--text-muted);line-height:1.8">
-              所有個人設定（主題、角色、收藏、釘選、已讀狀態、申請狀態）均儲存於瀏覽器 localStorage，無需登入，不會上傳至伺服器。清除瀏覽器資料將重置所有記錄。按「清除本地設定」可手動重置。
+              GitHub Actions 每日 HKT 07:00、13:00、17:00 自動抓取最新通告並即時進行 AI 分析（OpenAI gpt-4.1-nano）。涵蓋 EDBCM、EDBCL、EDBC 三類通告。管理員可手動觸發全量或自訂日期範圍抓取。
             </div>
           </div>
 
@@ -1437,7 +1419,7 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
         <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted);line-height:1.7">
           ⚠️ <strong>免責聲明：</strong>本系統 AI 摘要及分析由人工智能生成，僅供輔助參考，一切以
           <a href="https://www.edb.gov.hk/tc/circular/index.html" target="_blank" rel="noopener">教育局官方通告</a>為準。
-          &nbsp;|&nbsp; 系統設計：Leonard Wong &nbsp;|&nbsp; v2.0.0
+          &nbsp;|&nbsp; 系統設計：Leonard Wong &nbsp;|&nbsp; v3.0.46
         </div>
       </div>
 
@@ -1484,14 +1466,28 @@ input[type="range"]{width:100px;accent-color:var(--accent);cursor:pointer;}
      ============================================================ -->
 <footer class="site-footer">
   <div>⚠️ <strong>免責聲明：</strong>本系統資料來源於<a href="https://www.edb.gov.hk" target="_blank" rel="noopener">香港特別行政區政府教育局（EDB）</a>官方網站，僅供參考及輔助管理用途，一切以教育局官方公告為準。本系統並非教育局官方產品。</div>
-  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v3.0.45 &nbsp;|&nbsp; &copy; 2026</div>
+  <div style="margin-top:4px;color:var(--border)">系統設計：<a href="https://github.com/Leonard-Wong-Git/EDB-AI-Circular-System" target="_blank" rel="noopener">Leonard Wong</a> &nbsp;|&nbsp; EDB 通告智能分析系統 v3.0.46 &nbsp;|&nbsp; &copy; 2026</div>
 </footer>
 
 <script>
 /* ============================================================
    VERSION
    ============================================================ */
-const VERSION = 'v3.0.45';
+const VERSION = 'v3.0.46';
+
+/* ── Landing page gate ──────────────────────────────────────────
+   If user arrives at edb-dashboard.html directly without having
+   passed through the landing page this session, redirect them
+   to index.html first (which then navigates back here).
+   sessionStorage is used so bookmarks work normally after the
+   first visit in any browser session.
+   ─────────────────────────────────────────────────────────── */
+(function () {
+  if (!sessionStorage.getItem('edb_visited_landing')) {
+    sessionStorage.setItem('edb_visited_landing', '1');
+    window.location.replace('index.html');
+  }
+})();
 
 /* ============================================================
    MOCK DATA
