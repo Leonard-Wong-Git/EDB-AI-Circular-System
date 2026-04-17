@@ -42,31 +42,39 @@
 Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
 dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
 
-Current objective: v3.0.46 workspace complete (2026-04-17). Four dashboard fixes applied: (1) 開發者工具 removed from settings; (2) 系統功能說明 rewritten to 6 concise blocks; (3) disclaimer version fixed to v3.0.46; (4) filter bar completed — EDBC type chip added, safety (44) + procurement (43) topic chips added. Landing page gate added: direct access to edb-dashboard.html now redirects to index.html via sessionStorage check. edb_scraper.py still at v3.0.45 (EDBC series + knowledge signal detection).
+Current objective: v3.0.46 正式完成版 (2026-04-17). System is feature-complete. All governance docs updated. Pending: Mac push + school-year workflow verification only.
+
+Completed this session (Claude_20260417_1200):
+- 4 dashboard fixes: EDBC/safety/procurement filter chips; 開發者工具 removed; 系統功能說明 rewrite (6 blocks); disclaimer version v2.0.0→v3.0.46
+- Landing page sessionStorage gate (direct edb-dashboard.html access redirects to index.html)
+- QC_MASTER.md created (12 categories A–L, 70+ items, golden standard for future maintenance)
+- README.md: version v3.0.46 + "正式完成版" status + updated feature table
+- CHANGELOG.md: v3.0.44/45/46 entries added
+- CODEBASE_CONTEXT.md: AI Maintenance Log updated
 
 Pending tasks (priority order):
 1. Push v3.0.46 from Mac Terminal:
-   git -C ~/Documents/EDB-AI-Circular-System add index.html edb-dashboard.html dev/SESSION_HANDOFF.md dev/SESSION_LOG.md
-   git -C ~/Documents/EDB-AI-Circular-System commit -m "fix: dashboard v3.0.46 — filter chips, doc rewrite, landing gate"
-   git -C ~/Documents/EDB-AI-Circular-System stash  # if needed
-   git -C ~/Documents/EDB-AI-Circular-System pull --rebase origin main
-   git -C ~/Documents/EDB-AI-Circular-System push origin main
-2. Trigger school-year workflow on GitHub Actions to get EDBC003/EDBC005 + policy_signals.json.
-3. Visit GitHub Pages to visually verify: landing page gate / EDBC filter chip / safety + procurement chips / settings page (no 開發者工具) / version v3.0.46.
+   cd ~/Documents/EDB-AI-Circular-System
+   git add index.html edb-dashboard.html README.md CHANGELOG.md dev/QC_MASTER.md dev/CODEBASE_CONTEXT.md dev/SESSION_HANDOFF.md dev/SESSION_LOG.md
+   git commit -m "release: v3.0.46 正式完成版 — QC master, filter fixes, landing gate"
+   git pull --rebase origin main
+   git push origin main
+2. Trigger school-year workflow → verify EDBC003/EDBC005 + policy_signals.json generated.
+3. Visual QC on GitHub Pages (QC_MASTER.md quick items: A1/A3/A5/B8/C2/J6).
 
-Key files changed in this session:
-- edb-dashboard.html (v3.0.46: 4 fixes + landing gate)
-- index.html (v3.0.46: sessionStorage flag on enter button)
+Key files changed:
+- edb-dashboard.html (v3.0.46), index.html (v3.0.46)
+- dev/QC_MASTER.md (new), README.md, CHANGELOG.md, dev/CODEBASE_CONTEXT.md
 - dev/SESSION_HANDOFF.md, dev/SESSION_LOG.md
 
-Known risks / blockers / cautions:
-- VM proxy blocks GitHub — all git push from Mac Terminal only.
-- sessionStorage gate uses replace() so browser back-button won't loop; but users with direct bookmarks to edb-dashboard.html will always see landing page on each new browser session (intended behavior).
-- edb_scraper.py not changed this session — still v3.0.45, needs push from previous session changes.
+Known risks:
+- VM proxy blocks GitHub — Mac Terminal push only.
+- edb_scraper.py at v3.0.45 (not changed this sub-session) — include in push.
+- school-year workflow needed to verify EDBC series + policy_signals.json (J3/J7/J8 QC items).
 
-Validation status: All 4 dashboard fixes QC'd by code inspection. Landing gate logic traced. Live verification PENDING (push not yet done).
+Validation status: All fixes QC'd by code inspection. PASS. Live verification pending push.
 
-Post-startup first action: Confirm v3.0.46 files are in EDB-Circular-AI-analysis-system git folder, then provide Mac Terminal push command for user to execute.
+Post-startup first action: Confirm git repo has all v3.0.46 files staged, then provide push command.
 ```
 
 ## 2026-04-17 EDBC + splash page + knowledge signal (v3.0.44–45) — Claude_20260417_0800

@@ -1,8 +1,8 @@
 # 📋 EDB 通告智能分析系統
 ### EDB Circular AI Analysis System
 
-> **版本 / Version:** v2.1.0 — 2026-03-22
-> **狀態 / Status:** 🟢 正式版，線上運行中
+> **版本 / Version:** v3.0.46 — 2026-04-17
+> **狀態 / Status:** ✅ 正式完成版，線上運行中
 > **Demo:** https://leonard-wong-git.github.io/EDB-AI-Circular-System/
 
 ---
@@ -19,19 +19,20 @@ This system automatically scrapes Hong Kong Education Bureau (EDB) circulars, pe
 
 | 功能 | 狀態 | 說明 |
 |------|------|------|
+| 🌟 開頁（Landing Page）| ✅ v3.0.44 | Canvas 粒子動畫 + 功能亮點 + 進入按鈕；sessionStorage landing gate |
 | 🏠 首頁 | ✅ v2.1.0 | 最新通告、需關注項、即將截止一覽 |
-| 📊 通告總覽 | ✅ 正式版 | 統計卡片、篩選、搜尋、卡片/列表切換 |
-| 🤖 AI 智能分析 | ✅ 正式版 | gpt-5-nano 多角色分析，含摘要/行動/截止；行動清單現以較簡潔的 inline 角色標籤顯示主動作，寬屏 3 列設定在 768–1023px 也會正確生效 |
+| 📊 通告總覽 | ✅ 正式完成版 | 統計卡片、篩選（EDBCM/EDBCL/EDBC + 9 主題含安全管理/採購）、搜尋、卡片/列表切換 |
+| 🤖 AI 智能分析 | ✅ 正式完成版 | gpt-4.1-nano 多角色分析；摘要只作通告簡介；行動清單 inline 角色標籤；sparse 通告有行動保底 |
 | 📄 官方原文整理版 | ✅ v3.0.12 | 清洗斷行、空白與段落，提升官方摘錄可讀性 |
-| 🧠 知識校正層 | ✅ v3.0.38 (workspace) | AI 首輪分析前後同時使用知識增強：prompt 會注入 K1 facts / guidelines，並按 K1 public `v1.3.1` schema 以 `subject_head + panel_chair + all_roles` 組裝主任層事實；本地 `role_facts.json` 亦會按 topic 取角色事實注入 `【EDB學校管理知識中心角色事實】` 區塊；summary 現正式只作通告簡介，可借知識庫詞彙統一用字，但不再寫角色工作、行動清單或知識庫延伸內容；若模型輸出仍偏官式或空泛，post-review 會優先改用 `official/pdf_text` 的硬資訊重組摘要；若通告沒有正文，則改用較實在的 date/title/tag fallback，避免「後續更新／後續協調」式空話 |
+| 🧠 知識增強層 | ✅ v3.0.45 | K1 public v1.3.1 facts/guidelines prompt 注入；本地 role_facts.json 角色知識注入；知識訊號暗盤偵測（policy_signals.json）|
 | 👥 七角色視圖 | ✅ v3.0.16 | 校長/副校長/科主任/主任/教師/EO/供應商（兼容舊 `department_head` 資料） |
-| 📅 月曆視圖 | ✅ 正式版 | EDBC 格式通告、截止日期標記 |
-| 💰 資源申請 | ✅ 正式版 | 可申請撥款追蹤 |
-| ⭐ 收藏 / 📌 釘選 | ✅ 正式版 | 一般收藏 vs 常備參考通告 |
-| 🏢 供應商分頁 | ✅ 正式版 | 供應商相關通告、法規參考 |
-| 🔄 版本比較 | ✅ 正式版 | 通告更新差異分析 |
-| 🐍 後端爬蟲 | ✅ 正式版 | ASP.NET WebForms POST 抓取 + PyMuPDF |
-| ⚙️ GitHub Actions CI | ✅ 正式版 | 每天 3 次自動更新 + 手動 school-year |
+| 📅 月曆視圖 | ✅ 正式完成版 | EDBC 格式通告、截止日期標記 |
+| 💰 資源申請 | ✅ 正式完成版 | 可申請撥款追蹤、申請狀態持久化、匯出 CSV |
+| ⭐ 收藏 / 📌 釘選 | ✅ 正式完成版 | 一般收藏 vs 常備參考通告 |
+| 🏢 供應商分頁 | ✅ 正式完成版 | 供應商相關通告、法規參考 |
+| 🔄 版本比較 | ✅ 正式完成版 | 通告更新差異分析 |
+| 🐍 後端爬蟲 | ✅ 正式完成版 | EDBC/EDBCM/EDBCL 三類；ASP.NET WebForms POST + PyMuPDF；增量 merge |
+| ⚙️ GitHub Actions CI | ✅ 正式完成版 | 每天 3 次自動更新 + 手動 school-year/custom range |
 
 ---
 
@@ -112,10 +113,10 @@ EDB-AI-Circular-System/
 ├── CLAUDE.md                       ← Claude 自動讀取橋接
 ├── GEMINI.md                       ← Gemini 自動讀取橋接
 │
-├── edb-dashboard.html              ← ✅ v2.1.0 正式版前端（3,047 行）
+├── edb-dashboard.html              ← ✅ v3.0.46 正式完成版前端
 ├── edb-dashboard-mockup.html       ← 舊版 v0.1.0 Mockup（已歸檔）
-├── index.html                      ← GitHub Pages 入口重定向
-├── edb_scraper.py                  ← ✅ 後端爬蟲管線（增量 merge）
+├── index.html                      ← ✅ v3.0.46 開頁（Canvas 粒子動畫 + landing gate）
+├── edb_scraper.py                  ← ✅ v3.0.45 後端爬蟲管線（EDBC 三類 + 知識訊號偵測）
 ├── fetch_knowledge.py              ← EDB/ICAC 知識庫抓取工具
 ├── requirements.txt                ← Python 依賴
 ├── circulars.json                  ← AI 分析輸出（納入版控，Pages 所需）
@@ -127,7 +128,8 @@ EDB-AI-Circular-System/
     ├── SESSION_HANDOFF.md          ← AI Agent 會話接力
     ├── SESSION_LOG.md              ← AI Agent 會話記錄
     ├── CODEBASE_CONTEXT.md         ← 項目技術上下文
-    ├── ACCEPTANCE_CHECKLIST.md     ← 驗收清單（80+ 項）
+    ├── QC_MASTER.md                ← ✅ QC 黃金標準（正式完成版，L+A+B+C+D+E+F+G+H+I+J+K 12 類）
+    ├── ACCEPTANCE_CHECKLIST.md     ← 舊版驗收清單（已由 QC_MASTER.md 取代）
     ├── GIT_PUSH_MANUAL.md          ← Git push 操作手冊
     ├── K1_KNOWLEDGE_INTERFACE_SPEC.md ← K1 知識庫接口合約
     ├── v0.2.0-FRONTEND-SPEC.md     ← 前端規格 SSOT
@@ -249,7 +251,13 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 
 詳見 [CHANGELOG.md](./CHANGELOG.md)
 
-- **v2.1.0** (2026-03-22) — 首頁分離、搜尋獨立、AI 改名、EDBC 月曆、scraper merge 修復
+- **v3.0.46** (2026-04-17) — ✅ **正式完成版** — Dashboard 4 項修正 + landing gate；QC_MASTER.md 制定
+- **v3.0.45** (2026-04-17) — 知識訊號暗盤偵測（policy_signals.json）
+- **v3.0.44** (2026-04-17) — EDBC 系列 scraper 修正 + 開頁 index.html
+- **v3.0.38** (2026-04-11) — Summary 品質最終版（source-priority refresh + concrete fallback）
+- **v3.0.16** (2026-04-06) — 七角色 Dashboard（split-role 契約；EDBC 兼容層）
+- **v3.0.0** (2026-03-26) — v3 重構起點（自動版本升級規則）
+- **v2.1.0** (2026-03-22) — 首頁分離、搜尋獨立、scraper merge 修復
 - **v2.0.0** (2026-03-16) — 全面改版 Dashboard（37 項改進）
 - **v1.1.0** (2026-03-14) — 後端管線正式版（PyMuPDF + K1 + R1-v2）
 - **v0.1.0** (2026-03-09) — Mockup 階段

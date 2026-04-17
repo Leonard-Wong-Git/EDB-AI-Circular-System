@@ -71,10 +71,11 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[立即]** Mac Terminal push v3.0.46 → 觸發 school-year workflow → 驗收 EDBC003/EDBC005 出現 + 確認 `dev/knowledge/policy_signals.json` 已生成（預計 3 份 strong signal）
-2. **[立即]** 訪問 GitHub Pages 目視驗證：(a) 首次進入顯示 landing page；(b) 類型篩選含 EDBC；(c) 主題篩選含安全管理 + 採購；(d) 設定頁無開發者工具；(e) 系統功能說明已精簡；(f) 免責聲明版本正確 v3.0.46
-3. **[監測]** 持續觀察 `policy_signals.json`；每次 workflow 後如有新 pending_review，評估是否加入知識庫
-4. **[監測]** 持續觀察 source-less 通告摘要品質；如有新模式 LLM metadata 句，補加 banned marker
+1. **[立即]** Mac Terminal push v3.0.46（見下方 Push 指令）
+2. **[立即]** Push 後目視驗收 QC_MASTER.md 快速驗收 6 項：A1/A3/A5/B8/C2/J6
+3. **[立即]** 觸發 school-year workflow → 驗收 J3/J7/J8（EDBC003/EDBC005 + policy_signals.json）
+4. **[監測]** 每次 workflow 後查 `policy_signals.json` 是否有新 pending_review
+5. **[監測]** 持續觀察摘要品質；如有新 filler 模式，補加 banned marker
 
 ## v2.1.0 Key Changes（2026-03-22）
 - 新增 🏠 首頁 tab（panel-home），首頁與通告總覽正式分離

@@ -5,13 +5,58 @@
 
 ---
 
-## [Unreleased]
+## [v3.0.46] — 2026-04-17 ✅ 正式完成版
 
-### Planned — v2.2.0
-- 供應商圖表真實數據字段（scraper 新增統計欄位）
-- AI 引擎切換機制
-- Mobile 優化（A6 批次）
-- K1 第二階段：PDF 提取真實 EDB 知識
+### 里程碑：系統功能全面完成，QC 黃金標準制定
+
+#### Added
+- **QC_MASTER.md**：制定正式完成版 QC 規範，12 類 (A–L) 涵蓋開頁、資料載入、篩選欄、詳情面板、月曆、資源申請、收藏、供應商、設定、快捷鍵、CI/CD、後端 scraper，共 70+ 測試項目
+- **Landing page gate**：直接訪問 `edb-dashboard.html` 自動跳回 `index.html` 開頁（sessionStorage 機制）；同一瀏覽器 session 內不重複跳轉
+
+#### Changed
+- **類型篩選**：新增「通告 (EDBC)」chip，支援篩選純 EDBC 系列通告
+- **主題篩選**：新增「安全管理」(safety, 44 條) 及「採購」(procurement, 43 條) 兩個 chip
+- **系統功能說明**：重寫為 6 個精簡區塊（含 EDBC 三類說明；AI 模型更正為 gpt-4.1-nano）
+- **免責聲明版本號**：修正 v2.0.0 → v3.0.46
+
+#### Removed
+- **開發者工具**：從設定頁移除，不再顯示用戶入口
+
+#### Technical
+- README.md 版本更新至 v3.0.46；狀態標示「正式完成版」
+- CHANGELOG.md 補全 v3.0.44–v3.0.46 完整記錄
+
+---
+
+## [v3.0.45] — 2026-04-17
+
+### 里程碑：知識庫訊號暗盤偵測機制
+
+#### Added
+- **知識訊號偵測**（`_detect_knowledge_signal()`）：分析每份通告後靜默偵測是否為政策/框架文件（strong signal：標題含「架構/課程框架/指引（YYYY）」+ curriculum 主題）
+- **`_update_policy_signals()`**：去重後寫入 `dev/knowledge/policy_signals.json`，管理員查閱 `pending_review` 條目後手動更新知識庫
+- 新增 `_KS_TITLE_STRONG`、`_KS_POLICY_TAGS`、`_KS_SIGNALS_PATH` 常數
+
+#### Technical
+- scraper v3.0.43 → v3.0.45
+- policy_signals.json 首次生成：待 school-year workflow 後生成（預計 3 份 strong signal）
+
+---
+
+## [v3.0.44] — 2026-04-17
+
+### 里程碑：EDBC 系列支援 + 開頁 index.html
+
+#### Fixed
+- **Scraper EDBC 系列漏掉**：`_parse_list()` regex `r"EDB(?:CM|CL)\d{3}/\d{4}"` → `r"EDBC(?:M|L)?\d{3}/\d{4}"`；circ_type 邏輯由 2-way 改為 3-way（EDBCM / EDBCL / EDBC）
+- EDBC003/2026、EDBC005/2026 等純 EDBC 系列通告可正確抓取和分析
+
+#### Added
+- **開頁 index.html**：Canvas 粒子動畫（游標互動 + 連線效果）、系統名稱、AI 起草功能簡介、3 個功能亮點、進入按鈕（淡出動畫跳轉）；取代原本 redirect
+- 系統完成狀態確認（core features done，進入監測維護模式）
+
+#### Technical
+- scraper v3.0.43 → v3.0.44；dashboard v3.0.43 → v3.0.44
 
 ---
 

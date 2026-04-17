@@ -15,7 +15,7 @@
 | LLM | OpenAI gpt-5-nano | temperature=1 fixed; `developer` role; `max_completion_tokens`=16000; `json_schema` structured output |
 | Embeddings | text-embedding-3-small | Used for semantic knowledge search (KnowledgeStore); 0.45 threshold |
 | CI/CD | GitHub Actions | `update-circulars.yml` — cron 3×/day (days-3) + manual (school-year) |
-| Hosting | GitHub Pages | Root deploy; `index.html` redirects to `edb-dashboard.html` |
+| Hosting | GitHub Pages | Root deploy; `index.html` = Canvas 粒子動畫開頁（sessionStorage landing gate → `edb-dashboard.html`）|
 | Data | `circulars.json` | Tracked in git (required for Pages); output of `edb_scraper.py` |
 | Knowledge | `dev/knowledge/knowledge.json` + `dev/knowledge/role_facts.json` | K1-aligned knowledge inputs; public facts/guidelines use v1.3.1 split-role schema, local role facts use v2.0.0 contract |
 
@@ -32,9 +32,9 @@ EDB-Circular-AI-analysis-system/
 ├── CHANGELOG.md                    # Version history (up to v2.1.0)
 ├── .gitignore                      # Standard exclusions
 │
-├── edb-dashboard.html              # ★ v2.1.0 production Dashboard (3,047 lines)
+├── edb-dashboard.html              # ★ v3.0.46 production Dashboard (正式完成版)
 ├── edb-dashboard-mockup.html       # Legacy v0.1.0 mockup (archived)
-├── index.html                      # GitHub Pages redirect → edb-dashboard.html
+├── index.html                      # ★ v3.0.46 Landing page (Canvas 粒子動畫 + sessionStorage landing gate)
 ├── edb_scraper.py                  # ★ Backend pipeline (scrape + AI + R1-v2 postprocess; PHASE 4 merge fix)
 ├── fetch_knowledge.py              # EDB/ICAC knowledge support generator (maintained support path; split-role aligned)
 ├── requirements.txt                # Python deps (requests, bs4, PyMuPDF, openai, lxml)
@@ -48,7 +48,8 @@ EDB-Circular-AI-analysis-system/
     ├── CODEBASE_CONTEXT.md         # This file
     ├── SESSION_HANDOFF.md          # Current session state
     ├── SESSION_LOG.md              # Session history
-    ├── ACCEPTANCE_CHECKLIST.md     # A–K 11 categories, 80+ test items
+    ├── QC_MASTER.md                # ★ QC 黃金標準 (A–L 12 類, 70+ 項，正式完成版 v3.0.46)
+    ├── ACCEPTANCE_CHECKLIST.md     # 舊版驗收清單 (已由 QC_MASTER.md 取代)
     ├── GIT_PUSH_MANUAL.md          # Git push instructions
     ├── K1_KNOWLEDGE_INTERFACE_SPEC.md  # K1 project interface contract
     ├── v0.2.0-FRONTEND-SPEC.md     # Frontend spec SSOT
@@ -284,3 +285,5 @@ bash ~/Downloads/Claude-edb-Project-V3/deploy.sh
 | 2026-04-11 | Codex_20260411_0001 | Tightened summary generation again: added source-priority refresh for generic/official-sounding summaries, strengthened filler stripping (`就目前公開內容而言` / `推斷性說明`), and bumped workspace version to v3.0.37 pending publish. |
 | 2026-04-11 | Codex_20260411_0002 | Added a concrete fallback path for source-less circulars so generic summaries refresh to date/title/tag-based wording without `後續更新` / `後續協調` style filler; workspace version is now v3.0.38 pending publish. |
 | 2026-04-13 | Codex_20260413_0002 | Added `dev/tools/test_k1_smoke.py` to smoke-test K1 backend integration (contract, topic detect, public knowledge/guidelines fetch, prompt injection, optional LLM analyze) and documented it in README / SESSION files. |
+| 2026-04-17 | Claude_20260417_0800 | v3.0.44–45: EDBC series scraper fix (regex + 3-way circ_type); new splash page index.html (Canvas particles + landing gate); knowledge signal detection (policy_signals.json dark channel); version bump. |
+| 2026-04-17 | Claude_20260417_1200 | v3.0.46 正式完成版: 4 dashboard fixes (EDBC/safety/procurement filter chips; 開發者工具 removed; 系統功能說明 rewrite; disclaimer version fixed); landing page sessionStorage gate; QC_MASTER.md created; README + CHANGELOG updated to completion status. |
