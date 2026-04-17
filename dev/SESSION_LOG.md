@@ -2,29 +2,32 @@
 ## 2026-04-17 EDBC series support + system completion milestone (v3.0.44) — Claude_20260417_0800
 
 1. Agent & Session ID: Claude_20260417_0800
-2. Task summary: 發現 scraper regex 只匹配 EDBCM / EDBCL，漏掉純 EDBC 系列通告（EDBC003/2026, EDBC005/2026）；修正 regex 及 circ_type 邏輯，新增 EDBC 第三分支；版本升至 v3.0.44。同時確認通告系統核心功能完成，標示為 system complete。
+2. Task summary: 發現 scraper regex 只匹配 EDBCM / EDBCL，漏掉純 EDBC 系列通告（EDBC003/2026, EDBC005/2026）；修正 regex 及 circ_type 邏輯，新增 EDBC 第三分支；製作全新動態開頁（index.html），取代原本 redirect；版本升至 v3.0.44。確認通告系統核心功能完成，標示為 system complete。
 3. Layer classification: Product / System Layer（scraper parsing bug fix）+ Development Governance Layer（session governance）
 4. Source triage: Code logic issue — regex pattern `EDB(?:CM|CL)` did not match plain EDBC series
 5. Files read: `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`, `dev/CODEBASE_CONTEXT.md`, `edb_scraper.py`, `circulars.json`
-6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
+6. Files changed: `edb_scraper.py`, `edb-dashboard.html`, `index.html`, `dev/SESSION_HANDOFF.md`, `dev/SESSION_LOG.md`
 7. Completed:
    - ✅ **Root cause confirmed:** `circulars.json` 有 119 筆 EDBCM/EDBCL，但 0 筆純 EDBC；regex 漏掉 EDBC 系列
    - ✅ **Line 619 regex 修正：** `r"EDB(?:CM|CL)\d{3}/\d{4}"` → `r"EDBC(?:M|L)?\d{3}/\d{4}"`
    - ✅ **Line 664 circ_type 修正：** 由 2-way 改為 3-way（EDBCM / EDBCL / EDBC）
    - ✅ **py_compile PASS**
-   - ✅ **Regex unit test PASS（5/5）：** EDBCM003/2026 ✅, EDBCL007/2026 ✅, EDBC003/2026 ✅, EDBC005/2026 ✅, EDBA001/2026（不匹配）✅
+   - ✅ **Regex unit test PASS（5/5）**
    - ✅ **版本升至 v3.0.44**（dashboard 6 處 + scraper 1 處）
    - ✅ **系統完成狀態確認：** 知識庫整合已驗收，通告系統核心功能完成，進入監測維護模式
+   - ✅ **開頁製作完成（index.html）：** Canvas 粒子動畫背景、游標互動、系統名稱 + AI 起草一句話簡介 + 功能亮點 x3 + 進入按鈕（淡出動畫跳轉）；取代舊 redirect；10/10 功能驗證 PASS
 8. Validation / QC:
    - `py_compile edb_scraper.py` → PASS
    - Regex unit test (5 cases) → PASS
-   - Live verification: PENDING（需 Mac push + school-year workflow 後確認 EDBC003 / EDBC005 出現）
+   - HTML parse (index.html) → PASS
+   - index.html 功能核查（10 項）→ PASS
+   - Live verification: PENDING（需 Mac push + school-year workflow 後確認 EDBC003 / EDBC005 出現；開頁上線後目視驗收）
 9. Pending:
-   - Mac Terminal push v3.0.44 → 觸發 school-year workflow → 驗收 EDBC003 + EDBC005
+   - Mac push（含 index.html + edb_scraper.py + edb-dashboard.html）→ school-year workflow → 驗收
 10. Next priorities:
     - 驗收 EDBC 系列通告首次出現
+    - 驗收開頁 live 效果
     - 監測 live 摘要品質
-    - K1 第二階段（另立項目）
 11. Risks:
     - EDBC 系列在 EDB 網站的 HTML 結構可能與 EDBCM 有差異（未實測）；若 PDF URL 格式不同，可能需要額外調整
 
@@ -37,7 +40,8 @@
 ### DOC_SYNC Matrix Scan
 | Change Category | Required Doc Updates | Status |
 |---|---|---|
-| Analysis pipeline behavior change (new circular type support) | SESSION_LOG; SESSION_HANDOFF baseline | ✓ Done |
+| Analysis pipeline behavior change (EDBC series support) | SESSION_LOG; SESSION_HANDOFF baseline | ✓ Done |
+| New frontend file (index.html splash page) | SESSION_LOG; SESSION_HANDOFF baseline | ✓ Done |
 | Version bump (v3.0.43 → v3.0.44) | edb-dashboard.html 6 locations; edb_scraper.py 1 location | ✓ Done |
 
 ### Next Session Handoff Prompt (Verbatim)
@@ -45,28 +49,33 @@
 Read AGENTS.md first (governance SSOT), then follow its §1 startup sequence:
 dev/SESSION_HANDOFF.md → dev/SESSION_LOG.md → dev/CODEBASE_CONTEXT.md (if exists) → dev/PROJECT_MASTER_SPEC.md (if exists)
 
-Current objective: v3.0.44 workspace ready (2026-04-17). Fix: EDBC series (plain, without M or L) now supported — regex updated from EDB(?:CM|CL) to EDBC(?:M|L)?, circ_type now 3-way. System marked as complete (core functionality done, entering monitoring/maintenance mode).
+Current objective: v3.0.44 workspace complete (2026-04-17). Two deliverables ready for push: (1) EDBC series scraper fix — regex EDBC(?:M|L)? now captures plain EDBC circulars (EDBC003/2026, EDBC005/2026 were missing); (2) new splash/opening page (index.html) — particle canvas animation, feature highlights, enter button with fade-out transition; replaces old redirect. System marked as complete (core functionality done, monitoring/maintenance mode).
 
 Pending tasks (priority order):
-1. Push v3.0.44 from Mac Terminal: git -C ~/Documents/EDB-AI-Circular-System pull --rebase origin main && git -C ~/Documents/EDB-AI-Circular-System push origin main
-2. Trigger school-year workflow on GitHub Actions to pick up EDBC003/2026 and EDBC005/2026.
-3. After workflow completes, verify circulars.json contains EDBC003 and EDBC005 with proper summaries and analysis.
-4. Monitor live summary quality — add banned markers if new LLM metadata patterns appear.
-5. K1 Phase 2 (separate project track).
+1. Push v3.0.44 from Mac Terminal:
+   git -C ~/Documents/EDB-AI-Circular-System add index.html edb-dashboard.html edb_scraper.py dev/SESSION_HANDOFF.md dev/SESSION_LOG.md
+   git -C ~/Documents/EDB-AI-Circular-System commit -m "feat: splash page (index.html) + fix EDBC series support; bump v3.0.44"
+   git -C ~/Documents/EDB-AI-Circular-System pull --rebase origin main
+   git -C ~/Documents/EDB-AI-Circular-System push origin main
+2. Trigger school-year workflow on GitHub Actions.
+3. After workflow: verify EDBC003/2026 + EDBC005/2026 appear in circulars.json with proper summaries.
+4. Visit https://leonard-wong-git.github.io/EDB-AI-Circular-System/ to visually verify splash page live.
+5. Monitor live summary quality — add banned markers if new LLM metadata patterns appear.
 
 Key files changed in this session:
-- edb_scraper.py (v3.0.44: EDBC series regex + circ_type fix)
+- edb_scraper.py (v3.0.44: EDBC series regex + circ_type 3-way)
 - edb-dashboard.html (v3.0.44: version bump)
+- index.html (new: splash page with particle canvas)
 - dev/SESSION_HANDOFF.md, dev/SESSION_LOG.md
 
 Known risks / blockers / cautions:
-- VM proxy blocks GitHub — push must be done from Mac Terminal.
-- EDBC series HTML structure on EDB website not yet verified live; if PDF URL format differs, may need further adjustment.
-- No OPENAI_API_KEY in VM — no local LLM regression.
+- VM proxy blocks GitHub — all git push must be done from Mac Terminal.
+- EDBC series HTML structure on EDB site not yet live-verified; if PDF URL format differs, may need further parser adjustment.
+- No OPENAI_API_KEY in VM — no local LLM regression possible.
 
-Validation status: py_compile PASS; regex unit test 5/5 PASS; v3.0.44 workspace ready; live verification PENDING (awaiting push + school-year workflow).
+Validation status: py_compile PASS; regex unit test 5/5 PASS; HTML parse PASS; splash page 10/10 feature check PASS. Live verification PENDING (push + school-year workflow not yet run).
 
-Post-startup first action: check git log for commits since last session (da99c31 → newer), confirm v3.0.44 was pushed, then verify school-year workflow completed and EDBC003/EDBC005 appear in live circulars.json.
+Post-startup first action: run `git -C ~/Documents/EDB-AI-Circular-System log --oneline -5` to confirm v3.0.44 commit was pushed, then check GitHub Actions for school-year workflow status.
 ```
 
 ## 2026-04-15 Summary marker fix + live verification (v3.0.42–43) — Claude_20260415_1448

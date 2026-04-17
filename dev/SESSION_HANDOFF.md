@@ -1,15 +1,16 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v3.0.44 workspace ✅** (2026-04-17) — pending push + school-year workflow to verify EDBC series fix
+1. Version: **v3.0.44 workspace ✅** (2026-04-17) — pending push + school-year workflow
 2. Core commands / features:
-   - `edb-dashboard.html` — v3.0.44 (version bump only)
-   - `edb_scraper.py` — v3.0.44 (EDBC series support: regex + circ_type now cover EDBCM / EDBCL / EDBC)
-   - `circulars.json` — live `generated_at=2026-04-15T13:28:15Z`, 119 records (pre-fix; EDBC003 / EDBC005 not yet included)
+   - `edb-dashboard.html` — v3.0.44 (version bump)
+   - `edb_scraper.py` — v3.0.44 (EDBC series support: regex + circ_type 3-way EDBCM / EDBCL / EDBC)
+   - `index.html` — 新開頁（Canvas 粒子動畫 + 功能亮點 + 進入按鈕，取代舊 redirect）
+   - `circulars.json` — live `generated_at=2026-04-15T13:28:15Z`, 119 records（EDBC003 / EDBC005 待 workflow 後加入）
    - `dev/tools/test_k1_smoke.py` — v3.0.40 smoke test PASS
-3. Regression baseline: py_compile PASS; regex unit test PASS (5/5); live verification PENDING (awaiting school-year workflow after push).
+3. Regression baseline: py_compile PASS; regex unit test PASS (5/5); HTML parse PASS; live verification PENDING.
 4. Release / merge status: **v3.0.44 workspace ready — needs Mac push + school-year workflow.**
-5. ✅ **系統完成狀態（2026-04-17 確認）：** 知識庫整合已驗收，通告系統核心功能完成。日後以監測及維護模式運作。
+5. ✅ **系統完成狀態（2026-04-17 確認）：** 知識庫整合已驗收，通告系統核心功能完成，進入監測維護模式。
 5. Active branch / environment: GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
    - EDB 網站：https://applications.edb.gov.hk/circular/circular.aspx?langno=2（ASP.NET WebForms）
@@ -69,8 +70,8 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[立即]** Push v3.0.44 → Mac Terminal；觸發 school-year workflow；驗收 EDBC003/2026 + EDBC005/2026 是否已出現在 circulars.json
-2. **[監測]** 持續觀察 source-less 通告（`official_len=0, pdf_len=0`）的摘要品質；如有新模式的 LLM metadata 句出現，補加 banned marker
+1. **[立即]** Mac Terminal push v3.0.44（index.html + edb_scraper.py + edb-dashboard.html + dev 文件）→ 觸發 school-year workflow → 驗收 EDBC003/2026 + EDBC005/2026 出現 + 目視確認開頁 live 效果
+2. **[監測]** 持續觀察 source-less 通告摘要品質；如有新模式 LLM metadata 句，補加 banned marker
 3. **[監測]** 若日後出現其他新系列通告（非 EDBCM / EDBCL / EDBC），視需要更新 regex
 4. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
 
@@ -177,7 +178,7 @@ Increment scheme:
 Do not close a session with code changes without completing the version bump.
 
 ## Last Session Record
-1. UTC date: 2026-04-13
+1. UTC date: 2026-04-17
 2. Session ID: Codex_20260413_0001
 3. Completed:
    - ✅ 將 `dev/SESSION_LOG.md` 依 AGENTS.md §4a 進行 archive rotation，舊 session entries 已移到 `dev/archive/SESSION_LOG_2026_Q2.md`
