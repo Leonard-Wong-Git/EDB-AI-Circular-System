@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-04-17T06:35:17Z",
+  "generated_at": "2026-04-17T06:56:06Z",
   "model": "gpt-5-nano",
   "temperature": 1,
   "range": "school-year (from 2025-09-01)",
   "date_from": "2025-09-01",
   "date_to": "2026-04-16",
   "days": 30,
-  "count": 120,
+  "count": 126,
   "circulars": [
     {
       "id": 0,
@@ -310,6 +310,493 @@
     },
     {
       "id": 1,
+      "number": "EDBC003/2026",
+      "type": "EDBC",
+      "date": "2026-04-16",
+      "isNew": true,
+      "title": "《價值觀教育課程架構》（2026）",
+      "official": "",
+      "impact": "mid",
+      "compliance": "mandatory",
+      "urgency": "medium",
+      "scope": "both_sec_pri",
+      "topics": [
+        "curriculum",
+        "student",
+        "hr"
+      ],
+      "tags": [
+        "價值觀框架",
+        "課程整合",
+        "跨科協作",
+        "教學評估",
+        "教育政策"
+      ],
+      "grant_info": {
+        "type": "none",
+        "amount_hkd": null,
+        "amount_label": null,
+        "resource_value_hkd": null,
+        "note": ""
+      },
+      "summary": "本通告公告《價值觀教育課程架構》（2026），就學校在價值觀教育與課程發展上的實施框架提出指引，對象為全港中小學，核心安排聚焦以新框架推動價值觀教育的課程設計與實施方向，並規範跨科協作及相關教學實踐的落實。",
+      "roles": {
+        "principal": {
+          "r": true,
+          "pts": [
+            "確保學校課程符合《小學教育課程指引》（2024）或最新要求",
+            "統籌全校課程規劃，推動價值觀教育框架落實",
+            "向校務與教育主管機構匯報實施進展"
+          ],
+          "acts": [
+            "制定校本實施計畫",
+            "協調跨科課程與資源",
+            "定期提交進展報告"
+          ]
+        },
+        "vice_principal": {
+          "r": true,
+          "pts": [
+            "協助統籌跨科課程協調，確保各KLA之間橫向連接",
+            "監察全校課程實施進度，定期向校長匯報並提出改善建議",
+            "支援框架下的專業發展與評估實踐"
+          ],
+          "acts": [
+            "協助編制與落實學校課程發展計畫",
+            "監察課程實施進度並提交檢討意見",
+            "參與跨科教學與評估工作坊"
+          ]
+        },
+        "subject_head": {
+          "r": true,
+          "pts": [
+            "協助整合價值觀教育於本科課程與跨科教學",
+            "帶領科組共同備課、觀課及課後檢討，推動教學專業交流",
+            "協助課程改革評估與實施進度追蹤"
+          ],
+          "acts": [
+            "主持科組月度教學評估會議",
+            "修訂科目教學計劃以符合新架構",
+            "報告科組實施成效與困難"
+          ]
+        },
+        "panel_chair": {
+          "r": true,
+          "pts": [
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "留意學生參與條件、支援安排及活動期間的照顧需要，避免遺漏個別學生的參與支援。"
+          ],
+          "acts": [
+            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。",
+            "按學生級別、活動安排及支援需要，預早協調人手、分組、風險提示及記錄安排。"
+          ]
+        },
+        "teacher": {
+          "r": true,
+          "pts": [
+            "編寫教學計劃以反映框架內容",
+            "在教學中融入價值觀教育與態度培養",
+            "運用多元評估提升教學效能"
+          ],
+          "acts": [
+            "根據框架編寫與更新教案",
+            "進行多元評估與反思",
+            "參與校內教學專業發展活動"
+          ]
+        },
+        "eo_admin": {
+          "r": true,
+          "pts": [
+            "提供指引與資源，支援校方落實課程框架",
+            "監測實施情況，協助改進與推進專業發展",
+            "協調與外部單位的培訓與資源支援"
+          ],
+          "acts": [
+            "發布相關指引與培訓資訊",
+            "收集學校實施情況匯報",
+            "安排跨校或跨部門培訓"
+          ]
+        },
+        "supplier": {
+          "r": false,
+          "pts": [],
+          "acts": [],
+          "is_tender": false,
+          "procurement_cat": "none",
+          "budget_estimate": null,
+          "compliance_ref": [],
+          "eligibility": "",
+          "contact_unit": ""
+        }
+      },
+      "deadlines": [],
+      "actions": [
+        {
+          "text": "制定校本實施計畫",
+          "role": "principal",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "協助編制與落實學校課程發展計畫",
+          "role": "vice_principal",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "主持科組月度教學評估會議",
+          "role": "subject_head",
+          "dl": null,
+          "note": ""
+        }
+      ],
+      "diff": null,
+      "knowledge_review": {
+        "terminology_review": [],
+        "missing_points": [
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。",
+          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
+        ],
+        "recommended_links": [
+          {
+            "label": "課程發展指引",
+            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
+            "why": "補充課程架構、學習領域與學與教資源的官方參考"
+          },
+          {
+            "label": "學校表現指標 (KPM)",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
+            "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          },
+          {
+            "label": "學校活動指引",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
+            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
+          },
+          {
+            "label": "學校行政手冊",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
+            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
+          }
+        ],
+        "role_notes": [
+          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。"
+        ]
+      },
+      "k1_topics": [
+        "curriculum",
+        "student",
+        "hr"
+      ],
+      "k1_facts": [
+        "八個學習領域(KLA)：中文、英文、數學、科學、科技、個人社會及人文、藝術、體育",
+        "七個學習宗旨：國民身份認同、正確價值觀、學習領域知識、語文能力、共通能力、閱讀及資訊素養、健康生活方式",
+        "五種基要學習經歷：價值觀教育、智能發展、社會服務、體藝發展、與工作有關的經驗",
+        "課程更新重點涵蓋：價值觀教育、善用學時、STEAM 教育、媒體和資訊素養",
+        "學校須設立機制處理學生缺課個案，連續缺課 7 天須向教育局呈報",
+        "學校須制訂反欺凌政策，建立通報和處理機制，並定期進行預防教育",
+        "學校須按「全校參與」模式支援有特殊教育需要（SEN）學生的學習",
+        "[特殊教育統籌主任] 負責統籌全校 SEN 識別、評估及支援計劃，並向副校長匯報",
+        "教師持續專業發展（CPD）：建議每三年週期內完成不少於 150 小時，包含結構性及非結構性活動",
+        "[課程統籌主任] 負責統籌全校教師 CPD 計劃，確保涵蓋不同科目及支援範疇",
+        "[特殊教育統籌主任] 須協調 SEN 支援人員調配，並向副校長匯報人手需求",
+        "[訓導及輔導主任] 負責統籌駐校社工及輔導人員的工作分配及個案跟進機制"
+      ],
+      "k1_guidelines": [
+        {
+          "id": "g29",
+          "title": "幼稚園教育課程指引（2017）",
+          "titleShort": "幼稚園課程指引",
+          "url": "https://www.edb.gov.hk/tc/curriculum-development/major-level-of-edu/preprimary/curr-doc.html",
+          "year": "2017",
+          "format": "PDF",
+          "level": "幼稚園"
+        },
+        {
+          "id": "g06",
+          "title": "《小學教育課程指引》完整版（2024）",
+          "titleShort": "小學教育課程指引",
+          "url": "https://www.edb.gov.hk/attachment/tc/curriculum-development/major-level-of-edu/primary/curriculum-documents/Primary_Education_Curriculum_Guide/PECG%202024_full.pdf",
+          "year": "2024",
+          "format": "PDF",
+          "level": "小學"
+        },
+        {
+          "id": "g16",
+          "title": "學生訓育工作指引",
+          "titleShort": "訓育工作指引",
+          "url": "https://www.edb.gov.hk/tc/teacher/student-guidance-discipline-services/principles-guidelines/guidelines-on-student-discipline/index.html",
+          "year": "2017",
+          "format": "HTML/PDF"
+        },
+        {
+          "id": "g17",
+          "title": "理念與指引（訓育及輔導）",
+          "titleShort": "訓輔理念與指引",
+          "url": "https://www.edb.gov.hk/tc/teacher/student-guidance-discipline-services/principles-guidelines/index.html",
+          "year": "2011",
+          "format": "HTML"
+        },
+        {
+          "id": "g04",
+          "title": "教職員批假指引",
+          "titleShort": "批假指引",
+          "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-sch-staff/guideline-granting-leave/index.html",
+          "year": "2025",
+          "format": "HTML"
+        },
+        {
+          "id": "g05",
+          "title": "教師專業操守指引",
+          "titleShort": "專業操守指引",
+          "url": "https://www.edb.gov.hk/tc/teacher/guidelines_tpc/",
+          "year": "2022",
+          "format": "HTML"
+        }
+      ],
+      "role_fact_topics": [
+        "curriculum",
+        "student",
+        "hr"
+      ],
+      "role_facts": {
+        "all_roles": [
+          "八個學習領域(KLA)：中文、英文、數學、科學、科技、個人社會及人文、藝術、體育",
+          "七個學習宗旨：國民身份認同、正確價值觀、學習領域知識、語文能力、共通能力、閱讀及資訊素養、健康生活方式"
+        ],
+        "principal": [
+          "校長須確保學校課程符合《小學教育課程指引》(2024) 或最新要求",
+          "校長、副校長及課程統籌主任須統籌全校課程規劃，確保八個 KLA 課時分配合理並涵蓋五種基要學習經歷"
+        ],
+        "vice_principal": [
+          "副校長、課程統籌主任協助統籌跨學科課程協調，確保各 KLA 之間的橫向聯繫和銜接",
+          "副校長、課程統籌主任負責監察全校課程實施進度，定期向校長匯報並提出改善建議"
+        ],
+        "subject_head": [
+          "科主任負責規劃本科課程，須配合學校整體課程方向及教育局最新課程指引",
+          "科主任須帶領科組進行共同備課、觀課及課後檢討，推動教學專業交流"
+        ],
+        "panel_chair": [
+          "[課程統籌主任] 負責統籌全校課程發展計劃，協調各科組推行課程改革及評估政策",
+          "[教務主任] 統籌全校評估政策制訂，確保進展性與總結性評估均衡且符合指引"
+        ],
+        "teacher": [
+          "教師須按課程指引編寫教學計劃，確保涵蓋各 KLA 核心元素",
+          "教師須在教學中融入價值觀教育，培養學生十二種首要價值觀和態度"
+        ],
+        "eo_admin": [
+          "EO負責維護學生出席記錄系統，定期匯報缺課數據予校長和教育局"
+        ]
+      },
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBC/EDBC26003C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBC/EDBC26003E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBC/EDBC26003S.pdf"
+      ]
+    },
+    {
+      "id": 2,
+      "number": "EDBC005/2026",
+      "type": "EDBC",
+      "date": "2026-04-16",
+      "isNew": true,
+      "title": "更新小學及中學教育的學習宗旨",
+      "official": "",
+      "impact": "high",
+      "compliance": "mandatory",
+      "urgency": "medium",
+      "scope": "both_sec_pri",
+      "topics": [
+        "curriculum"
+      ],
+      "tags": [
+        "學習宗旨更新",
+        "國民教育",
+        "媒體素養",
+        "STEAM教育",
+        "跨科整合"
+      ],
+      "grant_info": {
+        "type": "none",
+        "amount_hkd": null,
+        "amount_label": null,
+        "resource_value_hkd": null,
+        "note": ""
+      },
+      "summary": "本通告宣布更新小學及中學教育的學習宗旨，提出七大學習宗旨並強調在課程設計中落實國民身份認同、正確價值觀、語文能力、共通能力、閱讀及資訊素養以及健康生活方式等要素，同時聚焦價值觀教育、善用學時、STEAM教育及媒體與資訊素養等更新重點。",
+      "roles": {
+        "principal": {
+          "r": true,
+          "pts": [
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
+          ],
+          "acts": []
+        },
+        "vice_principal": {
+          "r": true,
+          "pts": [
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
+          ],
+          "acts": []
+        },
+        "subject_head": {
+          "r": true,
+          "pts": [
+            "融入國民教育、媒體及資訊素養元素於教學",
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。"
+          ],
+          "acts": [
+            "在教學設計中落實上述更新重點",
+            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。"
+          ]
+        },
+        "panel_chair": {
+          "r": true,
+          "pts": [
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。"
+          ],
+          "acts": [
+            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。"
+          ]
+        },
+        "teacher": {
+          "r": true,
+          "pts": [
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。"
+          ],
+          "acts": [
+            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。"
+          ]
+        },
+        "eo_admin": {
+          "r": true,
+          "pts": [
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。",
+            "如屬跨科或全校活動，可配合學校層面的課程規劃、自評或KPM跟進需要。"
+          ],
+          "acts": []
+        },
+        "supplier": {
+          "r": false,
+          "pts": [],
+          "acts": [],
+          "is_tender": false,
+          "procurement_cat": "none",
+          "budget_estimate": null,
+          "compliance_ref": [],
+          "eligibility": "",
+          "contact_unit": ""
+        }
+      },
+      "deadlines": [],
+      "actions": [
+        {
+          "text": "在教學設計中融入國民教育、媒體及資訊素養等元素，以配合更新的學習宗旨。",
+          "role": "subject_head",
+          "dl": null,
+          "note": ""
+        }
+      ],
+      "diff": {
+        "summary": "更新學習宗旨及教學要求",
+        "changes": [
+          {
+            "type": "mod",
+            "field": "學習宗旨",
+            "old": "舊有學習宗旨",
+            "new": "更新為七大學習宗旨，並融入價值觀教育、善用學時、STEAM教育及媒體與資訊素養"
+          }
+        ]
+      },
+      "knowledge_review": {
+        "terminology_review": [],
+        "missing_points": [
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+        ],
+        "recommended_links": [
+          {
+            "label": "課程發展指引",
+            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
+            "why": "補充課程架構、學習領域與學與教資源的官方參考"
+          },
+          {
+            "label": "學校表現指標 (KPM)",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
+            "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          }
+        ],
+        "role_notes": [
+          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。"
+        ]
+      },
+      "k1_topics": [
+        "curriculum"
+      ],
+      "k1_facts": [
+        "八個學習領域(KLA)：中文、英文、數學、科學、科技、個人社會及人文、藝術、體育",
+        "七個學習宗旨：國民身份認同、正確價值觀、學習領域知識、語文能力、共通能力、閱讀及資訊素養、健康生活方式",
+        "五種基要學習經歷：價值觀教育、智能發展、社會服務、體藝發展、與工作有關的經驗",
+        "課程更新重點涵蓋：價值觀教育、善用學時、STEAM 教育、媒體和資訊素養"
+      ],
+      "k1_guidelines": [
+        {
+          "id": "g29",
+          "title": "幼稚園教育課程指引（2017）",
+          "titleShort": "幼稚園課程指引",
+          "url": "https://www.edb.gov.hk/tc/curriculum-development/major-level-of-edu/preprimary/curr-doc.html",
+          "year": "2017",
+          "format": "PDF",
+          "level": "幼稚園"
+        },
+        {
+          "id": "g06",
+          "title": "《小學教育課程指引》完整版（2024）",
+          "titleShort": "小學教育課程指引",
+          "url": "https://www.edb.gov.hk/attachment/tc/curriculum-development/major-level-of-edu/primary/curriculum-documents/Primary_Education_Curriculum_Guide/PECG%202024_full.pdf",
+          "year": "2024",
+          "format": "PDF",
+          "level": "小學"
+        }
+      ],
+      "role_fact_topics": [
+        "curriculum"
+      ],
+      "role_facts": {
+        "all_roles": [
+          "八個學習領域(KLA)：中文、英文、數學、科學、科技、個人社會及人文、藝術、體育",
+          "七個學習宗旨：國民身份認同、正確價值觀、學習領域知識、語文能力、共通能力、閱讀及資訊素養、健康生活方式"
+        ],
+        "principal": [
+          "校長須確保學校課程符合《小學教育課程指引》(2024) 或最新要求",
+          "校長、副校長及課程統籌主任須統籌全校課程規劃，確保八個 KLA 課時分配合理並涵蓋五種基要學習經歷"
+        ],
+        "vice_principal": [
+          "副校長、課程統籌主任協助統籌跨學科課程協調，確保各 KLA 之間的橫向聯繫和銜接",
+          "副校長、課程統籌主任負責監察全校課程實施進度，定期向校長匯報並提出改善建議"
+        ],
+        "subject_head": [
+          "科主任負責規劃本科課程，須配合學校整體課程方向及教育局最新課程指引",
+          "科主任須帶領科組進行共同備課、觀課及課後檢討，推動教學專業交流"
+        ],
+        "panel_chair": [
+          "[課程統籌主任] 負責統籌全校課程發展計劃，協調各科組推行課程改革及評估政策",
+          "[教務主任] 統籌全校評估政策制訂，確保進展性與總結性評估均衡且符合指引"
+        ],
+        "teacher": [
+          "教師須按課程指引編寫教學計劃，確保涵蓋各 KLA 核心元素",
+          "教師須在教學中融入價值觀教育，培養學生十二種首要價值觀和態度"
+        ]
+      },
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBC/EDBC26005C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBC/EDBC26005E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBC/EDBC26005S.pdf"
+      ]
+    },
+    {
+      "id": 3,
       "number": "EDBCM052/2026",
       "type": "EDBCM",
       "date": "2026-04-15",
@@ -556,7 +1043,7 @@
       ]
     },
     {
-      "id": 2,
+      "id": 4,
       "number": "EDBCM055/2026",
       "type": "EDBCM",
       "date": "2026-04-14",
@@ -709,7 +1196,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": 5,
       "number": "EDBCM053/2026",
       "type": "EDBCM",
       "date": "2026-04-08",
@@ -919,7 +1406,7 @@
       ]
     },
     {
-      "id": 4,
+      "id": 6,
       "number": "EDBCM049/2026",
       "type": "EDBCM",
       "date": "2026-04-08",
@@ -1104,7 +1591,7 @@
       ]
     },
     {
-      "id": 5,
+      "id": 7,
       "number": "EDBCM050/2026",
       "type": "EDBCM",
       "date": "2026-04-08",
@@ -1328,7 +1815,7 @@
       ]
     },
     {
-      "id": 6,
+      "id": 8,
       "number": "EDBCM042/2026",
       "type": "EDBCM",
       "date": "2026-04-01",
@@ -1674,7 +2161,7 @@
       ]
     },
     {
-      "id": 7,
+      "id": 9,
       "number": "EDBCM048/2026",
       "type": "EDBCM",
       "date": "2026-03-31",
@@ -1990,7 +2477,7 @@
       ]
     },
     {
-      "id": 8,
+      "id": 10,
       "number": "EDBCM056/2026",
       "type": "EDBCM",
       "date": "2026-03-30",
@@ -2247,7 +2734,7 @@
       ]
     },
     {
-      "id": 9,
+      "id": 11,
       "number": "EDBCM051/2026",
       "type": "EDBCM",
       "date": "2026-03-30",
@@ -2602,7 +3089,7 @@
       ]
     },
     {
-      "id": 10,
+      "id": 12,
       "number": "EDBCM039/2026",
       "type": "EDBCM",
       "date": "2026-03-27",
@@ -2891,7 +3378,7 @@
       ]
     },
     {
-      "id": 11,
+      "id": 13,
       "number": "EDBCM029/2026",
       "type": "EDBCM",
       "date": "2026-03-20",
@@ -3209,7 +3696,7 @@
       ]
     },
     {
-      "id": 12,
+      "id": 14,
       "number": "EDBCM009/2026",
       "type": "EDBCM",
       "date": "2026-03-18",
@@ -3600,7 +4087,230 @@
       ]
     },
     {
-      "id": 13,
+      "id": 15,
+      "number": "EDBC002/2026",
+      "type": "EDBC",
+      "date": "2026-03-17",
+      "isNew": false,
+      "title": "地理科（中一至中三）課程框架",
+      "official": "",
+      "impact": "mid",
+      "compliance": "mandatory",
+      "urgency": "medium",
+      "scope": "sec",
+      "topics": [
+        "curriculum"
+      ],
+      "tags": [
+        "地理課程框架",
+        "中一至中三",
+        "課程更新",
+        "教學計劃",
+        "國民教育元素"
+      ],
+      "grant_info": {
+        "type": "none",
+        "amount_hkd": null,
+        "amount_label": null,
+        "resource_value_hkd": null,
+        "note": ""
+      },
+      "summary": "本通告公布地理科（中一至中三）課程框架，面向中一至中三之地理科教學單位、科主任與教學人員，說明新課程框架的定位與實施方向。\n\n請教學部門按指引推動落實。",
+      "roles": {
+        "principal": {
+          "r": true,
+          "pts": [
+            "協助落實課程框架於校務運作",
+            "提交周年計劃及自評報告",
+            "向法團校董會負責任的配合"
+          ],
+          "acts": [
+            "協調校內部門推動課程框架實施",
+            "監督課程框架在校的落實",
+            "定期向校董會通報進展"
+          ]
+        },
+        "vice_principal": {
+          "r": true,
+          "pts": [
+            "協助校長推動課程框架實施",
+            "統籌 SSE 相關範疇，向校長匯報評估進度與改善建議",
+            "協調跨部門資源"
+          ],
+          "acts": [
+            "協助召開相關會議以推動實施",
+            "向校長匯報SSE進度與建議",
+            "協調資源配置"
+          ]
+        },
+        "subject_head": {
+          "r": true,
+          "pts": [
+            "因應課程更新重點，在地理科教學中融入國民教育、媒體及資訊素養元素",
+            "制定或檢討地理科教學計劃以符合課程框架",
+            "協調科內教學資源與評估"
+          ],
+          "acts": [
+            "指導與監督教師教學計劃的編寫與實施",
+            "協調課程框架相關培訓與分享",
+            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。"
+          ]
+        },
+        "panel_chair": {
+          "r": true,
+          "pts": [
+            "建議對照課程發展指引及相關學習領域，規劃校本落實、參訪安排或學與教延伸活動。"
+          ],
+          "acts": [
+            "可按校本課程、學生級別及活動安排，預早協調參與時段、教師分工及學習延伸。"
+          ]
+        },
+        "teacher": {
+          "r": true,
+          "pts": [
+            "按課程指引編寫教學計劃，確保涵蓋各 KLA 核心元素",
+            "實施地理科課程框架，促進學生學習",
+            "參與課程評估與反思"
+          ],
+          "acts": [
+            "按照課程指引設計教學活動",
+            "提交教學計劃草案供審核",
+            "參與跨科教學協作"
+          ]
+        },
+        "eo_admin": {
+          "r": true,
+          "pts": [
+            "協助日常行政運作以支援課程實施",
+            "協調與課程相關的文書與檔案管理",
+            "協助校舍維修與資源配置"
+          ],
+          "acts": [
+            "安排課程相關行政工作",
+            "維護教學資源與檔案"
+          ]
+        },
+        "supplier": {
+          "r": false,
+          "pts": [],
+          "acts": [],
+          "is_tender": false,
+          "procurement_cat": "none",
+          "budget_estimate": null,
+          "compliance_ref": [],
+          "eligibility": "",
+          "contact_unit": ""
+        }
+      },
+      "deadlines": [],
+      "actions": [
+        {
+          "text": "協調校內部門推動課程框架實施",
+          "role": "principal",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "協助召開相關會議以推動實施",
+          "role": "vice_principal",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "指導與監督教師教學計劃的編寫與實施",
+          "role": "subject_head",
+          "dl": null,
+          "note": ""
+        }
+      ],
+      "diff": null,
+      "knowledge_review": {
+        "terminology_review": [],
+        "missing_points": [
+          "補回 curriculum 類通告的課程落實 / 校本安排提醒。"
+        ],
+        "recommended_links": [
+          {
+            "label": "課程發展指引",
+            "url": "https://www.edb.gov.hk/tc/curriculum-development/renewal/guides.html",
+            "why": "補充課程架構、學習領域與學與教資源的官方參考"
+          },
+          {
+            "label": "學校表現指標 (KPM)",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/sch-quality-assurance/performance-indicators/kpm/index.html",
+            "why": "補充課程推行、自評與學校層面跟進的參考框架"
+          }
+        ],
+        "role_notes": [
+          "偵測到 curriculum 類訊號，將 `panel_chair` 角色標記為相關。"
+        ]
+      },
+      "k1_topics": [
+        "curriculum"
+      ],
+      "k1_facts": [
+        "八個學習領域(KLA)：中文、英文、數學、科學、科技、個人社會及人文、藝術、體育",
+        "七個學習宗旨：國民身份認同、正確價值觀、學習領域知識、語文能力、共通能力、閱讀及資訊素養、健康生活方式",
+        "五種基要學習經歷：價值觀教育、智能發展、社會服務、體藝發展、與工作有關的經驗",
+        "課程更新重點涵蓋：價值觀教育、善用學時、STEAM 教育、媒體和資訊素養"
+      ],
+      "k1_guidelines": [
+        {
+          "id": "g29",
+          "title": "幼稚園教育課程指引（2017）",
+          "titleShort": "幼稚園課程指引",
+          "url": "https://www.edb.gov.hk/tc/curriculum-development/major-level-of-edu/preprimary/curr-doc.html",
+          "year": "2017",
+          "format": "PDF",
+          "level": "幼稚園"
+        },
+        {
+          "id": "g06",
+          "title": "《小學教育課程指引》完整版（2024）",
+          "titleShort": "小學教育課程指引",
+          "url": "https://www.edb.gov.hk/attachment/tc/curriculum-development/major-level-of-edu/primary/curriculum-documents/Primary_Education_Curriculum_Guide/PECG%202024_full.pdf",
+          "year": "2024",
+          "format": "PDF",
+          "level": "小學"
+        }
+      ],
+      "role_fact_topics": [
+        "curriculum"
+      ],
+      "role_facts": {
+        "all_roles": [
+          "八個學習領域(KLA)：中文、英文、數學、科學、科技、個人社會及人文、藝術、體育",
+          "七個學習宗旨：國民身份認同、正確價值觀、學習領域知識、語文能力、共通能力、閱讀及資訊素養、健康生活方式"
+        ],
+        "principal": [
+          "校長須確保學校課程符合《小學教育課程指引》(2024) 或最新要求",
+          "校長、副校長及課程統籌主任須統籌全校課程規劃，確保八個 KLA 課時分配合理並涵蓋五種基要學習經歷"
+        ],
+        "vice_principal": [
+          "副校長、課程統籌主任協助統籌跨學科課程協調，確保各 KLA 之間的橫向聯繫和銜接",
+          "副校長、課程統籌主任負責監察全校課程實施進度，定期向校長匯報並提出改善建議"
+        ],
+        "subject_head": [
+          "科主任負責規劃本科課程，須配合學校整體課程方向及教育局最新課程指引",
+          "科主任須帶領科組進行共同備課、觀課及課後檢討，推動教學專業交流"
+        ],
+        "panel_chair": [
+          "[課程統籌主任] 負責統籌全校課程發展計劃，協調各科組推行課程改革及評估政策",
+          "[教務主任] 統籌全校評估政策制訂，確保進展性與總結性評估均衡且符合指引"
+        ],
+        "teacher": [
+          "教師須按課程指引編寫教學計劃，確保涵蓋各 KLA 核心元素",
+          "教師須在教學中融入價值觀教育，培養學生十二種首要價值觀和態度"
+        ]
+      },
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBC/EDBC26002C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBC/EDBC26002E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBC/EDBC26002S.pdf"
+      ]
+    },
+    {
+      "id": 16,
       "number": "EDBCM046/2026",
       "type": "EDBCM",
       "date": "2026-03-16",
@@ -3900,7 +4610,7 @@
       ]
     },
     {
-      "id": 14,
+      "id": 17,
       "number": "EDBCM038/2026",
       "type": "EDBCM",
       "date": "2026-03-16",
@@ -4219,7 +4929,7 @@
       ]
     },
     {
-      "id": 15,
+      "id": 18,
       "number": "EDBCM034/2026",
       "type": "EDBCM",
       "date": "2026-03-16",
@@ -4479,7 +5189,7 @@
       ]
     },
     {
-      "id": 16,
+      "id": 19,
       "number": "EDBCM043/2026",
       "type": "EDBCM",
       "date": "2026-03-13",
@@ -4771,7 +5481,7 @@
       ]
     },
     {
-      "id": 17,
+      "id": 20,
       "number": "EDBCM041/2026",
       "type": "EDBCM",
       "date": "2026-03-11",
@@ -5081,7 +5791,7 @@
       ]
     },
     {
-      "id": 18,
+      "id": 21,
       "number": "EDBCM045/2026",
       "type": "EDBCM",
       "date": "2026-03-09",
@@ -5384,7 +6094,7 @@
       ]
     },
     {
-      "id": 19,
+      "id": 22,
       "number": "EDBCM030/2026",
       "type": "EDBCM",
       "date": "2026-03-05",
@@ -5698,7 +6408,7 @@
       ]
     },
     {
-      "id": 20,
+      "id": 23,
       "number": "EDBCM026/2026",
       "type": "EDBCM",
       "date": "2026-03-04",
@@ -5978,7 +6688,7 @@
       ]
     },
     {
-      "id": 21,
+      "id": 24,
       "number": "EDBCM036/2026",
       "type": "EDBCM",
       "date": "2026-03-02",
@@ -6264,7 +6974,7 @@
       ]
     },
     {
-      "id": 22,
+      "id": 25,
       "number": "EDBCM040/2026",
       "type": "EDBCM",
       "date": "2026-03-02",
@@ -6591,7 +7301,7 @@
       ]
     },
     {
-      "id": 23,
+      "id": 26,
       "number": "EDBCM032/2026",
       "type": "EDBCM",
       "date": "2026-03-02",
@@ -6905,7 +7615,7 @@
       ]
     },
     {
-      "id": 24,
+      "id": 27,
       "number": "EDBCM037/2026",
       "type": "EDBCM",
       "date": "2026-02-27",
@@ -7294,7 +8004,7 @@
       ]
     },
     {
-      "id": 25,
+      "id": 28,
       "number": "EDBCM035/2026",
       "type": "EDBCM",
       "date": "2026-02-27",
@@ -7596,7 +8306,7 @@
       ]
     },
     {
-      "id": 26,
+      "id": 29,
       "number": "EDBCM025/2026",
       "type": "EDBCM",
       "date": "2026-02-16",
@@ -7917,7 +8627,7 @@
       ]
     },
     {
-      "id": 27,
+      "id": 30,
       "number": "EDBCM015/2026",
       "type": "EDBCM",
       "date": "2026-02-16",
@@ -8223,7 +8933,7 @@
       ]
     },
     {
-      "id": 28,
+      "id": 31,
       "number": "EDBCM031/2026",
       "type": "EDBCM",
       "date": "2026-02-13",
@@ -8531,7 +9241,7 @@
       ]
     },
     {
-      "id": 29,
+      "id": 32,
       "number": "EDBCM019/2026",
       "type": "EDBCM",
       "date": "2026-02-13",
@@ -8839,7 +9549,7 @@
       ]
     },
     {
-      "id": 30,
+      "id": 33,
       "number": "EDBCM027/2026",
       "type": "EDBCM",
       "date": "2026-02-12",
@@ -9143,7 +9853,7 @@
       ]
     },
     {
-      "id": 31,
+      "id": 34,
       "number": "EDBCM033/2026",
       "type": "EDBCM",
       "date": "2026-02-10",
@@ -9431,7 +10141,7 @@
       ]
     },
     {
-      "id": 32,
+      "id": 35,
       "number": "EDBCM007/2026",
       "type": "EDBCM",
       "date": "2026-02-03",
@@ -9747,7 +10457,7 @@
       ]
     },
     {
-      "id": 33,
+      "id": 36,
       "number": "EDBCM028/2026",
       "type": "EDBCM",
       "date": "2026-02-02",
@@ -10052,7 +10762,7 @@
       ]
     },
     {
-      "id": 34,
+      "id": 37,
       "number": "EDBCM023/2026",
       "type": "EDBCM",
       "date": "2026-02-02",
@@ -10369,7 +11079,7 @@
       ]
     },
     {
-      "id": 35,
+      "id": 38,
       "number": "EDBCM017/2026",
       "type": "EDBCM",
       "date": "2026-01-30",
@@ -10759,7 +11469,284 @@
       ]
     },
     {
-      "id": 36,
+      "id": 39,
+      "number": "EDBC001/2026",
+      "type": "EDBC",
+      "date": "2026-01-30",
+      "isNew": false,
+      "title": "私立學校實務守則",
+      "official": "",
+      "impact": "high",
+      "compliance": "mandatory",
+      "urgency": "high",
+      "scope": "all",
+      "topics": [
+        "it",
+        "safety",
+        "procurement",
+        "hr",
+        "activity"
+      ],
+      "tags": [
+        "私立學校守則",
+        "資訊安全與私隱",
+        "採購程序指引",
+        "校外活動安全",
+        "防欺凌與支援"
+      ],
+      "grant_info": {
+        "type": "none",
+        "amount_hkd": null,
+        "amount_label": null,
+        "resource_value_hkd": null,
+        "note": ""
+      },
+      "summary": "本通告闡述私立學校實務守則，適用於私立中小學的治理與校務運作，說明法團校董會作為最高管治機構、校長與教職員的核心職責，以及涉及境外活動、資訊科技使用、個人資料保護、反欺凌與學生支援等重點安排。\n\n主要治理框架著重校長日常運作、跨部門協作、以及符合教育局及法定規範的程序與通報機制。上述多項要求需依據公開資料守則、個資保護及年度匯報等規範落實。",
+      "roles": {
+        "principal": {
+          "r": true,
+          "pts": [
+            "批准境外活動申請，並按規定呈報行程及參加者名單",
+            "採購須符合《資助學校採購程序指引》（2025年10月更新）並定期檢視執行情況",
+            "推動資訊科技使用守則、公開資料守則與反欺凌及 CPD 要求落實"
+          ],
+          "acts": [
+            "批准境外活動申請並呈報行程及參加者名單",
+            "監督採購程序執行情況，確保符合指引",
+            "推動相關守則與政策落實"
+          ]
+        },
+        "vice_principal": {
+          "r": true,
+          "pts": [
+            "協助校長管理日常事務，統籌 SSE 自評進度，向校長匯報改善建議",
+            "協助落實資訊科技使用守則及公開資料守則",
+            "協助監督校外活動安全與防護安排"
+          ],
+          "acts": [
+            "協助匯報 SSE 進度與改善建議",
+            "協調資訊科技守則與資料披露要求",
+            "協助審核校外活動安全與防護安排"
+          ]
+        },
+        "subject_head": {
+          "r": true,
+          "pts": [
+            "統籌校本支援服務使用數據，定期提交分析報告",
+            "確保校外活動安全與突發事件輔導符合指引",
+            "推動反欺凌政策執行與預防教育"
+          ],
+          "acts": [
+            "統籌使用數據並提交分析報告",
+            "協助檢視校外活動安排與安全",
+            "推動預防教育與處理機制"
+          ]
+        },
+        "panel_chair": {
+          "r": false,
+          "pts": [],
+          "acts": []
+        },
+        "teacher": {
+          "r": true,
+          "pts": [
+            "遵守資訊科技使用守則，保護學生個人資料",
+            "保存 CPD 記錄並上傳至 Eservices，學校要求時提交與核實",
+            "遵守公開資料守則披露要求"
+          ],
+          "acts": [
+            "保存 CPD 記錄並上傳至 Eservices，學校要求時提交與核實",
+            "遵守資訊科技使用守則，保護學生個人資料",
+            "配合公開資料披露與個資保護規定"
+          ]
+        },
+        "eo_admin": {
+          "r": true,
+          "pts": [
+            "負責日常行政與檔案管理，遵守公開資料守則披露",
+            "協調校舍維修與行政報告的紀錄",
+            "支援 CPD 數據整理與年度匯報"
+          ],
+          "acts": [
+            "處理公眾資料索取流程與披露要求",
+            "協助校舍維修紀錄與申報",
+            "協助 CPD 數據整合與報告提交"
+          ]
+        },
+        "supplier": {
+          "r": true,
+          "pts": [
+            "了解並遵守最新採購程序指引（2025年10月更新）及合規要求",
+            "提供合規資料以供審核，確保個資與安全",
+            "遵守公開資料披露與相關合約條款"
+          ],
+          "acts": [
+            "參與符合指引的招標流程與資料提交",
+            "提供產品/服務的合規證明與資料",
+            "配合審核與執行合約條款"
+          ],
+          "is_tender": false,
+          "procurement_cat": "Other",
+          "budget_estimate": null,
+          "compliance_ref": [],
+          "eligibility": "符合教育局採購及相關法規要求",
+          "contact_unit": "校務部門"
+        }
+      },
+      "deadlines": [],
+      "actions": [
+        {
+          "text": "批准境外活動申請並呈報行程及參加者名單；監督採購程序符合最新指引並定期檢視執行情況；推動資訊科技使用守則與反欺凌政策落實。",
+          "role": "principal",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "協助校長管理日常事務，統籌 SSE 自評相關範疇的進度，向校長匯報改善建議。",
+          "role": "vice_principal",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "統籌校本支援服務使用數據，定期提交分析報告；確保校外活動安全安排符合指引與輔導方案。",
+          "role": "subject_head",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "遵守資訊科技使用守則，保護學生個人資料；保存 CPD 記錄並上傳至 Eservices，學校要求時提交與核實。",
+          "role": "teacher",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "負責文書及檔案管理，遵循公開資料守則披露；協助校舍維修紀錄與行政協調。",
+          "role": "eo_admin",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "了解並遵守最新採購程序指引（2025年10月更新）及相關採購規範；提供合規資料以供審核；遵守個資保護及相關合約條款。",
+          "role": "supplier",
+          "dl": null,
+          "note": ""
+        }
+      ],
+      "diff": null,
+      "knowledge_review": {
+        "terminology_review": [],
+        "missing_points": [],
+        "recommended_links": [],
+        "role_notes": []
+      },
+      "k1_topics": [
+        "it",
+        "student",
+        "finance"
+      ],
+      "k1_facts": [
+        "學校須制訂資訊科技保安政策，涵蓋數據保護、網絡安全和個人資料處理",
+        "學校須配合教育局推動 BYOD（自攜裝置）政策，支援電子學習環境",
+        "學校須遵守《個人資料（私隱）條例》處理學生和教職員電子數據",
+        "科主任須善用電子教學資源，推動本科運用資訊科技提升學與教效能",
+        "學校須設立機制處理學生缺課個案，連續缺課 7 天須向教育局呈報",
+        "學校須制訂反欺凌政策，建立通報和處理機制，並定期進行預防教育",
+        "學校須按「全校參與」模式支援有特殊教育需要（SEN）學生的學習",
+        "[特殊教育統籌主任] 負責統籌全校 SEN 識別、評估及支援計劃，並向副校長匯報",
+        "≤$5,000直購；$5,001-$50,000 最少2口頭報價；$50,001-$200,000 最少5書面報價；>$200,000招標，並需要按校本指引",
+        "採購人員須遵守《防止賄賂條例》，不得接受供應商利益及進行利益衝突申報 ；書面報價╱招標可在文件中加入廉潔條款",
+        "學校須保存完整採購記錄（包括報價單、批核文件）3 個曆年，以備審計核查",
+        "政府津貼必須專款專用，只可按教育局核准用途開支；不同政府津貼之間不得互相挪用或「拆東牆補西牆」；如有餘款，必須依照教育局相關財務及津貼指引，包括通告及示例報表等"
+      ],
+      "k1_guidelines": [
+        {
+          "id": "g28",
+          "title": "學校資訊保安建議措施（2019年9月修訂版）",
+          "titleShort": "IT保安建議措施",
+          "url": "https://www.edb.gov.hk/tc/edu-system/primary-secondary/applicable-to-primary-secondary/it-in-edu/Information-Security/information-security-in-school.html",
+          "year": "2019",
+          "format": "HTML/PDF"
+        },
+        {
+          "id": "g16",
+          "title": "學生訓育工作指引",
+          "titleShort": "訓育工作指引",
+          "url": "https://www.edb.gov.hk/tc/teacher/student-guidance-discipline-services/principles-guidelines/guidelines-on-student-discipline/index.html",
+          "year": "2017",
+          "format": "HTML/PDF"
+        },
+        {
+          "id": "g17",
+          "title": "理念與指引（訓育及輔導）",
+          "titleShort": "訓輔理念與指引",
+          "url": "https://www.edb.gov.hk/tc/teacher/student-guidance-discipline-services/principles-guidelines/index.html",
+          "year": "2011",
+          "format": "HTML"
+        },
+        {
+          "id": "g01",
+          "title": "資助學校採購程序指引（2025年10月更新）",
+          "titleShort": "採購程序指引",
+          "url": "https://www.edb.gov.hk/attachment/tc/sch-admin/fin-management/procurement-procedures-in-aided-schools/Guidelines%20on%20Procurement%20Procedures%20in%20Aided%20Schools%20Trad%20Chi_2024.pdf",
+          "year": "2025",
+          "format": "PDF"
+        },
+        {
+          "id": "g02",
+          "title": "設有法團校董會的資助學校財務管理指引",
+          "titleShort": "財務管理指引",
+          "url": "https://www.edb.gov.hk/attachment/tc/sch-admin/sbm/corner-imc-sch/fm%20guide%20chinese.pdf",
+          "year": "2023",
+          "format": "PDF"
+        }
+      ],
+      "role_fact_topics": [
+        "it",
+        "student",
+        "finance"
+      ],
+      "role_facts": {
+        "all_roles": [
+          "學校須制訂資訊科技保安政策，涵蓋數據保護、網絡安全和個人資料處理",
+          "學校須配合教育局推動 BYOD（自攜裝置）政策，支援電子學習環境"
+        ],
+        "principal": [
+          "校長須推動電子學習及 BYOD 政策，確保資訊科技融入各學習領域",
+          "校長須確保學校制訂資訊科技可接受使用政策，規範師生使用行為"
+        ],
+        "vice_principal": [
+          "副校長及訓輔主任負責監察學生訓輔工作，協調班主任、輔導人員和社工的支援服務",
+          "副校長協助校長監督日常採購流程，確保各科組遵守報價門檻和程序要求"
+        ],
+        "subject_head": [
+          "科主任須善用電子教學資源，推動本科運用資訊科技提升學與教效能",
+          "科主任提交採購申請時須註明用途、周年計劃、獲批預算來源和所屬津貼類別"
+        ],
+        "panel_chair": [
+          "[資訊科技統籌主任] 負責統籌全校 IT 基礎設施規劃，制定設備更新及保安政策",
+          "[資訊科技統籌主任] 須統籌師生資訊科技培訓，確保全校遵守 IT 可接受使用守則"
+        ],
+        "teacher": [
+          "教師使用電子教學平台時須遵守學校資訊科技使用守則，保護學生個人資料",
+          "教師須善用電子學習工具促進互動教學，培養學生運用資訊科技的能力"
+        ],
+        "eo_admin": [
+          "EO負責維護學生出席記錄系統，定期匯報缺課數據予校長和教育局",
+          "EO負責執行採購程序合規，須建立供應商資料庫並定期更新"
+        ],
+        "supplier": [
+          "學校採購需競爭性報價，供應商不可向教職員提供任何回扣或利益",
+          "供應商須遵守學校廉潔要求，書面報價╱招標時可能須簽署廉潔聲明、利益申報表等，違反防賄規定者被取消資格"
+        ]
+      },
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBC/EDBC26001C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBC/EDBC26001E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBC/EDBC26001S.pdf"
+      ]
+    },
+    {
+      "id": 40,
       "number": "EDBCM010/2026",
       "type": "EDBCM",
       "date": "2026-01-28",
@@ -11029,7 +12016,7 @@
       ]
     },
     {
-      "id": 37,
+      "id": 41,
       "number": "EDBCM022/2026",
       "type": "EDBCM",
       "date": "2026-01-23",
@@ -11287,7 +12274,7 @@
       ]
     },
     {
-      "id": 38,
+      "id": 42,
       "number": "EDBCM020/2026",
       "type": "EDBCM",
       "date": "2026-01-16",
@@ -11579,7 +12566,7 @@
       ]
     },
     {
-      "id": 39,
+      "id": 43,
       "number": "EDBCM021/2026",
       "type": "EDBCM",
       "date": "2026-01-15",
@@ -11950,7 +12937,7 @@
       ]
     },
     {
-      "id": 40,
+      "id": 44,
       "number": "EDBCM008/2026",
       "type": "EDBCM",
       "date": "2026-01-15",
@@ -12314,7 +13301,7 @@
       ]
     },
     {
-      "id": 41,
+      "id": 45,
       "number": "EDBCM006/2026",
       "type": "EDBCM",
       "date": "2026-01-12",
@@ -12643,7 +13630,7 @@
       ]
     },
     {
-      "id": 42,
+      "id": 46,
       "number": "EDBCM005/2026",
       "type": "EDBCM",
       "date": "2026-01-12",
@@ -12935,7 +13922,7 @@
       ]
     },
     {
-      "id": 43,
+      "id": 47,
       "number": "EDBCM012/2026",
       "type": "EDBCM",
       "date": "2026-01-09",
@@ -13160,7 +14147,7 @@
       ]
     },
     {
-      "id": 44,
+      "id": 48,
       "number": "EDBCM011/2026",
       "type": "EDBCM",
       "date": "2026-01-09",
@@ -13414,7 +14401,7 @@
       ]
     },
     {
-      "id": 45,
+      "id": 49,
       "number": "EDBCM003/2026",
       "type": "EDBCM",
       "date": "2026-01-07",
@@ -13747,7 +14734,7 @@
       ]
     },
     {
-      "id": 46,
+      "id": 50,
       "number": "EDBCM014/2026",
       "type": "EDBCM",
       "date": "2026-01-06",
@@ -14047,7 +15034,7 @@
       ]
     },
     {
-      "id": 47,
+      "id": 51,
       "number": "EDBCM013/2026",
       "type": "EDBCM",
       "date": "2026-01-06",
@@ -14348,7 +15335,7 @@
       ]
     },
     {
-      "id": 48,
+      "id": 52,
       "number": "EDBCM016/2026",
       "type": "EDBCM",
       "date": "2026-01-02",
@@ -14612,7 +15599,7 @@
       ]
     },
     {
-      "id": 49,
+      "id": 53,
       "number": "EDBCM222/2025",
       "type": "EDBCM",
       "date": "2025-12-19",
@@ -14893,7 +15880,7 @@
       ]
     },
     {
-      "id": 50,
+      "id": 54,
       "number": "EDBCM221/2025",
       "type": "EDBCM",
       "date": "2025-12-16",
@@ -15258,7 +16245,7 @@
       ]
     },
     {
-      "id": 51,
+      "id": 55,
       "number": "EDBCM218/2025",
       "type": "EDBCM",
       "date": "2025-12-15",
@@ -15571,7 +16558,7 @@
       ]
     },
     {
-      "id": 52,
+      "id": 56,
       "number": "EDBCM213/2025",
       "type": "EDBCM",
       "date": "2025-12-15",
@@ -15846,7 +16833,7 @@
       ]
     },
     {
-      "id": 53,
+      "id": 57,
       "number": "EDBCM207/2025",
       "type": "EDBCM",
       "date": "2025-12-15",
@@ -16147,7 +17134,7 @@
       ]
     },
     {
-      "id": 54,
+      "id": 58,
       "number": "EDBCM201/2025",
       "type": "EDBCM",
       "date": "2025-12-10",
@@ -16534,7 +17521,7 @@
       ]
     },
     {
-      "id": 55,
+      "id": 59,
       "number": "EDBCM220/2025",
       "type": "EDBCM",
       "date": "2025-12-08",
@@ -16837,7 +17824,7 @@
       ]
     },
     {
-      "id": 56,
+      "id": 60,
       "number": "EDBCM217/2025",
       "type": "EDBCM",
       "date": "2025-12-08",
@@ -17216,7 +18203,7 @@
       ]
     },
     {
-      "id": 57,
+      "id": 61,
       "number": "EDBCM176/2025",
       "type": "EDBCM",
       "date": "2025-12-01",
@@ -17548,7 +18535,7 @@
       ]
     },
     {
-      "id": 58,
+      "id": 62,
       "number": "EDBCM216/2025",
       "type": "EDBCM",
       "date": "2025-11-28",
@@ -17850,7 +18837,7 @@
       ]
     },
     {
-      "id": 59,
+      "id": 63,
       "number": "EDBCM212/2025",
       "type": "EDBCM",
       "date": "2025-11-28",
@@ -18115,7 +19102,7 @@
       ]
     },
     {
-      "id": 60,
+      "id": 64,
       "number": "EDBCM208/2025",
       "type": "EDBCM",
       "date": "2025-11-28",
@@ -18395,7 +19382,7 @@
       ]
     },
     {
-      "id": 61,
+      "id": 65,
       "number": "EDBCM202/2025",
       "type": "EDBCM",
       "date": "2025-11-20",
@@ -18697,7 +19684,7 @@
       ]
     },
     {
-      "id": 62,
+      "id": 66,
       "number": "EDBCM215/2025",
       "type": "EDBCM",
       "date": "2025-11-20",
@@ -18985,7 +19972,7 @@
       ]
     },
     {
-      "id": 63,
+      "id": 67,
       "number": "EDBCM206/2025",
       "type": "EDBCM",
       "date": "2025-11-20",
@@ -19374,7 +20361,7 @@
       ]
     },
     {
-      "id": 64,
+      "id": 68,
       "number": "EDBCM197/2025",
       "type": "EDBCM",
       "date": "2025-11-20",
@@ -19686,7 +20673,7 @@
       ]
     },
     {
-      "id": 65,
+      "id": 69,
       "number": "EDBCM177/2025",
       "type": "EDBCM",
       "date": "2025-11-14",
@@ -19950,7 +20937,7 @@
       ]
     },
     {
-      "id": 66,
+      "id": 70,
       "number": "EDBCM205/2025",
       "type": "EDBCM",
       "date": "2025-11-11",
@@ -20239,7 +21226,7 @@
       ]
     },
     {
-      "id": 67,
+      "id": 71,
       "number": "EDBCM200/2025",
       "type": "EDBCM",
       "date": "2025-11-10",
@@ -20522,7 +21509,7 @@
       ]
     },
     {
-      "id": 68,
+      "id": 72,
       "number": "EDBCM183/2025",
       "type": "EDBCM",
       "date": "2025-11-07",
@@ -20821,7 +21808,7 @@
       ]
     },
     {
-      "id": 69,
+      "id": 73,
       "number": "EDBCM186/2025",
       "type": "EDBCM",
       "date": "2025-11-06",
@@ -21131,7 +22118,7 @@
       ]
     },
     {
-      "id": 70,
+      "id": 74,
       "number": "EDBCM204/2025",
       "type": "EDBCM",
       "date": "2025-11-06",
@@ -21420,7 +22407,7 @@
       ]
     },
     {
-      "id": 71,
+      "id": 75,
       "number": "EDBCM203/2025",
       "type": "EDBCM",
       "date": "2025-11-06",
@@ -21711,7 +22698,7 @@
       ]
     },
     {
-      "id": 72,
+      "id": 76,
       "number": "EDBCM179/2025",
       "type": "EDBCM",
       "date": "2025-11-04",
@@ -21985,7 +22972,199 @@
       ]
     },
     {
-      "id": 73,
+      "id": 77,
+      "number": "EDBC020/2025",
+      "type": "EDBC",
+      "date": "2025-10-31",
+      "isNew": false,
+      "title": "無煙校園",
+      "official": "",
+      "impact": "low",
+      "compliance": "informational",
+      "urgency": "low",
+      "scope": "all",
+      "topics": [
+        "safety",
+        "student"
+      ],
+      "tags": [
+        "無煙政策",
+        "校園安全",
+        "學生健康",
+        "官方通告",
+        "教育局"
+      ],
+      "grant_info": {
+        "type": "none",
+        "amount_hkd": null,
+        "amount_label": null,
+        "resource_value_hkd": null,
+        "note": ""
+      },
+      "summary": "此摘要僅列出可直接從官方標題與日期讀出的基本資訊，包含通告編號、標題、發佈日期與通告類型等，其他細節以正式發佈文件為準。",
+      "roles": {
+        "principal": {
+          "r": false,
+          "pts": [],
+          "acts": []
+        },
+        "vice_principal": {
+          "r": true,
+          "pts": [
+            "留意學生參與條件、支援安排及活動期間的照顧需要，避免遺漏個別學生的參與支援。",
+            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+          ],
+          "acts": []
+        },
+        "subject_head": {
+          "r": true,
+          "pts": [
+            "留意學生參與條件、支援安排及活動期間的照顧需要，避免遺漏個別學生的參與支援。"
+          ],
+          "acts": [
+            "按學生級別、活動安排及支援需要，預早協調人手、分組、風險提示及記錄安排。"
+          ]
+        },
+        "panel_chair": {
+          "r": true,
+          "pts": [
+            "留意學生參與條件、支援安排及活動期間的照顧需要，避免遺漏個別學生的參與支援。"
+          ],
+          "acts": [
+            "按學生級別、活動安排及支援需要，預早協調人手、分組、風險提示及記錄安排。"
+          ]
+        },
+        "teacher": {
+          "r": true,
+          "pts": [],
+          "acts": [
+            "按學生級別、活動安排及支援需要，預早協調人手、分組、風險提示及記錄安排。"
+          ]
+        },
+        "eo_admin": {
+          "r": true,
+          "pts": [
+            "如涉及校外活動、比賽或交流安排，宜及早完成家長通知、回條及校內批准流程。"
+          ],
+          "acts": [
+            "整理學生名單、家長通知、回覆記錄及相關支援文件，並保留校內存檔。"
+          ]
+        },
+        "supplier": {
+          "r": false,
+          "pts": [],
+          "acts": [],
+          "is_tender": false,
+          "procurement_cat": "none",
+          "budget_estimate": null,
+          "compliance_ref": [],
+          "eligibility": "",
+          "contact_unit": ""
+        }
+      },
+      "deadlines": [],
+      "actions": [
+        {
+          "text": "按學生級別、活動安排及支援需要，預早協調人手、分組、風險提示及記錄安排。",
+          "role": "subject_head",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "整理學生名單、家長通知、回覆記錄及相關支援文件，並保留校內存檔。",
+          "role": "eo_admin",
+          "dl": null,
+          "note": ""
+        }
+      ],
+      "diff": null,
+      "knowledge_review": {
+        "terminology_review": [],
+        "missing_points": [
+          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
+        ],
+        "recommended_links": [
+          {
+            "label": "學校活動指引",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
+            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
+          },
+          {
+            "label": "學校行政手冊",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
+            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
+          }
+        ],
+        "role_notes": [
+          "偵測到 student 類訊號，將 `vice_principal` 角色標記為相關。",
+          "偵測到 student 類訊號，將 `subject_head` 角色標記為相關。",
+          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。",
+          "偵測到 student 類訊號，將 `teacher` 角色標記為相關。",
+          "偵測到 student 類訊號，將 `eo_admin` 角色標記為相關。"
+        ]
+      },
+      "k1_topics": [
+        "student"
+      ],
+      "k1_facts": [
+        "學校須設立機制處理學生缺課個案，連續缺課 7 天須向教育局呈報",
+        "學校須制訂反欺凌政策，建立通報和處理機制，並定期進行預防教育",
+        "學校須按「全校參與」模式支援有特殊教育需要（SEN）學生的學習",
+        "[特殊教育統籌主任] 負責統籌全校 SEN 識別、評估及支援計劃，並向副校長匯報"
+      ],
+      "k1_guidelines": [
+        {
+          "id": "g16",
+          "title": "學生訓育工作指引",
+          "titleShort": "訓育工作指引",
+          "url": "https://www.edb.gov.hk/tc/teacher/student-guidance-discipline-services/principles-guidelines/guidelines-on-student-discipline/index.html",
+          "year": "2017",
+          "format": "HTML/PDF"
+        },
+        {
+          "id": "g17",
+          "title": "理念與指引（訓育及輔導）",
+          "titleShort": "訓輔理念與指引",
+          "url": "https://www.edb.gov.hk/tc/teacher/student-guidance-discipline-services/principles-guidelines/index.html",
+          "year": "2011",
+          "format": "HTML"
+        }
+      ],
+      "role_fact_topics": [
+        "student"
+      ],
+      "role_facts": {
+        "all_roles": [
+          "學校須設立機制處理學生缺課個案，連續缺課 7 天須向教育局呈報",
+          "學校須制訂反欺凌政策，建立通報和處理機制，並定期進行預防教育"
+        ],
+        "principal": [
+          "校長須確保學校已制訂完善的危機處理程序，包括意外、傳染病和自然災害應變方案",
+          "校長須確保學校訓輔政策兼顧獎懲，培養學生正面行為和自律精神"
+        ],
+        "vice_principal": [
+          "副校長及訓輔主任負責監察學生訓輔工作，協調班主任、輔導人員和社工的支援服務"
+        ],
+        "panel_chair": [
+          "[特殊教育統籌主任] 負責統籌全校 SEN 識別、評估及支援計劃，並向副校長匯報",
+          "[訓導及輔導主任] 統籌全校訓育及輔導工作，建立跨部門個案轉介及跟進機制"
+        ],
+        "teacher": [
+          "教師發現學生有特殊教育需要（SEN）跡象時，須盡早轉介予學校支援組跟進",
+          "班主任須每日記錄學生出席情況，發現異常缺課須即日聯絡家長了解原因"
+        ],
+        "eo_admin": [
+          "EO負責維護學生出席記錄系統，定期匯報缺課數據予校長和教育局"
+        ]
+      },
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBC/EDBC25020C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBC/EDBC25020E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBC/EDBC25020S.pdf"
+      ]
+    },
+    {
+      "id": 78,
       "number": "EDBCM174/2025",
       "type": "EDBCM",
       "date": "2025-10-28",
@@ -22272,7 +23451,7 @@
       ]
     },
     {
-      "id": 74,
+      "id": 79,
       "number": "EDBCM198/2025",
       "type": "EDBCM",
       "date": "2025-10-27",
@@ -22563,7 +23742,7 @@
       ]
     },
     {
-      "id": 75,
+      "id": 80,
       "number": "EDBCM195/2025",
       "type": "EDBCM",
       "date": "2025-10-27",
@@ -22866,7 +24045,7 @@
       ]
     },
     {
-      "id": 76,
+      "id": 81,
       "number": "EDBCM196/2025",
       "type": "EDBCM",
       "date": "2025-10-24",
@@ -23163,7 +24342,7 @@
       ]
     },
     {
-      "id": 77,
+      "id": 82,
       "number": "EDBCM193/2025",
       "type": "EDBCM",
       "date": "2025-10-24",
@@ -23479,7 +24658,7 @@
       ]
     },
     {
-      "id": 78,
+      "id": 83,
       "number": "EDBCM162/2025",
       "type": "EDBCM",
       "date": "2025-10-22",
@@ -23766,7 +24945,7 @@
       ]
     },
     {
-      "id": 79,
+      "id": 84,
       "number": "EDBCM192/2025",
       "type": "EDBCM",
       "date": "2025-10-20",
@@ -24147,7 +25326,7 @@
       ]
     },
     {
-      "id": 80,
+      "id": 85,
       "number": "EDBCM190/2025",
       "type": "EDBCM",
       "date": "2025-10-20",
@@ -24449,7 +25628,7 @@
       ]
     },
     {
-      "id": 81,
+      "id": 86,
       "number": "EDBCM189/2025",
       "type": "EDBCM",
       "date": "2025-10-20",
@@ -24753,7 +25932,7 @@
       ]
     },
     {
-      "id": 82,
+      "id": 87,
       "number": "EDBCM182/2025",
       "type": "EDBCM",
       "date": "2025-10-16",
@@ -25060,7 +26239,7 @@
       ]
     },
     {
-      "id": 83,
+      "id": 88,
       "number": "EDBCM187/2025",
       "type": "EDBCM",
       "date": "2025-10-16",
@@ -25383,7 +26562,7 @@
       ]
     },
     {
-      "id": 84,
+      "id": 89,
       "number": "EDBCM157/2025",
       "type": "EDBCM",
       "date": "2025-10-15",
@@ -25698,7 +26877,7 @@
       ]
     },
     {
-      "id": 85,
+      "id": 90,
       "number": "EDBCM191/2025",
       "type": "EDBCM",
       "date": "2025-10-15",
@@ -25998,7 +27177,7 @@
       ]
     },
     {
-      "id": 86,
+      "id": 91,
       "number": "EDBCM180/2025",
       "type": "EDBCM",
       "date": "2025-10-13",
@@ -26313,7 +27492,7 @@
       ]
     },
     {
-      "id": 87,
+      "id": 92,
       "number": "EDBCM169/2025",
       "type": "EDBCM",
       "date": "2025-10-08",
@@ -26626,7 +27805,7 @@
       ]
     },
     {
-      "id": 88,
+      "id": 93,
       "number": "EDBCM184/2025",
       "type": "EDBCM",
       "date": "2025-10-06",
@@ -26922,7 +28101,7 @@
       ]
     },
     {
-      "id": 89,
+      "id": 94,
       "number": "EDBCM152/2025",
       "type": "EDBCM",
       "date": "2025-10-06",
@@ -27238,7 +28417,7 @@
       ]
     },
     {
-      "id": 90,
+      "id": 95,
       "number": "EDBCM138/2025",
       "type": "EDBCM",
       "date": "2025-10-02",
@@ -27546,7 +28725,7 @@
       ]
     },
     {
-      "id": 91,
+      "id": 96,
       "number": "EDBCM147/2025",
       "type": "EDBCM",
       "date": "2025-09-29",
@@ -27831,7 +29010,7 @@
       ]
     },
     {
-      "id": 92,
+      "id": 97,
       "number": "EDBCM143/2025",
       "type": "EDBCM",
       "date": "2025-09-29",
@@ -28132,7 +29311,7 @@
       ]
     },
     {
-      "id": 93,
+      "id": 98,
       "number": "EDBCM178/2025",
       "type": "EDBCM",
       "date": "2025-09-26",
@@ -28448,7 +29627,7 @@
       ]
     },
     {
-      "id": 94,
+      "id": 99,
       "number": "EDBCM168/2025",
       "type": "EDBCM",
       "date": "2025-09-25",
@@ -28674,7 +29853,7 @@
       ]
     },
     {
-      "id": 95,
+      "id": 100,
       "number": "EDBCM160/2025",
       "type": "EDBCM",
       "date": "2025-09-25",
@@ -29012,7 +30191,7 @@
       ]
     },
     {
-      "id": 96,
+      "id": 101,
       "number": "EDBCM171/2025",
       "type": "EDBCM",
       "date": "2025-09-23",
@@ -29298,7 +30477,7 @@
       ]
     },
     {
-      "id": 97,
+      "id": 102,
       "number": "EDBCM139/2025",
       "type": "EDBCM",
       "date": "2025-09-22",
@@ -29600,7 +30779,7 @@
       ]
     },
     {
-      "id": 98,
+      "id": 103,
       "number": "EDBCM159/2025",
       "type": "EDBCM",
       "date": "2025-09-19",
@@ -29898,7 +31077,7 @@
       ]
     },
     {
-      "id": 99,
+      "id": 104,
       "number": "EDBCM155/2025",
       "type": "EDBCM",
       "date": "2025-09-17",
@@ -30217,7 +31396,7 @@
       ]
     },
     {
-      "id": 100,
+      "id": 105,
       "number": "EDBCM154/2025",
       "type": "EDBCM",
       "date": "2025-09-17",
@@ -30520,7 +31699,7 @@
       ]
     },
     {
-      "id": 101,
+      "id": 106,
       "number": "EDBCM141/2025",
       "type": "EDBCM",
       "date": "2025-09-16",
@@ -30803,7 +31982,7 @@
       ]
     },
     {
-      "id": 102,
+      "id": 107,
       "number": "EDBCM156/2025",
       "type": "EDBCM",
       "date": "2025-09-15",
@@ -31116,7 +32295,7 @@
       ]
     },
     {
-      "id": 103,
+      "id": 108,
       "number": "EDBCM172/2025",
       "type": "EDBCM",
       "date": "2025-09-12",
@@ -31463,7 +32642,7 @@
       ]
     },
     {
-      "id": 104,
+      "id": 109,
       "number": "EDBCM164/2025",
       "type": "EDBCM",
       "date": "2025-09-12",
@@ -31773,7 +32952,7 @@
       ]
     },
     {
-      "id": 105,
+      "id": 110,
       "number": "EDBCM132/2025",
       "type": "EDBCM",
       "date": "2025-09-11",
@@ -32081,7 +33260,7 @@
       ]
     },
     {
-      "id": 106,
+      "id": 111,
       "number": "EDBCM129/2025",
       "type": "EDBCM",
       "date": "2025-09-10",
@@ -32377,7 +33556,7 @@
       ]
     },
     {
-      "id": 107,
+      "id": 112,
       "number": "EDBCM173/2025",
       "type": "EDBCM",
       "date": "2025-09-09",
@@ -32659,7 +33838,7 @@
       ]
     },
     {
-      "id": 108,
+      "id": 113,
       "number": "EDBCM140/2025",
       "type": "EDBCM",
       "date": "2025-09-09",
@@ -32990,7 +34169,7 @@
       ]
     },
     {
-      "id": 109,
+      "id": 114,
       "number": "EDBCM149/2025",
       "type": "EDBCM",
       "date": "2025-09-08",
@@ -33351,7 +34530,7 @@
       ]
     },
     {
-      "id": 110,
+      "id": 115,
       "number": "EDBCM146/2025",
       "type": "EDBCM",
       "date": "2025-09-08",
@@ -33659,7 +34838,7 @@
       ]
     },
     {
-      "id": 111,
+      "id": 116,
       "number": "EDBCM135/2025",
       "type": "EDBCM",
       "date": "2025-09-08",
@@ -33973,7 +35152,7 @@
       ]
     },
     {
-      "id": 112,
+      "id": 117,
       "number": "EDBCM148/2025",
       "type": "EDBCM",
       "date": "2025-09-08",
@@ -34261,7 +35440,7 @@
       ]
     },
     {
-      "id": 113,
+      "id": 118,
       "number": "EDBCM144/2025",
       "type": "EDBCM",
       "date": "2025-09-08",
@@ -34550,7 +35729,7 @@
       ]
     },
     {
-      "id": 114,
+      "id": 119,
       "number": "EDBCM131/2025",
       "type": "EDBCM",
       "date": "2025-09-08",
@@ -34854,7 +36033,7 @@
       ]
     },
     {
-      "id": 115,
+      "id": 120,
       "number": "EDBCM127/2025",
       "type": "EDBCM",
       "date": "2025-09-08",
@@ -35150,7 +36329,7 @@
       ]
     },
     {
-      "id": 116,
+      "id": 121,
       "number": "EDBCM101/2025",
       "type": "EDBCM",
       "date": "2025-09-08",
@@ -35440,7 +36619,7 @@
       ]
     },
     {
-      "id": 117,
+      "id": 122,
       "number": "EDBCM145/2025",
       "type": "EDBCM",
       "date": "2025-09-05",
@@ -35776,7 +36955,239 @@
       ]
     },
     {
-      "id": 118,
+      "id": 123,
+      "number": "EDBC019/2025",
+      "type": "EDBC",
+      "date": "2025-09-02",
+      "isNew": false,
+      "title": "幼稚園學生缺課的通報機制",
+      "official": "",
+      "impact": "mid",
+      "compliance": "mandatory",
+      "urgency": "high",
+      "scope": "kgn",
+      "topics": [
+        "student",
+        "safety"
+      ],
+      "tags": [
+        "連續缺課7日",
+        "出席記錄",
+        "缺課通報",
+        "幼稚園"
+      ],
+      "grant_info": {
+        "type": "none",
+        "amount_hkd": null,
+        "amount_label": null,
+        "resource_value_hkd": null,
+        "note": ""
+      },
+      "summary": "本通告於2025-09-02發布，介紹「幼稚園學生缺課的通報機制」的安排。\n\n內容聚焦學生參與安排及相關支援要求。",
+      "roles": {
+        "principal": {
+          "r": true,
+          "pts": [
+            "確保學校已建立缺課通報機制",
+            "監督 EO、班主任落實每日出席與缺課通報",
+            "依照教育局規定向教育局呈報相關數據"
+          ],
+          "acts": [
+            "落實並監督幼稚園缺課通報機制的建立與執行",
+            "指示 EO 與班主任每日出席紀錄與異常缺課追蹤",
+            "依規定向教育局呈報連續缺課資料與相關統計"
+          ]
+        },
+        "vice_principal": {
+          "r": true,
+          "pts": [
+            "監察訓輔與出席工作，協調相關人力",
+            "監督出席記錄與缺課數據的匯報流程",
+            "指導跨部門聯絡與家長應對流程"
+          ],
+          "acts": [
+            "監督日常出席紀錄與缺課回應流程的落實",
+            "協調班主任與支援人員的資源分配",
+            "確保缺課數據及處理情況向校長或相關部門報告"
+          ]
+        },
+        "subject_head": {
+          "r": true,
+          "pts": [
+            "協調全校 SEN 識別、評估及支援計劃，並向副校長匯報人手需求",
+            "支援出席通報機制在 SEN 學生的跟進",
+            "促進跨部門協作以改善缺課情況"
+          ],
+          "acts": [
+            "協調 SEN 支援人員分配並提交人手需求報告",
+            "與副校長及班主任協同落實缺課通報流程",
+            "提供數據支援缺課情況的改進措施"
+          ]
+        },
+        "panel_chair": {
+          "r": true,
+          "pts": [
+            "留意學生參與條件、支援安排及活動期間的照顧需要，避免遺漏個別學生的參與支援。"
+          ],
+          "acts": [
+            "按學生級別、活動安排及支援需要，預早協調人手、分組、風險提示及記錄安排。"
+          ]
+        },
+        "teacher": {
+          "r": true,
+          "pts": [
+            "班主任每日記錄出席情況",
+            "發現異常缺課須即日聯絡家長了解原因",
+            "協助缺課通報與數據提供"
+          ],
+          "acts": [
+            "每日記錄學生出席並留意缺課異常",
+            "遇到缺課異常時立即通知家長並追蹤原因",
+            "協助 EO 收集與提供出席數據與相關情況"
+          ]
+        },
+        "eo_admin": {
+          "r": true,
+          "pts": [
+            "負責維護出席記錄系統，定期匯報缺課數據予校長和教育局",
+            "協調跨部門落實通報與預防機制",
+            "向校長提供缺課統計與分析"
+          ],
+          "acts": [
+            "維護出席記錄系統並定期報告",
+            "匯總缺課數據並提交給校長及教育局",
+            "協助各部門落實通報與預防策略"
+          ]
+        },
+        "supplier": {
+          "r": false,
+          "pts": [],
+          "acts": [],
+          "is_tender": false,
+          "procurement_cat": "none",
+          "budget_estimate": null,
+          "compliance_ref": [],
+          "eligibility": "",
+          "contact_unit": ""
+        }
+      },
+      "deadlines": [],
+      "actions": [
+        {
+          "text": "落實並監督幼稚園缺課通報機制的建立與執行",
+          "role": "principal",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "監督班主任每日出席紀錄與異常缺課之及時處理",
+          "role": "vice_principal",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "協調全校 SEN 識別、評估及支援計劃，並向副校長匯報人手需求",
+          "role": "subject_head",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "每日記錄出席、遇到異常缺課即日聯絡家長並提供情況回報",
+          "role": "teacher",
+          "dl": null,
+          "note": ""
+        },
+        {
+          "text": "維護出席記錄系統、定期匯報缺課數據予校長及教育局",
+          "role": "eo_admin",
+          "dl": null,
+          "note": ""
+        }
+      ],
+      "diff": null,
+      "knowledge_review": {
+        "terminology_review": [],
+        "missing_points": [
+          "補回 student 類通告的學生參與支援、家長通知及校內記錄提醒。"
+        ],
+        "recommended_links": [
+          {
+            "label": "學校活動指引",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/admin/about-activities/sch-activities-guidelines/index.html",
+            "why": "補充學生活動安排、風險管理及校內行政協調的官方參考"
+          },
+          {
+            "label": "學校行政手冊",
+            "url": "https://www.edb.gov.hk/tc/sch-admin/regulations/sch-admin-guide/index.html",
+            "why": "補充學生支援、家校溝通及校內程序處理的行政參考"
+          }
+        ],
+        "role_notes": [
+          "偵測到 student 類訊號，將 `panel_chair` 角色標記為相關。"
+        ]
+      },
+      "k1_topics": [
+        "student"
+      ],
+      "k1_facts": [
+        "學校須設立機制處理學生缺課個案，連續缺課 7 天須向教育局呈報",
+        "學校須制訂反欺凌政策，建立通報和處理機制，並定期進行預防教育",
+        "學校須按「全校參與」模式支援有特殊教育需要（SEN）學生的學習",
+        "[特殊教育統籌主任] 負責統籌全校 SEN 識別、評估及支援計劃，並向副校長匯報"
+      ],
+      "k1_guidelines": [
+        {
+          "id": "g16",
+          "title": "學生訓育工作指引",
+          "titleShort": "訓育工作指引",
+          "url": "https://www.edb.gov.hk/tc/teacher/student-guidance-discipline-services/principles-guidelines/guidelines-on-student-discipline/index.html",
+          "year": "2017",
+          "format": "HTML/PDF"
+        },
+        {
+          "id": "g17",
+          "title": "理念與指引（訓育及輔導）",
+          "titleShort": "訓輔理念與指引",
+          "url": "https://www.edb.gov.hk/tc/teacher/student-guidance-discipline-services/principles-guidelines/index.html",
+          "year": "2011",
+          "format": "HTML"
+        }
+      ],
+      "role_fact_topics": [
+        "student"
+      ],
+      "role_facts": {
+        "all_roles": [
+          "學校須設立機制處理學生缺課個案，連續缺課 7 天須向教育局呈報",
+          "學校須制訂反欺凌政策，建立通報和處理機制，並定期進行預防教育"
+        ],
+        "principal": [
+          "校長須確保學校已制訂完善的危機處理程序，包括意外、傳染病和自然災害應變方案",
+          "校長須確保學校訓輔政策兼顧獎懲，培養學生正面行為和自律精神"
+        ],
+        "vice_principal": [
+          "副校長及訓輔主任負責監察學生訓輔工作，協調班主任、輔導人員和社工的支援服務"
+        ],
+        "panel_chair": [
+          "[特殊教育統籌主任] 負責統籌全校 SEN 識別、評估及支援計劃，並向副校長匯報",
+          "[訓導及輔導主任] 統籌全校訓育及輔導工作，建立跨部門個案轉介及跟進機制"
+        ],
+        "teacher": [
+          "教師發現學生有特殊教育需要（SEN）跡象時，須盡早轉介予學校支援組跟進",
+          "班主任須每日記錄學生出席情況，發現異常缺課須即日聯絡家長了解原因"
+        ],
+        "eo_admin": [
+          "EO負責維護學生出席記錄系統，定期匯報缺課數據予校長和教育局"
+        ]
+      },
+      "pdf_urls": [
+        "https://applications.edb.gov.hk/circular/upload/EDBC/EDBC25019C.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBC/EDBC25019E.pdf",
+        "https://applications.edb.gov.hk/circular/upload/EDBC/EDBC25019S.pdf"
+      ]
+    },
+    {
+      "id": 124,
       "number": "EDBCM158/2025",
       "type": "EDBCM",
       "date": "2025-09-01",
@@ -36075,7 +37486,7 @@
       ]
     },
     {
-      "id": 119,
+      "id": 125,
       "number": "EDBCM151/2025",
       "type": "EDBCM",
       "date": "2025-09-01",
