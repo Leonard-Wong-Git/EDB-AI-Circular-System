@@ -1665,6 +1665,106 @@ SUMMARY_ROLE_ACTION_MARKERS = [
     "核對",
 ]
 
+# ── Knowledge Signal Detection ─────────────────────────────────────────────
+# Circulars matching these patterns are silently flagged as policy/framework
+# documents that may warrant knowledge base updates.
+# Signals are written to dev/knowledge/policy_signals.json (invisible to users).
+_KS_TITLE_STRONG = re.compile(
+    r"架構|課程框架|學習宗旨|指引（\d{4}）|指引\s*（20\d{2}）"
+)
+_KS_POLICY_TAGS = {
+    "課程指引", "教育政策", "課程更新", "政策框架", "價值觀框架", "學習宗旨更新",
+}
+_KS_SIGNALS_PATH = Path(__file__).parent / "dev" / "knowledge" / "policy_signals.json"
+
+
+def _detect_knowledge_signal(circ: dict) -> tuple:
+    """
+    Silently detect if a circular is a policy/framework document worth adding
+    to the knowledge base.  Returns (level, reasons) where level is
+    'strong', 'medium', or None.  No file I/O — pure classification only.
+    """
+    title   = circ.get("title", "")
+    topics  = circ.get("topics", [])
+    tags    = set(circ.get("tags", []))
+    impact  = circ.get("impact", "")
+    ctype   = circ.get("type", "")
+    is_curr = "curriculum" in topics
+
+    # Strong: title has explicit framework/architecture keyword + curriculum topic
+    m = _KS_TITLE_STRONG.search(title)
+    if m and is_curr:
+        return ("strong", [f"title:{m.group()}+curriculum"])
+
+    # Medium: plain EDBC circular + curriculum + high impact + recognised policy tag
+    if ctype == "EDBC" and is_curr and impact == "high" and tags & _KS_POLICY_TAGS:
+        return ("medium", ["EDBC+curriculum+high_impact+policy_tags"])
+
+    return (None, [])
+
+
+def _update_policy_signals(circulars: list, log: logging.Logger) -> None:
+    """
+    Append newly detected knowledge signals to dev/knowledge/policy_signals.json.
+    Deduplicates by circular_number.  Silent — no user-facing output.
+    Called once after circulars.json is saved.
+    """
+    # Load existing store
+    store: dict = {}
+    if _KS_SIGNALS_PATH.exists():
+        try:
+            with open(_KS_SIGNALS_PATH, encoding="utf-8") as f:
+                store = json.load(f)
+        except Exception:
+            store = {}
+
+    existing = {s["circular_number"] for s in store.get("signals", [])}
+    new_entries: list = []
+
+    for circ in circulars:
+        level = circ.get("knowledge_signal")
+        if not level:
+            continue
+        num = circ.get("number", "")
+        if num in existing:
+            continue
+        pdf_urls = circ.get("pdf_urls", [])
+        new_entries.append({
+            "circular_number": num,
+            "title":           circ.get("title", ""),
+            "date":            circ.get("date", ""),
+            "signal_level":    level,
+            "signal_reason":   circ.get("knowledge_signal_reason", []),
+            "topics":          circ.get("topics", []),
+            "tags":            circ.get("tags", []),
+            "pdf_url":         pdf_urls[0] if pdf_urls else "",
+            "detected_at":     datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+            "status":          "pending_review",
+        })
+        existing.add(num)
+
+    if not new_entries:
+        return
+
+    store.setdefault("_meta", {
+        "description": (
+            "EDB 通告政策性文件偵測記錄 — 供知識庫維護者審閱，對使用者不可見。"
+            "status: pending_review → approved / dismissed（人工更新）"
+        ),
+        "schema_version": "1.0",
+    })
+    store["_meta"]["last_updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    store.setdefault("signals", []).extend(new_entries)
+
+    _KS_SIGNALS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with open(_KS_SIGNALS_PATH, "w", encoding="utf-8") as f:
+        json.dump(store, f, ensure_ascii=False, indent=2)
+
+    log.info(
+        f"📚 Knowledge signals: {len(new_entries)} new entry/entries "
+        f"→ {_KS_SIGNALS_PATH.relative_to(Path(__file__).parent)}"
+    )
+
 
 def _strip_summary_filler(text: str) -> str:
     if not text:
@@ -2260,6 +2360,14 @@ def _apply_post_analysis_review(circ: dict) -> dict:
     ]
     if not (reviewed.get("summary") or "").strip():
         reviewed["summary"] = _build_summary_fallback(reviewed)
+
+    # Silent knowledge signal detection — adds field to record; file write happens
+    # after all circulars are saved (see _update_policy_signals call in pipeline).
+    ks_level, ks_reasons = _detect_knowledge_signal(reviewed)
+    if ks_level:
+        reviewed["knowledge_signal"]        = ks_level
+        reviewed["knowledge_signal_reason"] = ks_reasons
+
     return reviewed
 
 
@@ -2597,6 +2705,11 @@ def run_pipeline(args) -> int:
 
     size_kb = output_path.stat().st_size / 1024
     log.info(f"✅ Saved {len(output_list)} circulars → {output_path}  ({size_kb:.1f}KB)")
+
+    # Silent: update policy signals log (invisible to users; no-op on dry-run)
+    if not args.dry_run:
+        _update_policy_signals(output_list, log)
+
     return 0
 
 
@@ -2669,7 +2782,7 @@ Examples:
         range_display = f"past {args.days} days"
 
     print(f"\n{'='*60}")
-    print(f"  EDB Circular Scraper + Analyzer  v3.0.44")
+    print(f"  EDB Circular Scraper + Analyzer  v3.0.45")
     print(f"  Model      : {args.model}")
     print(f"  Temperature: {LLM_TEMPERATURE}  (fixed)")
     print(f"  Output     : {args.output}")

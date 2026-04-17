@@ -1,5 +1,5 @@
 
-## 2026-04-17 EDBC series support + system completion milestone (v3.0.44) — Claude_20260417_0800
+## 2026-04-17 EDBC + splash page + knowledge signal (v3.0.44–45) — Claude_20260417_0800
 
 1. Agent & Session ID: Claude_20260417_0800
 2. Task summary: 發現 scraper regex 只匹配 EDBCM / EDBCL，漏掉純 EDBC 系列通告（EDBC003/2026, EDBC005/2026）；修正 regex 及 circ_type 邏輯，新增 EDBC 第三分支；製作全新動態開頁（index.html），取代原本 redirect；版本升至 v3.0.44。確認通告系統核心功能完成，標示為 system complete。

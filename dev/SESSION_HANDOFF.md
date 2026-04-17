@@ -1,15 +1,16 @@
 # Session Handoff
 
 ## Current Baseline
-1. Version: **v3.0.44 workspace ✅** (2026-04-17) — pending push + school-year workflow
+1. Version: **v3.0.45 workspace ✅** (2026-04-17) — pending push + school-year workflow
 2. Core commands / features:
-   - `edb-dashboard.html` — v3.0.44 (version bump)
-   - `edb_scraper.py` — v3.0.44 (EDBC series support: regex + circ_type 3-way EDBCM / EDBCL / EDBC)
-   - `index.html` — 新開頁（Canvas 粒子動畫 + 功能亮點 + 進入按鈕，取代舊 redirect）
-   - `circulars.json` — live `generated_at=2026-04-15T13:28:15Z`, 119 records（EDBC003 / EDBC005 待 workflow 後加入）
+   - `edb-dashboard.html` — v3.0.45 (version bump)
+   - `edb_scraper.py` — v3.0.45 (EDBC series support + knowledge signal detection — 暗盤回饋機制)
+   - `index.html` — 開頁（Canvas 粒子動畫 + 功能亮點 + 進入按鈕）live ✅
+   - `circulars.json` — live `generated_at=2026-04-15T13:28:15Z`, 119 records
+   - `dev/knowledge/policy_signals.json` — 知識庫 signal 暗盤記錄（待 workflow 後首次生成）
    - `dev/tools/test_k1_smoke.py` — v3.0.40 smoke test PASS
-3. Regression baseline: py_compile PASS; regex unit test PASS (5/5); HTML parse PASS; live verification PENDING.
-4. Release / merge status: **v3.0.44 workspace ready — needs Mac push + school-year workflow.**
+3. Regression baseline: py_compile PASS; signal detection 5/5 PASS; write+dedup PASS; live verification PENDING.
+4. Release / merge status: **v3.0.45 workspace ready — needs Mac push + school-year workflow.**
 5. ✅ **系統完成狀態（2026-04-17 確認）：** 知識庫整合已驗收，通告系統核心功能完成，進入監測維護模式。
 5. Active branch / environment: GitHub Pages: https://leonard-wong-git.github.io/EDB-AI-Circular-System/ ✅
 6. External platforms / dependencies in scope:
@@ -70,9 +71,9 @@ git checkout v2.1.0-dashboard
 ```
 
 ## Open Priorities
-1. **[立即]** Mac Terminal push v3.0.44（index.html + edb_scraper.py + edb-dashboard.html + dev 文件）→ 觸發 school-year workflow → 驗收 EDBC003/2026 + EDBC005/2026 出現 + 目視確認開頁 live 效果
-2. **[監測]** 持續觀察 source-less 通告摘要品質；如有新模式 LLM metadata 句，補加 banned marker
-3. **[監測]** 若日後出現其他新系列通告（非 EDBCM / EDBCL / EDBC），視需要更新 regex
+1. **[立即]** Mac Terminal push v3.0.45 → 觸發 school-year workflow → 驗收 EDBC003/EDBC005 出現 + 確認 `dev/knowledge/policy_signals.json` 已生成（預計 3 份 strong signal）
+2. **[監測]** 持續觀察 `policy_signals.json`；每次 workflow 後如有新 pending_review，評估是否加入知識庫
+3. **[監測]** 持續觀察 source-less 通告摘要品質；如有新模式 LLM metadata 句，補加 banned marker
 4. **[長期]** K1 第二階段：PDF 提取真實 EDB 知識（另立項目）
 
 ## v2.1.0 Key Changes（2026-03-22）
