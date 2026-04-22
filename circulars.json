@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-21T23:31:03Z",
+  "generated_at": "2026-04-22T06:13:02Z",
   "model": "gpt-5-nano",
   "temperature": 1,
-  "range": "past 3 days (from 2026-04-18)",
+  "range": "school-year (from 2025-09-01)",
   "date_from": "2025-09-01",
   "date_to": "2026-04-16",
-  "days": 3,
+  "days": 30,
   "count": 126,
   "circulars": [
     {
@@ -1043,7 +1043,7 @@
       "number": "EDBCM055/2026",
       "type": "EDBCM",
       "date": "2026-04-14",
-      "isNew": true,
+      "isNew": false,
       "title": "私立學校名冊",
       "official": "",
       "impact": "low",
